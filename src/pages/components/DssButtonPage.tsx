@@ -26,12 +26,13 @@ const eventsData = [
 ];
 
 const tokensUsed = [
-  { token: "--color-primary-500", usage: "Fundo do variant primary" },
-  { token: "--color-primary-600", usage: "Hover do variant primary" },
-  { token: "--color-neutral-0", usage: "Texto do variant primary" },
-  { token: "--spacing-2", usage: "Padding horizontal sm" },
-  { token: "--spacing-4", usage: "Padding horizontal default" },
-  { token: "--radius-md", usage: "Border radius" },
+  { token: "--dss-action-primary", usage: "Fundo do variant primary", value: "#1f86de" },
+  { token: "--dss-action-primary-hover", usage: "Hover do variant primary", value: "#0f5295" },
+  { token: "--dss-action-secondary", usage: "Fundo do variant secondary", value: "#26a69a" },
+  { token: "--dss-gray-50", usage: "Texto do variant primary", value: "#ffffff" },
+  { token: "--dss-spacing-2", usage: "Padding vertical", value: "0.5rem" },
+  { token: "--dss-spacing-4", usage: "Padding horizontal", value: "1rem" },
+  { token: "--dss-radius-md", usage: "Border radius", value: "0.5rem" },
 ];
 
 export default function DssButtonPage() {
@@ -55,64 +56,73 @@ export default function DssButtonPage() {
   };
 
   return (
-    <div className="p-6 lg:p-8 max-w-5xl mx-auto space-y-8">
+    <div className="p-6 lg:p-8 max-w-5xl mx-auto space-y-8" style={{ backgroundColor: 'var(--dss-surface-default)' }}>
       {/* Header */}
       <section className="space-y-4">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Link to="/" className="hover:text-foreground">Início</Link>
+        <div className="flex items-center gap-2 text-sm" style={{ color: 'var(--dss-text-subtle)' }}>
+          <Link to="/" className="hover:underline" style={{ color: 'var(--dss-text-action)' }}>Início</Link>
           <span>/</span>
-          <Link to="/componentes/dss-button" className="hover:text-foreground">Componentes</Link>
+          <Link to="/componentes/dss-button" className="hover:underline" style={{ color: 'var(--dss-text-action)' }}>Componentes</Link>
           <span>/</span>
-          <span className="text-foreground">DssButton</span>
+          <span style={{ color: 'var(--dss-text-body)' }}>DssButton</span>
         </div>
         
         <div className="flex items-center gap-3 flex-wrap">
-          <h1 className="text-3xl font-bold text-foreground">DssButton</h1>
-          <Badge className="bg-[hsl(var(--dss-success))]">
+          <h1 className="text-3xl font-bold" style={{ color: 'var(--dss-text-body)' }}>DssButton</h1>
+          <Badge style={{ backgroundColor: 'var(--dss-positive)', color: 'white' }}>
             <Check className="h-3 w-3 mr-1" />
             Estável
           </Badge>
-          <Badge variant="outline" className="gap-1">
+          <Badge variant="outline" className="gap-1" style={{ borderColor: 'var(--dss-warning)', color: 'var(--dss-warning)' }}>
             <Star className="h-3 w-3" />
             Golden Sample
           </Badge>
         </div>
         
-        <p className="text-lg text-muted-foreground">
+        <p className="text-lg" style={{ color: 'var(--dss-text-subtle)' }}>
           Botão interativo com múltiplas variantes, tamanhos e estados. 
           Encapsula o QBtn do Quasar aplicando os tokens do DSS.
         </p>
       </section>
 
       {/* Figma Embed Placeholder */}
-      <Card>
+      <Card style={{ backgroundColor: 'var(--dss-surface-default)', borderColor: 'var(--dss-gray-200)' }}>
         <CardHeader>
           <CardTitle className="text-base flex items-center gap-2">
-            <Palette className="h-4 w-4 text-primary" />
+            <Palette className="h-4 w-4" style={{ color: 'var(--dss-primary)' }} />
             Design no Figma
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="aspect-video max-h-48 bg-secondary rounded-lg flex items-center justify-center border-2 border-dashed border-border">
-            <p className="text-muted-foreground text-sm">Embed do Figma será adicionado aqui</p>
+          <div 
+            className="aspect-video max-h-48 rounded-lg flex items-center justify-center border-2 border-dashed"
+            style={{ 
+              backgroundColor: 'var(--dss-surface-subtle)', 
+              borderColor: 'var(--dss-gray-300)' 
+            }}
+          >
+            <p style={{ color: 'var(--dss-text-subtle)' }} className="text-sm">Embed do Figma será adicionado aqui</p>
           </div>
         </CardContent>
       </Card>
 
       {/* Interactive Playground */}
-      <Card>
+      <Card style={{ backgroundColor: 'var(--dss-surface-default)', borderColor: 'var(--dss-gray-200)' }}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Code className="h-5 w-5 text-primary" />
+            <Code className="h-5 w-5" style={{ color: 'var(--dss-primary)' }} />
             Playground
           </CardTitle>
-          <CardDescription>
+          <CardDescription style={{ color: 'var(--dss-text-subtle)' }}>
             Experimente diferentes configurações do componente em tempo real.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Preview */}
-          <div className="p-8 bg-secondary/30 rounded-lg flex items-center justify-center min-h-[120px]">
+          <div 
+            className="p-8 rounded-lg flex items-center justify-center min-h-[120px]"
+            style={{ backgroundColor: 'var(--dss-surface-subtle)' }}
+          >
             <Button
               variant={selectedVariant === "primary" ? "default" : selectedVariant as any}
               size={selectedSize}
@@ -125,7 +135,7 @@ export default function DssButtonPage() {
           {/* Controls */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Variant</label>
+              <label className="text-sm font-medium" style={{ color: 'var(--dss-text-body)' }}>Variant</label>
               <div className="flex flex-wrap gap-2">
                 {variants.map((v) => (
                   <Button
@@ -141,7 +151,7 @@ export default function DssButtonPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Size</label>
+              <label className="text-sm font-medium" style={{ color: 'var(--dss-text-body)' }}>Size</label>
               <div className="flex flex-wrap gap-2">
                 {sizes.map((s) => (
                   <Button
@@ -157,7 +167,7 @@ export default function DssButtonPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Estado</label>
+              <label className="text-sm font-medium" style={{ color: 'var(--dss-text-body)' }}>Estado</label>
               <div className="flex gap-2">
                 <Button
                   variant={isDisabled ? "default" : "outline"}
@@ -172,16 +182,24 @@ export default function DssButtonPage() {
 
           {/* Code */}
           <div className="relative">
-            <pre className="code-block p-4 overflow-x-auto">
-              <code className="text-sm text-foreground">{codeExample}</code>
+            <pre 
+              className="p-4 overflow-x-auto rounded-md font-mono text-sm"
+              style={{ 
+                backgroundColor: 'var(--dss-gray-800)', 
+                color: 'var(--dss-gray-100)',
+                border: '1px solid var(--dss-gray-700)'
+              }}
+            >
+              <code>{codeExample}</code>
             </pre>
             <Button
               variant="ghost"
               size="icon"
               className="absolute top-2 right-2 h-8 w-8"
               onClick={copyCode}
+              style={{ color: 'var(--dss-gray-400)' }}
             >
-              {copied ? <Check className="h-4 w-4 text-[hsl(var(--dss-success))]" /> : <Copy className="h-4 w-4" />}
+              {copied ? <Check className="h-4 w-4" style={{ color: 'var(--dss-positive)' }} /> : <Copy className="h-4 w-4" />}
             </Button>
           </div>
         </CardContent>
@@ -189,7 +207,7 @@ export default function DssButtonPage() {
 
       {/* Documentation Tabs */}
       <Tabs defaultValue="props" className="space-y-4">
-        <TabsList>
+        <TabsList style={{ backgroundColor: 'var(--dss-surface-subtle)' }}>
           <TabsTrigger value="props">Props</TabsTrigger>
           <TabsTrigger value="events">Eventos</TabsTrigger>
           <TabsTrigger value="tokens">Tokens</TabsTrigger>
@@ -197,10 +215,10 @@ export default function DssButtonPage() {
         </TabsList>
 
         <TabsContent value="props">
-          <Card>
+          <Card style={{ backgroundColor: 'var(--dss-surface-default)', borderColor: 'var(--dss-gray-200)' }}>
             <CardHeader>
               <CardTitle>Props</CardTitle>
-              <CardDescription>Propriedades aceitas pelo componente.</CardDescription>
+              <CardDescription style={{ color: 'var(--dss-text-subtle)' }}>Propriedades aceitas pelo componente.</CardDescription>
             </CardHeader>
             <CardContent>
               <Table>
@@ -215,9 +233,9 @@ export default function DssButtonPage() {
                 <TableBody>
                   {propsData.map((row) => (
                     <TableRow key={row.prop}>
-                      <TableCell className="font-mono text-primary">{row.prop}</TableCell>
+                      <TableCell className="font-mono" style={{ color: 'var(--dss-primary)' }}>{row.prop}</TableCell>
                       <TableCell className="font-mono text-sm">{row.type}</TableCell>
-                      <TableCell className="font-mono text-sm text-muted-foreground">{row.default}</TableCell>
+                      <TableCell className="font-mono text-sm" style={{ color: 'var(--dss-text-subtle)' }}>{row.default}</TableCell>
                       <TableCell>{row.description}</TableCell>
                     </TableRow>
                   ))}
@@ -228,10 +246,10 @@ export default function DssButtonPage() {
         </TabsContent>
 
         <TabsContent value="events">
-          <Card>
+          <Card style={{ backgroundColor: 'var(--dss-surface-default)', borderColor: 'var(--dss-gray-200)' }}>
             <CardHeader>
               <CardTitle>Eventos</CardTitle>
-              <CardDescription>Eventos emitidos pelo componente.</CardDescription>
+              <CardDescription style={{ color: 'var(--dss-text-subtle)' }}>Eventos emitidos pelo componente.</CardDescription>
             </CardHeader>
             <CardContent>
               <Table>
@@ -245,7 +263,7 @@ export default function DssButtonPage() {
                 <TableBody>
                   {eventsData.map((row) => (
                     <TableRow key={row.event}>
-                      <TableCell className="font-mono text-primary">@{row.event}</TableCell>
+                      <TableCell className="font-mono" style={{ color: 'var(--dss-primary)' }}>@{row.event}</TableCell>
                       <TableCell className="font-mono text-sm">{row.payload}</TableCell>
                       <TableCell>{row.description}</TableCell>
                     </TableRow>
@@ -257,23 +275,36 @@ export default function DssButtonPage() {
         </TabsContent>
 
         <TabsContent value="tokens">
-          <Card>
+          <Card style={{ backgroundColor: 'var(--dss-surface-default)', borderColor: 'var(--dss-gray-200)' }}>
             <CardHeader>
-              <CardTitle>Tokens Utilizados</CardTitle>
-              <CardDescription>Design tokens aplicados neste componente.</CardDescription>
+              <CardTitle>Tokens DSS Utilizados</CardTitle>
+              <CardDescription style={{ color: 'var(--dss-text-subtle)' }}>Design tokens aplicados neste componente.</CardDescription>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead>Token</TableHead>
+                    <TableHead>Valor</TableHead>
                     <TableHead>Uso</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {tokensUsed.map((row) => (
                     <TableRow key={row.token}>
-                      <TableCell className="font-mono text-primary">{row.token}</TableCell>
+                      <TableCell className="font-mono" style={{ color: 'var(--dss-primary)' }}>{row.token}</TableCell>
+                      <TableCell className="font-mono text-sm">
+                        <div className="flex items-center gap-2">
+                          <span 
+                            className="w-4 h-4 rounded border"
+                            style={{ 
+                              backgroundColor: row.value,
+                              borderColor: 'var(--dss-gray-300)'
+                            }}
+                          />
+                          {row.value}
+                        </div>
+                      </TableCell>
                       <TableCell>{row.usage}</TableCell>
                     </TableRow>
                   ))}
@@ -284,31 +315,46 @@ export default function DssButtonPage() {
         </TabsContent>
 
         <TabsContent value="anatomy">
-          <Card>
+          <Card style={{ backgroundColor: 'var(--dss-surface-default)', borderColor: 'var(--dss-gray-200)' }}>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Layers className="h-5 w-5 text-primary" />
+                <Layers className="h-5 w-5" style={{ color: 'var(--dss-primary)' }} />
                 Anatomia (4 Camadas)
               </CardTitle>
-              <CardDescription>Estrutura interna do componente.</CardDescription>
+              <CardDescription style={{ color: 'var(--dss-text-subtle)' }}>Estrutura interna do componente.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-3">
-                <div className="p-4 rounded-lg border border-border bg-secondary/30">
-                  <p className="font-medium text-foreground mb-1">Camada 1: Tokens</p>
-                  <code className="text-sm text-muted-foreground">--color-primary-*, --spacing-*, --radius-*</code>
+                <div 
+                  className="p-4 rounded-lg border"
+                  style={{ backgroundColor: 'var(--dss-surface-subtle)', borderColor: 'var(--dss-gray-200)' }}
+                >
+                  <p className="font-medium mb-1" style={{ color: 'var(--dss-text-body)' }}>Camada 1: Tokens DSS</p>
+                  <code className="text-sm" style={{ color: 'var(--dss-text-subtle)' }}>--dss-action-primary, --dss-spacing-*, --dss-radius-*</code>
                 </div>
-                <div className="p-4 rounded-lg border border-border bg-secondary/30">
-                  <p className="font-medium text-foreground mb-1">Camada 2: Base (Quasar)</p>
-                  <code className="text-sm text-muted-foreground">QBtn</code>
+                <div 
+                  className="p-4 rounded-lg border"
+                  style={{ backgroundColor: 'var(--dss-surface-subtle)', borderColor: 'var(--dss-gray-200)' }}
+                >
+                  <p className="font-medium mb-1" style={{ color: 'var(--dss-text-body)' }}>Camada 2: Base (Quasar)</p>
+                  <code className="text-sm" style={{ color: 'var(--dss-text-subtle)' }}>QBtn</code>
                 </div>
-                <div className="p-4 rounded-lg border border-primary/30 bg-primary/5">
-                  <p className="font-medium text-foreground mb-1">Camada 3: Wrapper DSS</p>
-                  <code className="text-sm text-primary">DssButton.vue</code>
+                <div 
+                  className="p-4 rounded-lg border"
+                  style={{ 
+                    backgroundColor: 'var(--dss-feedback-info-surface)', 
+                    borderColor: 'var(--dss-primary-light)' 
+                  }}
+                >
+                  <p className="font-medium mb-1" style={{ color: 'var(--dss-text-body)' }}>Camada 3: Wrapper DSS</p>
+                  <code className="text-sm" style={{ color: 'var(--dss-primary)' }}>DssButton.vue</code>
                 </div>
-                <div className="p-4 rounded-lg border border-border bg-secondary/30">
-                  <p className="font-medium text-foreground mb-1">Camada 4: Compostos</p>
-                  <code className="text-sm text-muted-foreground">DssIconButton, DssButtonGroup (futuro)</code>
+                <div 
+                  className="p-4 rounded-lg border"
+                  style={{ backgroundColor: 'var(--dss-surface-subtle)', borderColor: 'var(--dss-gray-200)' }}
+                >
+                  <p className="font-medium mb-1" style={{ color: 'var(--dss-text-body)' }}>Camada 4: Compostos</p>
+                  <code className="text-sm" style={{ color: 'var(--dss-text-subtle)' }}>DssIconButton, DssButtonGroup (futuro)</code>
                 </div>
               </div>
             </CardContent>
@@ -317,17 +363,20 @@ export default function DssButtonPage() {
       </Tabs>
 
       {/* Examples */}
-      <Card>
+      <Card style={{ backgroundColor: 'var(--dss-surface-default)', borderColor: 'var(--dss-gray-200)' }}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <FileText className="h-5 w-5 text-primary" />
+            <FileText className="h-5 w-5" style={{ color: 'var(--dss-primary)' }} />
             Exemplos de Uso
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
-            <p className="text-sm font-medium mb-3 text-foreground">Variantes</p>
-            <div className="flex flex-wrap gap-3 p-4 bg-secondary/30 rounded-lg">
+            <p className="text-sm font-medium mb-3" style={{ color: 'var(--dss-text-body)' }}>Variantes</p>
+            <div 
+              className="flex flex-wrap gap-3 p-4 rounded-lg"
+              style={{ backgroundColor: 'var(--dss-surface-subtle)' }}
+            >
               <Button>Primary</Button>
               <Button variant="secondary">Secondary</Button>
               <Button variant="outline">Outline</Button>
@@ -337,8 +386,11 @@ export default function DssButtonPage() {
           </div>
 
           <div>
-            <p className="text-sm font-medium mb-3 text-foreground">Tamanhos</p>
-            <div className="flex flex-wrap items-center gap-3 p-4 bg-secondary/30 rounded-lg">
+            <p className="text-sm font-medium mb-3" style={{ color: 'var(--dss-text-body)' }}>Tamanhos</p>
+            <div 
+              className="flex flex-wrap items-center gap-3 p-4 rounded-lg"
+              style={{ backgroundColor: 'var(--dss-surface-subtle)' }}
+            >
               <Button size="sm">Small</Button>
               <Button size="default">Default</Button>
               <Button size="lg">Large</Button>
@@ -346,8 +398,11 @@ export default function DssButtonPage() {
           </div>
 
           <div>
-            <p className="text-sm font-medium mb-3 text-foreground">Estados</p>
-            <div className="flex flex-wrap gap-3 p-4 bg-secondary/30 rounded-lg">
+            <p className="text-sm font-medium mb-3" style={{ color: 'var(--dss-text-body)' }}>Estados</p>
+            <div 
+              className="flex flex-wrap gap-3 p-4 rounded-lg"
+              style={{ backgroundColor: 'var(--dss-surface-subtle)' }}
+            >
               <Button>Normal</Button>
               <Button disabled>Disabled</Button>
             </div>

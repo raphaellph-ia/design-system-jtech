@@ -91,12 +91,6 @@ const navigation = {
   },
 };
 
-const statusColors = {
-  stable: "bg-[hsl(var(--dss-success))]",
-  beta: "bg-[hsl(var(--dss-warning))]",
-  experimental: "bg-[hsl(var(--dss-info))]",
-};
-
 export function DSSSidebar() {
   const location = useLocation();
   const currentPath = location.pathname;
@@ -107,15 +101,21 @@ export function DSSSidebar() {
   };
 
   return (
-    <Sidebar className="border-r border-sidebar-border">
-      <SidebarHeader className="p-4 border-b border-sidebar-border">
+    <Sidebar className="border-r" style={{ 
+      borderColor: 'var(--dss-gray-700)',
+      backgroundColor: 'var(--dss-gray-800)'
+    }}>
+      <SidebarHeader className="p-4 border-b" style={{ borderColor: 'var(--dss-gray-700)' }}>
         <Link to="/" className="flex items-center gap-3">
-          <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-sm">DS</span>
+          <div 
+            className="h-8 w-8 rounded-lg flex items-center justify-center"
+            style={{ backgroundColor: 'var(--dss-primary)' }}
+          >
+            <span className="text-white font-bold text-sm">DS</span>
           </div>
           <div className="flex flex-col">
-            <span className="font-semibold text-sidebar-foreground text-sm">DSS</span>
-            <span className="text-xs text-sidebar-muted">Design System Sansys</span>
+            <span className="font-semibold text-sm" style={{ color: 'var(--dss-gray-100)' }}>DSS</span>
+            <span className="text-xs" style={{ color: 'var(--dss-gray-500)' }}>Design System Sansys</span>
           </div>
         </Link>
       </SidebarHeader>
@@ -123,7 +123,10 @@ export function DSSSidebar() {
       <SidebarContent className="sidebar-scroll">
         {Object.entries(navigation).map(([key, section]) => (
           <SidebarGroup key={key}>
-            <SidebarGroupLabel className="text-sidebar-muted text-xs uppercase tracking-wider px-4">
+            <SidebarGroupLabel 
+              className="text-xs uppercase tracking-wider px-4"
+              style={{ color: 'var(--dss-gray-500)' }}
+            >
               {section.label}
             </SidebarGroupLabel>
             <SidebarGroupContent>
@@ -137,20 +140,26 @@ export function DSSSidebar() {
                       <Link
                         to={item.url}
                         className={cn(
-                          "flex items-center gap-3 px-4 py-2 text-sm transition-colors",
-                          isActive(item.url)
-                            ? "bg-sidebar-accent text-sidebar-primary font-medium"
-                            : "text-sidebar-foreground hover:bg-sidebar-accent/50"
+                          "flex items-center gap-3 px-4 py-2 text-sm transition-colors rounded-md mx-2"
                         )}
+                        style={{
+                          backgroundColor: isActive(item.url) ? 'var(--dss-gray-700)' : 'transparent',
+                          color: isActive(item.url) ? 'var(--dss-primary-light)' : 'var(--dss-gray-300)',
+                          fontWeight: isActive(item.url) ? 500 : 400,
+                        }}
                       >
                         <item.icon className="h-4 w-4 flex-shrink-0" />
                         <span className="flex-1">{item.title}</span>
                         {"status" in item && item.status && (
                           <span
-                            className={cn(
-                              "h-2 w-2 rounded-full",
-                              statusColors[item.status as keyof typeof statusColors]
-                            )}
+                            className="h-2 w-2 rounded-full"
+                            style={{
+                              backgroundColor: item.status === 'stable' 
+                                ? 'var(--dss-positive)' 
+                                : item.status === 'beta' 
+                                  ? 'var(--dss-warning)' 
+                                  : 'var(--dss-info)'
+                            }}
                             title={item.status}
                           />
                         )}
@@ -164,8 +173,8 @@ export function DSSSidebar() {
         ))}
       </SidebarContent>
 
-      <SidebarFooter className="p-4 border-t border-sidebar-border">
-        <div className="flex items-center gap-2 text-xs text-sidebar-muted">
+      <SidebarFooter className="p-4 border-t" style={{ borderColor: 'var(--dss-gray-700)' }}>
+        <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--dss-gray-500)' }}>
           <Settings className="h-3.5 w-3.5" />
           <span>v1.0.0</span>
           <span className="mx-1">•</span>
