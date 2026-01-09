@@ -1,4 +1,5 @@
 import { useLocation, Link } from "react-router-dom";
+import { useState } from "react";
 import {
   Sidebar,
   SidebarContent,
@@ -14,14 +15,12 @@ import {
 import {
   Home,
   Palette,
-  Box,
   FileText,
   Settings,
   BookOpen,
   Layers,
   Type,
   Square,
-  Circle,
   RectangleHorizontal,
   CreditCard,
   User,
@@ -33,6 +32,9 @@ import {
   HelpCircle,
   Figma,
   Download,
+  Circle,
+  ChevronRight,
+  ChevronDown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -57,11 +59,11 @@ const navigation = {
   componentes: {
     label: "Componentes",
     items: [
-      { title: "DssButton", url: "/componentes/dss-button", icon: RectangleHorizontal, status: "stable" },
-      { title: "DssCard", url: "/componentes/dss-card", icon: CreditCard, status: "beta" },
-      { title: "DssInput", url: "/componentes/dss-input", icon: Square, status: "beta" },
-      { title: "DssBadge", url: "/componentes/dss-badge", icon: Badge, status: "beta" },
-      { title: "DssAvatar", url: "/componentes/dss-avatar", icon: User, status: "beta" },
+      { title: "DssButton", url: "/componentes/dss-button", icon: RectangleHorizontal, status: "golden" },
+      { title: "DssCard", url: "/componentes/dss-card", icon: CreditCard, status: "stable" },
+      { title: "DssInput", url: "/componentes/dss-input", icon: Square, status: "stable" },
+      { title: "DssBadge", url: "/componentes/dss-badge", icon: Badge, status: "stable" },
+      { title: "DssAvatar", url: "/componentes/dss-avatar", icon: User, status: "stable" },
     ],
   },
   padroes: {
@@ -91,85 +93,288 @@ const navigation = {
   },
 };
 
-const statusColors = {
-  stable: "bg-[hsl(var(--dss-success))]",
-  beta: "bg-[hsl(var(--dss-warning))]",
-  experimental: "bg-[hsl(var(--dss-info))]",
-};
-
 export function DSSSidebar() {
   const location = useLocation();
   const currentPath = location.pathname;
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
+    inicio: true,
+    fundacoes: true,
+    componentes: true,
+    padroes: true,
+    governanca: true,
+    recursos: true,
+  });
 
   const isActive = (path: string) => {
     if (path === "/") return currentPath === "/";
     return currentPath.startsWith(path);
   };
 
+  const toggleSection = (key: string) => {
+    setExpandedSections(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const getStatusColor = (status?: string) => {
+    switch (status) {
+      case 'golden': return 'var(--dss-jtech-accent)';
+      case 'stable': return 'var(--dss-positive)';
+      case 'beta': return 'var(--dss-warning)';
+      default: return 'var(--dss-info)';
+    }
+  };
+
+  const getStatusLabel = (status?: string) => {
+    switch (status) {
+      case 'golden': return 'Golden Sample';
+      case 'stable': return 'Estável';
+      case 'beta': return 'Beta';
+      default: return 'Novo';
+    }
+  };
+
   return (
-    <Sidebar className="border-r border-sidebar-border">
-      <SidebarHeader className="p-4 border-b border-sidebar-border">
-        <Link to="/" className="flex items-center gap-3">
-          <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-sm">DS</span>
+    <Sidebar 
+      className="border-r"
+      style={{ 
+        borderColor: 'hsl(var(--sidebar-border))',
+        backgroundColor: 'hsl(var(--sidebar-background))'
+      }}
+    >
+      {/* Header com hover effect */}
+      <SidebarHeader 
+        className="p-4 border-b transition-all duration-200" 
+        style={{ borderColor: 'hsl(var(--sidebar-border))' }}
+      >
+        <Link 
+          to="/" 
+          className="flex items-center gap-3 group"
+        >
+          <div 
+            className="h-9 w-9 rounded-lg flex items-center justify-center shadow-sm 
+                       transition-all duration-300 ease-out
+                       group-hover:shadow-lg group-hover:scale-105"
+            style={{ 
+              background: 'linear-gradient(135deg, var(--dss-jtech-accent), var(--dss-jtech-accent-hover))',
+              boxShadow: '0 2px 8px rgba(196, 30, 58, 0.3)'
+            }}
+          >
+            <span className="text-white font-bold text-sm transition-transform duration-200 group-hover:scale-110">
+              JT
+            </span>
           </div>
           <div className="flex flex-col">
-            <span className="font-semibold text-sidebar-foreground text-sm">DSS</span>
-            <span className="text-xs text-sidebar-muted">Design System Sansys</span>
+            <span 
+              className="font-semibold text-sm transition-colors duration-200 group-hover:text-white" 
+              style={{ color: 'hsl(var(--sidebar-foreground))' }}
+            >
+              DSS
+            </span>
+            <span 
+              className="text-xs transition-colors duration-200" 
+              style={{ color: 'hsl(var(--sidebar-muted))' }}
+            >
+              Design System Sansys
+            </span>
           </div>
         </Link>
       </SidebarHeader>
 
-      <SidebarContent className="sidebar-scroll">
-        {Object.entries(navigation).map(([key, section]) => (
-          <SidebarGroup key={key}>
-            <SidebarGroupLabel className="text-sidebar-muted text-xs uppercase tracking-wider px-4">
-              {section.label}
-            </SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {section.items.map((item) => (
-                  <SidebarMenuItem key={item.url}>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={isActive(item.url)}
-                    >
-                      <Link
-                        to={item.url}
-                        className={cn(
-                          "flex items-center gap-3 px-4 py-2 text-sm transition-colors",
-                          isActive(item.url)
-                            ? "bg-sidebar-accent text-sidebar-primary font-medium"
-                            : "text-sidebar-foreground hover:bg-sidebar-accent/50"
-                        )}
+      <SidebarContent className="sidebar-scroll px-2 py-3">
+        {Object.entries(navigation).map(([key, section], sectionIndex) => (
+          <SidebarGroup 
+            key={key} 
+            className="mb-1"
+            style={{ 
+              animationDelay: `${sectionIndex * 50}ms`,
+            }}
+          >
+            {/* Section Label com toggle */}
+            <button
+              onClick={() => toggleSection(key)}
+              className="w-full flex items-center justify-between text-[10px] uppercase tracking-wider 
+                         font-semibold px-3 py-2 rounded-md transition-all duration-200
+                         hover:bg-white/5 group cursor-pointer"
+              style={{ color: 'hsl(var(--sidebar-muted))' }}
+            >
+              <span className="transition-colors duration-200 group-hover:text-white/80">
+                {section.label}
+              </span>
+              <ChevronDown 
+                className={cn(
+                  "h-3 w-3 transition-all duration-300 ease-out",
+                  expandedSections[key] ? "rotate-0" : "-rotate-90"
+                )}
+              />
+            </button>
+
+            {/* Items com animação de collapse */}
+            <div
+              className={cn(
+                "overflow-hidden transition-all duration-300 ease-out",
+                expandedSections[key] ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+              )}
+            >
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {section.items.map((item, itemIndex) => {
+                    const active = isActive(item.url);
+                    const hovered = hoveredItem === item.url;
+                    
+                    return (
+                      <SidebarMenuItem 
+                        key={item.url}
+                        style={{ 
+                          animationDelay: `${(sectionIndex * 50) + (itemIndex * 30)}ms`,
+                        }}
                       >
-                        <item.icon className="h-4 w-4 flex-shrink-0" />
-                        <span className="flex-1">{item.title}</span>
-                        {"status" in item && item.status && (
-                          <span
+                        <SidebarMenuButton asChild isActive={active}>
+                          <Link
+                            to={item.url}
                             className={cn(
-                              "h-2 w-2 rounded-full",
-                              statusColors[item.status as keyof typeof statusColors]
+                              "relative flex items-center gap-3 px-3 py-2.5 text-sm rounded-lg mx-1",
+                              "transition-all duration-200 ease-out",
+                              "group/item"
                             )}
-                            title={item.status}
-                          />
-                        )}
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
+                            style={{
+                              backgroundColor: active 
+                                ? 'rgba(196, 30, 58, 0.12)' 
+                                : hovered 
+                                  ? 'rgba(255, 255, 255, 0.05)' 
+                                  : 'transparent',
+                              color: active 
+                                ? 'var(--dss-jtech-accent-light)' 
+                                : 'hsl(var(--sidebar-foreground))',
+                              fontWeight: active ? 500 : 400,
+                              transform: hovered && !active ? 'translateX(4px)' : 'translateX(0)',
+                            }}
+                            onMouseEnter={() => setHoveredItem(item.url)}
+                            onMouseLeave={() => setHoveredItem(null)}
+                          >
+                            {/* Active indicator bar */}
+                            <div 
+                              className={cn(
+                                "absolute left-0 top-1/2 -translate-y-1/2 w-[3px] rounded-full",
+                                "transition-all duration-300 ease-out"
+                              )}
+                              style={{
+                                height: active ? '60%' : '0%',
+                                backgroundColor: 'var(--dss-jtech-accent)',
+                                opacity: active ? 1 : 0,
+                                boxShadow: active ? '0 0 8px rgba(196, 30, 58, 0.5)' : 'none',
+                              }}
+                            />
+
+                            {/* Icon with animations */}
+                            <div className="relative">
+                              <item.icon 
+                                className={cn(
+                                  "h-4 w-4 flex-shrink-0 transition-all duration-200",
+                                  hovered && !active && "scale-110"
+                                )}
+                                style={{ 
+                                  color: active 
+                                    ? 'var(--dss-jtech-accent)' 
+                                    : hovered 
+                                      ? 'var(--dss-jtech-accent-light)'
+                                      : 'hsl(var(--sidebar-muted))'
+                                }}
+                                strokeWidth={active ? 2 : 1.5}
+                              />
+                              {/* Glow effect on active */}
+                              {active && (
+                                <div 
+                                  className="absolute inset-0 rounded-full animate-glow-pulse"
+                                  style={{ 
+                                    background: 'radial-gradient(circle, rgba(196, 30, 58, 0.3) 0%, transparent 70%)',
+                                  }}
+                                />
+                              )}
+                            </div>
+
+                            {/* Title */}
+                            <span 
+                              className={cn(
+                                "flex-1 transition-all duration-200",
+                                hovered && !active && "translate-x-0.5"
+                              )}
+                            >
+                              {item.title}
+                            </span>
+
+                            {/* Status indicator with tooltip */}
+                            {"status" in item && item.status && (
+                              <div className="relative group/status">
+                                <span
+                                  className={cn(
+                                    "h-2 w-2 rounded-full transition-all duration-300",
+                                    hovered && "scale-125"
+                                  )}
+                                  style={{ 
+                                    backgroundColor: getStatusColor(item.status),
+                                    boxShadow: `0 0 6px ${getStatusColor(item.status)}40`,
+                                  }}
+                                />
+                                {/* Tooltip */}
+                                <div 
+                                  className="absolute right-0 top-full mt-2 px-2 py-1 rounded text-[10px] 
+                                             whitespace-nowrap opacity-0 group-hover/status:opacity-100
+                                             transition-opacity duration-200 pointer-events-none z-50"
+                                  style={{
+                                    backgroundColor: 'hsl(var(--popover))',
+                                    color: 'hsl(var(--popover-foreground))',
+                                    boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                                  }}
+                                >
+                                  {getStatusLabel(item.status)}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Arrow indicator on active */}
+                            <ChevronRight 
+                              className={cn(
+                                "h-3 w-3 transition-all duration-300 ease-out",
+                                active ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"
+                              )}
+                              style={{ color: 'var(--dss-jtech-accent)' }}
+                            />
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </div>
           </SidebarGroup>
         ))}
       </SidebarContent>
 
-      <SidebarFooter className="p-4 border-t border-sidebar-border">
-        <div className="flex items-center gap-2 text-xs text-sidebar-muted">
-          <Settings className="h-3.5 w-3.5" />
-          <span>v1.0.0</span>
-          <span className="mx-1">•</span>
-          <span>Jtech</span>
+      {/* Footer com hover effects */}
+      <SidebarFooter 
+        className="p-4 border-t transition-colors duration-200" 
+        style={{ borderColor: 'hsl(var(--sidebar-border))' }}
+      >
+        <div 
+          className="flex items-center justify-between text-xs"
+          style={{ color: 'hsl(var(--sidebar-muted))' }}
+        >
+          <div className="flex items-center gap-2 group cursor-pointer transition-colors duration-200 hover:text-white/80">
+            <Settings className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-90" />
+            <span>v2.0.0</span>
+          </div>
+          <span 
+            className="px-2 py-0.5 rounded text-[10px] font-medium
+                       transition-all duration-200 hover:scale-105 cursor-pointer"
+            style={{ 
+              backgroundColor: 'var(--dss-jtech-accent)', 
+              color: '#ffffff',
+              boxShadow: '0 2px 8px rgba(196, 30, 58, 0.3)',
+            }}
+          >
+            Jtech
+          </span>
         </div>
       </SidebarFooter>
     </Sidebar>

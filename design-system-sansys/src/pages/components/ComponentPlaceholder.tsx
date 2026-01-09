@@ -32,14 +32,14 @@ export default function ComponentPlaceholder() {
 
   if (!info) {
     return (
-      <div className="p-6 lg:p-8 max-w-4xl mx-auto">
+      <div className="p-6 lg:p-8 max-w-6xl mx-auto">
         <p className="text-muted-foreground">Componente não encontrado.</p>
       </div>
     );
   }
 
   return (
-    <div className="p-6 lg:p-8 max-w-4xl mx-auto space-y-8">
+    <div className="p-6 lg:p-8 max-w-6xl mx-auto space-y-8">
       {/* Header */}
       <section className="space-y-4">
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
