@@ -1,8 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Link } from "react-router-dom";
-import { Copy, Check, Info } from "lucide-react";
+import { Copy, Check, Palette, Droplets, Leaf, Sun, AlertTriangle, CheckCircle2, Info, XCircle } from "lucide-react";
 import { useState } from "react";
 
 // =============================================
@@ -24,8 +23,7 @@ const grayScale = [
   { token: "--dss-gray-950", value: "#000000", level: "950", desc: "Preto puro" },
 ];
 
-// Paletas de Marca - Com padrão de estados conforme guidelines
-// Hub: Principal=600 | Light=300 | Disable=200 | Hover/Focus=800 | Deep=950
+// Paletas de Marca
 const brandHub = [
   { token: "--dss-hub-50", value: "#fff9ed", level: "50", desc: "Mais claro" },
   { token: "--dss-hub-100", value: "#fef2d6", level: "100", desc: "Claro" },
@@ -40,7 +38,6 @@ const brandHub = [
   { token: "--dss-hub-950", value: "#421d08", level: "950", desc: "🎯 Deep", state: "deep" },
 ];
 
-// Water: Principal=500 | Light=300 | Disable=200 | Hover/Focus=700 | Deep=950
 const brandWater = [
   { token: "--dss-water-50", value: "#f0f7ff", level: "50", desc: "Mais claro" },
   { token: "--dss-water-100", value: "#e0eefe", level: "100", desc: "Claro" },
@@ -55,7 +52,6 @@ const brandWater = [
   { token: "--dss-water-950", value: "#082749", level: "950", desc: "🎯 Deep", state: "deep" },
 ];
 
-// Waste: Principal=600 | Light=300 | Disable=200 | Hover/Focus=800 | Deep=950
 const brandWaste = [
   { token: "--dss-waste-50", value: "#edfcf4", level: "50", desc: "Mais claro" },
   { token: "--dss-waste-100", value: "#d3f8e2", level: "100", desc: "Claro" },
@@ -70,117 +66,90 @@ const brandWaste = [
   { token: "--dss-waste-950", value: "#042a1e", level: "950", desc: "🎯 Deep", state: "deep" },
 ];
 
-// Cores Semânticas de Ação (conforme _actions.scss)
-const actionColors = {
-  primary: {
-    title: "Primary (Azul)",
-    hex: "#1f86de",
-    colors: [
-      { token: "--dss-action-primary-disable", ref: "--dss-primary-disable", value: "#b3dcff", desc: "Desabilitado" },
-      { token: "--dss-action-primary-light", ref: "--dss-primary-light", value: "#86c0f3", desc: "Variante clara" },
-      { token: "--dss-action-primary", ref: "--dss-primary", value: "#1f86de", desc: "Cor principal" },
-      { token: "--dss-action-primary-hover", ref: "--dss-primary-hover", value: "#0f5295", desc: "Hover" },
-      { token: "--dss-action-primary-deep", ref: "--dss-primary-deep", value: "#0a3a6a", desc: "Active/Deep" },
-      { token: "--dss-action-primary-focus", ref: "--dss-primary-focus", value: "#006AC5", desc: "Focus" },
+// Cores de Feedback
+const feedbackColors = [
+  { 
+    category: "success",
+    icon: CheckCircle2,
+    title: "Success",
+    desc: "Confirmações e ações bem-sucedidas",
+    principal: "#4dd228",
+    tokens: [
+      { token: "--dss-positive", value: "#4dd228", desc: "Principal" },
+      { token: "--dss-positive-light", value: "#b9f2a4", desc: "Light" },
+      { token: "--dss-positive-disable", value: "#dbf8d1", desc: "Disable" },
+      { token: "--dss-positive-hover", value: "#27910D", desc: "Hover" },
+      { token: "--dss-positive-deep", value: "#246714", desc: "Deep" },
     ]
   },
-  secondary: {
-    title: "Secondary (Verde/Turquesa)",
-    hex: "#26a69a",
-    colors: [
-      { token: "--dss-action-secondary-disable", ref: "--dss-secondary-disable", value: "#b5ece4", desc: "Desabilitado" },
-      { token: "--dss-action-secondary-light", ref: "--dss-secondary-light", value: "#6ddbcb", desc: "Variante clara" },
-      { token: "--dss-action-secondary", ref: "--dss-secondary", value: "#26a69a", desc: "Cor principal" },
-      { token: "--dss-action-secondary-hover", ref: "--dss-secondary-hover", value: "#1c857e", desc: "Hover" },
-      { token: "--dss-action-secondary-deep", ref: "--dss-secondary-deep", value: "#116761", desc: "Active/Deep" },
-      { token: "--dss-action-secondary-focus", ref: "--dss-secondary-focus", value: "#009C8D", desc: "Focus" },
+  { 
+    category: "error",
+    icon: XCircle,
+    title: "Error",
+    desc: "Erros e ações destrutivas",
+    principal: "#d8182e",
+    tokens: [
+      { token: "--dss-negative", value: "#d8182e", desc: "Principal" },
+      { token: "--dss-negative-light", value: "#ffa0ab", desc: "Light" },
+      { token: "--dss-negative-disable", value: "#ffcfd4", desc: "Disable" },
+      { token: "--dss-negative-hover", value: "#a01424", desc: "Hover" },
+      { token: "--dss-negative-deep", value: "#720e19", desc: "Deep" },
     ]
   },
-  tertiary: {
-    title: "Tertiary (Laranja)",
-    hex: "#ff6607",
-    colors: [
-      { token: "--dss-action-tertiary-disable", ref: "--dss-tertiary-disable", value: "#ffd2b5", desc: "Desabilitado" },
-      { token: "--dss-action-tertiary-light", ref: "--dss-tertiary-light", value: "#ff9452", desc: "Variante clara" },
-      { token: "--dss-action-tertiary", ref: "--dss-tertiary", value: "#ff6607", desc: "Cor principal" },
-      { token: "--dss-action-tertiary-hover", ref: "--dss-tertiary-hover", value: "#de5500", desc: "Hover" },
-      { token: "--dss-action-tertiary-deep", ref: "--dss-tertiary-deep", value: "#ad4200", desc: "Active/Deep" },
-      { token: "--dss-action-tertiary-focus", ref: "--dss-tertiary-focus", value: "#E95900", desc: "Focus" },
+  { 
+    category: "warning",
+    icon: AlertTriangle,
+    title: "Warning",
+    desc: "Alertas e avisos importantes",
+    principal: "#fabd14",
+    tokens: [
+      { token: "--dss-warning", value: "#fabd14", desc: "Principal" },
+      { token: "--dss-warning-light", value: "#fff488", desc: "Light" },
+      { token: "--dss-warning-disable", value: "#fff9c3", desc: "Disable" },
+      { token: "--dss-warning-hover", value: "#dd8e02", desc: "Hover" },
+      { token: "--dss-warning-deep", value: "#a66d08", desc: "Deep" },
     ]
   },
-  accent: {
-    title: "Accent (Roxo)",
-    hex: "#b454c4",
-    colors: [
-      { token: "--dss-action-accent-disable", ref: "--dss-accent-disable", value: "#f0ddf4", desc: "Desabilitado" },
-      { token: "--dss-action-accent-light", ref: "--dss-accent-light", value: "#e3bceb", desc: "Variante clara" },
-      { token: "--dss-action-accent", ref: "--dss-accent", value: "#b454c4", desc: "Cor principal" },
-      { token: "--dss-action-accent-hover", ref: "--dss-accent-hover", value: "#883b90", desc: "Hover" },
-      { token: "--dss-action-accent-deep", ref: "--dss-accent-deep", value: "#642f6a", desc: "Active/Deep" },
-      { token: "--dss-action-accent-focus", ref: "--dss-accent-focus", value: "#B02EC5", desc: "Focus" },
-    ]
-  },
-  dark: {
-    title: "Dark (Cinza Escuro)",
-    hex: "#454545",
-    colors: [
-      { token: "--dss-action-dark-disable", ref: "--dss-dark-disable", value: "#d7d7d7", desc: "Desabilitado" },
-      { token: "--dss-action-dark-light", ref: "--dss-dark-light", value: "#b0b0b0", desc: "Variante clara" },
-      { token: "--dss-action-dark", ref: "--dss-dark", value: "#454545", desc: "Cor principal" },
-      { token: "--dss-action-dark-hover", ref: "--dss-dark-hover", value: "#313131", desc: "Hover" },
-      { token: "--dss-action-dark-deep", ref: "--dss-dark-deep", value: "#1d1d1d", desc: "Active/Deep" },
-      { token: "--dss-action-dark-focus", ref: "--dss-dark-focus", value: "#3E3E3E", desc: "Focus" },
+  { 
+    category: "info",
+    icon: Info,
+    title: "Info",
+    desc: "Informações e dicas contextuais",
+    principal: "#0cc4e9",
+    tokens: [
+      { token: "--dss-info", value: "#0cc4e9", desc: "Principal" },
+      { token: "--dss-info-light", value: "#a7effa", desc: "Light" },
+      { token: "--dss-info-disable", value: "#d2f6fc", desc: "Disable" },
+      { token: "--dss-info-hover", value: "#0c8bae", desc: "Hover" },
+      { token: "--dss-info-deep", value: "#0d7491", desc: "Deep" },
     ]
   }
-};
+];
 
-// Cores de Feedback (conforme _feedback.scss)
-const feedbackColors = {
-  success: {
-    title: "Success (Sucesso)",
-    hex: "#4dd228",
-    colors: [
-      { token: "--dss-feedback-success", ref: "--dss-positive", value: "#4dd228", desc: "Principal" },
-      { token: "--dss-feedback-success-light", ref: "--dss-positive-light", value: "#b9f2a4", desc: "Light" },
-      { token: "--dss-feedback-success-disable", ref: "--dss-positive-disable", value: "#dbf8d1", desc: "Disable" },
-      { token: "--dss-feedback-success-hover", ref: "--dss-positive-hover", value: "#27910D", desc: "Hover" },
-      { token: "--dss-feedback-success-deep", ref: "--dss-positive-deep", value: "#246714", desc: "Deep" },
-    ]
+// Marcas resumo
+const brandsSummary = [
+  { 
+    name: "Sansys Hub", 
+    icon: Sun,
+    colorVar: "--dss-hub-600", 
+    principal: "#ef7a11",
+    description: "Plataforma central de gestão"
   },
-  error: {
-    title: "Error (Erro)",
-    hex: "#d8182e",
-    colors: [
-      { token: "--dss-feedback-error", ref: "--dss-negative", value: "#d8182e", desc: "Principal" },
-      { token: "--dss-feedback-error-light", ref: "--dss-negative-light", value: "#ffa0ab", desc: "Light" },
-      { token: "--dss-feedback-error-disable", ref: "--dss-negative-disable", value: "#ffcfd4", desc: "Disable" },
-      { token: "--dss-feedback-error-hover", ref: "--dss-negative-hover", value: "#a01424", desc: "Hover" },
-      { token: "--dss-feedback-error-deep", ref: "--dss-negative-deep", value: "#720e19", desc: "Deep" },
-    ]
+  { 
+    name: "Sansys Water", 
+    icon: Droplets,
+    colorVar: "--dss-water-500", 
+    principal: "#0e88e4",
+    description: "Gestão de recursos hídricos"
   },
-  warning: {
-    title: "Warning (Aviso)",
-    hex: "#fabd14",
-    colors: [
-      { token: "--dss-feedback-warning", ref: "--dss-warning", value: "#fabd14", desc: "Principal" },
-      { token: "--dss-feedback-warning-light", ref: "--dss-warning-light", value: "#fff488", desc: "Light" },
-      { token: "--dss-feedback-warning-disable", ref: "--dss-warning-disable", value: "#fff9c3", desc: "Disable" },
-      { token: "--dss-feedback-warning-hover", ref: "--dss-warning-hover", value: "#dd8e02", desc: "Hover" },
-      { token: "--dss-feedback-warning-deep", ref: "--dss-warning-deep", value: "#a66d08", desc: "Deep" },
-    ]
+  { 
+    name: "Sansys Waste", 
+    icon: Leaf,
+    colorVar: "--dss-waste-600", 
+    principal: "#0b8154",
+    description: "Gestão de resíduos sólidos"
   },
-  info: {
-    title: "Info (Informação)",
-    hex: "#0cc4e9",
-    colors: [
-      { token: "--dss-feedback-info", ref: "--dss-info", value: "#0cc4e9", desc: "Principal" },
-      { token: "--dss-feedback-info-light", ref: "--dss-info-light", value: "#a7effa", desc: "Light" },
-      { token: "--dss-feedback-info-disable", ref: "--dss-info-disable", value: "#d2f6fc", desc: "Disable" },
-      { token: "--dss-feedback-info-hover", ref: "--dss-info-hover", value: "#0c8bae", desc: "Hover" },
-      { token: "--dss-feedback-info-deep", ref: "--dss-info-deep", value: "#0d7491", desc: "Deep" },
-    ]
-  }
-};
+];
 
 interface ColorSwatchProps {
   token: string;
@@ -188,10 +157,9 @@ interface ColorSwatchProps {
   desc: string;
   level?: string;
   state?: string;
-  ref?: string;
 }
 
-function ColorSwatch({ token, value, desc, level, state, ref }: ColorSwatchProps) {
+function ColorSwatch({ token, value, desc, level, state }: ColorSwatchProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -211,188 +179,207 @@ function ColorSwatch({ token, value, desc, level, state, ref }: ColorSwatchProps
   };
 
   const getStateBadge = (state?: string) => {
-    switch (state) {
-      case 'principal':
-        return <Badge className="bg-green-600 text-white text-[10px] px-1.5">PRINCIPAL</Badge>;
-      case 'hover':
-        return <Badge className="bg-blue-600 text-white text-[10px] px-1.5">HOVER</Badge>;
-      case 'light':
-        return <Badge className="bg-yellow-500 text-black text-[10px] px-1.5">LIGHT</Badge>;
-      case 'disable':
-        return <Badge className="bg-gray-400 text-white text-[10px] px-1.5">DISABLE</Badge>;
-      case 'deep':
-        return <Badge className="bg-gray-800 text-white text-[10px] px-1.5">DEEP</Badge>;
-      default:
-        return null;
-    }
+    const styles = {
+      principal: { bg: 'var(--dss-positive)', color: 'white', label: 'PRINCIPAL' },
+      hover: { bg: 'var(--dss-water-500)', color: 'white', label: 'HOVER' },
+      light: { bg: 'var(--dss-warning)', color: 'var(--dss-gray-900)', label: 'LIGHT' },
+      disable: { bg: 'var(--dss-gray-400)', color: 'white', label: 'DISABLE' },
+      deep: { bg: 'var(--dss-gray-800)', color: 'white', label: 'DEEP' },
+    };
+    
+    if (!state || !styles[state as keyof typeof styles]) return null;
+    const s = styles[state as keyof typeof styles];
+    
+    return (
+      <Badge 
+        className="text-[9px] px-1.5 py-0 h-4 font-semibold"
+        style={{ backgroundColor: s.bg, color: s.color }}
+      >
+        {s.label}
+      </Badge>
+    );
   };
 
   return (
     <div 
-      className="flex items-center gap-3 p-3 rounded-lg border border-[var(--dss-gray-300)] hover:border-[var(--dss-primary)] transition-colors group cursor-pointer"
+      className="flex items-center gap-3 p-3 rounded-lg transition-all duration-200 cursor-pointer group"
+      style={{ 
+        backgroundColor: 'var(--dss-surface-default)',
+        border: '1px solid var(--dss-gray-200)'
+      }}
       onClick={handleCopy}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.borderColor = 'var(--dss-hub-600)';
+        e.currentTarget.style.transform = 'translateX(4px)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.borderColor = 'var(--dss-gray-200)';
+        e.currentTarget.style.transform = 'translateX(0)';
+      }}
     >
       <div 
-        className="h-12 w-12 rounded-md border border-[var(--dss-gray-400)] flex-shrink-0 flex items-center justify-center transition-transform group-hover:scale-105 shadow-sm"
-        style={{ backgroundColor: value }}
+        className="h-10 w-10 rounded-lg flex-shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-110"
+        style={{ 
+          backgroundColor: value,
+          boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+        }}
       >
         {copied && (
           <Check 
-            size={16} 
-            className={isLight(value) ? "text-[var(--dss-gray-800)]" : "text-white"} 
+            size={14} 
+            className={isLight(value) ? "text-gray-800" : "text-white"} 
           />
         )}
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-0.5">
-          <code className="text-sm font-mono text-[var(--dss-gray-800)]">{token}</code>
+          <code 
+            className="text-xs font-mono font-medium"
+            style={{ color: 'var(--dss-text-body)' }}
+          >
+            {token}
+          </code>
           {getStateBadge(state)}
         </div>
         <div className="flex items-center gap-2">
-          {level && <span className="text-xs text-[var(--dss-gray-500)] font-medium">{level}</span>}
-          <span className="text-xs text-[var(--dss-gray-600)]">{desc}</span>
+          {level && (
+            <span 
+              className="text-[10px] font-semibold px-1.5 py-0.5 rounded"
+              style={{ 
+                backgroundColor: 'var(--dss-surface-subtle)', 
+                color: 'var(--dss-text-subtle)' 
+              }}
+            >
+              {level}
+            </span>
+          )}
+          <span className="text-xs" style={{ color: 'var(--dss-text-subtle)' }}>
+            {desc}
+          </span>
         </div>
-        {ref && (
-          <code className="text-[10px] text-[var(--dss-gray-400)] block mt-0.5">
-            → {ref}
-          </code>
-        )}
       </div>
       <div className="flex items-center gap-2">
-        <code className="text-xs text-[var(--dss-gray-500)] font-mono uppercase">
+        <code 
+          className="text-[10px] font-mono uppercase"
+          style={{ color: 'var(--dss-text-subtle)' }}
+        >
           {value}
         </code>
-        <Copy size={14} className="text-[var(--dss-gray-400)] opacity-0 group-hover:opacity-100 transition-opacity" />
+        <Copy 
+          size={12} 
+          className="opacity-0 group-hover:opacity-100 transition-opacity"
+          style={{ color: 'var(--dss-text-subtle)' }}
+        />
       </div>
     </div>
   );
 }
 
-function BrandPaletteCard({ 
+function BrandPaletteSection({ 
   title, 
+  icon: Icon,
   colors, 
-  statePattern 
+  principal,
+  description
 }: { 
   title: string; 
+  icon: React.ElementType;
   colors: ColorSwatchProps[]; 
-  statePattern: string 
+  principal: string;
+  description: string;
 }) {
   return (
-    <Card className="border-[var(--dss-gray-300)]">
-      <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-[var(--dss-gray-900)]">{title}</CardTitle>
-          <span className="text-[11px] px-2 py-1 rounded bg-[var(--dss-gray-200)] text-[var(--dss-gray-600)] font-mono">
-            11 tokens
-          </span>
+    <Card 
+      className="transition-all duration-300 hover:shadow-lg"
+      style={{ 
+        backgroundColor: 'var(--dss-surface-default)', 
+        borderColor: 'var(--dss-gray-200)' 
+      }}
+    >
+      <CardHeader className="pb-4">
+        <div className="flex items-center gap-3 mb-2">
+          <div 
+            className="h-12 w-12 rounded-lg flex items-center justify-center"
+            style={{ backgroundColor: principal }}
+          >
+            <Icon className="h-6 w-6 text-white" />
+          </div>
+          <div>
+            <CardTitle style={{ color: 'var(--dss-text-body)' }}>{title}</CardTitle>
+            <CardDescription style={{ color: 'var(--dss-text-subtle)' }}>
+              {description}
+            </CardDescription>
+          </div>
         </div>
-        <CardDescription className="text-[var(--dss-gray-600)] text-sm">
-          {statePattern}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        {/* Visual scale */}
-        <div className="flex rounded-lg overflow-hidden mb-4 border border-[var(--dss-gray-300)]">
+        
+        {/* Visual scale bar */}
+        <div className="flex rounded-lg overflow-hidden h-3 mt-3">
           {colors.map((color) => (
             <div 
               key={color.token}
-              className="flex-1 h-10 relative group"
+              className="flex-1 transition-all duration-200 hover:flex-[2]"
               style={{ backgroundColor: color.value }}
-              title={`${color.token}: ${color.value}`}
-            >
-              {color.state && (
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <span className={`text-[10px] font-bold ${
-                    parseInt(color.level || '0') > 500 ? 'text-white' : 'text-[var(--dss-gray-900)]'
-                  }`}>
-                    {color.level}
-                  </span>
-                </div>
-              )}
-            </div>
+              title={`${color.level}: ${color.value}`}
+            />
           ))}
         </div>
-        
-        <div className="space-y-1.5">
-          {colors.map((color) => (
-            <ColorSwatch key={color.token} {...color} />
-          ))}
-        </div>
+      </CardHeader>
+      <CardContent className="space-y-2">
+        {colors.map((color) => (
+          <ColorSwatch key={color.token} {...color} />
+        ))}
       </CardContent>
     </Card>
   );
 }
 
-function ActionColorCard({ 
+function FeedbackCard({ 
+  category, 
+  icon: Icon, 
   title, 
-  hex, 
-  colors 
+  desc, 
+  principal, 
+  tokens 
 }: { 
-  title: string; 
-  hex: string; 
-  colors: ColorSwatchProps[] 
+  category: string;
+  icon: React.ElementType;
+  title: string;
+  desc: string;
+  principal: string;
+  tokens: { token: string; value: string; desc: string }[];
 }) {
   return (
-    <Card className="border-[var(--dss-gray-300)]">
+    <Card 
+      className="transition-all duration-300 hover:shadow-lg"
+      style={{ 
+        backgroundColor: 'var(--dss-surface-default)', 
+        borderColor: 'var(--dss-gray-200)',
+        borderTopWidth: '3px',
+        borderTopColor: principal
+      }}
+    >
       <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div 
-              className="h-8 w-8 rounded-md border border-[var(--dss-gray-400)]"
-              style={{ backgroundColor: hex }}
-            />
-            <CardTitle className="text-[var(--dss-gray-900)]">{title}</CardTitle>
+        <div className="flex items-center gap-3">
+          <div 
+            className="h-10 w-10 rounded-lg flex items-center justify-center"
+            style={{ backgroundColor: principal }}
+          >
+            <Icon className="h-5 w-5 text-white" />
           </div>
-          <span className="text-[11px] px-2 py-1 rounded bg-[var(--dss-gray-200)] text-[var(--dss-gray-600)] font-mono">
-            6 tokens
-          </span>
-        </div>
-        <CardDescription className="text-[var(--dss-gray-600)] text-sm">
-          Estados: disable → light → principal → hover → deep → focus
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-1.5">
-          {colors.map((color) => (
-            <ColorSwatch key={color.token} {...color} />
-          ))}
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-function FeedbackColorCard({ 
-  title, 
-  hex, 
-  colors 
-}: { 
-  title: string; 
-  hex: string; 
-  colors: ColorSwatchProps[] 
-}) {
-  return (
-    <Card className="border-[var(--dss-gray-300)]">
-      <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div 
-              className="h-8 w-8 rounded-md border border-[var(--dss-gray-400)]"
-              style={{ backgroundColor: hex }}
-            />
-            <CardTitle className="text-[var(--dss-gray-900)]">{title}</CardTitle>
+          <div>
+            <CardTitle className="text-base" style={{ color: 'var(--dss-text-body)' }}>
+              {title}
+            </CardTitle>
+            <CardDescription className="text-xs" style={{ color: 'var(--dss-text-subtle)' }}>
+              {desc}
+            </CardDescription>
           </div>
-          <span className="text-[11px] px-2 py-1 rounded bg-[var(--dss-gray-200)] text-[var(--dss-gray-600)] font-mono">
-            5 tokens
-          </span>
         </div>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-1.5">
-          {colors.map((color) => (
-            <ColorSwatch key={color.token} {...color} />
-          ))}
-        </div>
+      <CardContent className="space-y-2">
+        {tokens.map((t) => (
+          <ColorSwatch key={t.token} {...t} />
+        ))}
       </CardContent>
     </Card>
   );
@@ -400,239 +387,248 @@ function FeedbackColorCard({
 
 export default function ColorsPage() {
   return (
-    <div className="p-6 lg:p-8 max-w-6xl mx-auto space-y-8">
-      {/* Header */}
+    <div 
+      className="p-6 lg:p-8 max-w-6xl mx-auto space-y-10"
+      style={{ backgroundColor: 'var(--dss-surface-default)' }}
+    >
+      {/* Hero Section */}
       <section className="space-y-4">
-        <div className="flex items-center gap-2 text-sm text-[var(--dss-gray-600)]">
-          <Link to="/" className="hover:text-[var(--dss-primary)] transition-colors">Início</Link>
-          <span>/</span>
-          <span className="text-[var(--dss-gray-500)]">Fundações</span>
-          <span>/</span>
-          <span className="text-[var(--dss-gray-900)] font-medium">Cores</span>
+        <div className="flex items-center gap-2 flex-wrap">
+          <Badge 
+            variant="outline" 
+            style={{ borderColor: 'var(--dss-hub-600)', color: 'var(--dss-hub-600)' }}
+          >
+            Fundações
+          </Badge>
+          <Badge 
+            style={{ backgroundColor: 'var(--dss-feedback-info-surface)', color: 'var(--dss-info)' }}
+          >
+            200+ Tokens
+          </Badge>
         </div>
         
-        <h1 className="text-3xl font-bold text-[var(--dss-gray-900)]">
-          Tokens de Cor
+        <h1 
+          className="text-3xl lg:text-4xl font-bold"
+          style={{ color: 'var(--dss-text-body)' }}
+        >
+          <Palette className="inline-block h-8 w-8 mr-3" style={{ color: 'var(--dss-hub-600)' }} />
+          Sistema de{" "}
+          <span style={{ color: 'var(--dss-hub-600)' }}>Cores</span>
         </h1>
         
-        <p className="text-lg text-[var(--dss-gray-600)] max-w-3xl">
-          Sistema de cores do DSS. Tokens são <strong>provedores genéricos</strong> — 
-          componentes escolhem quais tokens usar baseado em suas necessidades.
+        <p 
+          className="text-lg max-w-3xl"
+          style={{ color: 'var(--dss-text-subtle)' }}
+        >
+          Paleta completa de cores do DSS incluindo <strong style={{ color: 'var(--dss-text-body)' }}>escalas de cinza</strong>, 
+          cores de <strong style={{ color: 'var(--dss-text-body)' }}>marca</strong> e tokens de{" "}
+          <strong style={{ color: 'var(--dss-text-body)' }}>feedback</strong>. Clique em qualquer cor para copiar.
         </p>
       </section>
 
-      {/* Filosofia */}
-      <Card className="border-[var(--dss-primary)] bg-[var(--dss-primary)]/5">
-        <CardContent className="pt-6">
-          <div className="flex items-start gap-4">
-            <Info className="h-5 w-5 text-[var(--dss-primary)] flex-shrink-0 mt-0.5" />
-            <div className="space-y-2">
-              <h3 className="font-semibold text-[var(--dss-gray-900)]">Filosofia DSS</h3>
-              <p className="text-sm text-[var(--dss-gray-700)]">
-                <strong>Tokens = Provedores</strong> (valores abstratos e genéricos) | 
-                <strong> Componentes = Consumidores</strong> (escolhem quais tokens usar).
-                Um token serve N componentes. Novos componentes = 0 novos tokens.
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Brands Summary */}
+      <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {brandsSummary.map((brand) => (
+          <Card 
+            key={brand.name}
+            className="transition-all duration-300 hover:shadow-lg group cursor-pointer"
+            style={{ 
+              backgroundColor: 'var(--dss-surface-default)', 
+              borderColor: 'var(--dss-gray-200)' 
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = brand.principal;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'var(--dss-gray-200)';
+            }}
+          >
+            <CardContent className="p-4 flex items-center gap-4">
+              <div 
+                className="h-12 w-12 rounded-lg flex items-center justify-center transition-transform duration-200 group-hover:scale-110"
+                style={{ backgroundColor: brand.principal }}
+              >
+                <brand.icon className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <p className="font-semibold" style={{ color: 'var(--dss-text-body)' }}>
+                  {brand.name}
+                </p>
+                <p className="text-xs" style={{ color: 'var(--dss-text-subtle)' }}>
+                  {brand.description}
+                </p>
+                <code 
+                  className="text-[10px] mt-1 block"
+                  style={{ color: brand.principal }}
+                >
+                  {brand.principal}
+                </code>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </section>
 
-      {/* Tabs */}
+      {/* Tabs Navigation */}
       <Tabs defaultValue="brands" className="space-y-6">
-        <TabsList className="bg-[var(--dss-gray-200)] p-1">
-          <TabsTrigger value="brands" className="data-[state=active]:bg-white">Paletas de Marca</TabsTrigger>
-          <TabsTrigger value="gray" className="data-[state=active]:bg-white">Escala de Cinza</TabsTrigger>
-          <TabsTrigger value="actions" className="data-[state=active]:bg-white">Cores de Ação</TabsTrigger>
-          <TabsTrigger value="feedback" className="data-[state=active]:bg-white">Cores de Feedback</TabsTrigger>
+        <TabsList 
+          className="w-full justify-start gap-1 p-1 h-auto flex-wrap"
+          style={{ 
+            backgroundColor: 'var(--dss-surface-subtle)',
+            borderRadius: '12px'
+          }}
+        >
+          {[
+            { value: 'brands', label: 'Marcas', count: 33 },
+            { value: 'gray', label: 'Escala de Cinza', count: 11 },
+            { value: 'feedback', label: 'Feedback', count: 20 },
+          ].map((tab) => (
+            <TabsTrigger 
+              key={tab.value}
+              value={tab.value}
+              className="data-[state=active]:shadow-sm transition-all duration-200 px-4 py-2"
+              style={{
+                borderRadius: '8px',
+              }}
+            >
+              <span>{tab.label}</span>
+              <Badge 
+                variant="secondary" 
+                className="ml-2 text-[10px] h-5"
+                style={{ 
+                  backgroundColor: 'var(--dss-surface-default)',
+                  color: 'var(--dss-text-subtle)'
+                }}
+              >
+                {tab.count}
+              </Badge>
+            </TabsTrigger>
+          ))}
         </TabsList>
 
+        {/* Brands Tab */}
         <TabsContent value="brands" className="space-y-6">
-          <div className="grid grid-cols-1 gap-6">
-            <BrandPaletteCard 
-              title="Hub (Laranja/Marrom)" 
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <BrandPaletteSection 
+              title="Sansys Hub"
+              icon={Sun}
               colors={brandHub}
-              statePattern="Principal=600 | Light=300 | Disable=200 | Hover=800 | Deep=950"
+              principal="#ef7a11"
+              description="Principal=600 | Light=300 | Disable=200 | Hover=800 | Deep=950"
             />
-            <BrandPaletteCard 
-              title="Water (Azul)" 
+            <BrandPaletteSection 
+              title="Sansys Water"
+              icon={Droplets}
               colors={brandWater}
-              statePattern="Principal=500 | Light=300 | Disable=200 | Hover=700 | Deep=950"
+              principal="#0e88e4"
+              description="Principal=500 | Light=300 | Disable=200 | Hover=700 | Deep=950"
             />
-            <BrandPaletteCard 
-              title="Waste (Verde)" 
+            <BrandPaletteSection 
+              title="Sansys Waste"
+              icon={Leaf}
               colors={brandWaste}
-              statePattern="Principal=600 | Light=300 | Disable=200 | Hover=800 | Deep=950"
+              principal="#0b8154"
+              description="Principal=600 | Light=300 | Disable=200 | Hover=800 | Deep=950"
             />
           </div>
         </TabsContent>
 
+        {/* Gray Scale Tab */}
         <TabsContent value="gray" className="space-y-6">
-          <Card className="border-[var(--dss-gray-300)]">
-            <CardHeader className="pb-3">
+          <Card 
+            style={{ 
+              backgroundColor: 'var(--dss-surface-default)', 
+              borderColor: 'var(--dss-gray-200)' 
+            }}
+          >
+            <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle className="text-[var(--dss-gray-900)]">Escala de Cinza</CardTitle>
-                <span className="text-[11px] px-2 py-1 rounded bg-[var(--dss-gray-200)] text-[var(--dss-gray-600)] font-mono">
+                <div>
+                  <CardTitle style={{ color: 'var(--dss-text-body)' }}>
+                    Escala de Cinza
+                  </CardTitle>
+                  <CardDescription style={{ color: 'var(--dss-text-subtle)' }}>
+                    11 tons de cinza para fundos, bordas e textos
+                  </CardDescription>
+                </div>
+                <Badge 
+                  style={{ 
+                    backgroundColor: 'var(--dss-surface-subtle)',
+                    color: 'var(--dss-text-subtle)'
+                  }}
+                >
                   11 tokens
-                </span>
+                </Badge>
               </div>
-              <CardDescription className="text-[var(--dss-gray-600)]">
-                Cores neutras para textos, fundos, bordas e elementos de interface.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {/* Visual scale */}
-              <div className="flex rounded-lg overflow-hidden mb-4 border border-[var(--dss-gray-300)]">
+              
+              {/* Visual scale bar */}
+              <div className="flex rounded-lg overflow-hidden h-4 mt-4">
                 {grayScale.map((color) => (
                   <div 
                     key={color.token}
-                    className="flex-1 h-10"
+                    className="flex-1 transition-all duration-200 hover:flex-[2]"
                     style={{ backgroundColor: color.value }}
-                    title={`${color.token}: ${color.value}`}
+                    title={`${color.level}: ${color.value}`}
                   />
                 ))}
               </div>
-              
-              <div className="space-y-1.5">
-                {grayScale.map((color) => (
-                  <ColorSwatch key={color.token} {...color} />
-                ))}
-              </div>
+            </CardHeader>
+            <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-2">
+              {grayScale.map((color) => (
+                <ColorSwatch key={color.token} {...color} />
+              ))}
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="actions" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <ActionColorCard {...actionColors.primary} />
-            <ActionColorCard {...actionColors.secondary} />
-            <ActionColorCard {...actionColors.tertiary} />
-            <ActionColorCard {...actionColors.accent} />
-          </div>
-          <ActionColorCard {...actionColors.dark} />
-        </TabsContent>
-
+        {/* Feedback Tab */}
         <TabsContent value="feedback" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <FeedbackColorCard {...feedbackColors.success} />
-            <FeedbackColorCard {...feedbackColors.error} />
-            <FeedbackColorCard {...feedbackColors.warning} />
-            <FeedbackColorCard {...feedbackColors.info} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {feedbackColors.map((feedback) => (
+              <FeedbackCard key={feedback.category} {...feedback} />
+            ))}
           </div>
         </TabsContent>
       </Tabs>
 
-      {/* Brand States Summary */}
-      <Card className="border-[var(--dss-gray-300)]">
-        <CardHeader>
-          <CardTitle className="text-[var(--dss-gray-900)]">Padrão de Estados para Marcas</CardTitle>
-          <CardDescription className="text-[var(--dss-gray-600)]">
-            As paletas de marca seguem um padrão consistente de uso para interações
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-[var(--dss-gray-300)]">
-                  <th className="text-left py-2 px-3 text-[var(--dss-gray-700)] font-medium">Marca</th>
-                  <th className="text-center py-2 px-3 text-[var(--dss-gray-700)] font-medium">Principal</th>
-                  <th className="text-center py-2 px-3 text-[var(--dss-gray-700)] font-medium">Light</th>
-                  <th className="text-center py-2 px-3 text-[var(--dss-gray-700)] font-medium">Disable</th>
-                  <th className="text-center py-2 px-3 text-[var(--dss-gray-700)] font-medium">Hover/Focus</th>
-                  <th className="text-center py-2 px-3 text-[var(--dss-gray-700)] font-medium">Deep</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-b border-[var(--dss-gray-200)]">
-                  <td className="py-2 px-3 font-medium text-[var(--dss-gray-900)]">Hub</td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-hub-600)] text-white px-2 py-0.5 rounded">600</code></td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-hub-300)] px-2 py-0.5 rounded">300</code></td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-hub-200)] px-2 py-0.5 rounded">200</code></td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-hub-800)] text-white px-2 py-0.5 rounded">800</code></td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-hub-950)] text-white px-2 py-0.5 rounded">950</code></td>
-                </tr>
-                <tr className="border-b border-[var(--dss-gray-200)]">
-                  <td className="py-2 px-3 font-medium text-[var(--dss-gray-900)]">Water</td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-water-500)] text-white px-2 py-0.5 rounded">500</code></td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-water-300)] px-2 py-0.5 rounded">300</code></td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-water-200)] px-2 py-0.5 rounded">200</code></td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-water-700)] text-white px-2 py-0.5 rounded">700</code></td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-water-950)] text-white px-2 py-0.5 rounded">950</code></td>
-                </tr>
-                <tr>
-                  <td className="py-2 px-3 font-medium text-[var(--dss-gray-900)]">Waste</td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-waste-600)] text-white px-2 py-0.5 rounded">600</code></td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-waste-300)] px-2 py-0.5 rounded">300</code></td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-waste-200)] px-2 py-0.5 rounded">200</code></td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-waste-800)] text-white px-2 py-0.5 rounded">800</code></td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-waste-950)] text-white px-2 py-0.5 rounded">950</code></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Usage */}
-      <Card className="border-[var(--dss-gray-300)]">
-        <CardHeader>
-          <CardTitle className="text-[var(--dss-gray-900)]">Como Usar</CardTitle>
-          <CardDescription className="text-[var(--dss-gray-600)]">
-            Componentes consomem tokens genéricos — não crie tokens específicos para componentes.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div>
-            <p className="text-sm font-medium mb-2 text-[var(--dss-gray-800)]">✅ Correto — Componente consome tokens genéricos</p>
-            <pre className="bg-[var(--dss-gray-900)] text-[var(--dss-gray-100)] p-4 rounded-lg overflow-x-auto">
-              <code className="text-sm">{`.dss-button--primary {
-  background: var(--dss-action-primary);
-  padding: var(--dss-spacing-3) var(--dss-spacing-6);
-}
-
-.dss-button--primary:hover {
-  background: var(--dss-action-primary-hover);
-}
-
-.dss-button--primary:disabled {
-  background: var(--dss-action-primary-disable);
-  opacity: var(--dss-opacity-disabled);
-}`}</code>
-            </pre>
-          </div>
-          
-          <div>
-            <p className="text-sm font-medium mb-2 text-[var(--dss-negative)]">❌ Errado — Tokens específicos para componentes</p>
-            <pre className="bg-[var(--dss-gray-900)] text-[var(--dss-gray-100)] p-4 rounded-lg overflow-x-auto opacity-75">
-              <code className="text-sm">{`/* NÃO FAÇA ISSO */
-:root {
-  --dss-button-primary-color: var(--dss-primary);
-  --dss-button-padding: 12px 24px;
-  --dss-card-border-radius: 8px;
-}`}</code>
-            </pre>
-          </div>
-
-          <div>
-            <p className="text-sm font-medium mb-2 text-[var(--dss-gray-800)]">Brandabilidade — Cores de marca</p>
-            <pre className="bg-[var(--dss-gray-900)] text-[var(--dss-gray-100)] p-4 rounded-lg overflow-x-auto">
-              <code className="text-sm">{`/* Componente com brandabilidade */
-.dss-button--primary {
-  background: var(--dss-action-primary);
-}
-
-[data-brand="hub"] .dss-button--primary {
-  background: var(--dss-hub-600);
-}
-
-[data-brand="hub"] .dss-button--primary:hover {
-  background: var(--dss-hub-800);
-}`}</code>
-            </pre>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Usage Guidelines */}
+      <section className="space-y-4">
+        <h2 
+          className="text-xl font-semibold"
+          style={{ color: 'var(--dss-text-body)' }}
+        >
+          Diretrizes de Uso
+        </h2>
+        <Card 
+          style={{ 
+            backgroundColor: 'var(--dss-surface-subtle)', 
+            borderColor: 'var(--dss-gray-200)' 
+          }}
+        >
+          <CardContent className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                "Use var(--token) para referenciar cores",
+                "Prefira tokens semânticos sobre valores hex",
+                "Respeite a hierarquia: Principal > Hover > Deep",
+                "Cores de feedback para estados do sistema",
+                "Escala de cinza para elementos neutros",
+                "Tokens de marca para identidade visual"
+              ].map((guideline, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <CheckCircle2 
+                    className="h-4 w-4 flex-shrink-0" 
+                    style={{ color: 'var(--dss-positive)' }} 
+                  />
+                  <span className="text-sm" style={{ color: 'var(--dss-text-body)' }}>
+                    {guideline}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </section>
     </div>
   );
 }
