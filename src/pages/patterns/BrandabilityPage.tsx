@@ -584,9 +584,19 @@ function BrandCard({ brand, isActive, onSelect }: { brand: BrandData; isActive: 
 }
 
 function ComponentPreview({ brand }: { brand: BrandData }) {
+  // Cores seguindo padrão DSS documentado
   const primaryColor = brand.colorScale["600"] || brand.colorScale["500"];
-  const hoverColor = brand.colorScale["700"];
-  const lightBg = brand.colorScale["50"];
+  
+  // Estados conforme regras DSS:
+  // - disable = -200 (2 tons abaixo do principal)
+  // - light = -300 (3 tons abaixo) - usado para hover bg em flat/outline
+  // - hover/focus = +2 níveis (ex: 600 → 800) - usado para hover text em flat/outline
+  // - deep = 950 (mais escuro)
+  const disableColor = brand.colorScale["200"];  // -200: 2 tons abaixo
+  const lightColor = brand.colorScale["300"];     // -300: 3 tons abaixo (hover bg para flat/outline)
+  const hoverColor = brand.colorScale["800"];     // +2 níveis: hover/focus (600 → 800)
+  const deepColor = brand.colorScale["950"];      // deep: mais escuro
+  const lightBg = brand.colorScale["50"];         // bg mais claro
 
   return (
     <div className="space-y-6">
@@ -599,39 +609,123 @@ function ComponentPreview({ brand }: { brand: BrandData }) {
           Botões
         </h4>
         <div className="flex flex-wrap gap-3">
+          {/* Botão Primário (filled) */}
           <button
-            className="px-4 py-2 rounded-lg text-white font-medium transition-colors"
+            className="px-4 py-2 rounded-lg text-white font-medium transition-all"
             style={{ backgroundColor: primaryColor }}
             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = hoverColor}
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = primaryColor}
+            onMouseDown={(e) => {
+              e.currentTarget.style.transform = 'scale(0.98)';
+              e.currentTarget.style.backgroundColor = hoverColor;
+            }}
+            onMouseUp={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+            }}
           >
-            Botão Primário
+            Elevated
           </button>
+          
+          {/* Botão Outline - DSS: hover bg=light(-300), hover text=hover(+2) */}
           <button
-            className="px-4 py-2 rounded-lg font-medium border-2 transition-colors"
+            className="px-4 py-2 rounded-lg font-medium border-2 transition-all"
             style={{ 
               borderColor: primaryColor, 
               color: primaryColor,
               backgroundColor: 'transparent'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = lightBg;
+              e.currentTarget.style.backgroundColor = lightColor;  // light -300
+              e.currentTarget.style.color = hoverColor;             // hover +2 níveis
+              e.currentTarget.style.borderColor = hoverColor;
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.color = primaryColor;
+              e.currentTarget.style.borderColor = primaryColor;
+            }}
+            onMouseDown={(e) => {
+              e.currentTarget.style.transform = 'scale(0.98)';
+            }}
+            onMouseUp={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
             }}
           >
-            Botão Outline
+            Outline
           </button>
+          
+          {/* Botão Flat - DSS: hover bg=light(-300), hover text=hover(+2) */}
           <button
-            className="px-4 py-2 rounded-lg font-medium transition-colors"
+            className="px-4 py-2 rounded-lg font-medium transition-all"
             style={{ 
-              backgroundColor: lightBg, 
+              backgroundColor: 'transparent', 
               color: primaryColor 
             }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = lightColor;  // light -300
+              e.currentTarget.style.color = hoverColor;             // hover +2 níveis
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.color = primaryColor;
+            }}
+            onMouseDown={(e) => {
+              e.currentTarget.style.transform = 'scale(0.98)';
+            }}
+            onMouseUp={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+            }}
           >
-            Botão Flat
+            Flat
           </button>
+          
+          {/* Botão Disabled */}
+          <button
+            className="px-4 py-2 rounded-lg font-medium cursor-not-allowed opacity-60"
+            style={{ 
+              backgroundColor: disableColor, 
+              color: brand.colorScale["500"]
+            }}
+            disabled
+          >
+            Disabled
+          </button>
+        </div>
+        
+        {/* Legenda de estados */}
+        <div 
+          className="mt-3 p-3 rounded-lg text-xs"
+          style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
+        >
+          <div className="flex flex-wrap gap-4">
+            <div className="flex items-center gap-2">
+              <div 
+                className="w-3 h-3 rounded"
+                style={{ backgroundColor: lightColor }}
+              />
+              <span style={{ color: 'var(--jtech-text-muted)' }}>
+                Light (-300): <code className="text-[10px] bg-black/20 px-1 rounded">{lightColor}</code>
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div 
+                className="w-3 h-3 rounded"
+                style={{ backgroundColor: hoverColor }}
+              />
+              <span style={{ color: 'var(--jtech-text-muted)' }}>
+                Hover (+2): <code className="text-[10px] bg-black/20 px-1 rounded">{hoverColor}</code>
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div 
+                className="w-3 h-3 rounded"
+                style={{ backgroundColor: disableColor }}
+              />
+              <span style={{ color: 'var(--jtech-text-muted)' }}>
+                Disable (-200): <code className="text-[10px] bg-black/20 px-1 rounded">{disableColor}</code>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -646,7 +740,7 @@ function ComponentPreview({ brand }: { brand: BrandData }) {
         <div 
           className="p-4 rounded-lg border-l-4"
           style={{ 
-            backgroundColor: lightBg,
+            backgroundColor: brand.colorScale["50"],
             borderLeftColor: primaryColor
           }}
         >
@@ -682,7 +776,7 @@ function ComponentPreview({ brand }: { brand: BrandData }) {
           </span>
           <span
             className="px-2 py-0.5 rounded text-xs font-medium"
-            style={{ backgroundColor: lightBg, color: primaryColor }}
+            style={{ backgroundColor: lightColor, color: hoverColor }}
           >
             Badge Soft
           </span>
