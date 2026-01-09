@@ -1,60 +1,21 @@
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import { resolve } from 'path'
+import react from '@vitejs/plugin-react-swc'
+import path from 'path'
+import { componentTagger } from 'lovable-tagger'
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [vue()],
-
-  build: {
-    lib: {
-      // Ponto de entrada da biblioteca
-      entry: resolve(__dirname, 'index.js'),
-      name: 'DesignSystemSansys',
-      // Função para nomear os arquivos de saída
-      fileName: (format) => `dss.${format}.js`
-    },
-
-    rollupOptions: {
-      // Externalize peer dependencies (Vue não deve ser bundled)
-      external: ['vue'],
-
-      output: {
-        // Globals para UMD build
-        globals: {
-          vue: 'Vue'
-        },
-
-        // Preservar nomes de exports
-        exports: 'named',
-
-        // Configuração de assets (CSS)
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name === 'style.css') {
-            return 'style.css'
-          }
-          return assetInfo.name
-        }
-      }
-    },
-
-    // Otimizações
-    minify: 'terser',
-    sourcemap: true,
-
-    // Diretório de saída
-    outDir: 'dist',
-    emptyOutDir: true
+export default defineConfig(({ mode }) => ({
+  server: {
+    host: "::",
+    port: 8080,
   },
-
-  // Resolve paths
+  plugins: [
+    react(),
+    mode === 'development' && componentTagger(),
+  ].filter(Boolean),
   resolve: {
     alias: {
-      '@': resolve(__dirname, './'),
-      '@components': resolve(__dirname, 'components'),
-      '@tokens': resolve(__dirname, 'tokens'),
-      '@themes': resolve(__dirname, 'themes'),
-      '@utils': resolve(__dirname, 'utils')
-    }
-  }
-})
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
+}))
