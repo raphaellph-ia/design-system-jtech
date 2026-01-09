@@ -2,109 +2,486 @@
 @tailwind components;
 @tailwind utilities;
 
-/* DSS Repository Design System - Based on Jtech Visual Identity */
+/* ==========================================================================
+   DSS (Design System Sansys) - TOKENS VERDADEIROS DO DESIGN SYSTEM
+   Importado de DSS/DSS/tokens/
+   ========================================================================== */
 
 @layer base {
   :root {
+    /* ===========================================
+       1. ESCALA DE CINZA (SUPORTE GERAL)
+       =========================================== */
+    --dss-gray-50: #ffffff;
+    --dss-gray-100: #fafafa;
+    --dss-gray-200: #f5f5f5;
+    --dss-gray-300: #e5e5e5;
+    --dss-gray-400: #d4d4d4;
+    --dss-gray-500: #a3a3a3;
+    --dss-gray-600: #737373;
+    --dss-gray-700: #525252;
+    --dss-gray-800: #262626;
+    --dss-gray-900: #0a0a0a;
+    --dss-gray-950: #000000;
+
+    /* ===========================================
+       2. PALETAS DE MARCA (HUB, WATER, WASTE)
+       =========================================== */
+    
+    /* Hub (Laranja/Marrom) */
+    --dss-hub-50: #fff9ed;
+    --dss-hub-100: #fef2d6;
+    --dss-hub-200: #fde2ab;
+    --dss-hub-300: #fbcb76;
+    --dss-hub-400: #f8aa3f;
+    --dss-hub-500: #f5911a;
+    --dss-hub-600: #ef7a11;
+    --dss-hub-700: #bf590f;
+    --dss-hub-800: #984614;
+    --dss-hub-900: #7a3614;
+    --dss-hub-950: #421d08;
+
+    /* Water (Azul) */
+    --dss-water-50: #f0f7ff;
+    --dss-water-100: #e0eefe;
+    --dss-water-200: #badefd;
+    --dss-water-300: #7dc4fc;
+    --dss-water-400: #38a6f8;
+    --dss-water-500: #0e88e4;
+    --dss-water-600: #026cc7;
+    --dss-water-700: #0356a1;
+    --dss-water-800: #074a85;
+    --dss-water-900: #0c3e6e;
+    --dss-water-950: #082749;
+
+    /* Waste (Verde) */
+    --dss-waste-50: #edfcf4;
+    --dss-waste-100: #d3f8e2;
+    --dss-waste-200: #abefcb;
+    --dss-waste-300: #74e1ae;
+    --dss-waste-400: #3ccb8d;
+    --dss-waste-500: #18b173;
+    --dss-waste-600: #0b8154;
+    --dss-waste-700: #0a724e;
+    --dss-waste-800: #0a5b3e;
+    --dss-waste-900: #0a4a34;
+    --dss-waste-950: #042a1e;
+
+    /* ===========================================
+       3. CORES SEMÂNTICAS BASE
+       =========================================== */
+    
+    /* Primary (Azul Principal) */
+    --dss-primary-disable: #b3dcff;
+    --dss-primary-light: #86c0f3;
+    --dss-primary: #1f86de;
+    --dss-primary-hover: #0f5295;
+    --dss-primary-deep: #0a3a6a;
+    --dss-primary-focus: #006AC5;
+
+    /* Secondary (Verde/Turquesa) */
+    --dss-secondary-disable: #b5ece4;
+    --dss-secondary-light: #6ddbcb;
+    --dss-secondary: #26a69a;
+    --dss-secondary-hover: #1c857e;
+    --dss-secondary-deep: #116761;
+    --dss-secondary-focus: #009C8D;
+
+    /* Tertiary (Laranja) */
+    --dss-tertiary-disable: #ffd2b5;
+    --dss-tertiary-light: #ff9452;
+    --dss-tertiary: #ff6607;
+    --dss-tertiary-hover: #de5500;
+    --dss-tertiary-deep: #ad4200;
+    --dss-tertiary-focus: #E95900;
+
+    /* Accent (Roxo/Púrpura) */
+    --dss-accent-disable: #f0ddf4;
+    --dss-accent-light: #e3bceb;
+    --dss-accent: #b454c4;
+    --dss-accent-hover: #883b90;
+    --dss-accent-deep: #642f6a;
+    --dss-accent-focus: #B02EC5;
+
+    /* Dark (Cinza/Preto) */
+    --dss-dark-disable: #d7d7d7;
+    --dss-dark-light: #b0b0b0;
+    --dss-dark: #454545;
+    --dss-dark-hover: #313131;
+    --dss-dark-deep: #1d1d1d;
+    --dss-dark-focus: #3E3E3E;
+
+    /* Positive (Verde) */
+    --dss-positive-disable: #dbf8d1;
+    --dss-positive-light: #b9f2a4;
+    --dss-positive: #4dd228;
+    --dss-positive-hover: #27910D;
+    --dss-positive-deep: #246714;
+    --dss-positive-focus: #34C30C;
+
+    /* Negative (Vermelho) */
+    --dss-negative-disable: #ffcfd4;
+    --dss-negative-light: #ffa0ab;
+    --dss-negative: #d8182e;
+    --dss-negative-hover: #a01424;
+    --dss-negative-deep: #720e19;
+    --dss-negative-focus: #C40016;
+
+    /* Warning (Amarelo/Laranja) */
+    --dss-warning-disable: #fff9c3;
+    --dss-warning-light: #fff488;
+    --dss-warning: #fabd14;
+    --dss-warning-hover: #dd8e02;
+    --dss-warning-deep: #a66d08;
+    --dss-warning-focus: #E9AB00;
+
+    /* Info (Azul Claro) */
+    --dss-info-disable: #d2f6fc;
+    --dss-info-light: #a7effa;
+    --dss-info: #0cc4e9;
+    --dss-info-hover: #0c8bae;
+    --dss-info-deep: #0d7491;
+    --dss-info-focus: #00B2D5;
+
+    /* ===========================================
+       4. TOKENS DE AÇÃO
+       =========================================== */
+    --dss-action-primary: var(--dss-primary);
+    --dss-action-primary-light: var(--dss-primary-light);
+    --dss-action-primary-disable: var(--dss-primary-disable);
+    --dss-action-primary-hover: var(--dss-primary-hover);
+    --dss-action-primary-deep: var(--dss-primary-deep);
+    --dss-action-primary-focus: var(--dss-primary-focus);
+
+    --dss-action-secondary: var(--dss-secondary);
+    --dss-action-secondary-light: var(--dss-secondary-light);
+    --dss-action-secondary-disable: var(--dss-secondary-disable);
+    --dss-action-secondary-hover: var(--dss-secondary-hover);
+    --dss-action-secondary-deep: var(--dss-secondary-deep);
+    --dss-action-secondary-focus: var(--dss-secondary-focus);
+
+    --dss-action-tertiary: var(--dss-tertiary);
+    --dss-action-tertiary-light: var(--dss-tertiary-light);
+    --dss-action-tertiary-disable: var(--dss-tertiary-disable);
+    --dss-action-tertiary-hover: var(--dss-tertiary-hover);
+    --dss-action-tertiary-deep: var(--dss-tertiary-deep);
+    --dss-action-tertiary-focus: var(--dss-tertiary-focus);
+
+    --dss-action-accent: var(--dss-accent);
+    --dss-action-accent-light: var(--dss-accent-light);
+    --dss-action-accent-disable: var(--dss-accent-disable);
+    --dss-action-accent-hover: var(--dss-accent-hover);
+    --dss-action-accent-deep: var(--dss-accent-deep);
+    --dss-action-accent-focus: var(--dss-accent-focus);
+
+    --dss-action-dark: var(--dss-dark);
+    --dss-action-dark-light: var(--dss-dark-light);
+    --dss-action-dark-disable: var(--dss-dark-disable);
+    --dss-action-dark-hover: var(--dss-dark-hover);
+    --dss-action-dark-deep: var(--dss-dark-deep);
+    --dss-action-dark-focus: var(--dss-dark-focus);
+
+    /* ===========================================
+       5. TOKENS DE FEEDBACK
+       =========================================== */
+    --dss-feedback-success: var(--dss-positive);
+    --dss-feedback-success-light: var(--dss-positive-light);
+    --dss-feedback-success-disable: var(--dss-positive-disable);
+    --dss-feedback-success-hover: var(--dss-positive-hover);
+    --dss-feedback-success-deep: var(--dss-positive-deep);
+    --dss-feedback-success-surface: rgba(77, 210, 40, 0.1);
+
+    --dss-feedback-error: var(--dss-negative);
+    --dss-feedback-error-light: var(--dss-negative-light);
+    --dss-feedback-error-disable: var(--dss-negative-disable);
+    --dss-feedback-error-hover: var(--dss-negative-hover);
+    --dss-feedback-error-deep: var(--dss-negative-deep);
+    --dss-feedback-error-surface: rgba(216, 24, 46, 0.1);
+
+    --dss-feedback-warning: var(--dss-warning);
+    --dss-feedback-warning-light: var(--dss-warning-light);
+    --dss-feedback-warning-disable: var(--dss-warning-disable);
+    --dss-feedback-warning-hover: var(--dss-warning-hover);
+    --dss-feedback-warning-deep: var(--dss-warning-deep);
+    --dss-feedback-warning-surface: rgba(250, 189, 20, 0.1);
+
+    --dss-feedback-info: var(--dss-info);
+    --dss-feedback-info-light: var(--dss-info-light);
+    --dss-feedback-info-disable: var(--dss-info-disable);
+    --dss-feedback-info-hover: var(--dss-info-hover);
+    --dss-feedback-info-deep: var(--dss-info-deep);
+    --dss-feedback-info-surface: rgba(12, 196, 233, 0.1);
+
+    /* ===========================================
+       6. TOKENS DE SUPERFÍCIE
+       =========================================== */
+    --dss-surface-default: var(--dss-gray-50);
+    --dss-surface-subtle: var(--dss-gray-100);
+    --dss-surface-muted: var(--dss-gray-200);
+    --dss-surface-overlay: rgba(0, 0, 0, 0.5);
+    --dss-surface-hover: rgba(0, 0, 0, 0.04);
+    --dss-surface-active: rgba(0, 0, 0, 0.08);
+    --dss-surface-selected: rgba(31, 134, 222, 0.12);
+    --dss-surface-disabled: var(--dss-gray-200);
+    --dss-surface-brand-subtle: rgba(245, 145, 26, 0.08);
+    --dss-surface-brand-light: rgba(245, 145, 26, 0.12);
+
+    /* ===========================================
+       7. TOKENS DE TEXTO
+       =========================================== */
+    --dss-text-body: var(--dss-dark);
+    --dss-text-subtle: var(--dss-dark-light);
+    --dss-text-muted: var(--dss-dark-disable);
+    --dss-text-inverse: var(--dss-gray-50);
+    --dss-text-disabled: var(--dss-gray-400);
+    --dss-text-action: var(--dss-action-primary);
+    --dss-text-action-hover: var(--dss-action-primary-hover);
+    --dss-text-action-alt: var(--dss-action-secondary);
+    --dss-text-success: var(--dss-positive);
+    --dss-text-error: var(--dss-negative);
+    --dss-text-warning: var(--dss-warning);
+    --dss-text-info: var(--dss-info);
+    --dss-text-brand-hub: var(--dss-hub-500);
+    --dss-text-brand-water: var(--dss-water-500);
+    --dss-text-brand-waste: var(--dss-waste-500);
+
+    /* ===========================================
+       8. TOKENS DE SOMBRA E ELEVAÇÃO
+       =========================================== */
+    --dss-shadow-xs: 0 0 0 1px rgba(0, 0, 0, 0.05);
+    --dss-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.25);
+    --dss-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.30);
+    --dss-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.35);
+    --dss-shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.40);
+    --dss-shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.45);
+    --dss-shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+    --dss-shadow-inner-lg: inset 0 4px 8px rgba(0, 0, 0, 0.08);
+    --dss-shadow-focus: 0 0 0 3px rgba(31, 134, 222, 0.5);
+    --dss-shadow-focus-error: 0 0 0 3px rgba(216, 24, 46, 0.5);
+    --dss-shadow-focus-success: 0 0 0 3px rgba(77, 210, 40, 0.5);
+    --dss-shadow-overlay: 0 10px 38px rgba(0, 0, 0, 0.2);
+    --dss-shadow-modal: 0 20px 60px rgba(0, 0, 0, 0.3);
+
+    /* Elevação semântica */
+    --dss-elevation-0: none;
+    --dss-elevation-1: var(--dss-shadow-sm);
+    --dss-elevation-2: var(--dss-shadow-md);
+    --dss-elevation-3: var(--dss-shadow-lg);
+    --dss-elevation-4: var(--dss-shadow-xl);
+    --dss-elevation-5: var(--dss-shadow-2xl);
+
+    /* Sombras de marca */
+    --dss-shadow-hub-sm: 0 1px 3px rgba(245, 145, 26, 0.15);
+    --dss-shadow-hub-md: 0 4px 6px rgba(245, 145, 26, 0.15);
+    --dss-shadow-hub-lg: 0 10px 15px rgba(245, 145, 26, 0.15);
+    --dss-shadow-water-sm: 0 1px 3px rgba(14, 136, 228, 0.15);
+    --dss-shadow-water-md: 0 4px 6px rgba(14, 136, 228, 0.15);
+    --dss-shadow-water-lg: 0 10px 15px rgba(14, 136, 228, 0.15);
+    --dss-shadow-waste-sm: 0 1px 3px rgba(24, 177, 115, 0.15);
+    --dss-shadow-waste-md: 0 4px 6px rgba(24, 177, 115, 0.15);
+    --dss-shadow-waste-lg: 0 10px 15px rgba(24, 177, 115, 0.15);
+
+    /* ===========================================
+       9. TOKENS DE ESPAÇAMENTO
+       =========================================== */
+    --dss-spacing-0: 0;
+    --dss-spacing-px: 1px;
+    --dss-spacing-0_5: 0.125rem;
+    --dss-spacing-1: 0.25rem;
+    --dss-spacing-1_5: 0.375rem;
+    --dss-spacing-2: 0.5rem;
+    --dss-spacing-2_5: 0.625rem;
+    --dss-spacing-3: 0.75rem;
+    --dss-spacing-3_5: 0.875rem;
+    --dss-spacing-4: 1rem;
+    --dss-spacing-5: 1.25rem;
+    --dss-spacing-6: 1.5rem;
+    --dss-spacing-7: 1.75rem;
+    --dss-spacing-8: 2rem;
+    --dss-spacing-9: 2.25rem;
+    --dss-spacing-10: 2.5rem;
+    --dss-spacing-11: 2.75rem;
+    --dss-spacing-12: 3rem;
+    --dss-spacing-14: 3.5rem;
+    --dss-spacing-16: 4rem;
+    --dss-spacing-20: 5rem;
+    --dss-spacing-24: 6rem;
+
+    /* Espaçamentos semânticos */
+    --dss-container-padding: var(--dss-spacing-4);
+    --dss-section-spacing: var(--dss-spacing-12);
+    --dss-component-spacing: var(--dss-spacing-6);
+    --dss-grid-gap-sm: var(--dss-spacing-2);
+    --dss-grid-gap-md: var(--dss-spacing-4);
+    --dss-grid-gap-lg: var(--dss-spacing-6);
+    --dss-grid-gap-xl: var(--dss-spacing-8);
+    --dss-form-gap: var(--dss-spacing-4);
+    --dss-label-margin-bottom: var(--dss-spacing-1);
+
+    /* ===========================================
+       10. TOKENS DE BORDER RADIUS
+       =========================================== */
+    --dss-radius-none: 0;
+    --dss-radius-sm: var(--dss-spacing-1);
+    --dss-radius-md: var(--dss-spacing-2);
+    --dss-radius-lg: var(--dss-spacing-3);
+    --dss-radius-xl: var(--dss-spacing-4);
+    --dss-radius-2xl: var(--dss-spacing-5);
+    --dss-radius-3xl: var(--dss-spacing-6);
+    --dss-radius-full: 9999px;
+    --dss-radius-badge: var(--dss-radius-full);
+
+    /* ===========================================
+       11. TOKENS DE OPACIDADE
+       =========================================== */
+    --dss-opacity-0: 0;
+    --dss-opacity-5: 0.05;
+    --dss-opacity-10: 0.1;
+    --dss-opacity-15: 0.15;
+    --dss-opacity-20: 0.2;
+    --dss-opacity-25: 0.25;
+    --dss-opacity-30: 0.3;
+    --dss-opacity-40: 0.4;
+    --dss-opacity-50: 0.5;
+    --dss-opacity-60: 0.6;
+    --dss-opacity-70: 0.7;
+    --dss-opacity-75: 0.75;
+    --dss-opacity-80: 0.8;
+    --dss-opacity-90: 0.9;
+    --dss-opacity-100: 1;
+    --dss-opacity-disabled: var(--dss-opacity-40);
+    --dss-opacity-hover: var(--dss-opacity-10);
+    --dss-opacity-active: var(--dss-opacity-20);
+    --dss-opacity-selected: var(--dss-opacity-15);
+    --dss-opacity-overlay: var(--dss-opacity-50);
+    --dss-opacity-backdrop: var(--dss-opacity-75);
+
+    /* ===========================================
+       TAILWIND MAPPINGS (usando tokens DSS)
+       =========================================== */
+
     /* Background & Foreground */
-    --background: 210 20% 98%;
-    --foreground: 215 25% 15%;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 27%;
 
     /* Cards & Popovers */
     --card: 0 0% 100%;
-    --card-foreground: 215 25% 15%;
+    --card-foreground: 0 0% 27%;
     --popover: 0 0% 100%;
-    --popover-foreground: 215 25% 15%;
+    --popover-foreground: 0 0% 27%;
 
-    /* Primary - Jtech Cyan/Teal */
-    --primary: 187 85% 43%;
+    /* Primary - DSS Primary Blue */
+    --primary: 205 75% 49%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary */
-    --secondary: 210 20% 96%;
-    --secondary-foreground: 215 25% 15%;
+    /* Secondary - DSS Secondary Teal */
+    --secondary: 175 62% 40%;
+    --secondary-foreground: 0 0% 100%;
 
     /* Muted */
-    --muted: 210 20% 96%;
-    --muted-foreground: 215 15% 50%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
 
-    /* Accent - Complementary blue */
-    --accent: 200 80% 50%;
+    /* Accent - DSS Accent Purple */
+    --accent: 293 45% 55%;
     --accent-foreground: 0 0% 100%;
 
-    /* Destructive */
-    --destructive: 0 84% 60%;
+    /* Destructive - DSS Negative */
+    --destructive: 352 79% 47%;
     --destructive-foreground: 0 0% 100%;
 
     /* Borders & Inputs */
-    --border: 214 20% 90%;
-    --input: 214 20% 90%;
-    --ring: 187 85% 43%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 205 75% 49%;
 
     --radius: 0.5rem;
 
     /* Sidebar - DSS Navigation */
-    --sidebar-background: 215 25% 12%;
-    --sidebar-foreground: 210 20% 90%;
-    --sidebar-primary: 187 85% 50%;
+    --sidebar-background: 0 0% 15%;
+    --sidebar-foreground: 0 0% 96%;
+    --sidebar-primary: 205 75% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 215 25% 18%;
-    --sidebar-accent-foreground: 210 20% 95%;
-    --sidebar-border: 215 20% 20%;
-    --sidebar-ring: 187 85% 50%;
-    --sidebar-muted: 215 15% 45%;
+    --sidebar-accent: 0 0% 20%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 0 0% 22%;
+    --sidebar-ring: 205 75% 55%;
+    --sidebar-muted: 0 0% 50%;
 
-    /* DSS Specific tokens */
-    --dss-success: 160 70% 40%;
-    --dss-warning: 38 92% 50%;
-    --dss-info: 200 80% 50%;
-    --dss-code-bg: 220 15% 96%;
-    --dss-code-border: 220 15% 88%;
+    /* DSS Code blocks */
+    --dss-code-bg: 0 0% 96%;
+    --dss-code-border: 0 0% 88%;
   }
 
-  .dark {
-    --background: 220 20% 10%;
-    --foreground: 210 20% 95%;
+  /* ===========================================
+     DARK MODE - TOKENS DSS
+     =========================================== */
+  .dark,
+  [data-theme="dark"] {
+    /* Surfaces */
+    --dss-surface-default: var(--dss-gray-800);
+    --dss-surface-subtle: var(--dss-gray-700);
+    --dss-surface-muted: var(--dss-gray-600);
+    --dss-surface-disabled: var(--dss-gray-700);
+    --dss-surface-overlay: rgba(255, 255, 255, 0.05);
+    --dss-surface-hover: rgba(255, 255, 255, 0.08);
+    --dss-surface-active: rgba(255, 255, 255, 0.12);
+    --dss-surface-selected: rgba(31, 134, 222, 0.24);
 
-    --card: 220 20% 13%;
-    --card-foreground: 210 20% 95%;
-    --popover: 220 20% 13%;
-    --popover-foreground: 210 20% 95%;
+    /* Text */
+    --dss-text-body: var(--dss-gray-200);
+    --dss-text-subtle: var(--dss-gray-400);
+    --dss-text-muted: var(--dss-gray-500);
+    --dss-text-inverse: var(--dss-gray-900);
+    --dss-text-disabled: var(--dss-gray-600);
 
-    --primary: 187 85% 50%;
-    --primary-foreground: 220 20% 10%;
+    /* Shadows */
+    --dss-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
+    --dss-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.6);
+    --dss-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.7);
+    --dss-shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.8);
+    --dss-shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.9);
 
-    --secondary: 220 15% 20%;
-    --secondary-foreground: 210 20% 95%;
+    /* Tailwind mappings */
+    --background: 0 0% 15%;
+    --foreground: 0 0% 96%;
 
-    --muted: 220 15% 20%;
-    --muted-foreground: 215 15% 60%;
+    --card: 0 0% 18%;
+    --card-foreground: 0 0% 96%;
+    --popover: 0 0% 18%;
+    --popover-foreground: 0 0% 96%;
 
-    --accent: 200 80% 55%;
-    --accent-foreground: 220 20% 10%;
+    --primary: 205 75% 55%;
+    --primary-foreground: 0 0% 10%;
 
-    --destructive: 0 70% 45%;
-    --destructive-foreground: 210 20% 95%;
+    --secondary: 175 62% 45%;
+    --secondary-foreground: 0 0% 10%;
 
-    --border: 220 15% 22%;
-    --input: 220 15% 22%;
-    --ring: 187 85% 50%;
+    --muted: 0 0% 22%;
+    --muted-foreground: 0 0% 60%;
 
-    --sidebar-background: 220 25% 8%;
-    --sidebar-foreground: 210 20% 85%;
-    --sidebar-primary: 187 85% 55%;
-    --sidebar-primary-foreground: 220 20% 10%;
-    --sidebar-accent: 220 20% 15%;
-    --sidebar-accent-foreground: 210 20% 95%;
-    --sidebar-border: 220 15% 18%;
-    --sidebar-ring: 187 85% 55%;
-    --sidebar-muted: 215 15% 55%;
+    --accent: 293 45% 60%;
+    --accent-foreground: 0 0% 10%;
 
-    --dss-success: 160 70% 45%;
-    --dss-warning: 38 92% 55%;
-    --dss-info: 200 80% 55%;
-    --dss-code-bg: 220 20% 15%;
-    --dss-code-border: 220 15% 25%;
+    --destructive: 352 70% 50%;
+    --destructive-foreground: 0 0% 96%;
+
+    --border: 0 0% 25%;
+    --input: 0 0% 25%;
+    --ring: 205 75% 55%;
+
+    --sidebar-background: 0 0% 10%;
+    --sidebar-foreground: 0 0% 90%;
+    --sidebar-primary: 205 75% 60%;
+    --sidebar-primary-foreground: 0 0% 10%;
+    --sidebar-accent: 0 0% 18%;
+    --sidebar-accent-foreground: 0 0% 96%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 205 75% 60%;
+    --sidebar-muted: 0 0% 55%;
+
+    --dss-code-bg: 0 0% 18%;
+    --dss-code-border: 0 0% 28%;
   }
 }
 
@@ -139,5 +516,34 @@
 
 /* Code blocks styling */
 .code-block {
-  @apply font-mono text-sm bg-[hsl(var(--dss-code-bg))] border border-[hsl(var(--dss-code-border))] rounded-md;
+  @apply font-mono text-sm rounded-md;
+  background: hsl(var(--dss-code-bg));
+  border: 1px solid hsl(var(--dss-code-border));
+}
+
+/* ===========================================
+   CLASSES DE MARCA DSS
+   =========================================== */
+.dss-brand-hub {
+  --dss-action-primary: var(--dss-hub-600);
+  --dss-action-primary-light: var(--dss-hub-300);
+  --dss-action-primary-disable: var(--dss-hub-200);
+  --dss-action-primary-hover: var(--dss-hub-700);
+  --dss-action-primary-deep: var(--dss-hub-900);
+}
+
+.dss-brand-water {
+  --dss-action-primary: var(--dss-water-500);
+  --dss-action-primary-light: var(--dss-water-300);
+  --dss-action-primary-disable: var(--dss-water-200);
+  --dss-action-primary-hover: var(--dss-water-600);
+  --dss-action-primary-deep: var(--dss-water-800);
+}
+
+.dss-brand-waste {
+  --dss-action-primary: var(--dss-waste-600);
+  --dss-action-primary-light: var(--dss-waste-300);
+  --dss-action-primary-disable: var(--dss-waste-200);
+  --dss-action-primary-hover: var(--dss-waste-800);
+  --dss-action-primary-deep: var(--dss-waste-900);
 }
