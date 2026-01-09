@@ -129,29 +129,73 @@ const feedbackColors = [
   }
 ];
 
-// Marcas resumo (DSS Demo)
-const brandsSummary = [
-  { 
-    name: "Sansys Hub", 
-    icon: Sun,
-    colorVar: "--dss-hub-600", 
-    principal: "#ef7a11",
-    description: "Plataforma central de gestão"
+// Cores Semânticas (DSS Demo)
+const semanticColors = [
+  {
+    category: "primary",
+    title: "Primary",
+    desc: "Ações principais e links",
+    principal: "#1f86de",
+    tokens: [
+      { token: "--dss-primary", value: "#1f86de", desc: "Principal" },
+      { token: "--dss-primary-light", value: "#86c0f3", desc: "Light" },
+      { token: "--dss-primary-disable", value: "#b3dcff", desc: "Disable" },
+      { token: "--dss-primary-hover", value: "#0f5295", desc: "Hover" },
+      { token: "--dss-primary-deep", value: "#0a3a6a", desc: "Deep" },
+    ]
   },
-  { 
-    name: "Sansys Water", 
-    icon: Droplets,
-    colorVar: "--dss-water-500", 
-    principal: "#0e88e4",
-    description: "Gestão de recursos hídricos"
+  {
+    category: "secondary",
+    title: "Secondary",
+    desc: "Ações secundárias",
+    principal: "#26a69a",
+    tokens: [
+      { token: "--dss-secondary", value: "#26a69a", desc: "Principal" },
+      { token: "--dss-secondary-light", value: "#6ddbcb", desc: "Light" },
+      { token: "--dss-secondary-disable", value: "#b5ece4", desc: "Disable" },
+      { token: "--dss-secondary-hover", value: "#1c857e", desc: "Hover" },
+      { token: "--dss-secondary-deep", value: "#116761", desc: "Deep" },
+    ]
   },
-  { 
-    name: "Sansys Waste", 
-    icon: Leaf,
-    colorVar: "--dss-waste-600", 
-    principal: "#0b8154",
-    description: "Gestão de resíduos sólidos"
+  {
+    category: "tertiary",
+    title: "Tertiary",
+    desc: "Ações terciárias e destaques",
+    principal: "#ff6607",
+    tokens: [
+      { token: "--dss-tertiary", value: "#ff6607", desc: "Principal" },
+      { token: "--dss-tertiary-light", value: "#ff9452", desc: "Light" },
+      { token: "--dss-tertiary-disable", value: "#ffd2b5", desc: "Disable" },
+      { token: "--dss-tertiary-hover", value: "#de5500", desc: "Hover" },
+      { token: "--dss-tertiary-deep", value: "#ad4200", desc: "Deep" },
+    ]
   },
+  {
+    category: "accent",
+    title: "Accent",
+    desc: "Elementos de destaque visual",
+    principal: "#b454c4",
+    tokens: [
+      { token: "--dss-accent", value: "#b454c4", desc: "Principal" },
+      { token: "--dss-accent-light", value: "#e3bceb", desc: "Light" },
+      { token: "--dss-accent-disable", value: "#f0ddf4", desc: "Disable" },
+      { token: "--dss-accent-hover", value: "#883b90", desc: "Hover" },
+      { token: "--dss-accent-deep", value: "#642f6a", desc: "Deep" },
+    ]
+  },
+  {
+    category: "dark",
+    title: "Dark",
+    desc: "Textos e elementos escuros",
+    principal: "#454545",
+    tokens: [
+      { token: "--dss-dark", value: "#454545", desc: "Principal" },
+      { token: "--dss-dark-light", value: "#b0b0b0", desc: "Light" },
+      { token: "--dss-dark-disable", value: "#d7d7d7", desc: "Disable" },
+      { token: "--dss-dark-hover", value: "#313131", desc: "Hover" },
+      { token: "--dss-dark-deep", value: "#1d1d1d", desc: "Deep" },
+    ]
+  }
 ];
 
 interface ColorSwatchProps {
@@ -408,57 +452,6 @@ export default function ColorsPage() {
         ]}
       />
 
-      {/* Brands Summary - Demo Section */}
-      <section className="space-y-4">
-        <SectionHeader 
-          title="Marcas" 
-          titleAccent="DSS"
-          badge="Demo"
-          variant="accent"
-        />
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {brandsSummary.map((brand) => (
-            <Card 
-              key={brand.name}
-              className="transition-all duration-300 hover:shadow-lg group cursor-pointer"
-              style={{ 
-                backgroundColor: 'var(--jtech-card-bg)', 
-                borderColor: 'var(--jtech-card-border)' 
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = brand.principal;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'var(--jtech-card-border)';
-              }}
-            >
-              <CardContent className="p-4 flex items-center gap-4">
-                <div 
-                  className="h-12 w-12 rounded-lg flex items-center justify-center transition-transform duration-200 group-hover:scale-110"
-                  style={{ backgroundColor: brand.principal }}
-                >
-                  <brand.icon className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <p className="font-semibold" style={{ color: 'var(--jtech-heading-secondary)' }}>
-                    {brand.name}
-                  </p>
-                  <p className="text-xs" style={{ color: 'var(--jtech-text-body)' }}>
-                    {brand.description}
-                  </p>
-                  <code 
-                    className="text-[10px] mt-1 block font-mono"
-                    style={{ color: brand.principal }}
-                  >
-                    {brand.principal}
-                  </code>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
-
       {/* Tabs Navigation - Jtech Style */}
       <Tabs defaultValue="brands" className="space-y-6">
         <TabsList 
@@ -475,6 +468,14 @@ export default function ColorsPage() {
           >
             <Sun className="h-4 w-4 mr-2" />
             Marcas
+          </TabsTrigger>
+          <TabsTrigger 
+            value="semantic" 
+            className="data-[state=active]:bg-[var(--dss-jtech-accent)] data-[state=active]:text-white rounded-lg px-4 py-2 text-sm font-medium transition-all"
+            style={{ color: 'var(--jtech-text-body)' }}
+          >
+            <Palette className="h-4 w-4 mr-2" />
+            Semânticas
           </TabsTrigger>
           <TabsTrigger 
             value="grayscale" 
@@ -517,6 +518,48 @@ export default function ColorsPage() {
               principal="#0b8154"
               description="Gestão de resíduos sólidos"
             />
+          </div>
+        </TabsContent>
+
+        {/* Semantic Colors Tab */}
+        <TabsContent value="semantic" className="mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {semanticColors.map((semantic) => (
+              <Card 
+                key={semantic.category}
+                className="transition-all duration-300 hover:shadow-lg overflow-hidden"
+                style={{ 
+                  backgroundColor: 'var(--jtech-card-bg)', 
+                  borderColor: 'var(--jtech-card-border)',
+                  borderTopWidth: '3px',
+                  borderTopColor: semantic.principal
+                }}
+              >
+                <CardHeader className="pb-3">
+                  <div className="flex items-center gap-3">
+                    <div 
+                      className="h-10 w-10 rounded-lg flex items-center justify-center"
+                      style={{ backgroundColor: semantic.principal }}
+                    >
+                      <Palette className="h-5 w-5 text-white" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-base" style={{ color: 'var(--jtech-heading-secondary)' }}>
+                        {semantic.title}
+                      </CardTitle>
+                      <CardDescription className="text-xs" style={{ color: 'var(--jtech-text-body)' }}>
+                        {semantic.desc}
+                      </CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  {semantic.tokens.map((t) => (
+                    <ColorSwatch key={t.token} {...t} />
+                  ))}
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </TabsContent>
 
