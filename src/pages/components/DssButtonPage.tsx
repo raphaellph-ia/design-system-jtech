@@ -3,243 +3,285 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Link } from "react-router-dom";
 import { useState } from "react";
 import { 
-  Copy, Check, Star, Layers, Palette, Code, FileText, 
+  Copy, Check, Layers, Code, FileText, Palette, Box,
   Loader2, ChevronRight, Save, Send, Upload, Plus, Trash2, 
-  Settings, Menu, ArrowRight, Download, Eye, EyeOff, Heart
+  Settings, Menu, ArrowRight, Download, Eye, EyeOff, Heart,
+  Zap, AlertTriangle, CheckCircle, XCircle, Info
 } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 
 // ============================================================================
-// DADOS REAIS DO DSS - BASEADOS NA DOCUMENTAÇÃO
+// TOKENS REAIS DO DSS - Extraídos de index.css e globals.scss
 // ============================================================================
 
-// Cores Semânticas do DSS
-const semanticColors = [
-  { name: "primary", label: "Primary", cssVar: "--dss-primary", hoverVar: "--dss-primary-hover", description: "Ação principal" },
-  { name: "secondary", label: "Secondary", cssVar: "--dss-secondary", hoverVar: "--dss-secondary-hover", description: "Ação secundária" },
-  { name: "tertiary", label: "Tertiary", cssVar: "--dss-tertiary", hoverVar: "--dss-tertiary-hover", description: "Ação terciária" },
-  { name: "accent", label: "Accent", cssVar: "--dss-accent", hoverVar: "--dss-accent-hover", description: "Destaque" },
-];
+// Cores Semânticas REAIS do DSS
+const semanticColors = {
+  primary: { 
+    name: "primary", 
+    label: "Primary", 
+    bg: "#1f86de", 
+    hover: "#0f5295", 
+    light: "#86c0f3",
+    disable: "#b3dcff",
+    deep: "#0a3a6a",
+    focus: "#006AC5",
+    tokens: {
+      base: "--dss-primary",
+      hover: "--dss-primary-hover",
+      light: "--dss-primary-light",
+      disable: "--dss-primary-disable",
+      deep: "--dss-primary-deep"
+    }
+  },
+  secondary: { 
+    name: "secondary", 
+    label: "Secondary", 
+    bg: "#26a69a", 
+    hover: "#1c857e",
+    light: "#6ddbcb",
+    disable: "#b5ece4",
+    deep: "#116761",
+    focus: "#009C8D",
+    tokens: {
+      base: "--dss-secondary",
+      hover: "--dss-secondary-hover"
+    }
+  },
+  tertiary: { 
+    name: "tertiary", 
+    label: "Tertiary", 
+    bg: "#ff6607", 
+    hover: "#de5500",
+    light: "#ff9452",
+    disable: "#ffd2b5",
+    deep: "#ad4200",
+    focus: "#E95900",
+    tokens: {
+      base: "--dss-tertiary",
+      hover: "--dss-tertiary-hover"
+    }
+  },
+  accent: { 
+    name: "accent", 
+    label: "Accent", 
+    bg: "#b454c4", 
+    hover: "#883b90",
+    light: "#e3bceb",
+    disable: "#f0ddf4",
+    deep: "#642f6a",
+    focus: "#B02EC5",
+    tokens: {
+      base: "--dss-accent",
+      hover: "--dss-accent-hover"
+    }
+  },
+  dark: { 
+    name: "dark", 
+    label: "Dark", 
+    bg: "#454545", 
+    hover: "#313131",
+    light: "#b0b0b0",
+    disable: "#d7d7d7",
+    deep: "#1d1d1d",
+    focus: "#3E3E3E",
+    tokens: {
+      base: "--dss-dark",
+      hover: "--dss-dark-hover"
+    }
+  },
+};
 
-const feedbackColors = [
-  { name: "positive", label: "Positive", cssVar: "--dss-waste-600", hoverVar: "--dss-waste-700", description: "Sucesso/Confirmação" },
-  { name: "negative", label: "Negative", cssVar: "--dss-negative", hoverVar: "--dss-negative-hover", description: "Erro/Exclusão" },
-  { name: "warning", label: "Warning", cssVar: "--dss-tertiary", hoverVar: "--dss-tertiary-hover", description: "Atenção/Cuidado" },
-  { name: "info", label: "Info", cssVar: "--dss-water-500", hoverVar: "--dss-water-600", description: "Informativo" },
-];
+// Cores de Feedback REAIS do DSS
+const feedbackColors = {
+  positive: { 
+    name: "positive", 
+    label: "Positive", 
+    icon: CheckCircle,
+    bg: "#4dd228", 
+    hover: "#27910D",
+    light: "#b9f2a4",
+    disable: "#dbf8d1",
+    deep: "#246714",
+    tokens: {
+      base: "--dss-positive",
+      hover: "--dss-positive-hover"
+    }
+  },
+  negative: { 
+    name: "negative", 
+    label: "Negative", 
+    icon: XCircle,
+    bg: "#d8182e", 
+    hover: "#a01424",
+    light: "#ffa0ab",
+    disable: "#ffcfd4",
+    deep: "#720e19",
+    tokens: {
+      base: "--dss-negative",
+      hover: "--dss-negative-hover"
+    }
+  },
+  warning: { 
+    name: "warning", 
+    label: "Warning", 
+    icon: AlertTriangle,
+    bg: "#fabd14", 
+    hover: "#dd8e02",
+    light: "#fff488",
+    disable: "#fff9c3",
+    deep: "#a66d08",
+    tokens: {
+      base: "--dss-warning",
+      hover: "--dss-warning-hover"
+    }
+  },
+  info: { 
+    name: "info", 
+    label: "Info", 
+    icon: Info,
+    bg: "#0cc4e9", 
+    hover: "#0c8bae",
+    light: "#a7effa",
+    disable: "#d2f6fc",
+    deep: "#0d7491",
+    tokens: {
+      base: "--dss-info",
+      hover: "--dss-info-hover"
+    }
+  },
+};
 
-// Brands Veolia
-const brandColors = [
-  { name: "hub", label: "Hub", cssVar: "--dss-hub-600", hoverVar: "--dss-hub-700", icon: "🟠", description: "Brand Hub (Laranja)" },
-  { name: "water", label: "Water", cssVar: "--dss-water-500", hoverVar: "--dss-water-600", icon: "🔵", description: "Brand Water (Azul)" },
-  { name: "waste", label: "Waste", cssVar: "--dss-waste-600", hoverVar: "--dss-waste-800", icon: "🟢", description: "Brand Waste (Verde)" },
-];
+// Paletas de Marca REAIS do DSS (Veolia Brands)
+const brandColors = {
+  hub: {
+    name: "hub",
+    label: "Hub",
+    icon: "🟠",
+    principal: "#ef7a11",
+    scale: {
+      50: "#fff9ed", 100: "#fef2d6", 200: "#fde2ab", 300: "#fbcb76", 
+      400: "#f8aa3f", 500: "#f5911a", 600: "#ef7a11", 700: "#bf590f", 
+      800: "#984614", 900: "#7a3614", 950: "#421d08"
+    },
+    tokens: {
+      principal: "--dss-hub-600",
+      hover: "--dss-hub-700",
+      light: "--dss-hub-300",
+      disable: "--dss-hub-200"
+    }
+  },
+  water: {
+    name: "water",
+    label: "Water",
+    icon: "🔵",
+    principal: "#0e88e4",
+    scale: {
+      50: "#f0f7ff", 100: "#e0eefe", 200: "#badefd", 300: "#7dc4fc", 
+      400: "#38a6f8", 500: "#0e88e4", 600: "#026cc7", 700: "#0356a1", 
+      800: "#074a85", 900: "#0c3e6e", 950: "#082749"
+    },
+    tokens: {
+      principal: "--dss-water-500",
+      hover: "--dss-water-600",
+      light: "--dss-water-300",
+      disable: "--dss-water-200"
+    }
+  },
+  waste: {
+    name: "waste",
+    label: "Waste",
+    icon: "🟢",
+    principal: "#18b173",
+    scale: {
+      50: "#edfcf4", 100: "#d3f8e2", 200: "#abefcb", 300: "#74e1ae", 
+      400: "#3ccb8d", 500: "#18b173", 600: "#0b8154", 700: "#0a724e", 
+      800: "#0a5b3e", 900: "#0a4a34", 950: "#042a1e"
+    },
+    tokens: {
+      principal: "--dss-waste-500",
+      hover: "--dss-waste-600",
+      light: "--dss-waste-300",
+      disable: "--dss-waste-200"
+    }
+  }
+};
 
-// Variantes Visuais
+// Variantes Visuais do DssButton
 const variants = [
-  { name: "elevated", label: "Elevated", description: "Botão com elevação/shadow (padrão)", shadow: true },
-  { name: "flat", label: "Flat", description: "Background transparente, sem elevação", shadow: false },
-  { name: "outline", label: "Outline", description: "Background transparente com borda", shadow: false },
-  { name: "unelevated", label: "Unelevated", description: "Botão sólido sem shadow", shadow: false },
-  { name: "push", label: "Push", description: "Efeito 3D pressionável", shadow: true },
-  { name: "glossy", label: "Glossy", description: "Efeito brilhante/glossy", shadow: true },
+  { name: "elevated", label: "Elevated", desc: "Botão com elevação/shadow (padrão)", hasElevation: true },
+  { name: "flat", label: "Flat", desc: "Background transparente, apenas texto", hasElevation: false },
+  { name: "outline", label: "Outline", desc: "Background transparente com borda", hasElevation: false },
+  { name: "unelevated", label: "Unelevated", desc: "Botão sólido sem shadow", hasElevation: false },
+  { name: "push", label: "Push", desc: "Efeito 3D pressionável", hasElevation: true },
+  { name: "glossy", label: "Glossy", desc: "Efeito brilhante/glossy", hasElevation: true },
 ];
 
-// Tamanhos
+// Tamanhos REAIS baseados em Touch Targets DSS (WCAG 2.1 AA)
 const sizes = [
-  { name: "xs", label: "XS", height: "32px", padding: "4px 8px", fontSize: "12px", minWidth: "48px" },
-  { name: "sm", label: "SM", height: "36px", padding: "6px 12px", fontSize: "13px", minWidth: "56px" },
-  { name: "md", label: "MD", height: "44px", padding: "8px 16px", fontSize: "14px", minWidth: "64px" },
-  { name: "lg", label: "LG", height: "52px", padding: "12px 20px", fontSize: "16px", minWidth: "80px" },
-  { name: "xl", label: "XL", height: "64px", padding: "16px 24px", fontSize: "18px", minWidth: "96px" },
+  { name: "xs", label: "XS", height: "32px", padding: "4px 8px", fontSize: "12px", minWidth: "48px", token: "--dss-touch-target-xs" },
+  { name: "sm", label: "SM", height: "36px", padding: "6px 12px", fontSize: "13px", minWidth: "56px", token: "--dss-touch-target-sm" },
+  { name: "md", label: "MD", height: "44px", padding: "8px 16px", fontSize: "14px", minWidth: "64px", token: "--dss-touch-target-md", isDefault: true },
+  { name: "lg", label: "LG", height: "52px", padding: "12px 20px", fontSize: "16px", minWidth: "80px", token: "--dss-touch-target-lg" },
+  { name: "xl", label: "XL", height: "64px", padding: "16px 24px", fontSize: "18px", minWidth: "96px", token: "--dss-touch-target-xl" },
 ];
 
-// Props Completas do DssButton
+// Props API do DssButton
 const propsData = [
-  // Conteúdo
   { category: "Conteúdo", prop: "label", type: "String", default: "''", description: "Texto do botão" },
   { category: "Conteúdo", prop: "icon", type: "String", default: "''", description: "Ícone à esquerda (Material Icons)" },
   { category: "Conteúdo", prop: "icon-right", type: "String", default: "''", description: "Ícone à direita (Material Icons)" },
-  // Variantes
   { category: "Variantes", prop: "variant", type: "'elevated' | 'flat' | 'outline' | 'unelevated' | 'push' | 'glossy'", default: "'elevated'", description: "Estilo visual do botão" },
-  { category: "Variantes", prop: "color", type: "'primary' | 'secondary' | 'tertiary' | 'accent' | 'positive' | 'negative' | 'warning' | 'info'", default: "'primary'", description: "Cor semântica do botão" },
-  // Tamanhos
-  { category: "Tamanhos", prop: "size", type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'", default: "'md'", description: "Tamanho do botão" },
+  { category: "Variantes", prop: "color", type: "'primary' | 'secondary' | 'tertiary' | 'accent' | 'positive' | 'negative' | 'warning' | 'info'", default: "'primary'", description: "Cor semântica" },
+  { category: "Tamanhos", prop: "size", type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'", default: "'md'", description: "Tamanho (baseado em touch targets)" },
   { category: "Tamanhos", prop: "round", type: "Boolean", default: "false", description: "Bordas completamente arredondadas" },
   { category: "Tamanhos", prop: "square", type: "Boolean", default: "false", description: "Bordas quadradas (sem border-radius)" },
-  { category: "Tamanhos", prop: "dense", type: "Boolean", default: "false", description: "Versão compacta do botão" },
-  // Estados
+  { category: "Tamanhos", prop: "dense", type: "Boolean", default: "false", description: "Versão compacta" },
   { category: "Estados", prop: "loading", type: "Boolean", default: "false", description: "Exibe spinner de carregamento" },
   { category: "Estados", prop: "percentage", type: "Number", default: "null", description: "Barra de progresso (0-100)" },
-  { category: "Estados", prop: "dark-percentage", type: "Boolean", default: "false", description: "Estilo escuro da barra de progresso" },
   { category: "Estados", prop: "disabled", type: "Boolean", default: "false", description: "Estado desabilitado" },
-  // Interação
-  { category: "Interação", prop: "ripple", type: "Boolean | Object", default: "true", description: "Efeito ripple Material Design" },
-  { category: "Interação", prop: "tabindex", type: "Number | String", default: "null", description: "Ordem de navegação por teclado" },
-  // Layout
-  { category: "Layout", prop: "align", type: "'left' | 'center' | 'right' | 'between' | 'around' | 'evenly'", default: "'center'", description: "Alinhamento horizontal do conteúdo" },
-  { category: "Layout", prop: "stack", type: "Boolean", default: "false", description: "Layout vertical (ícone acima do label)" },
-  { category: "Layout", prop: "stretch", type: "Boolean", default: "false", description: "Expande para largura total" },
-  { category: "Layout", prop: "no-wrap", type: "Boolean", default: "false", description: "Previne quebra de texto" },
-  { category: "Layout", prop: "padding", type: "String", default: "null", description: "Padding customizado (CSS)" },
-  // Comportamento
-  { category: "Comportamento", prop: "type", type: "'button' | 'submit' | 'reset'", default: "'button'", description: "Tipo nativo do button HTML" },
-  { category: "Comportamento", prop: "no-caps", type: "Boolean", default: "false", description: "Desabilita uppercase" },
-  // Router
-  { category: "Router", prop: "to", type: "String | Object", default: "null", description: "Rota de navegação (Vue Router)" },
-  { category: "Router", prop: "replace", type: "Boolean", default: "false", description: "Usa router.replace" },
-  // Brandabilidade
   { category: "Brandabilidade", prop: "brand", type: "'hub' | 'water' | 'waste'", default: "null", description: "Tema de marca Veolia" },
 ];
 
-// Eventos
-const eventsData = [
-  { event: "@click", payload: "MouseEvent", description: "Emitido ao clicar (se não disabled/loading)" },
-  { event: "@focus", payload: "FocusEvent", description: "Emitido ao focar no botão" },
-  { event: "@blur", payload: "FocusEvent", description: "Emitido ao perder foco" },
-];
-
-// Tokens Utilizados
+// Tokens utilizados pelo DssButton
 const tokensUsed = [
-  // Cores
-  { category: "Cores", token: "--dss-primary", value: "#1f86de", usage: "Background primary" },
-  { category: "Cores", token: "--dss-primary-hover", value: "#0f5295", usage: "Hover do primary" },
-  { category: "Cores", token: "--dss-secondary", value: "#26a69a", usage: "Background secondary" },
-  { category: "Cores", token: "--dss-tertiary", value: "#ff6f00", usage: "Warning e tertiary" },
-  { category: "Cores", token: "--dss-accent", value: "#9c27b0", usage: "Destaque" },
-  // Feedback
-  { category: "Feedback", token: "--dss-positive", value: "#4caf50", usage: "Sucesso" },
-  { category: "Feedback", token: "--dss-negative", value: "#dc2626", usage: "Erro/Exclusão" },
-  { category: "Feedback", token: "--dss-warning", value: "#ff9800", usage: "Atenção" },
-  { category: "Feedback", token: "--dss-info", value: "#2196f3", usage: "Informativo" },
-  // Brands
-  { category: "Brands", token: "--dss-hub-600", value: "#f97316", usage: "Brand Hub" },
-  { category: "Brands", token: "--dss-water-500", value: "#0099ff", usage: "Brand Water" },
-  { category: "Brands", token: "--dss-waste-600", value: "#00b27a", usage: "Brand Waste" },
-  // Spacing
-  { category: "Spacing", token: "--dss-spacing-1", value: "0.25rem (4px)", usage: "Padding XS, gaps" },
-  { category: "Spacing", token: "--dss-spacing-2", value: "0.5rem (8px)", usage: "Padding vertical default" },
-  { category: "Spacing", token: "--dss-spacing-3", value: "0.75rem (12px)", usage: "Padding SM" },
-  { category: "Spacing", token: "--dss-spacing-4", value: "1rem (16px)", usage: "Padding horizontal default" },
-  { category: "Spacing", token: "--dss-spacing-5", value: "1.25rem (20px)", usage: "Padding LG" },
-  { category: "Spacing", token: "--dss-spacing-6", value: "1.5rem (24px)", usage: "Padding XL" },
-  // Touch Targets (Acessibilidade)
-  { category: "Touch Targets", token: "--dss-touch-target-xs", value: "32px", usage: "Min-height XS" },
-  { category: "Touch Targets", token: "--dss-touch-target-sm", value: "36px", usage: "Min-height SM" },
-  { category: "Touch Targets", token: "--dss-touch-target-md", value: "44px", usage: "Min-height MD (WCAG AA)" },
-  { category: "Touch Targets", token: "--dss-touch-target-lg", value: "52px", usage: "Min-height LG" },
-  { category: "Touch Targets", token: "--dss-touch-target-xl", value: "64px", usage: "Min-height XL" },
-  // Radius
+  { category: "Cores Semânticas", token: "--dss-primary", value: "#1f86de", usage: "Background primary" },
+  { category: "Cores Semânticas", token: "--dss-primary-hover", value: "#0f5295", usage: "Hover primary" },
+  { category: "Cores Semânticas", token: "--dss-secondary", value: "#26a69a", usage: "Background secondary" },
+  { category: "Cores Semânticas", token: "--dss-tertiary", value: "#ff6607", usage: "Background tertiary" },
+  { category: "Cores Semânticas", token: "--dss-accent", value: "#b454c4", usage: "Background accent" },
+  { category: "Feedback", token: "--dss-positive", value: "#4dd228", usage: "Sucesso" },
+  { category: "Feedback", token: "--dss-negative", value: "#d8182e", usage: "Erro/Exclusão" },
+  { category: "Feedback", token: "--dss-warning", value: "#fabd14", usage: "Atenção" },
+  { category: "Feedback", token: "--dss-info", value: "#0cc4e9", usage: "Informativo" },
+  { category: "Brands", token: "--dss-hub-600", value: "#ef7a11", usage: "Brand Hub" },
+  { category: "Brands", token: "--dss-water-500", value: "#0e88e4", usage: "Brand Water" },
+  { category: "Brands", token: "--dss-waste-500", value: "#18b173", usage: "Brand Waste" },
+  { category: "Touch Targets", token: "--dss-touch-target-md", value: "44px", usage: "Altura mínima WCAG" },
   { category: "Border Radius", token: "--dss-radius-sm", value: "4px", usage: "Border-radius padrão" },
   { category: "Border Radius", token: "--dss-radius-full", value: "9999px", usage: "Botão round" },
-  // Typography
-  { category: "Typography", token: "--dss-font-size-xs", value: "0.75rem", usage: "Fonte XS" },
-  { category: "Typography", token: "--dss-font-size-sm", value: "0.8125rem", usage: "Fonte SM" },
-  { category: "Typography", token: "--dss-font-size-md", value: "0.875rem", usage: "Fonte MD (default)" },
-  { category: "Typography", token: "--dss-font-size-lg", value: "1rem", usage: "Fonte LG" },
-  { category: "Typography", token: "--dss-font-size-xl", value: "1.125rem", usage: "Fonte XL" },
-  // Outros
-  { category: "Outros", token: "--dss-border-width-thin", value: "1px", usage: "Borda outline" },
-  { category: "Outros", token: "--dss-border-width-md", value: "2px", usage: "Focus ring" },
-  { category: "Outros", token: "--dss-focus-ring", value: "currentColor", usage: "Cor do focus ring" },
-  { category: "Outros", token: "--dss-opacity-disabled", value: "0.5", usage: "Opacidade disabled" },
-  { category: "Outros", token: "--dss-gradient-glossy", value: "linear-gradient(...)", usage: "Efeito glossy" },
+  { category: "Shadows", token: "--dss-shadow-sm", value: "0 1px 3px rgba(0,0,0,0.25)", usage: "Elevated" },
+  { category: "Opacity", token: "--dss-opacity-disabled", value: "0.4", usage: "Estado disabled" },
 ];
 
-// Anatomia das 4 Camadas
+// Anatomia 4 Camadas DSS
 const anatomyLayers = [
-  {
-    layer: 1,
-    name: "Structure",
-    file: "1-structure/DssButton.vue",
-    description: "Template Vue com props, slots e lógica de eventos",
-    tokens: ["Props: label, icon, variant, color, size, loading, disabled..."],
-    color: "var(--dss-hub-100)"
-  },
-  {
-    layer: 2,
-    name: "Composition",
-    file: "2-composition/_base.scss",
-    description: "Estilos base usando APENAS tokens genéricos. Reset, layout, tipografia.",
-    tokens: ["--dss-spacing-*", "--dss-radius-*", "--dss-font-*", "--dss-touch-target-*"],
-    color: "var(--dss-water-100)"
-  },
-  {
-    layer: 3,
-    name: "Variants",
-    file: "3-variants/",
-    description: "Variantes visuais: elevated, flat, outline, unelevated, push, glossy",
-    tokens: ["box-shadow", "filter: brightness()", "--dss-gradient-glossy"],
-    color: "var(--dss-waste-100)"
-  },
-  {
-    layer: 4,
-    name: "Output",
-    file: "4-output/",
-    description: "Cores semânticas, feedback, brands. Classes finais para consumo.",
-    tokens: ["--dss-primary", "--dss-hub-*", "--dss-water-*", "--dss-waste-*"],
-    color: "var(--dss-tertiary-light)"
-  },
+  { layer: 1, name: "Structure", file: "1-structure/DssButton.vue", desc: "Template Vue + Props + Lógica", color: "#ef7a11" },
+  { layer: 2, name: "Composition", file: "2-composition/_base.scss", desc: "Layout, tipografia, reset", color: "#0e88e4" },
+  { layer: 3, name: "Variants", file: "3-variants/*.scss", desc: "elevated, flat, outline, push, glossy", color: "#18b173" },
+  { layer: 4, name: "Output", file: "4-output/*.scss", desc: "Cores finais, brands, estados", color: "#ff6607" },
 ];
 
 // ============================================================================
-// COMPONENTE TOKEN ROW COM COPY
-// ============================================================================
-
-function TokenRow({ token, value, usage, category }: { token: string; value: string; usage: string; category?: string }) {
-  const [copied, setCopied] = useState(false);
-
-  const copyToken = () => {
-    navigator.clipboard.writeText(token);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const isColor = value.startsWith("#") || value.startsWith("rgb") || value.startsWith("hsl");
-
-  return (
-    <TableRow className="group hover:bg-[var(--dss-surface-subtle)] transition-colors">
-      <TableCell className="font-mono text-sm">
-        <button
-          onClick={copyToken}
-          className="flex items-center gap-2 hover:text-[var(--dss-primary)] transition-colors"
-        >
-          <code style={{ color: 'var(--dss-primary)' }}>{token}</code>
-          {copied ? (
-            <Check className="h-3 w-3 text-[var(--dss-positive)]" />
-          ) : (
-            <Copy className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-          )}
-        </button>
-      </TableCell>
-      <TableCell className="font-mono text-sm">
-        <div className="flex items-center gap-2">
-          {isColor && (
-            <span
-              className="w-4 h-4 rounded border border-[var(--dss-gray-300)] flex-shrink-0"
-              style={{ backgroundColor: value }}
-            />
-          )}
-          <span style={{ color: 'var(--dss-text-subtle)' }}>{value}</span>
-        </div>
-      </TableCell>
-      <TableCell style={{ color: 'var(--dss-text-body)' }}>{usage}</TableCell>
-    </TableRow>
-  );
-}
-
-// ============================================================================
-// COMPONENTE BUTTON PREVIEW (simula DssButton)
+// COMPONENTE BUTTON PREVIEW COM TOKENS REAIS
 // ============================================================================
 
 interface DssButtonPreviewProps {
   label?: string;
   variant?: string;
-  color?: string;
+  colorKey?: string;
   size?: string;
   disabled?: boolean;
   loading?: boolean;
@@ -247,14 +289,13 @@ interface DssButtonPreviewProps {
   icon?: React.ReactNode;
   iconRight?: React.ReactNode;
   brand?: string;
-  onClick?: () => void;
-  className?: string;
+  showToken?: boolean;
 }
 
 function DssButtonPreview({
   label = "Button",
   variant = "elevated",
-  color = "primary",
+  colorKey = "primary",
   size = "md",
   disabled = false,
   loading = false,
@@ -262,126 +303,205 @@ function DssButtonPreview({
   icon,
   iconRight,
   brand,
-  onClick,
-  className = ""
+  showToken = false,
 }: DssButtonPreviewProps) {
-  // Mapear cores para CSS vars
-  const getColorStyles = () => {
-    if (brand) {
-      const brandMap: Record<string, { bg: string; hover: string }> = {
-        hub: { bg: "var(--dss-hub-600)", hover: "var(--dss-hub-700)" },
-        water: { bg: "var(--dss-water-500)", hover: "var(--dss-water-600)" },
-        waste: { bg: "var(--dss-waste-600)", hover: "var(--dss-waste-700)" },
-      };
-      return brandMap[brand] || brandMap.hub;
+  // Obter cores REAIS do DSS
+  const getColors = () => {
+    if (brand && brandColors[brand as keyof typeof brandColors]) {
+      const b = brandColors[brand as keyof typeof brandColors];
+      return { bg: b.principal, hover: b.scale[700] || b.scale[600], textColor: "#ffffff" };
     }
-
-    const colorMap: Record<string, { bg: string; hover: string }> = {
-      primary: { bg: "var(--dss-primary)", hover: "var(--dss-primary-hover)" },
-      secondary: { bg: "var(--dss-secondary)", hover: "var(--dss-secondary-hover)" },
-      tertiary: { bg: "var(--dss-tertiary)", hover: "var(--dss-tertiary-hover)" },
-      accent: { bg: "var(--dss-accent)", hover: "var(--dss-accent-hover)" },
-      positive: { bg: "var(--dss-waste-600)", hover: "var(--dss-waste-700)" },
-      negative: { bg: "#dc2626", hover: "#b91c1c" },
-      warning: { bg: "var(--dss-tertiary)", hover: "var(--dss-tertiary-hover)" },
-      info: { bg: "var(--dss-water-500)", hover: "var(--dss-water-600)" },
-    };
-    return colorMap[color] || colorMap.primary;
+    
+    if (feedbackColors[colorKey as keyof typeof feedbackColors]) {
+      const f = feedbackColors[colorKey as keyof typeof feedbackColors];
+      // Warning precisa de texto escuro
+      const textColor = colorKey === "warning" ? "#1a1a1a" : "#ffffff";
+      return { bg: f.bg, hover: f.hover, textColor };
+    }
+    
+    if (semanticColors[colorKey as keyof typeof semanticColors]) {
+      const s = semanticColors[colorKey as keyof typeof semanticColors];
+      return { bg: s.bg, hover: s.hover, textColor: "#ffffff" };
+    }
+    
+    return { bg: "#1f86de", hover: "#0f5295", textColor: "#ffffff" };
   };
 
   const getSizeStyles = () => {
-    const sizeMap: Record<string, { height: string; padding: string; fontSize: string }> = {
-      xs: { height: "32px", padding: "4px 8px", fontSize: "12px" },
-      sm: { height: "36px", padding: "6px 12px", fontSize: "13px" },
-      md: { height: "44px", padding: "8px 16px", fontSize: "14px" },
-      lg: { height: "52px", padding: "12px 20px", fontSize: "16px" },
-      xl: { height: "64px", padding: "16px 24px", fontSize: "18px" },
-    };
-    return sizeMap[size] || sizeMap.md;
-  };
-
-  const getVariantStyles = () => {
-    const colors = getColorStyles();
-    const isFlat = variant === "flat";
-    const isOutline = variant === "outline";
-
-    if (isFlat) {
-      return {
-        backgroundColor: "transparent",
-        color: colors.bg,
-        border: "none",
-        boxShadow: "none",
-      };
-    }
-
-    if (isOutline) {
-      return {
-        backgroundColor: "transparent",
-        color: colors.bg,
-        border: `1px solid ${colors.bg}`,
-        boxShadow: "none",
-      };
-    }
-
-    let boxShadow = "none";
-    if (variant === "elevated") {
-      boxShadow = "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08)";
-    } else if (variant === "push") {
-      boxShadow = "0 3px 0 rgba(0,0,0,0.15)";
-    } else if (variant === "glossy") {
-      boxShadow = "0 2px 4px rgba(0,0,0,0.15)";
-    }
-
+    const sizeData = sizes.find(s => s.name === size) || sizes[2];
     return {
-      backgroundColor: colors.bg,
-      color: "white",
-      border: "none",
-      boxShadow,
+      height: sizeData.height,
+      padding: sizeData.padding,
+      fontSize: sizeData.fontSize,
     };
   };
 
+  const colors = getColors();
   const sizeStyles = getSizeStyles();
-  const variantStyles = getVariantStyles();
 
-  const baseStyles: React.CSSProperties = {
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "8px",
-    fontWeight: 500,
-    textTransform: "uppercase" as const,
-    letterSpacing: "0.0892857143em",
-    cursor: disabled ? "not-allowed" : "pointer",
-    opacity: disabled ? 0.5 : 1,
-    borderRadius: round ? "9999px" : "4px",
-    transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
-    minHeight: sizeStyles.height,
-    padding: sizeStyles.padding,
-    fontSize: sizeStyles.fontSize,
-    ...variantStyles,
+  // Estilos baseados na variante
+  const getVariantStyles = (): React.CSSProperties => {
+    const base: React.CSSProperties = {
+      display: "inline-flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "8px",
+      fontWeight: 500,
+      textTransform: "uppercase",
+      letterSpacing: "0.0892857143em",
+      cursor: disabled ? "not-allowed" : "pointer",
+      opacity: disabled ? 0.4 : 1,
+      borderRadius: round ? "9999px" : "4px",
+      transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+      minHeight: sizeStyles.height,
+      padding: sizeStyles.padding,
+      fontSize: sizeStyles.fontSize,
+      fontFamily: "system-ui, -apple-system, sans-serif",
+    };
+
+    switch (variant) {
+      case "flat":
+        return {
+          ...base,
+          backgroundColor: "transparent",
+          color: colors.bg,
+          border: "none",
+          boxShadow: "none",
+        };
+      case "outline":
+        return {
+          ...base,
+          backgroundColor: "transparent",
+          color: colors.bg,
+          border: `1px solid ${colors.bg}`,
+          boxShadow: "none",
+        };
+      case "unelevated":
+        return {
+          ...base,
+          backgroundColor: colors.bg,
+          color: colors.textColor,
+          border: "none",
+          boxShadow: "none",
+        };
+      case "push":
+        return {
+          ...base,
+          backgroundColor: colors.bg,
+          color: colors.textColor,
+          border: "none",
+          boxShadow: `0 4px 0 ${colors.hover}`,
+          transform: "translateY(-2px)",
+        };
+      case "glossy":
+        return {
+          ...base,
+          backgroundColor: colors.bg,
+          color: colors.textColor,
+          border: "none",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+          backgroundImage: "linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, transparent 50%, rgba(0,0,0,0.12) 51%, transparent 100%)",
+        };
+      case "elevated":
+      default:
+        return {
+          ...base,
+          backgroundColor: colors.bg,
+          color: colors.textColor,
+          border: "none",
+          boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08)",
+        };
+    }
   };
 
-  if (variant === "glossy") {
-    baseStyles.backgroundImage = "linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, transparent 50%, rgba(0,0,0,0.12) 51%, transparent 100%)";
-  }
+  const tokenName = brand 
+    ? brandColors[brand as keyof typeof brandColors]?.tokens.principal 
+    : semanticColors[colorKey as keyof typeof semanticColors]?.tokens.base || feedbackColors[colorKey as keyof typeof feedbackColors]?.tokens.base;
 
   return (
-    <button
-      style={baseStyles}
-      disabled={disabled || loading}
-      onClick={onClick}
-      className={`hover:brightness-95 active:brightness-90 ${className}`}
-    >
-      {loading ? (
-        <Loader2 className="animate-spin" style={{ width: sizeStyles.fontSize, height: sizeStyles.fontSize }} />
-      ) : (
-        <>
-          {icon}
-          {label && <span>{label}</span>}
-          {iconRight}
-        </>
+    <div className="flex flex-col items-center gap-1">
+      <button
+        style={getVariantStyles()}
+        disabled={disabled || loading}
+        className="hover:brightness-95 active:brightness-90 focus:outline-none focus:ring-2 focus:ring-offset-2"
+      >
+        {loading ? (
+          <Loader2 className="animate-spin" style={{ width: sizeStyles.fontSize, height: sizeStyles.fontSize }} />
+        ) : (
+          <>
+            {icon}
+            {label && <span>{label}</span>}
+            {iconRight}
+          </>
+        )}
+      </button>
+      {showToken && tokenName && (
+        <code 
+          className="text-[10px] font-mono mt-1"
+          style={{ color: 'var(--jtech-text-muted)' }}
+        >
+          {tokenName}
+        </code>
       )}
-    </button>
+    </div>
+  );
+}
+
+// ============================================================================
+// TOKEN ROW COMPONENT (Jtech Style)
+// ============================================================================
+
+function TokenRow({ token, value, usage }: { token: string; value: string; usage: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const copyToken = () => {
+    navigator.clipboard.writeText(`var(${token})`);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const isColor = value.startsWith("#") || value.startsWith("rgb");
+
+  return (
+    <div 
+      className="group flex items-center gap-4 py-3 px-4 rounded-lg transition-all cursor-pointer"
+      onClick={copyToken}
+      style={{ 
+        backgroundColor: 'var(--jtech-card-bg)',
+        border: '1px solid var(--jtech-card-border)'
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.borderColor = 'var(--jtech-card-hover-border)';
+        e.currentTarget.style.transform = 'translateX(4px)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.borderColor = 'var(--jtech-card-border)';
+        e.currentTarget.style.transform = 'translateX(0)';
+      }}
+    >
+      {isColor && (
+        <div 
+          className="w-8 h-8 rounded-md flex-shrink-0"
+          style={{ backgroundColor: value, boxShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
+        />
+      )}
+      <div className="flex-1 min-w-0">
+        <code className="text-sm font-mono" style={{ color: 'var(--jtech-heading-secondary)' }}>
+          {token}
+        </code>
+        <p className="text-xs mt-0.5" style={{ color: 'var(--jtech-text-body)' }}>{usage}</p>
+      </div>
+      <div className="flex items-center gap-2">
+        <code className="text-[10px] font-mono" style={{ color: 'var(--jtech-text-muted)' }}>
+          {value}
+        </code>
+        {copied ? (
+          <Check className="h-4 w-4" style={{ color: 'var(--dss-positive)' }} />
+        ) : (
+          <Copy className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: 'var(--jtech-text-muted)' }} />
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -414,14 +534,6 @@ export default function DssButtonPage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Agrupar props por categoria
-  const propsByCategory = propsData.reduce((acc, prop) => {
-    if (!acc[prop.category]) acc[prop.category] = [];
-    acc[prop.category].push(prop);
-    return acc;
-  }, {} as Record<string, typeof propsData>);
-
-  // Agrupar tokens por categoria
   const tokensByCategory = tokensUsed.reduce((acc, token) => {
     if (!acc[token.category]) acc[token.category] = [];
     acc[token.category].push(token);
@@ -429,72 +541,87 @@ export default function DssButtonPage() {
   }, {} as Record<string, typeof tokensUsed>);
 
   return (
-    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8" style={{ backgroundColor: 'var(--dss-surface-default)' }}>
-      {/* Header */}
+    <div 
+      className="p-6 lg:p-8 max-w-6xl mx-auto space-y-10"
+      style={{ backgroundColor: 'var(--dss-page-bg)' }}
+    >
+      {/* Hero Header - Jtech Style */}
       <PageHeader
-        title="DssButton"
-        subtitle="Botão interativo 100% compatível com a API do Quasar Framework. Implementa tokens DSS, brandability, estados avançados e acessibilidade WCAG 2.1 AA."
+        icon={Box}
         badge="Golden Sample"
         badgeVariant="accent"
+        title="Componente"
+        titleAccent="DssButton"
+        subtitle="Botão interativo 100% compatível com a API do Quasar Framework. Implementa tokens DSS, brandability completa, estados avançados e acessibilidade WCAG 2.1 AA."
+        subtitleHighlights={["tokens DSS", "brandability", "WCAG 2.1 AA"]}
         extraBadges={[
           { label: "v2.1.0", variant: "info" },
           { label: "Quasar Compatible", variant: "success" },
         ]}
       />
 
-      {/* Quick Stats */}
+      {/* Quick Stats - Jtech Style */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card style={{ backgroundColor: 'var(--dss-surface-subtle)', borderColor: 'var(--dss-gray-200)' }}>
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold" style={{ color: 'var(--dss-primary)' }}>6</div>
-            <div className="text-sm" style={{ color: 'var(--dss-text-subtle)' }}>Variantes</div>
-          </CardContent>
-        </Card>
-        <Card style={{ backgroundColor: 'var(--dss-surface-subtle)', borderColor: 'var(--dss-gray-200)' }}>
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold" style={{ color: 'var(--dss-secondary)' }}>8</div>
-            <div className="text-sm" style={{ color: 'var(--dss-text-subtle)' }}>Cores</div>
-          </CardContent>
-        </Card>
-        <Card style={{ backgroundColor: 'var(--dss-surface-subtle)', borderColor: 'var(--dss-gray-200)' }}>
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold" style={{ color: 'var(--dss-hub-600)' }}>3</div>
-            <div className="text-sm" style={{ color: 'var(--dss-text-subtle)' }}>Brands</div>
-          </CardContent>
-        </Card>
-        <Card style={{ backgroundColor: 'var(--dss-surface-subtle)', borderColor: 'var(--dss-gray-200)' }}>
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold" style={{ color: 'var(--dss-waste-600)' }}>5</div>
-            <div className="text-sm" style={{ color: 'var(--dss-text-subtle)' }}>Tamanhos</div>
-          </CardContent>
-        </Card>
+        {[
+          { value: "6", label: "Variantes", color: semanticColors.primary.bg },
+          { value: "8", label: "Cores Semânticas", color: semanticColors.secondary.bg },
+          { value: "3", label: "Brands Veolia", color: brandColors.hub.principal },
+          { value: "5", label: "Tamanhos", color: brandColors.waste.principal },
+        ].map((stat, i) => (
+          <Card 
+            key={i}
+            className="transition-all duration-300 hover:shadow-lg"
+            style={{ 
+              backgroundColor: 'var(--jtech-card-bg)', 
+              borderColor: 'var(--jtech-card-border)' 
+            }}
+          >
+            <CardContent className="p-4 text-center">
+              <div className="text-3xl font-bold" style={{ color: stat.color }}>{stat.value}</div>
+              <div className="text-sm" style={{ color: 'var(--jtech-text-body)' }}>{stat.label}</div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
-      {/* Interactive Playground */}
-      <Card style={{ backgroundColor: 'var(--dss-surface-default)', borderColor: 'var(--dss-primary)', borderWidth: '2px' }}>
+      {/* Interactive Playground - Jtech Style */}
+      <SectionHeader
+        title="Playground"
+        titleAccent="Interativo"
+        badge="Live Preview"
+      />
+
+      <Card 
+        className="overflow-hidden"
+        style={{ 
+          backgroundColor: 'var(--jtech-card-bg)', 
+          borderColor: 'var(--dss-jtech-accent)',
+          borderWidth: '2px'
+        }}
+      >
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Code className="h-5 w-5" style={{ color: 'var(--dss-primary)' }} />
-            Playground Interativo
+          <CardTitle className="flex items-center gap-2" style={{ color: 'var(--jtech-heading-secondary)' }}>
+            <Code className="h-5 w-5" style={{ color: 'var(--dss-jtech-accent)' }} />
+            Configure o Botão
           </CardTitle>
-          <CardDescription style={{ color: 'var(--dss-text-subtle)' }}>
-            Configure todas as props e veja o resultado em tempo real.
+          <CardDescription style={{ color: 'var(--jtech-text-body)' }}>
+            Selecione as props e veja o resultado em tempo real com tokens DSS reais.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Preview Area */}
           <div 
-            className="p-8 rounded-lg flex items-center justify-center min-h-[140px] relative overflow-hidden"
+            className="p-8 rounded-lg flex items-center justify-center min-h-[140px] relative"
             style={{ 
-              backgroundColor: 'var(--dss-surface-subtle)',
-              backgroundImage: 'radial-gradient(circle at 1px 1px, var(--dss-gray-300) 1px, transparent 0)',
+              backgroundColor: 'rgba(0,0,0,0.3)',
+              backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)',
               backgroundSize: '20px 20px'
             }}
           >
             <DssButtonPreview
               label="Clique aqui"
               variant={selectedVariant}
-              color={selectedColor}
+              colorKey={selectedColor}
               size={selectedSize}
               disabled={isDisabled}
               loading={isLoading}
@@ -502,6 +629,7 @@ export default function DssButtonPage() {
               brand={selectedBrand || undefined}
               icon={hasIcon ? <Save className="w-4 h-4" /> : undefined}
               iconRight={hasIconRight ? <ChevronRight className="w-4 h-4" /> : undefined}
+              showToken={true}
             />
           </div>
 
@@ -509,135 +637,148 @@ export default function DssButtonPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Variant */}
             <div className="space-y-2">
-              <label className="text-sm font-semibold" style={{ color: 'var(--dss-text-body)' }}>Variant</label>
+              <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Variant</label>
               <div className="flex flex-wrap gap-2">
                 {variants.map((v) => (
-                  <Button
+                  <button
                     key={v.name}
-                    variant={selectedVariant === v.name ? "default" : "outline"}
-                    size="sm"
                     onClick={() => setSelectedVariant(v.name)}
-                    className="text-xs"
+                    className="px-3 py-1.5 rounded text-xs font-medium transition-all"
+                    style={{
+                      backgroundColor: selectedVariant === v.name ? 'var(--dss-jtech-accent)' : 'rgba(255,255,255,0.05)',
+                      color: selectedVariant === v.name ? '#ffffff' : 'var(--jtech-text-body)',
+                      border: `1px solid ${selectedVariant === v.name ? 'var(--dss-jtech-accent)' : 'var(--jtech-card-border)'}`
+                    }}
                   >
                     {v.label}
-                  </Button>
+                  </button>
                 ))}
               </div>
             </div>
 
             {/* Color */}
             <div className="space-y-2">
-              <label className="text-sm font-semibold" style={{ color: 'var(--dss-text-body)' }}>Color</label>
+              <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Color</label>
               <div className="flex flex-wrap gap-2">
-                {[...semanticColors, ...feedbackColors].map((c) => (
-                  <Button
+                {Object.values(semanticColors).map((c) => (
+                  <button
                     key={c.name}
-                    variant={selectedColor === c.name && !selectedBrand ? "default" : "outline"}
-                    size="sm"
                     onClick={() => { setSelectedColor(c.name); setSelectedBrand(null); }}
-                    className="text-xs"
+                    className="px-2 py-1.5 rounded text-xs font-medium transition-all flex items-center gap-1.5"
+                    style={{
+                      backgroundColor: selectedColor === c.name && !selectedBrand ? c.bg : 'rgba(255,255,255,0.05)',
+                      color: selectedColor === c.name && !selectedBrand ? '#ffffff' : 'var(--jtech-text-body)',
+                      border: `1px solid ${selectedColor === c.name && !selectedBrand ? c.bg : 'var(--jtech-card-border)'}`
+                    }}
                   >
+                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: c.bg }} />
                     {c.label}
-                  </Button>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Feedback Colors */}
+            <div className="space-y-2">
+              <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Feedback</label>
+              <div className="flex flex-wrap gap-2">
+                {Object.values(feedbackColors).map((c) => (
+                  <button
+                    key={c.name}
+                    onClick={() => { setSelectedColor(c.name); setSelectedBrand(null); }}
+                    className="px-2 py-1.5 rounded text-xs font-medium transition-all flex items-center gap-1.5"
+                    style={{
+                      backgroundColor: selectedColor === c.name && !selectedBrand ? c.bg : 'rgba(255,255,255,0.05)',
+                      color: selectedColor === c.name && !selectedBrand ? (c.name === 'warning' ? '#1a1a1a' : '#ffffff') : 'var(--jtech-text-body)',
+                      border: `1px solid ${selectedColor === c.name && !selectedBrand ? c.bg : 'var(--jtech-card-border)'}`
+                    }}
+                  >
+                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: c.bg }} />
+                    {c.label}
+                  </button>
                 ))}
               </div>
             </div>
 
             {/* Brand */}
             <div className="space-y-2">
-              <label className="text-sm font-semibold" style={{ color: 'var(--dss-text-body)' }}>Brand (Veolia)</label>
+              <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Brand (Veolia)</label>
               <div className="flex flex-wrap gap-2">
-                <Button
-                  variant={!selectedBrand ? "default" : "outline"}
-                  size="sm"
+                <button
                   onClick={() => setSelectedBrand(null)}
-                  className="text-xs"
+                  className="px-3 py-1.5 rounded text-xs font-medium transition-all"
+                  style={{
+                    backgroundColor: !selectedBrand ? 'var(--dss-jtech-accent)' : 'rgba(255,255,255,0.05)',
+                    color: !selectedBrand ? '#ffffff' : 'var(--jtech-text-body)',
+                    border: `1px solid ${!selectedBrand ? 'var(--dss-jtech-accent)' : 'var(--jtech-card-border)'}`
+                  }}
                 >
                   Nenhum
-                </Button>
-                {brandColors.map((b) => (
-                  <Button
+                </button>
+                {Object.values(brandColors).map((b) => (
+                  <button
                     key={b.name}
-                    variant={selectedBrand === b.name ? "default" : "outline"}
-                    size="sm"
                     onClick={() => setSelectedBrand(b.name)}
-                    className="text-xs"
+                    className="px-2 py-1.5 rounded text-xs font-medium transition-all flex items-center gap-1.5"
+                    style={{
+                      backgroundColor: selectedBrand === b.name ? b.principal : 'rgba(255,255,255,0.05)',
+                      color: selectedBrand === b.name ? '#ffffff' : 'var(--jtech-text-body)',
+                      border: `1px solid ${selectedBrand === b.name ? b.principal : 'var(--jtech-card-border)'}`
+                    }}
                   >
-                    {b.icon} {b.label}
-                  </Button>
+                    <span>{b.icon}</span>
+                    {b.label}
+                  </button>
                 ))}
               </div>
             </div>
 
             {/* Size */}
             <div className="space-y-2">
-              <label className="text-sm font-semibold" style={{ color: 'var(--dss-text-body)' }}>Size</label>
+              <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Size</label>
               <div className="flex flex-wrap gap-2">
                 {sizes.map((s) => (
-                  <Button
+                  <button
                     key={s.name}
-                    variant={selectedSize === s.name ? "default" : "outline"}
-                    size="sm"
                     onClick={() => setSelectedSize(s.name)}
-                    className="text-xs"
+                    className="px-3 py-1.5 rounded text-xs font-medium transition-all"
+                    style={{
+                      backgroundColor: selectedSize === s.name ? 'var(--dss-jtech-accent)' : 'rgba(255,255,255,0.05)',
+                      color: selectedSize === s.name ? '#ffffff' : 'var(--jtech-text-body)',
+                      border: `1px solid ${selectedSize === s.name ? 'var(--dss-jtech-accent)' : 'var(--jtech-card-border)'}`
+                    }}
                   >
                     {s.label}
-                  </Button>
+                    {s.isDefault && <span className="ml-1 opacity-50">•</span>}
+                  </button>
                 ))}
               </div>
             </div>
 
-            {/* States */}
+            {/* States & Icons */}
             <div className="space-y-2">
-              <label className="text-sm font-semibold" style={{ color: 'var(--dss-text-body)' }}>Estados</label>
+              <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Estados & Ícones</label>
               <div className="flex flex-wrap gap-2">
-                <Button
-                  variant={isDisabled ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setIsDisabled(!isDisabled)}
-                  className="text-xs"
-                >
-                  {isDisabled ? "✓ " : ""}Disabled
-                </Button>
-                <Button
-                  variant={isLoading ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setIsLoading(!isLoading)}
-                  className="text-xs"
-                >
-                  {isLoading ? "✓ " : ""}Loading
-                </Button>
-                <Button
-                  variant={isRound ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setIsRound(!isRound)}
-                  className="text-xs"
-                >
-                  {isRound ? "✓ " : ""}Round
-                </Button>
-              </div>
-            </div>
-
-            {/* Icons */}
-            <div className="space-y-2">
-              <label className="text-sm font-semibold" style={{ color: 'var(--dss-text-body)' }}>Ícones</label>
-              <div className="flex flex-wrap gap-2">
-                <Button
-                  variant={hasIcon ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setHasIcon(!hasIcon)}
-                  className="text-xs"
-                >
-                  {hasIcon ? "✓ " : ""}Icon Left
-                </Button>
-                <Button
-                  variant={hasIconRight ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setHasIconRight(!hasIconRight)}
-                  className="text-xs"
-                >
-                  {hasIconRight ? "✓ " : ""}Icon Right
-                </Button>
+                {[
+                  { key: 'disabled', label: 'Disabled', active: isDisabled, toggle: () => setIsDisabled(!isDisabled) },
+                  { key: 'loading', label: 'Loading', active: isLoading, toggle: () => setIsLoading(!isLoading) },
+                  { key: 'round', label: 'Round', active: isRound, toggle: () => setIsRound(!isRound) },
+                  { key: 'icon', label: 'Icon Left', active: hasIcon, toggle: () => setHasIcon(!hasIcon) },
+                  { key: 'iconRight', label: 'Icon Right', active: hasIconRight, toggle: () => setHasIconRight(!hasIconRight) },
+                ].map((item) => (
+                  <button
+                    key={item.key}
+                    onClick={item.toggle}
+                    className="px-2 py-1.5 rounded text-xs font-medium transition-all"
+                    style={{
+                      backgroundColor: item.active ? 'var(--dss-positive)' : 'rgba(255,255,255,0.05)',
+                      color: item.active ? '#ffffff' : 'var(--jtech-text-body)',
+                      border: `1px solid ${item.active ? 'var(--dss-positive)' : 'var(--jtech-card-border)'}`
+                    }}
+                  >
+                    {item.active && "✓ "}{item.label}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
@@ -647,226 +788,240 @@ export default function DssButtonPage() {
             <pre 
               className="p-4 overflow-x-auto rounded-lg font-mono text-sm"
               style={{ 
-                backgroundColor: 'var(--dss-gray-900)', 
-                color: 'var(--dss-gray-100)',
-                border: '1px solid var(--dss-gray-700)'
+                backgroundColor: 'rgba(0,0,0,0.4)', 
+                color: 'var(--jtech-heading-secondary)',
+                border: '1px solid var(--jtech-card-border)'
               }}
             >
               <code>{codeExample}</code>
             </pre>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="absolute top-2 right-2"
+            <button
+              className="absolute top-2 right-2 p-2 rounded hover:bg-white/10 transition-colors"
               onClick={copyCode}
-              style={{ color: 'var(--dss-gray-400)' }}
+              style={{ color: 'var(--jtech-text-muted)' }}
             >
               {copied ? <Check className="h-4 w-4" style={{ color: 'var(--dss-positive)' }} /> : <Copy className="h-4 w-4" />}
-              <span className="ml-1 text-xs">{copied ? "Copiado!" : "Copiar"}</span>
-            </Button>
+            </button>
           </div>
         </CardContent>
       </Card>
 
-      {/* All Variants Showcase */}
+      {/* Galeria Tabs - Jtech Style */}
       <SectionHeader
-        title="Galeria de Variantes"
+        title="Galeria de"
+        titleAccent="Variantes"
         badge="6 variantes • 8 cores • 3 brands"
       />
 
       <Tabs defaultValue="variants" className="space-y-4">
-        <TabsList style={{ backgroundColor: 'var(--dss-surface-subtle)' }} className="flex-wrap h-auto p-1">
-          <TabsTrigger value="variants">Variantes</TabsTrigger>
-          <TabsTrigger value="colors">Cores</TabsTrigger>
-          <TabsTrigger value="brands">Brands</TabsTrigger>
-          <TabsTrigger value="sizes">Tamanhos</TabsTrigger>
-          <TabsTrigger value="states">Estados</TabsTrigger>
-          <TabsTrigger value="icons">Ícones</TabsTrigger>
+        <TabsList 
+          className="w-full justify-start gap-1 p-1 h-auto flex-wrap"
+          style={{ 
+            backgroundColor: 'rgba(255,255,255,0.03)',
+            borderRadius: '0.75rem'
+          }}
+        >
+          {["Variantes", "Cores", "Brands", "Tamanhos", "Estados", "Ícones"].map((tab) => (
+            <TabsTrigger 
+              key={tab.toLowerCase()}
+              value={tab.toLowerCase()}
+              className="data-[state=active]:bg-[var(--dss-jtech-accent)] data-[state=active]:text-white"
+            >
+              {tab}
+            </TabsTrigger>
+          ))}
         </TabsList>
 
-        {/* Variantes */}
-        <TabsContent value="variants">
-          <Card style={{ backgroundColor: 'var(--dss-surface-default)', borderColor: 'var(--dss-gray-200)' }}>
-            <CardHeader>
-              <CardTitle>6 Variantes Visuais</CardTitle>
-              <CardDescription style={{ color: 'var(--dss-text-subtle)' }}>
-                Cada variante define o estilo visual do botão: elevação, bordas, transparência.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {variants.map((v) => (
-                <div key={v.name} className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline">{v.name}</Badge>
-                    <span className="text-sm" style={{ color: 'var(--dss-text-subtle)' }}>{v.description}</span>
-                  </div>
-                  <div 
-                    className="flex flex-wrap gap-3 p-4 rounded-lg"
-                    style={{ backgroundColor: 'var(--dss-surface-subtle)' }}
+        {/* Variantes Tab */}
+        <TabsContent value="variantes" className="space-y-4">
+          {variants.map((v) => (
+            <Card 
+              key={v.name}
+              className="transition-all duration-300"
+              style={{ 
+                backgroundColor: 'var(--jtech-card-bg)', 
+                borderColor: 'var(--jtech-card-border)' 
+              }}
+            >
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <Badge 
+                    className="text-xs"
+                    style={{ backgroundColor: 'var(--dss-jtech-accent)', color: 'white' }}
                   >
-                    <DssButtonPreview label="Primary" variant={v.name} color="primary" />
-                    <DssButtonPreview label="Secondary" variant={v.name} color="secondary" />
-                    <DssButtonPreview label="Tertiary" variant={v.name} color="tertiary" />
-                    <DssButtonPreview label="Accent" variant={v.name} color="accent" />
-                  </div>
+                    {v.name}
+                  </Badge>
+                  <span className="text-sm" style={{ color: 'var(--jtech-text-body)' }}>{v.desc}</span>
                 </div>
-              ))}
-            </CardContent>
-          </Card>
+              </CardHeader>
+              <CardContent>
+                <div 
+                  className="flex flex-wrap gap-4 p-4 rounded-lg"
+                  style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}
+                >
+                  {Object.values(semanticColors).map((c) => (
+                    <DssButtonPreview key={c.name} label={c.label} variant={v.name} colorKey={c.name} showToken />
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </TabsContent>
 
-        {/* Cores */}
-        <TabsContent value="colors">
-          <Card style={{ backgroundColor: 'var(--dss-surface-default)', borderColor: 'var(--dss-gray-200)' }}>
+        {/* Cores Tab */}
+        <TabsContent value="cores" className="space-y-6">
+          <Card 
+            style={{ 
+              backgroundColor: 'var(--jtech-card-bg)', 
+              borderColor: 'var(--jtech-card-border)' 
+            }}
+          >
             <CardHeader>
-              <CardTitle>8 Cores Semânticas + Feedback</CardTitle>
-              <CardDescription style={{ color: 'var(--dss-text-subtle)' }}>
-                Cores semânticas para ações e feedback visual.
+              <CardTitle style={{ color: 'var(--jtech-heading-secondary)' }}>Cores Semânticas</CardTitle>
+              <CardDescription style={{ color: 'var(--jtech-text-body)' }}>
+                Cores de ação baseadas nos tokens DSS reais.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Semânticas */}
-              <div className="space-y-2">
-                <h4 className="font-medium" style={{ color: 'var(--dss-text-body)' }}>Cores de Ação</h4>
-                <div 
-                  className="flex flex-wrap gap-3 p-4 rounded-lg"
-                  style={{ backgroundColor: 'var(--dss-surface-subtle)' }}
-                >
-                  {semanticColors.map((c) => (
-                    <div key={c.name} className="text-center">
-                      <DssButtonPreview label={c.label} color={c.name} />
-                      <code className="text-xs block mt-1" style={{ color: 'var(--dss-text-subtle)' }}>{c.cssVar}</code>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              {/* Feedback */}
-              <div className="space-y-2">
-                <h4 className="font-medium" style={{ color: 'var(--dss-text-body)' }}>Cores de Feedback</h4>
-                <div 
-                  className="flex flex-wrap gap-3 p-4 rounded-lg"
-                  style={{ backgroundColor: 'var(--dss-surface-subtle)' }}
-                >
-                  {feedbackColors.map((c) => (
-                    <div key={c.name} className="text-center">
-                      <DssButtonPreview label={c.label} color={c.name} />
-                      <code className="text-xs block mt-1" style={{ color: 'var(--dss-text-subtle)' }}>{c.cssVar}</code>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              {/* Outline versions */}
-              <div className="space-y-2">
-                <h4 className="font-medium" style={{ color: 'var(--dss-text-body)' }}>Versão Outline</h4>
-                <div 
-                  className="flex flex-wrap gap-3 p-4 rounded-lg"
-                  style={{ backgroundColor: 'var(--dss-surface-subtle)' }}
-                >
-                  {[...semanticColors, ...feedbackColors].map((c) => (
-                    <DssButtonPreview key={c.name} label={c.label} color={c.name} variant="outline" />
-                  ))}
-                </div>
-              </div>
-              {/* Flat versions */}
-              <div className="space-y-2">
-                <h4 className="font-medium" style={{ color: 'var(--dss-text-body)' }}>Versão Flat</h4>
-                <div 
-                  className="flex flex-wrap gap-3 p-4 rounded-lg"
-                  style={{ backgroundColor: 'var(--dss-surface-subtle)' }}
-                >
-                  {[...semanticColors, ...feedbackColors].map((c) => (
-                    <DssButtonPreview key={c.name} label={c.label} color={c.name} variant="flat" />
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Brands */}
-        <TabsContent value="brands">
-          <Card style={{ backgroundColor: 'var(--dss-surface-default)', borderColor: 'var(--dss-gray-200)' }}>
-            <CardHeader>
-              <CardTitle>Brandability Veolia</CardTitle>
-              <CardDescription style={{ color: 'var(--dss-text-subtle)' }}>
-                Temas de marca exclusivos: Hub (🟠), Water (🔵), Waste (🟢)
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {brandColors.map((brand) => (
-                <div key={brand.name} className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl">{brand.icon}</span>
-                    <h4 className="font-semibold" style={{ color: 'var(--dss-text-body)' }}>{brand.label}</h4>
-                    <Badge variant="outline">{brand.cssVar}</Badge>
-                  </div>
-                  <div 
-                    className="p-4 rounded-lg space-y-3"
-                    style={{ backgroundColor: 'var(--dss-surface-subtle)' }}
-                  >
-                    <div className="flex flex-wrap gap-3">
-                      <DssButtonPreview label="Elevated" brand={brand.name} variant="elevated" />
-                      <DssButtonPreview label="Unelevated" brand={brand.name} variant="unelevated" />
-                      <DssButtonPreview label="Outline" brand={brand.name} variant="outline" />
-                      <DssButtonPreview label="Flat" brand={brand.name} variant="flat" />
-                      <DssButtonPreview label="Push" brand={brand.name} variant="push" />
-                      <DssButtonPreview label="Glossy" brand={brand.name} variant="glossy" />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Tamanhos */}
-        <TabsContent value="sizes">
-          <Card style={{ backgroundColor: 'var(--dss-surface-default)', borderColor: 'var(--dss-gray-200)' }}>
-            <CardHeader>
-              <CardTitle>5 Tamanhos</CardTitle>
-              <CardDescription style={{ color: 'var(--dss-text-subtle)' }}>
-                Tamanhos baseados em touch targets WCAG 2.1 AA (mínimo 44px para MD)
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Comparison */}
+            <CardContent className="space-y-4">
               <div 
-                className="flex flex-wrap items-end gap-4 p-6 rounded-lg"
-                style={{ backgroundColor: 'var(--dss-surface-subtle)' }}
+                className="flex flex-wrap gap-4 p-4 rounded-lg"
+                style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}
               >
-                {sizes.map((s) => (
-                  <div key={s.name} className="text-center">
-                    <DssButtonPreview label={s.label} size={s.name} />
-                    <div className="mt-2 text-xs" style={{ color: 'var(--dss-text-subtle)' }}>
-                      <div>{s.height}</div>
-                      <div className="font-mono">{s.fontSize}</div>
-                    </div>
-                  </div>
+                {Object.values(semanticColors).map((c) => (
+                  <DssButtonPreview key={c.name} label={c.label} colorKey={c.name} showToken />
                 ))}
               </div>
-              {/* Specs Table */}
+              
+              <h4 className="font-medium pt-4" style={{ color: 'var(--jtech-heading-tertiary)' }}>Versão Outline</h4>
+              <div 
+                className="flex flex-wrap gap-4 p-4 rounded-lg"
+                style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}
+              >
+                {Object.values(semanticColors).map((c) => (
+                  <DssButtonPreview key={c.name} label={c.label} colorKey={c.name} variant="outline" showToken />
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card 
+            style={{ 
+              backgroundColor: 'var(--jtech-card-bg)', 
+              borderColor: 'var(--jtech-card-border)' 
+            }}
+          >
+            <CardHeader>
+              <CardTitle style={{ color: 'var(--jtech-heading-secondary)' }}>Cores de Feedback</CardTitle>
+              <CardDescription style={{ color: 'var(--jtech-text-body)' }}>
+                Positive, Negative, Warning, Info - para ações de feedback.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div 
+                className="flex flex-wrap gap-4 p-4 rounded-lg"
+                style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}
+              >
+                {Object.values(feedbackColors).map((c) => (
+                  <DssButtonPreview key={c.name} label={c.label} colorKey={c.name} showToken />
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Brands Tab */}
+        <TabsContent value="brands" className="space-y-4">
+          {Object.values(brandColors).map((b) => (
+            <Card 
+              key={b.name}
+              className="overflow-hidden"
+              style={{ 
+                backgroundColor: 'var(--jtech-card-bg)', 
+                borderColor: 'var(--jtech-card-border)',
+                borderTopWidth: '3px',
+                borderTopColor: b.principal
+              }}
+            >
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">{b.icon}</span>
+                  <CardTitle style={{ color: 'var(--jtech-heading-secondary)' }}>{b.label}</CardTitle>
+                  <code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>
+                    {b.tokens.principal}
+                  </code>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {/* Color Scale Preview */}
+                <div className="flex rounded-lg overflow-hidden h-3">
+                  {Object.entries(b.scale).map(([level, color]) => (
+                    <div 
+                      key={level}
+                      className="flex-1 transition-all duration-200 hover:flex-[2]"
+                      style={{ backgroundColor: color }}
+                      title={`${level}: ${color}`}
+                    />
+                  ))}
+                </div>
+                
+                <div 
+                  className="flex flex-wrap gap-4 p-4 rounded-lg"
+                  style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}
+                >
+                  {variants.map((v) => (
+                    <DssButtonPreview key={v.name} label={v.label} variant={v.name} brand={b.name} />
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </TabsContent>
+
+        {/* Tamanhos Tab */}
+        <TabsContent value="tamanhos">
+          <Card 
+            style={{ 
+              backgroundColor: 'var(--jtech-card-bg)', 
+              borderColor: 'var(--jtech-card-border)' 
+            }}
+          >
+            <CardHeader>
+              <CardTitle style={{ color: 'var(--jtech-heading-secondary)' }}>5 Tamanhos (Touch Targets WCAG)</CardTitle>
+              <CardDescription style={{ color: 'var(--jtech-text-body)' }}>
+                Mínimo 44px para MD (WCAG 2.5.5). Tokens: --dss-touch-target-*
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div 
+                className="flex flex-wrap items-end gap-6 p-6 rounded-lg"
+                style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}
+              >
+                {sizes.map((s) => (
+                  <DssButtonPreview key={s.name} label={s.label} size={s.name} showToken />
+                ))}
+              </div>
+              
               <Table>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead>Size</TableHead>
-                    <TableHead>Height</TableHead>
-                    <TableHead>Padding</TableHead>
-                    <TableHead>Font Size</TableHead>
-                    <TableHead>Min Width</TableHead>
-                    <TableHead>Token</TableHead>
+                  <TableRow style={{ borderColor: 'var(--jtech-card-border)' }}>
+                    <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Size</TableHead>
+                    <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Height</TableHead>
+                    <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Padding</TableHead>
+                    <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Font</TableHead>
+                    <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Token</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {sizes.map((s) => (
-                    <TableRow key={s.name}>
-                      <TableCell className="font-medium">{s.label}</TableCell>
-                      <TableCell className="font-mono text-sm">{s.height}</TableCell>
-                      <TableCell className="font-mono text-sm">{s.padding}</TableCell>
-                      <TableCell className="font-mono text-sm">{s.fontSize}</TableCell>
-                      <TableCell className="font-mono text-sm">{s.minWidth}</TableCell>
-                      <TableCell className="font-mono text-sm" style={{ color: 'var(--dss-primary)' }}>
-                        --dss-touch-target-{s.name}
+                    <TableRow key={s.name} style={{ borderColor: 'var(--jtech-card-border)' }}>
+                      <TableCell className="font-medium" style={{ color: 'var(--jtech-heading-secondary)' }}>
+                        {s.label}
+                        {s.isDefault && <Badge variant="outline" className="ml-2 text-[10px]">default</Badge>}
                       </TableCell>
+                      <TableCell className="font-mono text-sm" style={{ color: 'var(--jtech-text-body)' }}>{s.height}</TableCell>
+                      <TableCell className="font-mono text-sm" style={{ color: 'var(--jtech-text-body)' }}>{s.padding}</TableCell>
+                      <TableCell className="font-mono text-sm" style={{ color: 'var(--jtech-text-body)' }}>{s.fontSize}</TableCell>
+                      <TableCell className="font-mono text-sm" style={{ color: 'var(--dss-jtech-accent)' }}>{s.token}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -875,126 +1030,93 @@ export default function DssButtonPage() {
           </Card>
         </TabsContent>
 
-        {/* Estados */}
-        <TabsContent value="states">
-          <Card style={{ backgroundColor: 'var(--dss-surface-default)', borderColor: 'var(--dss-gray-200)' }}>
+        {/* Estados Tab */}
+        <TabsContent value="estados">
+          <Card 
+            style={{ 
+              backgroundColor: 'var(--jtech-card-bg)', 
+              borderColor: 'var(--jtech-card-border)' 
+            }}
+          >
             <CardHeader>
-              <CardTitle>Estados Interativos</CardTitle>
-              <CardDescription style={{ color: 'var(--dss-text-subtle)' }}>
-                Estados visuais para feedback de interação do usuário.
-              </CardDescription>
+              <CardTitle style={{ color: 'var(--jtech-heading-secondary)' }}>Estados Interativos</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* Normal, Hover, Active, Focus */}
               <div className="space-y-3">
-                <h4 className="font-medium" style={{ color: 'var(--dss-text-body)' }}>Estados Base</h4>
+                <h4 className="font-medium" style={{ color: 'var(--jtech-heading-tertiary)' }}>Normal, Disabled, Loading</h4>
                 <div 
-                  className="flex flex-wrap gap-4 p-4 rounded-lg"
-                  style={{ backgroundColor: 'var(--dss-surface-subtle)' }}
+                  className="flex flex-wrap gap-6 p-4 rounded-lg"
+                  style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}
                 >
-                  <div className="text-center">
-                    <DssButtonPreview label="Normal" />
-                    <span className="text-xs block mt-1" style={{ color: 'var(--dss-text-subtle)' }}>default</span>
-                  </div>
-                  <div className="text-center">
-                    <DssButtonPreview label="Disabled" disabled />
-                    <span className="text-xs block mt-1" style={{ color: 'var(--dss-text-subtle)' }}>disabled</span>
-                  </div>
-                  <div className="text-center">
-                    <DssButtonPreview label="Loading" loading />
-                    <span className="text-xs block mt-1" style={{ color: 'var(--dss-text-subtle)' }}>loading</span>
-                  </div>
+                  <DssButtonPreview label="Normal" />
+                  <DssButtonPreview label="Disabled" disabled />
+                  <DssButtonPreview label="Loading" loading />
                 </div>
               </div>
-              {/* Loading with progress simulation */}
+              
               <div className="space-y-3">
-                <h4 className="font-medium" style={{ color: 'var(--dss-text-body)' }}>Loading com Progresso</h4>
-                <p className="text-sm" style={{ color: 'var(--dss-text-subtle)' }}>
-                  Use a prop <code className="px-1 py-0.5 rounded" style={{ backgroundColor: 'var(--dss-surface-subtle)' }}>percentage</code> para mostrar progresso determinístico.
-                </p>
-                <pre className="p-3 rounded-lg text-sm font-mono" style={{ backgroundColor: 'var(--dss-gray-900)', color: 'var(--dss-gray-100)' }}>
-{`<DssButton :loading="true" :percentage="45">
-  45% Completo
-</DssButton>`}
-                </pre>
-              </div>
-              {/* Shapes */}
-              <div className="space-y-3">
-                <h4 className="font-medium" style={{ color: 'var(--dss-text-body)' }}>Formas</h4>
+                <h4 className="font-medium" style={{ color: 'var(--jtech-heading-tertiary)' }}>Formas: Default, Round, FAB</h4>
                 <div 
-                  className="flex flex-wrap gap-4 p-4 rounded-lg items-center"
-                  style={{ backgroundColor: 'var(--dss-surface-subtle)' }}
+                  className="flex flex-wrap items-center gap-6 p-4 rounded-lg"
+                  style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}
                 >
-                  <div className="text-center">
-                    <DssButtonPreview label="Default" />
-                    <span className="text-xs block mt-1" style={{ color: 'var(--dss-text-subtle)' }}>border-radius: 4px</span>
-                  </div>
-                  <div className="text-center">
-                    <DssButtonPreview label="Round" round />
-                    <span className="text-xs block mt-1" style={{ color: 'var(--dss-text-subtle)' }}>round</span>
-                  </div>
-                  <div className="text-center">
-                    <DssButtonPreview 
-                      label="" 
-                      round 
-                      icon={<Plus className="w-5 h-5" />} 
-                    />
-                    <span className="text-xs block mt-1" style={{ color: 'var(--dss-text-subtle)' }}>FAB</span>
-                  </div>
+                  <DssButtonPreview label="Default" />
+                  <DssButtonPreview label="Round" round />
+                  <DssButtonPreview label="" round icon={<Plus className="w-5 h-5" />} />
                 </div>
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        {/* Ícones */}
-        <TabsContent value="icons">
-          <Card style={{ backgroundColor: 'var(--dss-surface-default)', borderColor: 'var(--dss-gray-200)' }}>
+        {/* Ícones Tab */}
+        <TabsContent value="ícones">
+          <Card 
+            style={{ 
+              backgroundColor: 'var(--jtech-card-bg)', 
+              borderColor: 'var(--jtech-card-border)' 
+            }}
+          >
             <CardHeader>
-              <CardTitle>Botões com Ícones</CardTitle>
-              <CardDescription style={{ color: 'var(--dss-text-subtle)' }}>
-                Use ícones Material Icons com as props <code>icon</code> e <code>icon-right</code>.
-              </CardDescription>
+              <CardTitle style={{ color: 'var(--jtech-heading-secondary)' }}>Botões com Ícones</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* Icon positions */}
               <div className="space-y-3">
-                <h4 className="font-medium" style={{ color: 'var(--dss-text-body)' }}>Posição do Ícone</h4>
+                <h4 className="font-medium" style={{ color: 'var(--jtech-heading-tertiary)' }}>Posição do Ícone</h4>
                 <div 
                   className="flex flex-wrap gap-4 p-4 rounded-lg"
-                  style={{ backgroundColor: 'var(--dss-surface-subtle)' }}
+                  style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}
                 >
                   <DssButtonPreview label="Salvar" icon={<Save className="w-4 h-4" />} />
                   <DssButtonPreview label="Enviar" iconRight={<Send className="w-4 h-4" />} />
                   <DssButtonPreview label="Download" icon={<Download className="w-4 h-4" />} iconRight={<ChevronRight className="w-4 h-4" />} />
                 </div>
               </div>
-              {/* Icon only */}
+              
               <div className="space-y-3">
-                <h4 className="font-medium" style={{ color: 'var(--dss-text-body)' }}>Apenas Ícone</h4>
+                <h4 className="font-medium" style={{ color: 'var(--jtech-heading-tertiary)' }}>Apenas Ícone</h4>
                 <div 
-                  className="flex flex-wrap gap-4 p-4 rounded-lg items-center"
-                  style={{ backgroundColor: 'var(--dss-surface-subtle)' }}
+                  className="flex flex-wrap items-center gap-4 p-4 rounded-lg"
+                  style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}
                 >
                   <DssButtonPreview label="" icon={<Plus className="w-4 h-4" />} size="xs" />
                   <DssButtonPreview label="" icon={<Settings className="w-4 h-4" />} size="sm" />
                   <DssButtonPreview label="" icon={<Menu className="w-5 h-5" />} size="md" />
-                  <DssButtonPreview label="" icon={<Heart className="w-5 h-5" />} size="lg" color="negative" />
-                  <DssButtonPreview label="" icon={<Trash2 className="w-6 h-6" />} size="xl" variant="outline" color="negative" />
+                  <DssButtonPreview label="" icon={<Heart className="w-5 h-5" />} size="lg" colorKey="negative" />
+                  <DssButtonPreview label="" icon={<Trash2 className="w-6 h-6" />} size="xl" variant="outline" colorKey="negative" />
                 </div>
               </div>
-              {/* Common patterns */}
+              
               <div className="space-y-3">
-                <h4 className="font-medium" style={{ color: 'var(--dss-text-body)' }}>Padrões Comuns</h4>
+                <h4 className="font-medium" style={{ color: 'var(--jtech-heading-tertiary)' }}>Padrões Comuns</h4>
                 <div 
                   className="flex flex-wrap gap-4 p-4 rounded-lg"
-                  style={{ backgroundColor: 'var(--dss-surface-subtle)' }}
+                  style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}
                 >
-                  <DssButtonPreview label="Upload" icon={<Upload className="w-4 h-4" />} color="info" />
+                  <DssButtonPreview label="Upload" icon={<Upload className="w-4 h-4" />} colorKey="info" />
                   <DssButtonPreview label="Continuar" iconRight={<ArrowRight className="w-4 h-4" />} />
-                  <DssButtonPreview label="Excluir" icon={<Trash2 className="w-4 h-4" />} color="negative" variant="outline" />
+                  <DssButtonPreview label="Excluir" icon={<Trash2 className="w-4 h-4" />} colorKey="negative" variant="outline" />
                   <DssButtonPreview label="Ver" icon={<Eye className="w-4 h-4" />} variant="flat" />
-                  <DssButtonPreview label="Ocultar" icon={<EyeOff className="w-4 h-4" />} variant="flat" color="secondary" />
                 </div>
               </div>
             </CardContent>
@@ -1002,195 +1124,89 @@ export default function DssButtonPage() {
         </TabsContent>
       </Tabs>
 
-      {/* Documentation Tabs */}
+      {/* Tokens Section */}
       <SectionHeader
-        title="Documentação Técnica"
-        badge="Props • Eventos • Tokens • Anatomia"
+        title="Tokens DSS"
+        titleAccent="Utilizados"
+        badge={`${tokensUsed.length} tokens`}
       />
 
-      <Tabs defaultValue="props" className="space-y-4">
-        <TabsList style={{ backgroundColor: 'var(--dss-surface-subtle)' }}>
-          <TabsTrigger value="props">Props</TabsTrigger>
-          <TabsTrigger value="events">Eventos</TabsTrigger>
-          <TabsTrigger value="tokens">Tokens</TabsTrigger>
-          <TabsTrigger value="anatomy">Anatomia</TabsTrigger>
-        </TabsList>
-
-        {/* Props */}
-        <TabsContent value="props">
-          <Card style={{ backgroundColor: 'var(--dss-surface-default)', borderColor: 'var(--dss-gray-200)' }}>
-            <CardHeader>
-              <CardTitle>Props Completas ({propsData.length})</CardTitle>
-              <CardDescription style={{ color: 'var(--dss-text-subtle)' }}>
-                100% compatível com a API do Quasar QBtn + extensões DSS.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {Object.entries(propsByCategory).map(([category, props]) => (
-                <div key={category} className="space-y-2">
-                  <h4 className="font-semibold flex items-center gap-2" style={{ color: 'var(--dss-text-body)' }}>
-                    <Badge variant="outline">{category}</Badge>
-                  </h4>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead style={{ width: '150px' }}>Prop</TableHead>
-                        <TableHead>Tipo</TableHead>
-                        <TableHead style={{ width: '100px' }}>Default</TableHead>
-                        <TableHead>Descrição</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {props.map((row) => (
-                        <TableRow key={row.prop}>
-                          <TableCell className="font-mono" style={{ color: 'var(--dss-primary)' }}>{row.prop}</TableCell>
-                          <TableCell className="font-mono text-xs" style={{ color: 'var(--dss-text-subtle)' }}>{row.type}</TableCell>
-                          <TableCell className="font-mono text-sm" style={{ color: 'var(--dss-text-subtle)' }}>{row.default}</TableCell>
-                          <TableCell>{row.description}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Events */}
-        <TabsContent value="events">
-          <Card style={{ backgroundColor: 'var(--dss-surface-default)', borderColor: 'var(--dss-gray-200)' }}>
-            <CardHeader>
-              <CardTitle>Eventos</CardTitle>
-              <CardDescription style={{ color: 'var(--dss-text-subtle)' }}>Eventos emitidos pelo componente.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Evento</TableHead>
-                    <TableHead>Payload</TableHead>
-                    <TableHead>Descrição</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {eventsData.map((row) => (
-                    <TableRow key={row.event}>
-                      <TableCell className="font-mono" style={{ color: 'var(--dss-primary)' }}>{row.event}</TableCell>
-                      <TableCell className="font-mono text-sm">{row.payload}</TableCell>
-                      <TableCell>{row.description}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-              {/* Example */}
-              <div className="mt-6">
-                <h4 className="font-medium mb-2" style={{ color: 'var(--dss-text-body)' }}>Exemplo de Uso</h4>
-                <pre className="p-4 rounded-lg text-sm font-mono" style={{ backgroundColor: 'var(--dss-gray-900)', color: 'var(--dss-gray-100)' }}>
-{`<DssButton @click="handleClick" label="Clique" />
-
-<script setup>
-function handleClick(event) {
-  console.log('Botão clicado!', event)
-}
-</script>`}
-                </pre>
+      <div className="space-y-4">
+        {Object.entries(tokensByCategory).map(([category, tokens]) => (
+          <Card 
+            key={category}
+            style={{ 
+              backgroundColor: 'var(--jtech-card-bg)', 
+              borderColor: 'var(--jtech-card-border)' 
+            }}
+          >
+            <CardHeader className="pb-3">
+              <div className="flex items-center gap-2">
+                <Palette className="h-4 w-4" style={{ color: 'var(--dss-jtech-accent)' }} />
+                <CardTitle className="text-base" style={{ color: 'var(--jtech-heading-secondary)' }}>{category}</CardTitle>
+                <Badge variant="outline" className="text-xs">{tokens.length}</Badge>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Tokens */}
-        <TabsContent value="tokens">
-          <Card style={{ backgroundColor: 'var(--dss-surface-default)', borderColor: 'var(--dss-gray-200)' }}>
-            <CardHeader>
-              <CardTitle>Tokens DSS Utilizados ({tokensUsed.length})</CardTitle>
-              <CardDescription style={{ color: 'var(--dss-text-subtle)' }}>
-                Design tokens aplicados neste componente. Zero hardcoding.
-              </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
-              {Object.entries(tokensByCategory).map(([category, tokens]) => (
-                <div key={category} className="space-y-2">
-                  <h4 className="font-semibold flex items-center gap-2" style={{ color: 'var(--dss-text-body)' }}>
-                    <Badge variant="outline">{category}</Badge>
-                    <span className="text-sm font-normal" style={{ color: 'var(--dss-text-subtle)' }}>({tokens.length} tokens)</span>
-                  </h4>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead style={{ width: '250px' }}>Token</TableHead>
-                        <TableHead style={{ width: '200px' }}>Valor</TableHead>
-                        <TableHead>Uso</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {tokens.map((t) => (
-                        <TokenRow key={t.token} token={t.token} value={t.value} usage={t.usage} />
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
+            <CardContent className="space-y-2">
+              {tokens.map((t) => (
+                <TokenRow key={t.token} token={t.token} value={t.value} usage={t.usage} />
               ))}
             </CardContent>
           </Card>
-        </TabsContent>
+        ))}
+      </div>
 
-        {/* Anatomy */}
-        <TabsContent value="anatomy">
-          <Card style={{ backgroundColor: 'var(--dss-surface-default)', borderColor: 'var(--dss-gray-200)' }}>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Layers className="h-5 w-5" style={{ color: 'var(--dss-primary)' }} />
-                Anatomia - 4 Camadas DSS
-              </CardTitle>
-              <CardDescription style={{ color: 'var(--dss-text-subtle)' }}>
-                Arquitetura modular do componente seguindo as 4 camadas DSS.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {anatomyLayers.map((layer) => (
-                <div 
-                  key={layer.layer}
-                  className="p-4 rounded-lg border-l-4"
-                  style={{ 
-                    backgroundColor: layer.color, 
-                    borderLeftColor: layer.layer === 1 ? 'var(--dss-hub-500)' : 
-                                     layer.layer === 2 ? 'var(--dss-water-500)' : 
-                                     layer.layer === 3 ? 'var(--dss-waste-500)' : 'var(--dss-tertiary)'
-                  }}
-                >
-                  <div className="flex items-center gap-3 mb-2">
-                    <Badge style={{ 
-                      backgroundColor: layer.layer === 1 ? 'var(--dss-hub-500)' : 
-                                       layer.layer === 2 ? 'var(--dss-water-500)' : 
-                                       layer.layer === 3 ? 'var(--dss-waste-500)' : 'var(--dss-tertiary)',
-                      color: 'white'
-                    }}>
-                      Layer {layer.layer}
-                    </Badge>
-                    <span className="font-semibold" style={{ color: 'var(--dss-text-body)' }}>{layer.name}</span>
-                  </div>
-                  <code className="text-sm block mb-2" style={{ color: 'var(--dss-primary)' }}>{layer.file}</code>
-                  <p className="text-sm mb-2" style={{ color: 'var(--dss-text-subtle)' }}>{layer.description}</p>
-                  <div className="flex flex-wrap gap-1">
-                    {layer.tokens.map((token, i) => (
-                      <code 
-                        key={i} 
-                        className="text-xs px-2 py-0.5 rounded"
-                        style={{ backgroundColor: 'var(--dss-surface-default)', color: 'var(--dss-text-subtle)' }}
-                      >
-                        {token}
-                      </code>
-                    ))}
-                  </div>
-                </div>
-              ))}
+      {/* Anatomia */}
+      <SectionHeader
+        title="Anatomia"
+        titleAccent="4 Camadas"
+        badge="Arquitetura DSS"
+      />
 
-              {/* File structure */}
-              <div className="mt-6">
-                <h4 className="font-medium mb-3" style={{ color: 'var(--dss-text-body)' }}>Estrutura de Arquivos</h4>
-                <pre className="p-4 rounded-lg text-sm font-mono" style={{ backgroundColor: 'var(--dss-gray-900)', color: 'var(--dss-gray-100)' }}>
+      <Card 
+        style={{ 
+          backgroundColor: 'var(--jtech-card-bg)', 
+          borderColor: 'var(--jtech-card-border)' 
+        }}
+      >
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2" style={{ color: 'var(--jtech-heading-secondary)' }}>
+            <Layers className="h-5 w-5" style={{ color: 'var(--dss-jtech-accent)' }} />
+            Arquitetura Modular DSS
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {anatomyLayers.map((layer) => (
+            <div 
+              key={layer.layer}
+              className="p-4 rounded-lg border-l-4 transition-all hover:translate-x-1"
+              style={{ 
+                backgroundColor: `${layer.color}15`,
+                borderLeftColor: layer.color
+              }}
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <Badge style={{ backgroundColor: layer.color, color: '#ffffff' }}>
+                  Layer {layer.layer}
+                </Badge>
+                <span className="font-semibold" style={{ color: 'var(--jtech-heading-secondary)' }}>{layer.name}</span>
+              </div>
+              <code className="text-sm block mb-1" style={{ color: layer.color }}>{layer.file}</code>
+              <p className="text-sm" style={{ color: 'var(--jtech-text-body)' }}>{layer.desc}</p>
+            </div>
+          ))}
+
+          {/* File structure */}
+          <div className="mt-6">
+            <h4 className="font-medium mb-3" style={{ color: 'var(--jtech-heading-tertiary)' }}>Estrutura de Arquivos</h4>
+            <pre 
+              className="p-4 rounded-lg text-sm font-mono overflow-x-auto"
+              style={{ 
+                backgroundColor: 'rgba(0,0,0,0.4)', 
+                color: 'var(--jtech-text-body)',
+                border: '1px solid var(--jtech-card-border)'
+              }}
+            >
 {`components/base/DssButton/
 ├── 1-structure/
 │   └── DssButton.vue          # Template + Props + Logic
@@ -1209,17 +1225,22 @@ function handleClick(event) {
 │   └── _states.scss           # Hover, active, focus
 ├── DssButton.module.scss      # Entry point (@use layers)
 └── index.js                   # Export`}
-                </pre>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+            </pre>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Accessibility */}
-      <Card style={{ backgroundColor: 'var(--dss-surface-default)', borderColor: 'var(--dss-gray-200)' }}>
+      <Card 
+        style={{ 
+          backgroundColor: 'var(--jtech-card-bg)', 
+          borderColor: 'var(--jtech-card-border)',
+          borderTopWidth: '3px',
+          borderTopColor: 'var(--dss-positive)'
+        }}
+      >
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className="flex items-center gap-2" style={{ color: 'var(--jtech-heading-secondary)' }}>
             <FileText className="h-5 w-5" style={{ color: 'var(--dss-positive)' }} />
             Acessibilidade WCAG 2.1 AA
           </CardTitle>
@@ -1227,33 +1248,32 @@ function handleClick(event) {
         <CardContent>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-3">
-              <h4 className="font-medium" style={{ color: 'var(--dss-text-body)' }}>✅ Implementado</h4>
-              <ul className="space-y-2 text-sm" style={{ color: 'var(--dss-text-subtle)' }}>
-                <li className="flex items-start gap-2">
-                  <Check className="h-4 w-4 mt-0.5 text-[var(--dss-positive)]" />
-                  <span>Touch target mínimo 44x44px (WCAG 2.5.5)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="h-4 w-4 mt-0.5 text-[var(--dss-positive)]" />
-                  <span>Focus ring visível com <code>:focus-visible</code></span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="h-4 w-4 mt-0.5 text-[var(--dss-positive)]" />
-                  <span>Contraste mínimo 4.5:1 em todas as cores</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="h-4 w-4 mt-0.5 text-[var(--dss-positive)]" />
-                  <span>Respeita <code>prefers-reduced-motion</code></span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="h-4 w-4 mt-0.5 text-[var(--dss-positive)]" />
-                  <span>Suporte a <code>prefers-contrast: high</code></span>
-                </li>
+              <h4 className="font-medium" style={{ color: 'var(--jtech-heading-tertiary)' }}>✅ Implementado</h4>
+              <ul className="space-y-2 text-sm" style={{ color: 'var(--jtech-text-body)' }}>
+                {[
+                  "Touch target mínimo 44x44px (WCAG 2.5.5)",
+                  "Focus ring visível com :focus-visible",
+                  "Contraste mínimo 4.5:1 em todas as cores",
+                  "Respeita prefers-reduced-motion",
+                  "Suporte a prefers-contrast: high"
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <Check className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: 'var(--dss-positive)' }} />
+                    <span>{item}</span>
+                  </li>
+                ))}
               </ul>
             </div>
             <div className="space-y-3">
-              <h4 className="font-medium" style={{ color: 'var(--dss-text-body)' }}>📋 Media Queries</h4>
-              <pre className="p-3 rounded-lg text-xs font-mono" style={{ backgroundColor: 'var(--dss-gray-900)', color: 'var(--dss-gray-100)' }}>
+              <h4 className="font-medium" style={{ color: 'var(--jtech-heading-tertiary)' }}>📋 Media Queries</h4>
+              <pre 
+                className="p-3 rounded-lg text-xs font-mono overflow-x-auto"
+                style={{ 
+                  backgroundColor: 'rgba(0,0,0,0.4)', 
+                  color: 'var(--jtech-text-body)',
+                  border: '1px solid var(--jtech-card-border)'
+                }}
+              >
 {`/* High contrast mode */
 @media (prefers-contrast: high) {
   .dss-button {
@@ -1266,7 +1286,6 @@ function handleClick(event) {
 @media (prefers-reduced-motion: reduce) {
   .dss-button {
     transition: none !important;
-    animation: none !important;
   }
 }`}
               </pre>
