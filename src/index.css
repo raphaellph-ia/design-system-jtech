@@ -428,6 +428,35 @@
     --dss-page-bg: #141414;
     --dss-page-bg-alt: #1A1A1A;
 
+    /* =========================================
+       JTECH UI TYPOGRAPHY - Títulos & Subtítulos
+       Padrão visual do site institucional
+       ========================================= */
+    
+    /* Títulos - Escala de cinza clara (white/gray) */
+    --jtech-heading-primary: #FFFFFF;
+    --jtech-heading-secondary: #E5E5E5;
+    --jtech-heading-tertiary: #B3B3B3;
+    
+    /* Subtítulos e texto - Cinza médio */
+    --jtech-text-body: #999999;
+    --jtech-text-muted: #666666;
+    --jtech-text-subtle: #4D4D4D;
+    
+    /* Accent para destaques em títulos */
+    --jtech-accent-text: var(--dss-jtech-accent);
+    --jtech-accent-text-light: var(--dss-jtech-accent-light);
+    
+    /* Badges e labels */
+    --jtech-badge-bg: rgba(196, 30, 58, 0.15);
+    --jtech-badge-text: var(--dss-jtech-accent-light);
+    --jtech-badge-border: rgba(196, 30, 58, 0.3);
+    
+    /* Cards e containers (estrutura, não demo) */
+    --jtech-card-bg: rgba(255, 255, 255, 0.03);
+    --jtech-card-border: rgba(255, 255, 255, 0.08);
+    --jtech-card-hover-border: rgba(196, 30, 58, 0.4);
+
     /* DSS Code blocks */
     --dss-code-bg: 0 0% 10%;
     --dss-code-border: 0 0% 18%;

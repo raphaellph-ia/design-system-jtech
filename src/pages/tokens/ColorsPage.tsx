@@ -1,11 +1,14 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Copy, Check, Palette, Droplets, Leaf, Sun, AlertTriangle, CheckCircle2, Info, XCircle } from "lucide-react";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { Copy, Check, Palette, Droplets, Leaf, Sun, AlertTriangle, CheckCircle2, Info, XCircle, Lightbulb } from "lucide-react";
 import { useState } from "react";
 
 // =============================================
 // DSS TOKENS - Conforme DSS_TOKEN_GUIDELINES.md
+// Estas paletas são para DEMONSTRAÇÃO do Design System
 // =============================================
 
 // Escala de Cinza (11 tokens)
@@ -23,7 +26,7 @@ const grayScale = [
   { token: "--dss-gray-950", value: "#000000", level: "950", desc: "Preto puro" },
 ];
 
-// Paletas de Marca
+// Paletas de Marca (DSS Demo)
 const brandHub = [
   { token: "--dss-hub-50", value: "#fff9ed", level: "50", desc: "Mais claro" },
   { token: "--dss-hub-100", value: "#fef2d6", level: "100", desc: "Claro" },
@@ -66,7 +69,7 @@ const brandWaste = [
   { token: "--dss-waste-950", value: "#042a1e", level: "950", desc: "🎯 Deep", state: "deep" },
 ];
 
-// Cores de Feedback
+// Cores de Feedback (DSS Demo)
 const feedbackColors = [
   { 
     category: "success",
@@ -126,7 +129,7 @@ const feedbackColors = [
   }
 ];
 
-// Marcas resumo
+// Marcas resumo (DSS Demo)
 const brandsSummary = [
   { 
     name: "Sansys Hub", 
@@ -180,11 +183,11 @@ function ColorSwatch({ token, value, desc, level, state }: ColorSwatchProps) {
 
   const getStateBadge = (state?: string) => {
     const styles = {
-      principal: { bg: 'var(--dss-positive)', color: 'white', label: 'PRINCIPAL' },
-      hover: { bg: 'var(--dss-water-500)', color: 'white', label: 'HOVER' },
-      light: { bg: 'var(--dss-warning)', color: 'var(--dss-gray-900)', label: 'LIGHT' },
-      disable: { bg: 'var(--dss-gray-400)', color: 'white', label: 'DISABLE' },
-      deep: { bg: 'var(--dss-gray-800)', color: 'white', label: 'DEEP' },
+      principal: { bg: '#4dd228', color: 'white', label: 'PRINCIPAL' },
+      hover: { bg: '#0e88e4', color: 'white', label: 'HOVER' },
+      light: { bg: '#fabd14', color: '#1a1a1a', label: 'LIGHT' },
+      disable: { bg: '#666666', color: 'white', label: 'DISABLE' },
+      deep: { bg: '#262626', color: 'white', label: 'DEEP' },
     };
     
     if (!state || !styles[state as keyof typeof styles]) return null;
@@ -204,16 +207,16 @@ function ColorSwatch({ token, value, desc, level, state }: ColorSwatchProps) {
     <div 
       className="flex items-center gap-3 p-3 rounded-lg transition-all duration-200 cursor-pointer group"
       style={{ 
-        backgroundColor: 'var(--dss-surface-default)',
-        border: '1px solid var(--dss-gray-200)'
+        backgroundColor: 'var(--jtech-card-bg)',
+        border: '1px solid var(--jtech-card-border)'
       }}
       onClick={handleCopy}
       onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = 'var(--dss-hub-600)';
+        e.currentTarget.style.borderColor = 'var(--jtech-card-hover-border)';
         e.currentTarget.style.transform = 'translateX(4px)';
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = 'var(--dss-gray-200)';
+        e.currentTarget.style.borderColor = 'var(--jtech-card-border)';
         e.currentTarget.style.transform = 'translateX(0)';
       }}
     >
@@ -221,7 +224,7 @@ function ColorSwatch({ token, value, desc, level, state }: ColorSwatchProps) {
         className="h-10 w-10 rounded-lg flex-shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-110"
         style={{ 
           backgroundColor: value,
-          boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+          boxShadow: '0 2px 8px rgba(0,0,0,0.4)'
         }}
       >
         {copied && (
@@ -235,7 +238,7 @@ function ColorSwatch({ token, value, desc, level, state }: ColorSwatchProps) {
         <div className="flex items-center gap-2 mb-0.5">
           <code 
             className="text-xs font-mono font-medium"
-            style={{ color: 'var(--dss-text-body)' }}
+            style={{ color: 'var(--jtech-heading-secondary)' }}
           >
             {token}
           </code>
@@ -246,14 +249,14 @@ function ColorSwatch({ token, value, desc, level, state }: ColorSwatchProps) {
             <span 
               className="text-[10px] font-semibold px-1.5 py-0.5 rounded"
               style={{ 
-                backgroundColor: 'var(--dss-surface-subtle)', 
-                color: 'var(--dss-text-subtle)' 
+                backgroundColor: 'rgba(255,255,255,0.05)', 
+                color: 'var(--jtech-text-muted)' 
               }}
             >
               {level}
             </span>
           )}
-          <span className="text-xs" style={{ color: 'var(--dss-text-subtle)' }}>
+          <span className="text-xs" style={{ color: 'var(--jtech-text-body)' }}>
             {desc}
           </span>
         </div>
@@ -261,14 +264,14 @@ function ColorSwatch({ token, value, desc, level, state }: ColorSwatchProps) {
       <div className="flex items-center gap-2">
         <code 
           className="text-[10px] font-mono uppercase"
-          style={{ color: 'var(--dss-text-subtle)' }}
+          style={{ color: 'var(--jtech-text-muted)' }}
         >
           {value}
         </code>
         <Copy 
           size={12} 
           className="opacity-0 group-hover:opacity-100 transition-opacity"
-          style={{ color: 'var(--dss-text-subtle)' }}
+          style={{ color: 'var(--jtech-text-muted)' }}
         />
       </div>
     </div>
@@ -290,10 +293,10 @@ function BrandPaletteSection({
 }) {
   return (
     <Card 
-      className="transition-all duration-300 hover:shadow-lg"
+      className="transition-all duration-300 hover:shadow-lg overflow-hidden"
       style={{ 
-        backgroundColor: 'var(--dss-surface-default)', 
-        borderColor: 'var(--dss-gray-200)' 
+        backgroundColor: 'var(--jtech-card-bg)', 
+        borderColor: 'var(--jtech-card-border)' 
       }}
     >
       <CardHeader className="pb-4">
@@ -305,8 +308,8 @@ function BrandPaletteSection({
             <Icon className="h-6 w-6 text-white" />
           </div>
           <div>
-            <CardTitle style={{ color: 'var(--dss-text-body)' }}>{title}</CardTitle>
-            <CardDescription style={{ color: 'var(--dss-text-subtle)' }}>
+            <CardTitle style={{ color: 'var(--jtech-heading-secondary)' }}>{title}</CardTitle>
+            <CardDescription style={{ color: 'var(--jtech-text-body)' }}>
               {description}
             </CardDescription>
           </div>
@@ -350,10 +353,10 @@ function FeedbackCard({
 }) {
   return (
     <Card 
-      className="transition-all duration-300 hover:shadow-lg"
+      className="transition-all duration-300 hover:shadow-lg overflow-hidden"
       style={{ 
-        backgroundColor: 'var(--dss-surface-default)', 
-        borderColor: 'var(--dss-gray-200)',
+        backgroundColor: 'var(--jtech-card-bg)', 
+        borderColor: 'var(--jtech-card-border)',
         borderTopWidth: '3px',
         borderTopColor: principal
       }}
@@ -367,10 +370,10 @@ function FeedbackCard({
             <Icon className="h-5 w-5 text-white" />
           </div>
           <div>
-            <CardTitle className="text-base" style={{ color: 'var(--dss-text-body)' }}>
+            <CardTitle className="text-base" style={{ color: 'var(--jtech-heading-secondary)' }}>
               {title}
             </CardTitle>
-            <CardDescription className="text-xs" style={{ color: 'var(--dss-text-subtle)' }}>
+            <CardDescription className="text-xs" style={{ color: 'var(--jtech-text-body)' }}>
               {desc}
             </CardDescription>
           </div>
@@ -389,177 +392,160 @@ export default function ColorsPage() {
   return (
     <div 
       className="p-6 lg:p-8 max-w-6xl mx-auto space-y-10"
-      style={{ backgroundColor: 'var(--dss-surface-default)' }}
+      style={{ backgroundColor: 'var(--dss-page-bg)' }}
     >
-      {/* Hero Section */}
+      {/* Hero Section - Jtech Style */}
+      <PageHeader
+        icon={Palette}
+        badge="Fundações"
+        badgeVariant="accent"
+        title="Sistema de"
+        titleAccent="Cores"
+        subtitle="Paleta completa de cores do DSS incluindo escalas de cinza, cores de marca e tokens de feedback. Clique em qualquer cor para copiar."
+        subtitleHighlights={["escalas de cinza", "cores de marca", "tokens de feedback"]}
+        extraBadges={[
+          { label: "200+ Tokens", variant: "info" }
+        ]}
+      />
+
+      {/* Brands Summary - Demo Section */}
       <section className="space-y-4">
-        <div className="flex items-center gap-2 flex-wrap">
-          <Badge 
-            variant="outline" 
-            style={{ borderColor: 'var(--dss-hub-600)', color: 'var(--dss-hub-600)' }}
-          >
-            Fundações
-          </Badge>
-          <Badge 
-            style={{ backgroundColor: 'var(--dss-feedback-info-surface)', color: 'var(--dss-info)' }}
-          >
-            200+ Tokens
-          </Badge>
-        </div>
-        
-        <h1 
-          className="text-3xl lg:text-4xl font-bold"
-          style={{ color: 'var(--dss-text-body)' }}
-        >
-          <Palette className="inline-block h-8 w-8 mr-3" style={{ color: 'var(--dss-hub-600)' }} />
-          Sistema de{" "}
-          <span style={{ color: 'var(--dss-hub-600)' }}>Cores</span>
-        </h1>
-        
-        <p 
-          className="text-lg max-w-3xl"
-          style={{ color: 'var(--dss-text-subtle)' }}
-        >
-          Paleta completa de cores do DSS incluindo <strong style={{ color: 'var(--dss-text-body)' }}>escalas de cinza</strong>, 
-          cores de <strong style={{ color: 'var(--dss-text-body)' }}>marca</strong> e tokens de{" "}
-          <strong style={{ color: 'var(--dss-text-body)' }}>feedback</strong>. Clique em qualquer cor para copiar.
-        </p>
-      </section>
-
-      {/* Brands Summary */}
-      <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {brandsSummary.map((brand) => (
-          <Card 
-            key={brand.name}
-            className="transition-all duration-300 hover:shadow-lg group cursor-pointer"
-            style={{ 
-              backgroundColor: 'var(--dss-surface-default)', 
-              borderColor: 'var(--dss-gray-200)' 
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = brand.principal;
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = 'var(--dss-gray-200)';
-            }}
-          >
-            <CardContent className="p-4 flex items-center gap-4">
-              <div 
-                className="h-12 w-12 rounded-lg flex items-center justify-center transition-transform duration-200 group-hover:scale-110"
-                style={{ backgroundColor: brand.principal }}
-              >
-                <brand.icon className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <p className="font-semibold" style={{ color: 'var(--dss-text-body)' }}>
-                  {brand.name}
-                </p>
-                <p className="text-xs" style={{ color: 'var(--dss-text-subtle)' }}>
-                  {brand.description}
-                </p>
-                <code 
-                  className="text-[10px] mt-1 block"
-                  style={{ color: brand.principal }}
+        <SectionHeader 
+          title="Marcas" 
+          titleAccent="DSS"
+          badge="Demo"
+          variant="accent"
+        />
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {brandsSummary.map((brand) => (
+            <Card 
+              key={brand.name}
+              className="transition-all duration-300 hover:shadow-lg group cursor-pointer"
+              style={{ 
+                backgroundColor: 'var(--jtech-card-bg)', 
+                borderColor: 'var(--jtech-card-border)' 
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = brand.principal;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'var(--jtech-card-border)';
+              }}
+            >
+              <CardContent className="p-4 flex items-center gap-4">
+                <div 
+                  className="h-12 w-12 rounded-lg flex items-center justify-center transition-transform duration-200 group-hover:scale-110"
+                  style={{ backgroundColor: brand.principal }}
                 >
-                  {brand.principal}
-                </code>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+                  <brand.icon className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <p className="font-semibold" style={{ color: 'var(--jtech-heading-secondary)' }}>
+                    {brand.name}
+                  </p>
+                  <p className="text-xs" style={{ color: 'var(--jtech-text-body)' }}>
+                    {brand.description}
+                  </p>
+                  <code 
+                    className="text-[10px] mt-1 block font-mono"
+                    style={{ color: brand.principal }}
+                  >
+                    {brand.principal}
+                  </code>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </section>
 
-      {/* Tabs Navigation */}
+      {/* Tabs Navigation - Jtech Style */}
       <Tabs defaultValue="brands" className="space-y-6">
         <TabsList 
           className="w-full justify-start gap-1 p-1 h-auto flex-wrap"
           style={{ 
-            backgroundColor: 'var(--dss-surface-subtle)',
-            borderRadius: '12px'
+            backgroundColor: 'rgba(255,255,255,0.03)',
+            borderRadius: '0.75rem'
           }}
         >
-          {[
-            { value: 'brands', label: 'Marcas', count: 33 },
-            { value: 'gray', label: 'Escala de Cinza', count: 11 },
-            { value: 'feedback', label: 'Feedback', count: 20 },
-          ].map((tab) => (
-            <TabsTrigger 
-              key={tab.value}
-              value={tab.value}
-              className="data-[state=active]:shadow-sm transition-all duration-200 px-4 py-2"
-              style={{
-                borderRadius: '8px',
-              }}
-            >
-              <span>{tab.label}</span>
-              <Badge 
-                variant="secondary" 
-                className="ml-2 text-[10px] h-5"
-                style={{ 
-                  backgroundColor: 'var(--dss-surface-default)',
-                  color: 'var(--dss-text-subtle)'
-                }}
-              >
-                {tab.count}
-              </Badge>
-            </TabsTrigger>
-          ))}
+          <TabsTrigger 
+            value="brands" 
+            className="data-[state=active]:bg-[var(--dss-jtech-accent)] data-[state=active]:text-white rounded-lg px-4 py-2 text-sm font-medium transition-all"
+            style={{ color: 'var(--jtech-text-body)' }}
+          >
+            <Sun className="h-4 w-4 mr-2" />
+            Marcas
+          </TabsTrigger>
+          <TabsTrigger 
+            value="grayscale" 
+            className="data-[state=active]:bg-[var(--dss-jtech-accent)] data-[state=active]:text-white rounded-lg px-4 py-2 text-sm font-medium transition-all"
+            style={{ color: 'var(--jtech-text-body)' }}
+          >
+            Escala de Cinza
+          </TabsTrigger>
+          <TabsTrigger 
+            value="feedback" 
+            className="data-[state=active]:bg-[var(--dss-jtech-accent)] data-[state=active]:text-white rounded-lg px-4 py-2 text-sm font-medium transition-all"
+            style={{ color: 'var(--jtech-text-body)' }}
+          >
+            <AlertTriangle className="h-4 w-4 mr-2" />
+            Feedback
+          </TabsTrigger>
         </TabsList>
 
         {/* Brands Tab */}
-        <TabsContent value="brands" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <BrandPaletteSection 
+        <TabsContent value="brands" className="space-y-6 mt-6">
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+            <BrandPaletteSection
               title="Sansys Hub"
               icon={Sun}
               colors={brandHub}
               principal="#ef7a11"
-              description="Principal=600 | Light=300 | Disable=200 | Hover=800 | Deep=950"
+              description="Plataforma central de gestão"
             />
-            <BrandPaletteSection 
+            <BrandPaletteSection
               title="Sansys Water"
               icon={Droplets}
               colors={brandWater}
               principal="#0e88e4"
-              description="Principal=500 | Light=300 | Disable=200 | Hover=700 | Deep=950"
+              description="Gestão de recursos hídricos"
             />
-            <BrandPaletteSection 
+            <BrandPaletteSection
               title="Sansys Waste"
               icon={Leaf}
               colors={brandWaste}
               principal="#0b8154"
-              description="Principal=600 | Light=300 | Disable=200 | Hover=800 | Deep=950"
+              description="Gestão de resíduos sólidos"
             />
           </div>
         </TabsContent>
 
-        {/* Gray Scale Tab */}
-        <TabsContent value="gray" className="space-y-6">
+        {/* Grayscale Tab */}
+        <TabsContent value="grayscale" className="mt-6">
           <Card 
             style={{ 
-              backgroundColor: 'var(--dss-surface-default)', 
-              borderColor: 'var(--dss-gray-200)' 
+              backgroundColor: 'var(--jtech-card-bg)', 
+              borderColor: 'var(--jtech-card-border)' 
             }}
           >
             <CardHeader>
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle style={{ color: 'var(--dss-text-body)' }}>
-                    Escala de Cinza
-                  </CardTitle>
-                  <CardDescription style={{ color: 'var(--dss-text-subtle)' }}>
-                    11 tons de cinza para fundos, bordas e textos
-                  </CardDescription>
-                </div>
+              <div className="flex items-center gap-3">
+                <CardTitle style={{ color: 'var(--jtech-heading-secondary)' }}>
+                  Escala Neutra
+                </CardTitle>
                 <Badge 
+                  variant="outline"
                   style={{ 
-                    backgroundColor: 'var(--dss-surface-subtle)',
-                    color: 'var(--dss-text-subtle)'
+                    borderColor: 'var(--jtech-card-border)',
+                    color: 'var(--jtech-text-muted)'
                   }}
                 >
                   11 tokens
                 </Badge>
               </div>
+              <CardDescription style={{ color: 'var(--jtech-text-body)' }}>
+                Base para textos, bordas e superfícies
+              </CardDescription>
               
               {/* Visual scale bar */}
               <div className="flex rounded-lg overflow-hidden h-4 mt-4">
@@ -582,7 +568,7 @@ export default function ColorsPage() {
         </TabsContent>
 
         {/* Feedback Tab */}
-        <TabsContent value="feedback" className="space-y-6">
+        <TabsContent value="feedback" className="mt-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {feedbackColors.map((feedback) => (
               <FeedbackCard key={feedback.category} {...feedback} />
@@ -591,40 +577,76 @@ export default function ColorsPage() {
         </TabsContent>
       </Tabs>
 
-      {/* Usage Guidelines */}
+      {/* Usage Guidelines - Jtech Style */}
       <section className="space-y-4">
-        <h2 
-          className="text-xl font-semibold"
-          style={{ color: 'var(--dss-text-body)' }}
-        >
-          Diretrizes de Uso
-        </h2>
+        <SectionHeader 
+          title="Diretrizes de" 
+          titleAccent="Uso"
+          icon={Lightbulb}
+          variant="accent"
+        />
         <Card 
           style={{ 
-            backgroundColor: 'var(--dss-surface-subtle)', 
-            borderColor: 'var(--dss-gray-200)' 
+            backgroundColor: 'var(--jtech-card-bg)', 
+            borderColor: 'var(--jtech-card-border)' 
           }}
         >
           <CardContent className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {[
-                "Use var(--token) para referenciar cores",
-                "Prefira tokens semânticos sobre valores hex",
-                "Respeite a hierarquia: Principal > Hover > Deep",
-                "Cores de feedback para estados do sistema",
-                "Escala de cinza para elementos neutros",
-                "Tokens de marca para identidade visual"
-              ].map((guideline, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <CheckCircle2 
-                    className="h-4 w-4 flex-shrink-0" 
-                    style={{ color: 'var(--dss-positive)' }} 
-                  />
-                  <span className="text-sm" style={{ color: 'var(--dss-text-body)' }}>
-                    {guideline}
-                  </span>
-                </div>
-              ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <h3 
+                  className="font-semibold flex items-center gap-2"
+                  style={{ color: 'var(--jtech-heading-secondary)' }}
+                >
+                  <CheckCircle2 className="h-4 w-4" style={{ color: '#4dd228' }} />
+                  Boas Práticas
+                </h3>
+                <ul className="space-y-2 text-sm" style={{ color: 'var(--jtech-text-body)' }}>
+                  <li className="flex items-start gap-2">
+                    <span style={{ color: '#4dd228' }}>✓</span>
+                    Use tokens semânticos em vez de cores diretas
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span style={{ color: '#4dd228' }}>✓</span>
+                    Mantenha contraste WCAG 2.1 AA (4.5:1 para texto)
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span style={{ color: '#4dd228' }}>✓</span>
+                    Use cores de feedback para estados de sistema
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span style={{ color: '#4dd228' }}>✓</span>
+                    Aplique marca via data-brand no root
+                  </li>
+                </ul>
+              </div>
+              <div className="space-y-3">
+                <h3 
+                  className="font-semibold flex items-center gap-2"
+                  style={{ color: 'var(--jtech-heading-secondary)' }}
+                >
+                  <XCircle className="h-4 w-4" style={{ color: '#d8182e' }} />
+                  Evitar
+                </h3>
+                <ul className="space-y-2 text-sm" style={{ color: 'var(--jtech-text-body)' }}>
+                  <li className="flex items-start gap-2">
+                    <span style={{ color: '#d8182e' }}>✗</span>
+                    Cores hardcoded (ex: #ff0000)
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span style={{ color: '#d8182e' }}>✗</span>
+                    Criar tokens específicos por componente
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span style={{ color: '#d8182e' }}>✗</span>
+                    Misturar tokens de marcas diferentes
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span style={{ color: '#d8182e' }}>✗</span>
+                    Usar cores de feedback para decoração
+                  </li>
+                </ul>
+              </div>
             </div>
           </CardContent>
         </Card>
