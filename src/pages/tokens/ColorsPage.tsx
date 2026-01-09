@@ -438,58 +438,6 @@ export default function ColorsPage() {
         </CardContent>
       </Card>
 
-      {/* Brand States Summary */}
-      <Card className="border-[var(--dss-gray-300)]">
-        <CardHeader>
-          <CardTitle className="text-[var(--dss-gray-900)]">Padrão de Estados para Marcas</CardTitle>
-          <CardDescription className="text-[var(--dss-gray-600)]">
-            As paletas de marca seguem um padrão consistente de uso para interações
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-[var(--dss-gray-300)]">
-                  <th className="text-left py-2 px-3 text-[var(--dss-gray-700)] font-medium">Marca</th>
-                  <th className="text-center py-2 px-3 text-[var(--dss-gray-700)] font-medium">Principal</th>
-                  <th className="text-center py-2 px-3 text-[var(--dss-gray-700)] font-medium">Light</th>
-                  <th className="text-center py-2 px-3 text-[var(--dss-gray-700)] font-medium">Disable</th>
-                  <th className="text-center py-2 px-3 text-[var(--dss-gray-700)] font-medium">Hover/Focus</th>
-                  <th className="text-center py-2 px-3 text-[var(--dss-gray-700)] font-medium">Deep</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-b border-[var(--dss-gray-200)]">
-                  <td className="py-2 px-3 font-medium text-[var(--dss-gray-900)]">Hub</td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-hub-600)] text-white px-2 py-0.5 rounded">600</code></td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-hub-300)] px-2 py-0.5 rounded">300</code></td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-hub-200)] px-2 py-0.5 rounded">200</code></td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-hub-800)] text-white px-2 py-0.5 rounded">800</code></td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-hub-950)] text-white px-2 py-0.5 rounded">950</code></td>
-                </tr>
-                <tr className="border-b border-[var(--dss-gray-200)]">
-                  <td className="py-2 px-3 font-medium text-[var(--dss-gray-900)]">Water</td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-water-500)] text-white px-2 py-0.5 rounded">500</code></td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-water-300)] px-2 py-0.5 rounded">300</code></td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-water-200)] px-2 py-0.5 rounded">200</code></td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-water-700)] text-white px-2 py-0.5 rounded">700</code></td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-water-950)] text-white px-2 py-0.5 rounded">950</code></td>
-                </tr>
-                <tr>
-                  <td className="py-2 px-3 font-medium text-[var(--dss-gray-900)]">Waste</td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-waste-600)] text-white px-2 py-0.5 rounded">600</code></td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-waste-300)] px-2 py-0.5 rounded">300</code></td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-waste-200)] px-2 py-0.5 rounded">200</code></td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-waste-800)] text-white px-2 py-0.5 rounded">800</code></td>
-                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-waste-950)] text-white px-2 py-0.5 rounded">950</code></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </CardContent>
-      </Card>
-
       {/* Tabs */}
       <Tabs defaultValue="brands" className="space-y-6">
         <TabsList className="bg-[var(--dss-gray-200)] p-1">
@@ -573,6 +521,58 @@ export default function ColorsPage() {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Brand States Summary */}
+      <Card className="border-[var(--dss-gray-300)]">
+        <CardHeader>
+          <CardTitle className="text-[var(--dss-gray-900)]">Padrão de Estados para Marcas</CardTitle>
+          <CardDescription className="text-[var(--dss-gray-600)]">
+            As paletas de marca seguem um padrão consistente de uso para interações
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-[var(--dss-gray-300)]">
+                  <th className="text-left py-2 px-3 text-[var(--dss-gray-700)] font-medium">Marca</th>
+                  <th className="text-center py-2 px-3 text-[var(--dss-gray-700)] font-medium">Principal</th>
+                  <th className="text-center py-2 px-3 text-[var(--dss-gray-700)] font-medium">Light</th>
+                  <th className="text-center py-2 px-3 text-[var(--dss-gray-700)] font-medium">Disable</th>
+                  <th className="text-center py-2 px-3 text-[var(--dss-gray-700)] font-medium">Hover/Focus</th>
+                  <th className="text-center py-2 px-3 text-[var(--dss-gray-700)] font-medium">Deep</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b border-[var(--dss-gray-200)]">
+                  <td className="py-2 px-3 font-medium text-[var(--dss-gray-900)]">Hub</td>
+                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-hub-600)] text-white px-2 py-0.5 rounded">600</code></td>
+                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-hub-300)] px-2 py-0.5 rounded">300</code></td>
+                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-hub-200)] px-2 py-0.5 rounded">200</code></td>
+                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-hub-800)] text-white px-2 py-0.5 rounded">800</code></td>
+                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-hub-950)] text-white px-2 py-0.5 rounded">950</code></td>
+                </tr>
+                <tr className="border-b border-[var(--dss-gray-200)]">
+                  <td className="py-2 px-3 font-medium text-[var(--dss-gray-900)]">Water</td>
+                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-water-500)] text-white px-2 py-0.5 rounded">500</code></td>
+                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-water-300)] px-2 py-0.5 rounded">300</code></td>
+                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-water-200)] px-2 py-0.5 rounded">200</code></td>
+                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-water-700)] text-white px-2 py-0.5 rounded">700</code></td>
+                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-water-950)] text-white px-2 py-0.5 rounded">950</code></td>
+                </tr>
+                <tr>
+                  <td className="py-2 px-3 font-medium text-[var(--dss-gray-900)]">Waste</td>
+                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-waste-600)] text-white px-2 py-0.5 rounded">600</code></td>
+                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-waste-300)] px-2 py-0.5 rounded">300</code></td>
+                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-waste-200)] px-2 py-0.5 rounded">200</code></td>
+                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-waste-800)] text-white px-2 py-0.5 rounded">800</code></td>
+                  <td className="text-center py-2 px-3"><code className="text-xs bg-[var(--dss-waste-950)] text-white px-2 py-0.5 rounded">950</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Usage */}
       <Card className="border-[var(--dss-gray-300)]">
