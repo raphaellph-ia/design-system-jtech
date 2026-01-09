@@ -24,15 +24,18 @@ interface BrandData {
   actionTokens: { token: string; value: string; description: string }[];
   brandTokens: { token: string; value: string; description: string }[];
   surfaceTokens: { token: string; value: string; description: string }[];
+  textTokens: { token: string; value: string; description: string }[];
   borderTokens: { token: string; value: string; description: string }[];
   shadowTokens: { token: string; value: string; description: string }[];
   focusTokens: { token: string; value: string; description: string }[];
   gradientTokens: { token: string; value: string; description: string }[];
   componentTokens: { token: string; value: string; description: string }[];
+  quasarTokens: { token: string; value: string; description: string }[];
   accessibilityInfo: {
     contrastOnWhite: string;
     contrastOnDark: string;
     safeTextColor: string;
+    safeUIColor: string;
     notes: string;
   };
 }
@@ -58,65 +61,100 @@ const brandsData: BrandData[] = [
       "950": "#421a08"
     },
     actionTokens: [
-      { token: "--dss-action-primary", value: "#ef7a11", description: "Ação primária" },
-      { token: "--dss-action-primary-light", value: "#fbcb76", description: "Ação primária clara" },
-      { token: "--dss-action-primary-disable", value: "#fde2ab", description: "Ação desabilitada" },
-      { token: "--dss-action-primary-hover", value: "#984614", description: "Ação hover" },
-      { token: "--dss-action-primary-deep", value: "#7a3614", description: "Ação deep" },
-      { token: "--dss-action-primary-bg", value: "#fff9ed", description: "Background de ação" },
+      { token: "--dss-action-primary", value: "var(--dss-hub-600)", description: "Ação primária" },
+      { token: "--dss-action-primary-light", value: "var(--dss-hub-300)", description: "Ação primária clara (-300)" },
+      { token: "--dss-action-primary-disable", value: "var(--dss-hub-200)", description: "Ação desabilitada (-200)" },
+      { token: "--dss-action-primary-hover", value: "var(--dss-hub-800)", description: "Ação hover (+2 níveis)" },
+      { token: "--dss-action-primary-deep", value: "var(--dss-hub-900)", description: "Ação deep (950)" },
+      { token: "--dss-action-primary-bg", value: "var(--dss-hub-50)", description: "Background de ação" },
+      { token: "--dss-action-primary-text", value: "white", description: "Texto sobre primária" },
     ],
     brandTokens: [
-      { token: "--dss-brand-primary", value: "#ef7a11", description: "Cor primária da marca" },
-      { token: "--dss-brand-secondary", value: "#fbcb76", description: "Cor secundária" },
-      { token: "--dss-brand-tertiary", value: "#984614", description: "Cor terciária" },
-      { token: "--dss-brand-accent", value: "#f9a93b", description: "Cor de destaque" },
-      { token: "--dss-brand-light", value: "#fff1d1", description: "Cor clara" },
-      { token: "--dss-brand-lighter", value: "#fff9ed", description: "Cor mais clara" },
-      { token: "--dss-brand-dark", value: "#7a3614", description: "Cor escura" },
-      { token: "--dss-brand-darker", value: "#421a08", description: "Cor mais escura" },
+      { token: "--dss-brand-primary", value: "var(--dss-hub-600)", description: "Cor primária da marca" },
+      { token: "--dss-brand-secondary", value: "var(--dss-hub-300)", description: "Cor secundária" },
+      { token: "--dss-brand-tertiary", value: "var(--dss-hub-800)", description: "Cor terciária" },
+      { token: "--dss-brand-accent", value: "var(--dss-hub-400)", description: "Cor de destaque" },
+      { token: "--dss-brand-light", value: "var(--dss-hub-100)", description: "Cor clara" },
+      { token: "--dss-brand-lighter", value: "var(--dss-hub-50)", description: "Cor mais clara" },
+      { token: "--dss-brand-dark", value: "var(--dss-hub-900)", description: "Cor escura" },
+      { token: "--dss-brand-darker", value: "var(--dss-hub-950)", description: "Cor mais escura" },
+      { token: "--dss-brand-background", value: "var(--dss-hub-50)", description: "Background da marca" },
+      { token: "--dss-brand-surface", value: "var(--dss-hub-100)", description: "Superfície da marca" },
+      { token: "--dss-brand-border", value: "var(--dss-hub-200)", description: "Borda da marca" },
+      { token: "--dss-brand-text", value: "var(--dss-hub-900)", description: "Texto da marca" },
     ],
     surfaceTokens: [
       { token: "--dss-surface-brand-subtle", value: "rgba(239, 122, 17, 0.08)", description: "Superfície sutil 8%" },
       { token: "--dss-surface-brand-light", value: "rgba(239, 122, 17, 0.12)", description: "Superfície leve 12%" },
       { token: "--dss-surface-brand-medium", value: "rgba(239, 122, 17, 0.16)", description: "Superfície média 16%" },
       { token: "--dss-surface-brand-strong", value: "rgba(239, 122, 17, 0.24)", description: "Superfície forte 24%" },
+      { token: "--dss-surface-brand-primary", value: "var(--dss-hub-50)", description: "Superfície primária" },
+      { token: "--dss-surface-brand-secondary", value: "var(--dss-hub-100)", description: "Superfície secundária" },
+    ],
+    textTokens: [
+      { token: "--dss-text-brand-primary", value: "var(--dss-hub-800)", description: "Texto primário da marca" },
+      { token: "--dss-text-brand-secondary", value: "var(--dss-hub-600)", description: "Texto secundário" },
+      { token: "--dss-text-brand-tertiary", value: "var(--dss-hub-500)", description: "Texto terciário" },
+      { token: "--dss-text-brand-accent", value: "var(--dss-hub-300)", description: "Texto destaque" },
+      { token: "--dss-text-brand-on-dark", value: "white", description: "Texto sobre fundo escuro" },
+      { token: "--dss-text-brand-on-light", value: "var(--dss-hub-900)", description: "Texto sobre fundo claro" },
     ],
     borderTokens: [
-      { token: "--dss-border-brand-primary", value: "#fbcb76", description: "Borda primária" },
-      { token: "--dss-border-brand-secondary", value: "#fde2ab", description: "Borda secundária" },
-      { token: "--dss-border-brand-accent", value: "#ef7a11", description: "Borda destaque" },
-      { token: "--dss-border-brand-focus", value: "#ef7a11", description: "Borda de foco" },
+      { token: "--dss-border-brand-primary", value: "var(--dss-hub-300)", description: "Borda primária" },
+      { token: "--dss-border-brand-secondary", value: "var(--dss-hub-200)", description: "Borda secundária" },
+      { token: "--dss-border-brand-accent", value: "var(--dss-hub-600)", description: "Borda destaque" },
+      { token: "--dss-border-brand-focus", value: "var(--dss-hub-600)", description: "Borda de foco" },
+      { token: "--dss-border-brand-error", value: "var(--dss-negative)", description: "Borda de erro (semântica)" },
     ],
     shadowTokens: [
       { token: "--dss-shadow-brand-sm", value: "0 1px 3px rgba(239, 122, 17, 0.15)", description: "Sombra pequena" },
       { token: "--dss-shadow-brand-md", value: "0 4px 6px rgba(239, 122, 17, 0.15)", description: "Sombra média" },
       { token: "--dss-shadow-brand-lg", value: "0 10px 15px rgba(239, 122, 17, 0.15)", description: "Sombra grande" },
       { token: "--dss-shadow-brand-xl", value: "0 20px 25px rgba(239, 122, 17, 0.15)", description: "Sombra extra grande" },
+      { token: "--dss-elevation-brand-1", value: "0 1px 3px rgba(239, 122, 17, 0.15)", description: "Elevação nível 1" },
+      { token: "--dss-elevation-brand-2", value: "0 4px 6px rgba(239, 122, 17, 0.15)", description: "Elevação nível 2" },
     ],
     focusTokens: [
-      { token: "--dss-focus-ring-brand", value: "0 0 0 3px rgba(239, 122, 17, 0.5)", description: "Anel de foco" },
+      { token: "--dss-focus-ring-brand", value: "0 0 0 3px rgba(239, 122, 17, 0.5)", description: "Anel de foco externo" },
       { token: "--dss-focus-ring-brand-inset", value: "inset 0 0 0 3px rgba(239, 122, 17, 0.5)", description: "Anel de foco interno" },
-      { token: "--dss-outline-focus-brand", value: "2px solid #ef7a11", description: "Outline de foco" },
+      { token: "--dss-outline-focus-brand", value: "2px solid var(--dss-hub-600)", description: "Outline de foco" },
     ],
     gradientTokens: [
-      { token: "--dss-gradient-brand-vertical", value: "linear-gradient(180deg, #f9a93b 0%, #ef7a11 100%)", description: "Gradiente vertical" },
-      { token: "--dss-gradient-brand-horizontal", value: "linear-gradient(90deg, #f9a93b 0%, #ef7a11 100%)", description: "Gradiente horizontal" },
-      { token: "--dss-gradient-brand-diagonal", value: "linear-gradient(135deg, #f9a93b 0%, #ef7a11 100%)", description: "Gradiente diagonal" },
-      { token: "--dss-gradient-brand-light", value: "linear-gradient(135deg, #fff9ed 0%, #fff1d1 100%)", description: "Gradiente claro" },
-      { token: "--dss-gradient-brand-dark", value: "linear-gradient(135deg, #ef7a11 0%, #984614 100%)", description: "Gradiente escuro" },
+      { token: "--dss-gradient-brand-vertical", value: "linear-gradient(180deg, var(--dss-hub-400) 0%, var(--dss-hub-600) 100%)", description: "Gradiente vertical" },
+      { token: "--dss-gradient-brand-horizontal", value: "linear-gradient(90deg, var(--dss-hub-400) 0%, var(--dss-hub-600) 100%)", description: "Gradiente horizontal" },
+      { token: "--dss-gradient-brand-diagonal", value: "linear-gradient(135deg, var(--dss-hub-400) 0%, var(--dss-hub-600) 100%)", description: "Gradiente diagonal" },
+      { token: "--dss-gradient-brand-radial", value: "radial-gradient(circle, var(--dss-hub-400) 0%, var(--dss-hub-600) 100%)", description: "Gradiente radial" },
+      { token: "--dss-gradient-brand-light", value: "linear-gradient(135deg, var(--dss-hub-50) 0%, var(--dss-hub-100) 100%)", description: "Gradiente claro" },
+      { token: "--dss-gradient-brand-dark", value: "linear-gradient(135deg, var(--dss-hub-600) 0%, var(--dss-hub-800) 100%)", description: "Gradiente escuro" },
     ],
     componentTokens: [
-      { token: "--dss-component-btn-primary-bg", value: "#ef7a11", description: "Background botão primário" },
-      { token: "--dss-component-btn-primary-hover", value: "#bf590f", description: "Hover botão primário" },
-      { token: "--dss-component-btn-primary-active", value: "#984614", description: "Active botão primário" },
-      { token: "--dss-component-header-bg", value: "#ef7a11", description: "Background header" },
-      { token: "--dss-component-footer-bg", value: "#7a3614", description: "Background footer" },
+      { token: "--dss-component-btn-primary-bg", value: "var(--dss-hub-600)", description: "Background botão primário" },
+      { token: "--dss-component-btn-primary-hover", value: "var(--dss-hub-700)", description: "Hover botão primário" },
+      { token: "--dss-component-btn-primary-active", value: "var(--dss-hub-800)", description: "Active botão primário" },
+      { token: "--dss-component-btn-primary-text", value: "white", description: "Texto botão primário" },
+      { token: "--dss-component-card-bg", value: "var(--dss-hub-50)", description: "Background card" },
+      { token: "--dss-component-card-border", value: "var(--dss-hub-100)", description: "Borda card" },
+      { token: "--dss-component-card-header-bg", value: "var(--dss-hub-100)", description: "Background header card" },
+      { token: "--dss-component-header-bg", value: "var(--dss-hub-600)", description: "Background header" },
+      { token: "--dss-component-header-text", value: "white", description: "Texto header" },
+      { token: "--dss-component-header-border", value: "var(--dss-hub-700)", description: "Borda header" },
+      { token: "--dss-component-footer-bg", value: "var(--dss-hub-900)", description: "Background footer" },
+      { token: "--dss-component-footer-text", value: "white", description: "Texto footer" },
+      { token: "--dss-component-sidebar-bg", value: "var(--dss-hub-50)", description: "Background sidebar" },
+      { token: "--dss-component-sidebar-border", value: "var(--dss-hub-100)", description: "Borda sidebar" },
+    ],
+    quasarTokens: [
+      { token: "--quasar-primary", value: "var(--dss-hub-600)", description: "Primary color Quasar" },
+      { token: "--quasar-primary-hover", value: "var(--dss-hub-700)", description: "Primary hover Quasar" },
+      { token: "--quasar-primary-active", value: "var(--dss-hub-800)", description: "Primary active Quasar" },
+      { token: "--quasar-primary-disable", value: "var(--dss-hub-200)", description: "Primary disable Quasar" },
     ],
     accessibilityInfo: {
       contrastOnWhite: "3.8:1",
       contrastOnDark: "10.2:1",
-      safeTextColor: "#7a3614",
-      notes: "⚠️ Hub-600 apenas para UI grande. Texto normal deve usar Hub-900."
+      safeTextColor: "#7a3614 (Hub-900)",
+      safeUIColor: "#bf590f (Hub-700)",
+      notes: "⚠️ Hub-600 apenas para UI grande (5.2:1). Texto normal deve usar Hub-900 (11.6:1)."
     }
   },
   {
@@ -139,65 +177,100 @@ const brandsData: BrandData[] = [
       "950": "#082749"
     },
     actionTokens: [
-      { token: "--dss-action-primary", value: "#0e88e4", description: "Ação primária" },
-      { token: "--dss-action-primary-light", value: "#7dc4fc", description: "Ação primária clara" },
-      { token: "--dss-action-primary-disable", value: "#badefd", description: "Ação desabilitada" },
-      { token: "--dss-action-primary-hover", value: "#0356a1", description: "Ação hover" },
-      { token: "--dss-action-primary-deep", value: "#074a85", description: "Ação deep" },
-      { token: "--dss-action-primary-bg", value: "#f0f7ff", description: "Background de ação" },
+      { token: "--dss-action-primary", value: "var(--dss-water-500)", description: "Ação primária" },
+      { token: "--dss-action-primary-light", value: "var(--dss-water-300)", description: "Ação primária clara (-300)" },
+      { token: "--dss-action-primary-disable", value: "var(--dss-water-200)", description: "Ação desabilitada (-200)" },
+      { token: "--dss-action-primary-hover", value: "var(--dss-water-700)", description: "Ação hover (+2 níveis)" },
+      { token: "--dss-action-primary-deep", value: "var(--dss-water-800)", description: "Ação deep" },
+      { token: "--dss-action-primary-bg", value: "var(--dss-water-50)", description: "Background de ação" },
+      { token: "--dss-action-primary-text", value: "white", description: "Texto sobre primária" },
     ],
     brandTokens: [
-      { token: "--dss-brand-primary", value: "#0e88e4", description: "Cor primária da marca" },
-      { token: "--dss-brand-secondary", value: "#7dc4fc", description: "Cor secundária" },
-      { token: "--dss-brand-tertiary", value: "#0356a1", description: "Cor terciária" },
-      { token: "--dss-brand-accent", value: "#38a5f8", description: "Cor de destaque" },
-      { token: "--dss-brand-light", value: "#e0eefe", description: "Cor clara" },
-      { token: "--dss-brand-lighter", value: "#f0f7ff", description: "Cor mais clara" },
-      { token: "--dss-brand-dark", value: "#074a85", description: "Cor escura" },
-      { token: "--dss-brand-darker", value: "#0c3f6e", description: "Cor mais escura" },
+      { token: "--dss-brand-primary", value: "var(--dss-water-500)", description: "Cor primária da marca" },
+      { token: "--dss-brand-secondary", value: "var(--dss-water-300)", description: "Cor secundária" },
+      { token: "--dss-brand-tertiary", value: "var(--dss-water-700)", description: "Cor terciária" },
+      { token: "--dss-brand-accent", value: "var(--dss-water-400)", description: "Cor de destaque" },
+      { token: "--dss-brand-light", value: "var(--dss-water-100)", description: "Cor clara" },
+      { token: "--dss-brand-lighter", value: "var(--dss-water-50)", description: "Cor mais clara" },
+      { token: "--dss-brand-dark", value: "var(--dss-water-800)", description: "Cor escura" },
+      { token: "--dss-brand-darker", value: "var(--dss-water-900)", description: "Cor mais escura" },
+      { token: "--dss-brand-background", value: "var(--dss-water-50)", description: "Background da marca" },
+      { token: "--dss-brand-surface", value: "var(--dss-water-100)", description: "Superfície da marca" },
+      { token: "--dss-brand-border", value: "var(--dss-water-200)", description: "Borda da marca" },
+      { token: "--dss-brand-text", value: "var(--dss-water-800)", description: "Texto da marca" },
     ],
     surfaceTokens: [
       { token: "--dss-surface-brand-subtle", value: "rgba(14, 136, 228, 0.08)", description: "Superfície sutil 8%" },
       { token: "--dss-surface-brand-light", value: "rgba(14, 136, 228, 0.12)", description: "Superfície leve 12%" },
       { token: "--dss-surface-brand-medium", value: "rgba(14, 136, 228, 0.16)", description: "Superfície média 16%" },
       { token: "--dss-surface-brand-strong", value: "rgba(14, 136, 228, 0.24)", description: "Superfície forte 24%" },
+      { token: "--dss-surface-brand-primary", value: "var(--dss-water-50)", description: "Superfície primária" },
+      { token: "--dss-surface-brand-secondary", value: "var(--dss-water-100)", description: "Superfície secundária" },
+    ],
+    textTokens: [
+      { token: "--dss-text-brand-primary", value: "var(--dss-water-700)", description: "Texto primário da marca" },
+      { token: "--dss-text-brand-secondary", value: "var(--dss-water-500)", description: "Texto secundário" },
+      { token: "--dss-text-brand-tertiary", value: "var(--dss-water-400)", description: "Texto terciário" },
+      { token: "--dss-text-brand-accent", value: "var(--dss-water-300)", description: "Texto destaque" },
+      { token: "--dss-text-brand-on-dark", value: "white", description: "Texto sobre fundo escuro" },
+      { token: "--dss-text-brand-on-light", value: "var(--dss-water-800)", description: "Texto sobre fundo claro" },
     ],
     borderTokens: [
-      { token: "--dss-border-brand-primary", value: "#7dc4fc", description: "Borda primária" },
-      { token: "--dss-border-brand-secondary", value: "#badefd", description: "Borda secundária" },
-      { token: "--dss-border-brand-accent", value: "#0e88e4", description: "Borda destaque" },
-      { token: "--dss-border-brand-focus", value: "#0e88e4", description: "Borda de foco" },
+      { token: "--dss-border-brand-primary", value: "var(--dss-water-300)", description: "Borda primária" },
+      { token: "--dss-border-brand-secondary", value: "var(--dss-water-200)", description: "Borda secundária" },
+      { token: "--dss-border-brand-accent", value: "var(--dss-water-500)", description: "Borda destaque" },
+      { token: "--dss-border-brand-focus", value: "var(--dss-water-500)", description: "Borda de foco" },
+      { token: "--dss-border-brand-error", value: "var(--dss-negative)", description: "Borda de erro (semântica)" },
     ],
     shadowTokens: [
       { token: "--dss-shadow-brand-sm", value: "0 1px 3px rgba(14, 136, 228, 0.15)", description: "Sombra pequena" },
       { token: "--dss-shadow-brand-md", value: "0 4px 6px rgba(14, 136, 228, 0.15)", description: "Sombra média" },
       { token: "--dss-shadow-brand-lg", value: "0 10px 15px rgba(14, 136, 228, 0.15)", description: "Sombra grande" },
       { token: "--dss-shadow-brand-xl", value: "0 20px 25px rgba(14, 136, 228, 0.15)", description: "Sombra extra grande" },
+      { token: "--dss-elevation-brand-1", value: "0 1px 3px rgba(14, 136, 228, 0.15)", description: "Elevação nível 1" },
+      { token: "--dss-elevation-brand-2", value: "0 4px 6px rgba(14, 136, 228, 0.15)", description: "Elevação nível 2" },
     ],
     focusTokens: [
-      { token: "--dss-focus-ring-brand", value: "0 0 0 3px rgba(14, 136, 228, 0.5)", description: "Anel de foco" },
+      { token: "--dss-focus-ring-brand", value: "0 0 0 3px rgba(14, 136, 228, 0.5)", description: "Anel de foco externo" },
       { token: "--dss-focus-ring-brand-inset", value: "inset 0 0 0 3px rgba(14, 136, 228, 0.5)", description: "Anel de foco interno" },
-      { token: "--dss-outline-focus-brand", value: "2px solid #0e88e4", description: "Outline de foco" },
+      { token: "--dss-outline-focus-brand", value: "2px solid var(--dss-water-500)", description: "Outline de foco" },
     ],
     gradientTokens: [
-      { token: "--dss-gradient-brand-vertical", value: "linear-gradient(180deg, #7dc4fc 0%, #0e88e4 100%)", description: "Gradiente vertical" },
-      { token: "--dss-gradient-brand-horizontal", value: "linear-gradient(90deg, #7dc4fc 0%, #0e88e4 100%)", description: "Gradiente horizontal" },
-      { token: "--dss-gradient-brand-diagonal", value: "linear-gradient(135deg, #7dc4fc 0%, #0e88e4 100%)", description: "Gradiente diagonal" },
-      { token: "--dss-gradient-brand-light", value: "linear-gradient(135deg, #f0f7ff 0%, #e0eefe 100%)", description: "Gradiente claro" },
-      { token: "--dss-gradient-brand-dark", value: "linear-gradient(135deg, #0e88e4 0%, #0356a1 100%)", description: "Gradiente escuro" },
+      { token: "--dss-gradient-brand-vertical", value: "linear-gradient(180deg, var(--dss-water-300) 0%, var(--dss-water-500) 100%)", description: "Gradiente vertical" },
+      { token: "--dss-gradient-brand-horizontal", value: "linear-gradient(90deg, var(--dss-water-300) 0%, var(--dss-water-500) 100%)", description: "Gradiente horizontal" },
+      { token: "--dss-gradient-brand-diagonal", value: "linear-gradient(135deg, var(--dss-water-300) 0%, var(--dss-water-500) 100%)", description: "Gradiente diagonal" },
+      { token: "--dss-gradient-brand-radial", value: "radial-gradient(circle, var(--dss-water-300) 0%, var(--dss-water-500) 100%)", description: "Gradiente radial" },
+      { token: "--dss-gradient-brand-light", value: "linear-gradient(135deg, var(--dss-water-50) 0%, var(--dss-water-100) 100%)", description: "Gradiente claro" },
+      { token: "--dss-gradient-brand-dark", value: "linear-gradient(135deg, var(--dss-water-500) 0%, var(--dss-water-700) 100%)", description: "Gradiente escuro" },
     ],
     componentTokens: [
-      { token: "--dss-component-btn-primary-bg", value: "#0e88e4", description: "Background botão primário" },
-      { token: "--dss-component-btn-primary-hover", value: "#026cc7", description: "Hover botão primário" },
-      { token: "--dss-component-btn-primary-active", value: "#0356a1", description: "Active botão primário" },
-      { token: "--dss-component-header-bg", value: "#0e88e4", description: "Background header" },
-      { token: "--dss-component-footer-bg", value: "#074a85", description: "Background footer" },
+      { token: "--dss-component-btn-primary-bg", value: "var(--dss-water-500)", description: "Background botão primário" },
+      { token: "--dss-component-btn-primary-hover", value: "var(--dss-water-600)", description: "Hover botão primário" },
+      { token: "--dss-component-btn-primary-active", value: "var(--dss-water-700)", description: "Active botão primário" },
+      { token: "--dss-component-btn-primary-text", value: "white", description: "Texto botão primário" },
+      { token: "--dss-component-card-bg", value: "var(--dss-water-50)", description: "Background card" },
+      { token: "--dss-component-card-border", value: "var(--dss-water-100)", description: "Borda card" },
+      { token: "--dss-component-card-header-bg", value: "var(--dss-water-100)", description: "Background header card" },
+      { token: "--dss-component-header-bg", value: "var(--dss-water-500)", description: "Background header" },
+      { token: "--dss-component-header-text", value: "white", description: "Texto header" },
+      { token: "--dss-component-header-border", value: "var(--dss-water-600)", description: "Borda header" },
+      { token: "--dss-component-footer-bg", value: "var(--dss-water-800)", description: "Background footer" },
+      { token: "--dss-component-footer-text", value: "white", description: "Texto footer" },
+      { token: "--dss-component-sidebar-bg", value: "var(--dss-water-50)", description: "Background sidebar" },
+      { token: "--dss-component-sidebar-border", value: "var(--dss-water-100)", description: "Borda sidebar" },
+    ],
+    quasarTokens: [
+      { token: "--quasar-primary", value: "var(--dss-water-500)", description: "Primary color Quasar" },
+      { token: "--quasar-primary-hover", value: "var(--dss-water-600)", description: "Primary hover Quasar" },
+      { token: "--quasar-primary-active", value: "var(--dss-water-700)", description: "Primary active Quasar" },
+      { token: "--quasar-primary-disable", value: "var(--dss-water-200)", description: "Primary disable Quasar" },
     ],
     accessibilityInfo: {
       contrastOnWhite: "4.6:1",
       contrastOnDark: "11.1:1",
-      safeTextColor: "#074a85",
-      notes: "⚠️ Aceitável para texto grande (18pt+). Texto normal deve usar Water-800."
+      safeTextColor: "#074a85 (Water-800)",
+      safeUIColor: "#026cc7 (Water-600)",
+      notes: "⚠️ Water-500 aceitável para texto grande (18pt+). Texto normal usar Water-800 (9.1:1)."
     }
   },
   {
@@ -220,65 +293,100 @@ const brandsData: BrandData[] = [
       "950": "#04291d"
     },
     actionTokens: [
-      { token: "--dss-action-primary", value: "#0b8154", description: "Ação primária" },
-      { token: "--dss-action-primary-light", value: "#74e1ae", description: "Ação primária clara" },
-      { token: "--dss-action-primary-disable", value: "#abefcb", description: "Ação desabilitada" },
-      { token: "--dss-action-primary-hover", value: "#0a5b3e", description: "Ação hover" },
-      { token: "--dss-action-primary-deep", value: "#094932", description: "Ação deep" },
-      { token: "--dss-action-primary-bg", value: "#edfcf4", description: "Background de ação" },
+      { token: "--dss-action-primary", value: "var(--dss-waste-600)", description: "Ação primária" },
+      { token: "--dss-action-primary-light", value: "var(--dss-waste-300)", description: "Ação primária clara (-300)" },
+      { token: "--dss-action-primary-disable", value: "var(--dss-waste-200)", description: "Ação desabilitada (-200)" },
+      { token: "--dss-action-primary-hover", value: "var(--dss-waste-800)", description: "Ação hover (+2 níveis)" },
+      { token: "--dss-action-primary-deep", value: "var(--dss-waste-900)", description: "Ação deep" },
+      { token: "--dss-action-primary-bg", value: "var(--dss-waste-50)", description: "Background de ação" },
+      { token: "--dss-action-primary-text", value: "var(--dss-gray-50)", description: "Texto sobre primária" },
     ],
     brandTokens: [
-      { token: "--dss-brand-primary", value: "#0b8154", description: "Cor primária da marca" },
-      { token: "--dss-brand-secondary", value: "#74e1ae", description: "Cor secundária" },
-      { token: "--dss-brand-tertiary", value: "#0a5b3e", description: "Cor terciária" },
-      { token: "--dss-brand-accent", value: "#3bcb8c", description: "Cor de destaque" },
-      { token: "--dss-brand-light", value: "#d3f8e2", description: "Cor clara" },
-      { token: "--dss-brand-lighter", value: "#edfcf4", description: "Cor mais clara" },
-      { token: "--dss-brand-dark", value: "#094932", description: "Cor escura" },
-      { token: "--dss-brand-darker", value: "#04291d", description: "Cor mais escura" },
+      { token: "--dss-brand-primary", value: "var(--dss-waste-600)", description: "Cor primária da marca" },
+      { token: "--dss-brand-secondary", value: "var(--dss-waste-300)", description: "Cor secundária" },
+      { token: "--dss-brand-tertiary", value: "var(--dss-waste-800)", description: "Cor terciária" },
+      { token: "--dss-brand-accent", value: "var(--dss-waste-400)", description: "Cor de destaque" },
+      { token: "--dss-brand-light", value: "var(--dss-waste-100)", description: "Cor clara" },
+      { token: "--dss-brand-lighter", value: "var(--dss-waste-50)", description: "Cor mais clara" },
+      { token: "--dss-brand-dark", value: "var(--dss-waste-900)", description: "Cor escura" },
+      { token: "--dss-brand-darker", value: "var(--dss-waste-950)", description: "Cor mais escura" },
+      { token: "--dss-brand-background", value: "var(--dss-waste-50)", description: "Background da marca" },
+      { token: "--dss-brand-surface", value: "var(--dss-waste-100)", description: "Superfície da marca" },
+      { token: "--dss-brand-border", value: "var(--dss-waste-200)", description: "Borda da marca" },
+      { token: "--dss-brand-text", value: "var(--dss-waste-900)", description: "Texto da marca" },
     ],
     surfaceTokens: [
       { token: "--dss-surface-brand-subtle", value: "rgba(11, 129, 84, 0.08)", description: "Superfície sutil 8%" },
       { token: "--dss-surface-brand-light", value: "rgba(11, 129, 84, 0.12)", description: "Superfície leve 12%" },
       { token: "--dss-surface-brand-medium", value: "rgba(11, 129, 84, 0.16)", description: "Superfície média 16%" },
       { token: "--dss-surface-brand-strong", value: "rgba(11, 129, 84, 0.24)", description: "Superfície forte 24%" },
+      { token: "--dss-surface-brand-primary", value: "var(--dss-waste-50)", description: "Superfície primária" },
+      { token: "--dss-surface-brand-secondary", value: "var(--dss-waste-100)", description: "Superfície secundária" },
+    ],
+    textTokens: [
+      { token: "--dss-text-brand-primary", value: "var(--dss-waste-800)", description: "Texto primário da marca" },
+      { token: "--dss-text-brand-secondary", value: "var(--dss-waste-600)", description: "Texto secundário" },
+      { token: "--dss-text-brand-tertiary", value: "var(--dss-waste-500)", description: "Texto terciário" },
+      { token: "--dss-text-brand-accent", value: "var(--dss-waste-300)", description: "Texto destaque" },
+      { token: "--dss-text-brand-on-dark", value: "var(--dss-gray-50)", description: "Texto sobre fundo escuro" },
+      { token: "--dss-text-brand-on-light", value: "var(--dss-waste-900)", description: "Texto sobre fundo claro" },
     ],
     borderTokens: [
-      { token: "--dss-border-brand-primary", value: "#74e1ae", description: "Borda primária" },
-      { token: "--dss-border-brand-secondary", value: "#abefcb", description: "Borda secundária" },
-      { token: "--dss-border-brand-accent", value: "#0b8154", description: "Borda destaque" },
-      { token: "--dss-border-brand-focus", value: "#0b8154", description: "Borda de foco" },
+      { token: "--dss-border-brand-primary", value: "var(--dss-waste-300)", description: "Borda primária" },
+      { token: "--dss-border-brand-secondary", value: "var(--dss-waste-200)", description: "Borda secundária" },
+      { token: "--dss-border-brand-accent", value: "var(--dss-waste-600)", description: "Borda destaque" },
+      { token: "--dss-border-brand-focus", value: "var(--dss-waste-600)", description: "Borda de foco" },
+      { token: "--dss-border-brand-error", value: "var(--dss-negative)", description: "Borda de erro (semântica)" },
     ],
     shadowTokens: [
       { token: "--dss-shadow-brand-sm", value: "0 1px 3px rgba(11, 129, 84, 0.15)", description: "Sombra pequena" },
       { token: "--dss-shadow-brand-md", value: "0 4px 6px rgba(11, 129, 84, 0.15)", description: "Sombra média" },
       { token: "--dss-shadow-brand-lg", value: "0 10px 15px rgba(11, 129, 84, 0.15)", description: "Sombra grande" },
       { token: "--dss-shadow-brand-xl", value: "0 20px 25px rgba(11, 129, 84, 0.15)", description: "Sombra extra grande" },
+      { token: "--dss-elevation-brand-1", value: "0 1px 3px rgba(11, 129, 84, 0.15)", description: "Elevação nível 1" },
+      { token: "--dss-elevation-brand-2", value: "0 4px 6px rgba(11, 129, 84, 0.15)", description: "Elevação nível 2" },
     ],
     focusTokens: [
-      { token: "--dss-focus-ring-brand", value: "0 0 0 3px rgba(11, 129, 84, 0.5)", description: "Anel de foco" },
+      { token: "--dss-focus-ring-brand", value: "0 0 0 3px rgba(11, 129, 84, 0.5)", description: "Anel de foco externo" },
       { token: "--dss-focus-ring-brand-inset", value: "inset 0 0 0 3px rgba(11, 129, 84, 0.5)", description: "Anel de foco interno" },
-      { token: "--dss-outline-focus-brand", value: "2px solid #0b8154", description: "Outline de foco" },
+      { token: "--dss-outline-focus-brand", value: "2px solid var(--dss-waste-600)", description: "Outline de foco" },
     ],
     gradientTokens: [
-      { token: "--dss-gradient-brand-vertical", value: "linear-gradient(180deg, #3bcb8c 0%, #0b8154 100%)", description: "Gradiente vertical" },
-      { token: "--dss-gradient-brand-horizontal", value: "linear-gradient(90deg, #3bcb8c 0%, #0b8154 100%)", description: "Gradiente horizontal" },
-      { token: "--dss-gradient-brand-diagonal", value: "linear-gradient(135deg, #3bcb8c 0%, #0b8154 100%)", description: "Gradiente diagonal" },
-      { token: "--dss-gradient-brand-light", value: "linear-gradient(135deg, #edfcf4 0%, #d3f8e2 100%)", description: "Gradiente claro" },
-      { token: "--dss-gradient-brand-dark", value: "linear-gradient(135deg, #0b8154 0%, #0a5b3e 100%)", description: "Gradiente escuro" },
+      { token: "--dss-gradient-brand-vertical", value: "linear-gradient(180deg, var(--dss-waste-400) 0%, var(--dss-waste-600) 100%)", description: "Gradiente vertical" },
+      { token: "--dss-gradient-brand-horizontal", value: "linear-gradient(90deg, var(--dss-waste-400) 0%, var(--dss-waste-600) 100%)", description: "Gradiente horizontal" },
+      { token: "--dss-gradient-brand-diagonal", value: "linear-gradient(135deg, var(--dss-waste-400) 0%, var(--dss-waste-600) 100%)", description: "Gradiente diagonal" },
+      { token: "--dss-gradient-brand-radial", value: "radial-gradient(circle, var(--dss-waste-400) 0%, var(--dss-waste-600) 100%)", description: "Gradiente radial" },
+      { token: "--dss-gradient-brand-light", value: "linear-gradient(135deg, var(--dss-waste-50) 0%, var(--dss-waste-200) 100%)", description: "Gradiente claro" },
+      { token: "--dss-gradient-brand-dark", value: "linear-gradient(135deg, var(--dss-waste-600) 0%, var(--dss-waste-800) 100%)", description: "Gradiente escuro" },
     ],
     componentTokens: [
-      { token: "--dss-component-btn-primary-bg", value: "#0b8154", description: "Background botão primário" },
-      { token: "--dss-component-btn-primary-hover", value: "#0a5b3e", description: "Hover botão primário" },
-      { token: "--dss-component-btn-primary-active", value: "#0a724e", description: "Active botão primário" },
-      { token: "--dss-component-header-bg", value: "#0b8154", description: "Background header" },
-      { token: "--dss-component-footer-bg", value: "#094932", description: "Background footer" },
+      { token: "--dss-component-btn-primary-bg", value: "var(--dss-waste-600)", description: "Background botão primário" },
+      { token: "--dss-component-btn-primary-hover", value: "var(--dss-waste-800)", description: "Hover botão primário" },
+      { token: "--dss-component-btn-primary-active", value: "var(--dss-waste-700)", description: "Active botão primário" },
+      { token: "--dss-component-btn-primary-text", value: "var(--dss-gray-50)", description: "Texto botão primário" },
+      { token: "--dss-component-card-bg", value: "var(--dss-waste-50)", description: "Background card" },
+      { token: "--dss-component-card-border", value: "var(--dss-waste-100)", description: "Borda card" },
+      { token: "--dss-component-card-header-bg", value: "var(--dss-waste-100)", description: "Background header card" },
+      { token: "--dss-component-header-bg", value: "var(--dss-waste-600)", description: "Background header" },
+      { token: "--dss-component-header-text", value: "var(--dss-gray-50)", description: "Texto header" },
+      { token: "--dss-component-header-border", value: "var(--dss-waste-700)", description: "Borda header" },
+      { token: "--dss-component-footer-bg", value: "var(--dss-waste-900)", description: "Background footer" },
+      { token: "--dss-component-footer-text", value: "var(--dss-gray-50)", description: "Texto footer" },
+      { token: "--dss-component-sidebar-bg", value: "var(--dss-waste-50)", description: "Background sidebar" },
+      { token: "--dss-component-sidebar-border", value: "var(--dss-waste-100)", description: "Borda sidebar" },
+    ],
+    quasarTokens: [
+      { token: "--quasar-primary", value: "var(--dss-waste-600)", description: "Primary color Quasar" },
+      { token: "--quasar-primary-hover", value: "var(--dss-waste-800)", description: "Primary hover Quasar" },
+      { token: "--quasar-primary-active", value: "var(--dss-waste-700)", description: "Primary active Quasar" },
+      { token: "--quasar-primary-disable", value: "var(--dss-waste-200)", description: "Primary disable Quasar" },
     ],
     accessibilityInfo: {
       contrastOnWhite: "6.1:1",
       contrastOnDark: "10.5:1",
-      safeTextColor: "#094932",
-      notes: "✅ Aprovado WCAG AA. Melhor contraste entre as 3 marcas."
+      safeTextColor: "#094932 (Waste-900)",
+      safeUIColor: "#0a724e (Waste-700)",
+      notes: "✅ Aprovado WCAG AA. Melhor contraste entre as 3 marcas (6.1:1 sobre branco)."
     }
   }
 ];
@@ -957,7 +1065,7 @@ export default function BrandabilityPage() {
           icon={Code}
           title="Tokens da Marca"
           titleAccent={selectedBrand.name.split(' ')[1]}
-          badge="8 Categorias"
+          badge="10 Categorias"
         />
 
         <Card
@@ -979,11 +1087,13 @@ export default function BrandabilityPage() {
                     { id: "action", label: "Ações" },
                     { id: "brand", label: "Marca" },
                     { id: "surface", label: "Superfícies" },
+                    { id: "text", label: "Texto" },
                     { id: "border", label: "Bordas" },
                     { id: "shadow", label: "Sombras" },
                     { id: "focus", label: "Foco" },
                     { id: "gradient", label: "Gradientes" },
                     { id: "component", label: "Componentes" },
+                    { id: "quasar", label: "Quasar" },
                   ].map((tab) => (
                     <TabsTrigger 
                       key={tab.id} 
@@ -1023,6 +1133,16 @@ export default function BrandabilityPage() {
 
                 <TabsContent value="surface" className="mt-0 space-y-2">
                   {selectedBrand.surfaceTokens.map((token) => (
+                    <TokenRow 
+                      key={token.token} 
+                      {...token} 
+                      brandColor={primaryColor}
+                    />
+                  ))}
+                </TabsContent>
+
+                <TabsContent value="text" className="mt-0 space-y-2">
+                  {selectedBrand.textTokens.map((token) => (
                     <TokenRow 
                       key={token.token} 
                       {...token} 
@@ -1073,6 +1193,16 @@ export default function BrandabilityPage() {
 
                 <TabsContent value="component" className="mt-0 space-y-2">
                   {selectedBrand.componentTokens.map((token) => (
+                    <TokenRow 
+                      key={token.token} 
+                      {...token} 
+                      brandColor={primaryColor}
+                    />
+                  ))}
+                </TabsContent>
+
+                <TabsContent value="quasar" className="mt-0 space-y-2">
+                  {selectedBrand.quasarTokens.map((token) => (
                     <TokenRow 
                       key={token.token} 
                       {...token} 
