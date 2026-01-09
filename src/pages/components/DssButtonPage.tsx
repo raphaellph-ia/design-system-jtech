@@ -433,12 +433,12 @@ export default function DssButtonPage() {
       {/* Header */}
       <PageHeader
         title="DssButton"
-        description="Botão interativo 100% compatível com a API do Quasar Framework. Implementa tokens DSS, brandability, estados avançados e acessibilidade WCAG 2.1 AA."
-        badgeText="Golden Sample"
-        badgeVariant="warning"
+        subtitle="Botão interativo 100% compatível com a API do Quasar Framework. Implementa tokens DSS, brandability, estados avançados e acessibilidade WCAG 2.1 AA."
+        badge="Golden Sample"
+        badgeVariant="accent"
         extraBadges={[
-          { label: "v2.1.0", variant: "outline" },
-          { label: "Quasar Compatible", variant: "info" },
+          { label: "v2.1.0", variant: "info" },
+          { label: "Quasar Compatible", variant: "success" },
         ]}
       />
 
@@ -671,7 +671,7 @@ export default function DssButtonPage() {
       {/* All Variants Showcase */}
       <SectionHeader
         title="Galeria de Variantes"
-        description="Todas as combinações possíveis de variantes, cores e brands"
+        badge="6 variantes • 8 cores • 3 brands"
       />
 
       <Tabs defaultValue="variants" className="space-y-4">
@@ -1005,7 +1005,7 @@ export default function DssButtonPage() {
       {/* Documentation Tabs */}
       <SectionHeader
         title="Documentação Técnica"
-        description="Props, eventos, tokens e anatomia do componente"
+        badge="Props • Eventos • Tokens • Anatomia"
       />
 
       <Tabs defaultValue="props" className="space-y-4">
