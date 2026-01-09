@@ -1,5 +1,5 @@
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Search } from "lucide-react";
+import { Search, Menu } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
@@ -8,39 +8,62 @@ export function DSSHeader() {
 
   return (
     <header 
-      className="h-14 border-b flex items-center justify-between px-4 gap-4"
+      className="h-14 flex items-center justify-between px-4 gap-4"
       style={{ 
-        borderColor: 'var(--dss-gray-200)',
-        backgroundColor: 'var(--dss-surface-default)'
+        backgroundColor: 'var(--dss-header-bg)',
+        borderBottom: '1px solid var(--dss-header-border)'
       }}
     >
       <div className="flex items-center gap-3">
-        <SidebarTrigger style={{ color: 'var(--dss-dark-light)' }} />
-        <div className="h-5 w-px" style={{ backgroundColor: 'var(--dss-gray-300)' }} />
-        <span className="text-sm font-medium" style={{ color: 'var(--dss-dark-light)' }}>
-          Design System Sansys
-        </span>
+        <SidebarTrigger 
+          className="hover:bg-white/10 transition-colors"
+          style={{ color: 'var(--dss-header-text)' }} 
+        />
+        <div className="h-5 w-px" style={{ backgroundColor: 'var(--dss-header-border)' }} />
+        
+        {/* Logo/Brand */}
+        <div className="flex items-center gap-2">
+          <div 
+            className="h-7 w-7 rounded flex items-center justify-center"
+            style={{ backgroundColor: 'var(--dss-water-500)' }}
+          >
+            <span className="text-white font-bold text-xs">DS</span>
+          </div>
+          <span className="text-sm font-semibold hidden sm:block" style={{ color: 'var(--dss-header-text)' }}>
+            Design System Sansys
+          </span>
+        </div>
       </div>
 
       <div className="flex items-center gap-4 max-w-md flex-1 justify-end">
         <div className="relative flex-1 max-w-xs">
           <Search 
             className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4"
-            style={{ color: 'var(--dss-dark-light)' }}
+            style={{ color: 'var(--dss-header-muted)' }}
           />
           <Input
             type="search"
-            placeholder="Buscar componentes, tokens..."
+            placeholder="Buscar..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9 h-9"
+            className="pl-9 h-9 border-0 focus-visible:ring-1 focus-visible:ring-white/30"
             style={{ 
-              backgroundColor: 'var(--dss-surface-subtle)',
-              borderColor: 'var(--dss-gray-300)',
-              color: 'var(--dss-text-body)'
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              color: 'var(--dss-header-text)',
             }}
           />
         </div>
+        
+        {/* Version badge */}
+        <span 
+          className="text-xs px-2 py-1 rounded hidden md:block"
+          style={{ 
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            color: 'var(--dss-header-muted)'
+          }}
+        >
+          v2.0.0
+        </span>
       </div>
     </header>
   );
