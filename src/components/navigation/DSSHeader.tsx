@@ -21,13 +21,13 @@ export function DSSHeader() {
         />
         <div className="h-5 w-px" style={{ backgroundColor: 'var(--dss-header-border)' }} />
         
-        {/* Logo/Brand */}
+        {/* Logo/Brand - Jtech Style */}
         <div className="flex items-center gap-2">
           <div 
             className="h-7 w-7 rounded flex items-center justify-center"
-            style={{ backgroundColor: 'var(--dss-water-500)' }}
+            style={{ backgroundColor: 'var(--dss-jtech-accent)' }}
           >
-            <span className="text-white font-bold text-xs">DS</span>
+            <span className="text-white font-bold text-xs">JT</span>
           </div>
           <span className="text-sm font-semibold hidden sm:block" style={{ color: 'var(--dss-header-text)' }}>
             Design System Sansys

@@ -103,7 +103,7 @@ export function DSSSidebar() {
 
   const getStatusColor = (status?: string) => {
     switch (status) {
-      case 'golden': return 'var(--dss-hub-600)';
+      case 'golden': return 'var(--dss-jtech-accent)';
       case 'stable': return 'var(--dss-positive)';
       case 'beta': return 'var(--dss-warning)';
       default: return 'var(--dss-info)';
@@ -126,10 +126,10 @@ export function DSSSidebar() {
           <div 
             className="h-9 w-9 rounded-lg flex items-center justify-center shadow-sm"
             style={{ 
-              background: 'linear-gradient(135deg, var(--dss-water-500), var(--dss-water-600))'
+              background: 'linear-gradient(135deg, var(--dss-jtech-accent), var(--dss-jtech-accent-hover))'
             }}
           >
-            <span className="text-white font-bold text-sm">DS</span>
+            <span className="text-white font-bold text-sm">JT</span>
           </div>
           <div className="flex flex-col">
             <span 
@@ -176,11 +176,11 @@ export function DSSSidebar() {
                             ? 'hsl(var(--sidebar-accent))' 
                             : 'transparent',
                           color: isActive(item.url) 
-                            ? 'var(--dss-water-600)' 
+                            ? 'var(--dss-jtech-accent-light)' 
                             : 'hsl(var(--sidebar-foreground))',
                           fontWeight: isActive(item.url) ? 500 : 400,
                           borderLeft: isActive(item.url) 
-                            ? '2px solid var(--dss-water-500)' 
+                            ? '2px solid var(--dss-jtech-accent)' 
                             : '2px solid transparent',
                         }}
                       >
@@ -188,7 +188,7 @@ export function DSSSidebar() {
                           className="h-4 w-4 flex-shrink-0" 
                           style={{ 
                             color: isActive(item.url) 
-                              ? 'var(--dss-water-500)' 
+                              ? 'var(--dss-jtech-accent)' 
                               : 'hsl(var(--sidebar-muted))'
                           }}
                           strokeWidth={1.5}
@@ -204,7 +204,7 @@ export function DSSSidebar() {
                         {isActive(item.url) && (
                           <ChevronRight 
                             className="h-3 w-3" 
-                            style={{ color: 'var(--dss-water-500)' }}
+                            style={{ color: 'var(--dss-jtech-accent)' }}
                           />
                         )}
                       </Link>
@@ -232,8 +232,8 @@ export function DSSSidebar() {
           <span 
             className="px-2 py-0.5 rounded text-[10px] font-medium"
             style={{ 
-              backgroundColor: 'var(--dss-water-100)', 
-              color: 'var(--dss-water-700)' 
+              backgroundColor: 'var(--dss-jtech-accent)', 
+              color: '#ffffff' 
             }}
           >
             Jtech
