@@ -369,7 +369,7 @@
 
       <!-- ========== SEÇÃO 16: BRANDABILIDADE (HUB, WATER, WASTE) ========== -->
       <section class="test-section">
-        <h2>16. Brandabilidade Veolia (hub 🟠, water 🔵, waste 🟢)</h2>
+        <h2>16. Brandabilidade (hub 🟠, water 🔵, waste 🟢)</h2>
 
         <!-- 16.1. HUB Brand - Variantes -->
         <h3 style="margin-top: 2rem; color: #ef7a11;">🟠 Hub Brand - Variantes</h3>
