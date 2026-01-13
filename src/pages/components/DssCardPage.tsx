@@ -1285,12 +1285,12 @@ export default function DssCardPage() {
               >
                 <CardHeader className="pb-3">
                   <div className="flex items-center gap-3">
-                    <Badge 
-                      className="text-xs"
-                      style={{ backgroundColor: 'var(--dss-jtech-accent)', color: 'white' }}
-                    >
-                      {v.name}
-                    </Badge>
+                    <DssBadgePreview 
+                      label={v.name}
+                      colorKey="primary"
+                      variant="filled"
+                      size="sm"
+                    />
                     <span className="text-sm" style={{ color: 'var(--jtech-text-body)' }}>{v.desc}</span>
                   </div>
                 </CardHeader>
@@ -1301,11 +1301,42 @@ export default function DssCardPage() {
                   >
                     <DssCardPreview variant={v.name} clickable={true}>
                       <CardSection>
-                        <h4 className="font-semibold text-sm mb-2">Card {v.label}</h4>
-                        <p className="text-xs" style={{ color: '#666' }}>
+                        <div className="flex items-center gap-3 mb-3">
+                          <DssAvatarPreview 
+                            size="sm" 
+                            colorKey="primary"
+                            icon={<Layers style={{ width: 14, height: 14 }} />}
+                          />
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-sm">Card {v.label}</h4>
+                            <p className="text-xs" style={{ color: '#666' }}>Variante {v.name}</p>
+                          </div>
+                          <DssBadgePreview 
+                            label={v.hasElevation ? "SHADOW" : "FLAT"}
+                            colorKey={v.hasElevation ? "info" : "secondary"}
+                            variant="soft"
+                            size="xs"
+                          />
+                        </div>
+                        <DssSeparatorPreview orientation="horizontal" />
+                        <p className="text-xs mt-3" style={{ color: '#666' }}>
                           Passe o mouse para ver o efeito de hover.
                         </p>
                       </CardSection>
+                      <CardActions align="right">
+                        <DssButtonPreview 
+                          label="Detalhes"
+                          variant="flat"
+                          colorKey="primary"
+                          size="xs"
+                        />
+                        <DssButtonPreview 
+                          label="Ação"
+                          variant="elevated"
+                          colorKey="primary"
+                          size="xs"
+                        />
+                      </CardActions>
                     </DssCardPreview>
                   </div>
                 </CardContent>
@@ -1329,12 +1360,12 @@ export default function DssCardPage() {
                 <CardHeader className="pb-3">
                   <div className="flex items-center gap-3">
                     <span className="text-xl">{b.icon}</span>
-                    <Badge 
-                      className="text-xs"
-                      style={{ backgroundColor: b.principal, color: 'white' }}
-                    >
-                      {b.label}
-                    </Badge>
+                    <DssBadgePreview 
+                      label={b.label}
+                      brand={b.name}
+                      variant="filled"
+                      size="sm"
+                    />
                   </div>
                 </CardHeader>
                 <CardContent>
@@ -1344,18 +1375,45 @@ export default function DssCardPage() {
                   >
                     <DssCardPreview variant="bordered" brand={b.name} clickable={true}>
                       <CardSection isFirst={true} brand={b.name}>
-                        <h4 className="font-semibold text-sm mb-2">Brand {b.label}</h4>
-                        <p className="text-xs" style={{ color: '#666' }}>
-                          Card com identidade visual {b.label}.
+                        <div className="flex items-center gap-3 mb-3">
+                          <DssAvatarPreview 
+                            size="md" 
+                            brand={b.name}
+                            icon={<Star style={{ width: 18, height: 18 }} />}
+                          />
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                              <h4 className="font-semibold text-sm">Brand {b.label}</h4>
+                              <DssBadgePreview 
+                                label="VEOLIA"
+                                brand={b.name}
+                                variant="soft"
+                                size="xs"
+                              />
+                            </div>
+                            <p className="text-xs" style={{ color: '#666' }}>
+                              Identidade visual {b.label}
+                            </p>
+                          </div>
+                        </div>
+                        <DssSeparatorPreview orientation="horizontal" brand={b.name} />
+                        <p className="text-xs mt-3" style={{ color: '#666' }}>
+                          Card com brandability completa usando tokens {b.label}.
                         </p>
                       </CardSection>
                       <CardActions align="right">
-                        <button 
-                          className="px-3 py-1.5 text-xs font-medium rounded"
-                          style={{ color: b.principal }}
-                        >
-                          Ver mais
-                        </button>
+                        <DssButtonPreview 
+                          label="Cancelar"
+                          variant="flat"
+                          brand={b.name}
+                          size="sm"
+                        />
+                        <DssButtonPreview 
+                          label="Ver mais"
+                          variant="elevated"
+                          brand={b.name}
+                          size="sm"
+                        />
                       </CardActions>
                     </DssCardPreview>
                   </div>
@@ -1377,9 +1435,7 @@ export default function DssCardPage() {
               }}
             >
               <CardHeader className="pb-2">
-                <Badge className="w-fit text-xs" style={{ backgroundColor: '#1f86de', color: 'white' }}>
-                  Product Card
-                </Badge>
+                <DssBadgePreview label="Product Card" colorKey="primary" variant="filled" size="sm" />
               </CardHeader>
               <CardContent>
                 <div className="p-4 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
@@ -1388,29 +1444,47 @@ export default function DssCardPage() {
                       className="h-32 flex items-center justify-center"
                       style={{ backgroundColor: '#f5f5f5' }}
                     >
-                      <Image className="w-12 h-12" style={{ color: '#ccc' }} />
+                      <DssIconPreview 
+                        icon={<Image style={{ width: "100%", height: "100%" }} />}
+                        size="lg"
+                        colorKey={null}
+                      />
                     </div>
                     <CardSection>
                       <div className="flex justify-between items-start mb-2">
                         <h4 className="font-semibold text-sm">Produto Premium</h4>
-                        <span className="font-bold text-sm" style={{ color: '#1f86de' }}>R$ 299</span>
+                        <DssBadgePreview 
+                          label="R$ 299"
+                          colorKey="primary"
+                          variant="soft"
+                          size="sm"
+                        />
                       </div>
                       <p className="text-xs mb-3" style={{ color: '#666' }}>
                         Descrição breve do produto.
                       </p>
-                      <div className="flex gap-2">
-                        <button 
-                          className="flex-1 px-3 py-2 text-xs font-medium text-white rounded"
-                          style={{ backgroundColor: '#1f86de' }}
-                        >
-                          Comprar
-                        </button>
-                        <button 
-                          className="p-2 rounded"
-                          style={{ backgroundColor: '#f5f5f5' }}
-                        >
-                          <Heart className="w-4 h-4" style={{ color: '#666' }} />
-                        </button>
+                      <DssSeparatorPreview orientation="horizontal" />
+                      <div className="flex gap-2 mt-3">
+                        <DssButtonPreview 
+                          label="Comprar"
+                          variant="elevated"
+                          colorKey="primary"
+                          size="sm"
+                        />
+                        <DssButtonPreview 
+                          icon={<Heart style={{ width: "100%", height: "100%" }} />}
+                          iconOnly
+                          variant="flat"
+                          colorKey="negative"
+                          size="sm"
+                        />
+                        <DssButtonPreview 
+                          icon={<Share2 style={{ width: "100%", height: "100%" }} />}
+                          iconOnly
+                          variant="flat"
+                          colorKey="info"
+                          size="sm"
+                        />
                       </div>
                     </CardSection>
                   </DssCardPreview>
@@ -1427,32 +1501,57 @@ export default function DssCardPage() {
               }}
             >
               <CardHeader className="pb-2">
-                <Badge className="w-fit text-xs" style={{ backgroundColor: '#26a69a', color: 'white' }}>
-                  Profile Card
-                </Badge>
+                <DssBadgePreview label="Profile Card" colorKey="secondary" variant="filled" size="sm" />
               </CardHeader>
               <CardContent>
                 <div className="p-4 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
-                  <DssCardPreview variant="bordered">
-                    <CardSection horizontal={true}>
-                      <div 
-                        className="w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0"
-                        style={{ backgroundColor: '#e5f0ff' }}
-                      >
-                        <User className="w-8 h-8" style={{ color: '#1f86de' }} />
-                      </div>
+                  <DssCardPreview variant="bordered" semanticColor="secondary">
+                    <CardSection horizontal={true} isFirst={true} semanticColor="secondary">
+                      <DssAvatarPreview 
+                        size="lg" 
+                        colorKey="secondary"
+                        initials="JS"
+                      />
                       <div className="flex-1">
-                        <h4 className="font-semibold text-sm">João Silva</h4>
+                        <div className="flex items-center gap-2">
+                          <h4 className="font-semibold text-sm">João Silva</h4>
+                          <DssBadgePreview 
+                            label="PRO"
+                            colorKey="positive"
+                            variant="filled"
+                            size="xs"
+                            rounded
+                          />
+                        </div>
                         <p className="text-xs" style={{ color: '#666' }}>Desenvolvedor Senior</p>
                         <div className="flex gap-2 mt-2">
-                          <Badge className="text-[10px]" variant="secondary">React</Badge>
-                          <Badge className="text-[10px]" variant="secondary">TypeScript</Badge>
+                          <DssBadgePreview label="React" colorKey="info" variant="soft" size="xs" />
+                          <DssBadgePreview label="TypeScript" colorKey="primary" variant="soft" size="xs" />
                         </div>
                       </div>
-                      <button className="p-2 rounded-full" style={{ backgroundColor: '#f5f5f5' }}>
-                        <MoreHorizontal className="w-4 h-4" style={{ color: '#666' }} />
-                      </button>
+                      <DssButtonPreview 
+                        icon={<MoreHorizontal style={{ width: "100%", height: "100%" }} />}
+                        iconOnly
+                        variant="flat"
+                        colorKey="secondary"
+                        size="sm"
+                      />
                     </CardSection>
+                    <CardActions align="between">
+                      <DssButtonPreview 
+                        label="Mensagem"
+                        icon={<Mail style={{ width: "100%", height: "100%" }} />}
+                        variant="flat"
+                        colorKey="secondary"
+                        size="xs"
+                      />
+                      <DssButtonPreview 
+                        label="Seguir"
+                        variant="elevated"
+                        colorKey="secondary"
+                        size="xs"
+                      />
+                    </CardActions>
                   </DssCardPreview>
                 </div>
               </CardContent>
@@ -1467,27 +1566,195 @@ export default function DssCardPage() {
               }}
             >
               <CardHeader className="pb-2">
-                <Badge className="w-fit text-xs" style={{ backgroundColor: '#18b173', color: 'white' }}>
-                  Stats Card
-                </Badge>
+                <DssBadgePreview label="Stats Card" brand="waste" variant="filled" size="sm" />
               </CardHeader>
               <CardContent>
                 <div className="p-4 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
                   <DssCardPreview variant="flat" brand="waste">
                     <CardSection isFirst={true} brand="waste">
                       <div className="flex items-center justify-between mb-3">
-                        <span className="text-xs font-medium" style={{ color: '#666' }}>
-                          ECONOMIA MENSAL
-                        </span>
-                        <Settings className="w-4 h-4" style={{ color: '#666' }} />
+                        <DssBadgePreview 
+                          label="ECONOMIA MENSAL"
+                          brand="waste"
+                          variant="soft"
+                          size="xs"
+                        />
+                        <DssButtonPreview 
+                          icon={<Settings style={{ width: "100%", height: "100%" }} />}
+                          iconOnly
+                          variant="flat"
+                          brand="waste"
+                          size="xs"
+                        />
                       </div>
                       <div className="text-3xl font-bold mb-1" style={{ color: '#18b173' }}>
                         42.5%
                       </div>
-                      <p className="text-xs" style={{ color: '#666' }}>
-                        <span style={{ color: '#18b173' }}>↑ 12%</span> vs mês anterior
-                      </p>
+                      <DssSeparatorPreview orientation="horizontal" brand="waste" />
+                      <div className="flex items-center gap-2 mt-3">
+                        <DssBadgePreview 
+                          label="↑ 12%"
+                          colorKey="positive"
+                          variant="filled"
+                          size="xs"
+                          rounded
+                        />
+                        <span className="text-xs" style={{ color: '#666' }}>vs mês anterior</span>
+                      </div>
                     </CardSection>
+                  </DssCardPreview>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Notification Card */}
+            <Card 
+              className="transition-all duration-300"
+              style={{ 
+                backgroundColor: 'var(--jtech-card-bg)', 
+                borderColor: 'var(--jtech-card-border)' 
+              }}
+            >
+              <CardHeader className="pb-2">
+                <DssBadgePreview label="Notification Card" colorKey="warning" variant="filled" size="sm" />
+              </CardHeader>
+              <CardContent>
+                <div className="p-4 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
+                  <DssCardPreview variant="outlined" semanticColor="warning" clickable>
+                    <CardSection isFirst={true} semanticColor="warning">
+                      <div className="flex items-start gap-3">
+                        <DssAvatarPreview 
+                          size="md" 
+                          colorKey="warning"
+                          icon={<Bell style={{ width: 18, height: 18 }} />}
+                        />
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <h4 className="font-semibold text-sm">Atenção Necessária</h4>
+                            <DssBadgePreview 
+                              label="URGENTE"
+                              colorKey="warning"
+                              variant="filled"
+                              size="xs"
+                            />
+                          </div>
+                          <p className="text-xs" style={{ color: '#666' }}>
+                            Você tem 3 tarefas pendentes que precisam de revisão antes do prazo.
+                          </p>
+                        </div>
+                      </div>
+                    </CardSection>
+                    <CardActions align="right">
+                      <DssButtonPreview 
+                        label="Ignorar"
+                        variant="flat"
+                        colorKey="warning"
+                        size="xs"
+                      />
+                      <DssButtonPreview 
+                        label="Ver Tarefas"
+                        variant="elevated"
+                        colorKey="warning"
+                        size="xs"
+                      />
+                    </CardActions>
+                  </DssCardPreview>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Error Card */}
+            <Card 
+              className="transition-all duration-300"
+              style={{ 
+                backgroundColor: 'var(--jtech-card-bg)', 
+                borderColor: 'var(--jtech-card-border)' 
+              }}
+            >
+              <CardHeader className="pb-2">
+                <DssBadgePreview label="Error Card" colorKey="negative" variant="filled" size="sm" />
+              </CardHeader>
+              <CardContent>
+                <div className="p-4 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
+                  <DssCardPreview variant="bordered" semanticColor="negative">
+                    <CardSection isFirst={true} semanticColor="negative">
+                      <div className="flex items-center gap-3 mb-3">
+                        <DssAvatarPreview 
+                          size="sm" 
+                          colorKey="negative"
+                          icon={<span style={{ fontSize: 14 }}>!</span>}
+                          square
+                        />
+                        <h4 className="font-semibold text-sm">Erro de Conexão</h4>
+                      </div>
+                      <p className="text-xs mb-3" style={{ color: '#666' }}>
+                        Não foi possível conectar ao servidor. Verifique sua conexão.
+                      </p>
+                      <DssSeparatorPreview orientation="horizontal" colorKey="negative" />
+                    </CardSection>
+                    <CardActions align="right">
+                      <DssButtonPreview 
+                        label="Tentar Novamente"
+                        variant="elevated"
+                        colorKey="negative"
+                        size="sm"
+                      />
+                    </CardActions>
+                  </DssCardPreview>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Success Card */}
+            <Card 
+              className="transition-all duration-300"
+              style={{ 
+                backgroundColor: 'var(--jtech-card-bg)', 
+                borderColor: 'var(--jtech-card-border)' 
+              }}
+            >
+              <CardHeader className="pb-2">
+                <DssBadgePreview label="Success Card" colorKey="positive" variant="filled" size="sm" />
+              </CardHeader>
+              <CardContent>
+                <div className="p-4 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
+                  <DssCardPreview variant="elevated" semanticColor="positive">
+                    <CardSection isFirst={true} semanticColor="positive">
+                      <div className="flex items-center gap-3 mb-3">
+                        <DssAvatarPreview 
+                          size="md" 
+                          colorKey="positive"
+                          icon={<span style={{ fontSize: 18 }}>✓</span>}
+                        />
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-sm">Operação Concluída!</h4>
+                          <p className="text-xs" style={{ color: '#666' }}>
+                            Seus dados foram salvos com sucesso.
+                          </p>
+                        </div>
+                        <DssBadgePreview 
+                          label="100%"
+                          colorKey="positive"
+                          variant="soft"
+                          size="sm"
+                          rounded
+                        />
+                      </div>
+                    </CardSection>
+                    <CardActions align="right">
+                      <DssButtonPreview 
+                        label="Fechar"
+                        variant="flat"
+                        colorKey="positive"
+                        size="sm"
+                      />
+                      <DssButtonPreview 
+                        label="Ver Detalhes"
+                        variant="elevated"
+                        colorKey="positive"
+                        size="sm"
+                      />
+                    </CardActions>
                   </DssCardPreview>
                 </div>
               </CardContent>
@@ -1498,7 +1765,7 @@ export default function DssCardPage() {
         {/* Dark Mode Tab */}
         <TabsContent value="dark-mode" className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Light vs Dark comparison */}
+            {/* Light Mode */}
             <Card 
               className="transition-all duration-300"
               style={{ 
@@ -1508,28 +1775,61 @@ export default function DssCardPage() {
             >
               <CardHeader className="pb-3">
                 <div className="flex items-center gap-3">
-                  <Badge className="text-xs" variant="outline">Light Mode</Badge>
+                  <DssBadgePreview label="Light Mode" colorKey="info" variant="outline" size="sm" />
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="p-6 rounded-lg" style={{ backgroundColor: '#f5f5f5' }}>
                   <DssCardPreview variant="elevated" clickable={true} dark={false}>
                     <CardSection>
-                      <h4 className="font-semibold text-sm mb-2">Card Light</h4>
-                      <p className="text-xs" style={{ color: '#666' }}>
-                        Visualização no tema claro padrão.
+                      <div className="flex items-center gap-3 mb-3">
+                        <DssAvatarPreview 
+                          size="md" 
+                          colorKey="primary"
+                          icon={<User style={{ width: 18, height: 18 }} />}
+                          dark={false}
+                        />
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-semibold text-sm" style={{ color: '#1a1a1a' }}>Card Light</h4>
+                            <DssBadgePreview 
+                              label="PADRÃO"
+                              colorKey="primary"
+                              variant="soft"
+                              size="xs"
+                              dark={false}
+                            />
+                          </div>
+                          <p className="text-xs" style={{ color: '#666' }}>Tema claro padrão</p>
+                        </div>
+                      </div>
+                      <DssSeparatorPreview orientation="horizontal" dark={false} />
+                      <p className="text-xs mt-3" style={{ color: '#666' }}>
+                        Visualização com background claro e contraste alto.
                       </p>
                     </CardSection>
                     <CardActions>
-                      <button className="px-3 py-1.5 text-xs font-medium text-white rounded" style={{ backgroundColor: '#1f86de' }}>
-                        Ação
-                      </button>
+                      <DssButtonPreview 
+                        label="Cancelar"
+                        variant="flat"
+                        colorKey="primary"
+                        size="sm"
+                        dark={false}
+                      />
+                      <DssButtonPreview 
+                        label="Ação"
+                        variant="elevated"
+                        colorKey="primary"
+                        size="sm"
+                        dark={false}
+                      />
                     </CardActions>
                   </DssCardPreview>
                 </div>
               </CardContent>
             </Card>
 
+            {/* Dark Mode */}
             <Card 
               className="transition-all duration-300"
               style={{ 
@@ -1539,24 +1839,113 @@ export default function DssCardPage() {
             >
               <CardHeader className="pb-3">
                 <div className="flex items-center gap-3">
-                  <Badge className="text-xs" style={{ backgroundColor: '#1a1a1a', color: 'white' }}>Dark Mode</Badge>
+                  <DssBadgePreview label="Dark Mode" colorKey={null} variant="filled" size="sm" />
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="p-6 rounded-lg" style={{ backgroundColor: '#1a1a1a' }}>
                   <DssCardPreview variant="elevated" clickable={true} dark={true}>
                     <CardSection>
-                      <h4 className="font-semibold text-sm mb-2">Card Dark</h4>
-                      <p className="text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                        Visualização no tema escuro.
+                      <div className="flex items-center gap-3 mb-3">
+                        <DssAvatarPreview 
+                          size="md" 
+                          colorKey="primary"
+                          icon={<User style={{ width: 18, height: 18 }} />}
+                          dark={true}
+                        />
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-semibold text-sm" style={{ color: '#ffffff' }}>Card Dark</h4>
+                            <DssBadgePreview 
+                              label="ESCURO"
+                              colorKey="primary"
+                              variant="soft"
+                              size="xs"
+                              dark={true}
+                            />
+                          </div>
+                          <p className="text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>Tema escuro</p>
+                        </div>
+                      </div>
+                      <DssSeparatorPreview orientation="horizontal" dark={true} />
+                      <p className="text-xs mt-3" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                        Visualização com background escuro e acessibilidade.
                       </p>
                     </CardSection>
                     <CardActions>
-                      <button className="px-3 py-1.5 text-xs font-medium text-white rounded" style={{ backgroundColor: '#1f86de' }}>
-                        Ação
-                      </button>
+                      <DssButtonPreview 
+                        label="Cancelar"
+                        variant="flat"
+                        colorKey="primary"
+                        size="sm"
+                        dark={true}
+                      />
+                      <DssButtonPreview 
+                        label="Ação"
+                        variant="elevated"
+                        colorKey="primary"
+                        size="sm"
+                        dark={true}
+                      />
                     </CardActions>
                   </DssCardPreview>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Brand Dark Comparison */}
+            <Card 
+              className="transition-all duration-300 md:col-span-2"
+              style={{ 
+                backgroundColor: 'var(--jtech-card-bg)', 
+                borderColor: 'var(--jtech-card-border)' 
+              }}
+            >
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <DssBadgePreview label="Brands + Dark Mode" brand="hub" variant="filled" size="sm" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {Object.values(brandColors).map((b) => (
+                    <div key={b.name} className="p-4 rounded-lg" style={{ backgroundColor: '#1a1a1a' }}>
+                      <DssCardPreview variant="bordered" brand={b.name} clickable={true} dark={true}>
+                        <CardSection isFirst={true} brand={b.name}>
+                          <div className="flex items-center gap-3 mb-2">
+                            <DssAvatarPreview 
+                              size="sm" 
+                              brand={b.name}
+                              icon={<Star style={{ width: 14, height: 14 }} />}
+                              dark={true}
+                            />
+                            <div className="flex-1">
+                              <h4 className="font-semibold text-sm" style={{ color: '#ffffff' }}>{b.label} Dark</h4>
+                            </div>
+                            <DssBadgePreview 
+                              label="DARK"
+                              brand={b.name}
+                              variant="soft"
+                              size="xs"
+                              dark={true}
+                            />
+                          </div>
+                          <p className="text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                            Brand {b.label} no tema escuro.
+                          </p>
+                        </CardSection>
+                        <CardActions>
+                          <DssButtonPreview 
+                            label="Ação"
+                            variant="elevated"
+                            brand={b.name}
+                            size="xs"
+                            dark={true}
+                          />
+                        </CardActions>
+                      </DssCardPreview>
+                    </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>
