@@ -196,21 +196,175 @@ const actionsPropsData = [
   { prop: "vertical", type: "Boolean", default: "false", description: "Layout vertical para ações" },
 ];
 
-// Tokens utilizados pelo DssCard
+// Tokens utilizados pelo DssCard (EXPANDIDO - todos os tokens suportados)
 const tokensUsed = [
-  { category: "Surface", token: "--dss-surface-default", value: "#ffffff", usage: "Background padrão" },
-  { category: "Surface", token: "--dss-surface-dark", value: "#2a2a2a", usage: "Background dark mode" },
+  // ============================================================================
+  // SURFACES - Fundos e containers
+  // ============================================================================
+  { category: "Surface", token: "--dss-surface-default", value: "#ffffff", usage: "Background padrão do card" },
+  { category: "Surface", token: "--dss-surface-subtle", value: "#fafafa", usage: "Elevação suave (sections)" },
+  { category: "Surface", token: "--dss-surface-muted", value: "#f5f5f5", usage: "Áreas rebaixadas" },
+  { category: "Surface", token: "--dss-surface-overlay", value: "rgba(0,0,0,0.5)", usage: "Overlay escuro" },
   { category: "Surface", token: "--dss-surface-hover", value: "rgba(0,0,0,0.04)", usage: "Hover em cards flat" },
-  { category: "Elevation", token: "--dss-elevation-1", value: "0 1px 3px rgba(0,0,0,0.1)", usage: "Elevação padrão" },
-  { category: "Elevation", token: "--dss-elevation-2", value: "0 4px 6px rgba(0,0,0,0.12)", usage: "Hover elevation" },
-  { category: "Border", token: "--dss-gray-300", value: "#d4d4d4", usage: "Borda bordered/outlined" },
-  { category: "Border", token: "--dss-gray-400", value: "#a3a3a3", usage: "Borda hover" },
-  { category: "Border Radius", token: "--dss-radius-lg", value: "12px", usage: "Border-radius padrão" },
+  { category: "Surface", token: "--dss-surface-active", value: "rgba(0,0,0,0.08)", usage: "Estado ativo" },
+  { category: "Surface", token: "--dss-surface-selected", value: "rgba(31,134,222,0.12)", usage: "Seleção com primary" },
+  { category: "Surface", token: "--dss-surface-disabled", value: "#f5f5f5", usage: "Estado desabilitado" },
+  { category: "Surface", token: "--dss-surface-brand-subtle", value: "rgba(245,145,26,0.08)", usage: "Brand 8% opacity" },
+  { category: "Surface", token: "--dss-surface-brand-light", value: "rgba(245,145,26,0.12)", usage: "Brand 12% opacity" },
+  
+  // ============================================================================
+  // ELEVATION - Sombras e profundidade
+  // ============================================================================
+  { category: "Elevation", token: "--dss-elevation-0", value: "none", usage: "Sem elevação (flat)" },
+  { category: "Elevation", token: "--dss-elevation-1", value: "0 1px 3px rgba(0,0,0,0.25)", usage: "Elevação padrão" },
+  { category: "Elevation", token: "--dss-elevation-2", value: "0 4px 6px rgba(0,0,0,0.30)", usage: "Hover elevation" },
+  { category: "Elevation", token: "--dss-elevation-3", value: "0 10px 15px rgba(0,0,0,0.35)", usage: "Modal/dialog" },
+  { category: "Elevation", token: "--dss-shadow-focus", value: "0 0 0 3px rgba(31,134,222,0.5)", usage: "Focus ring" },
+  { category: "Elevation", token: "--dss-shadow-focus-error", value: "0 0 0 3px rgba(216,24,46,0.5)", usage: "Focus error" },
+  { category: "Elevation", token: "--dss-shadow-hover", value: "var(--dss-shadow-md)", usage: "Shadow hover state" },
+  { category: "Elevation", token: "--dss-shadow-hub-md", value: "0 4px 6px rgba(245,145,26,0.15)", usage: "Brand Hub shadow" },
+  { category: "Elevation", token: "--dss-shadow-water-md", value: "0 4px 6px rgba(14,136,228,0.15)", usage: "Brand Water shadow" },
+  { category: "Elevation", token: "--dss-shadow-waste-md", value: "0 4px 6px rgba(24,177,115,0.15)", usage: "Brand Waste shadow" },
+  
+  // ============================================================================
+  // BORDER RADIUS - Arredondamento
+  // ============================================================================
+  { category: "Border Radius", token: "--dss-radius-none", value: "0", usage: "Sem arredondamento (square)" },
+  { category: "Border Radius", token: "--dss-radius-sm", value: "4px", usage: "Radius pequeno" },
+  { category: "Border Radius", token: "--dss-radius-md", value: "8px", usage: "Radius médio (badges)" },
+  { category: "Border Radius", token: "--dss-radius-lg", value: "12px", usage: "Radius padrão do card" },
+  { category: "Border Radius", token: "--dss-radius-xl", value: "16px", usage: "Radius grande" },
+  { category: "Border Radius", token: "--dss-radius-full", value: "9999px", usage: "Totalmente circular" },
+  
+  // ============================================================================
+  // BORDERS - Bordas compostas
+  // ============================================================================
+  { category: "Borders", token: "--dss-border-gray-200", value: "1px solid #e5e5e5", usage: "Borda padrão" },
+  { category: "Borders", token: "--dss-border-gray-300", value: "1px solid #d4d4d4", usage: "Borda bordered/outlined" },
+  { category: "Borders", token: "--dss-border-gray-400", value: "1px solid #a3a3a3", usage: "Borda hover" },
+  { category: "Borders", token: "--dss-border-primary", value: "1px solid var(--dss-primary)", usage: "Borda primary" },
+  { category: "Borders", token: "--dss-border-focus", value: "2px solid var(--dss-action-primary)", usage: "Focus ring" },
+  { category: "Borders", token: "--dss-border-hub-600", value: "1px solid #ef7a11", usage: "Brand Hub border" },
+  { category: "Borders", token: "--dss-border-water-500", value: "1px solid #0e88e4", usage: "Brand Water border" },
+  { category: "Borders", token: "--dss-border-waste-500", value: "1px solid #18b173", usage: "Brand Waste border" },
+  
+  // ============================================================================
+  // SPACING - Espaçamentos
+  // ============================================================================
+  { category: "Spacing", token: "--dss-spacing-0", value: "0", usage: "Zero spacing" },
+  { category: "Spacing", token: "--dss-spacing-1", value: "4px", usage: "Micro gap" },
+  { category: "Spacing", token: "--dss-spacing-2", value: "8px", usage: "Gap pequeno" },
+  { category: "Spacing", token: "--dss-spacing-3", value: "12px", usage: "Gap médio" },
   { category: "Spacing", token: "--dss-spacing-4", value: "16px", usage: "Padding actions" },
+  { category: "Spacing", token: "--dss-spacing-5", value: "20px", usage: "Padding padrão" },
   { category: "Spacing", token: "--dss-spacing-6", value: "24px", usage: "Padding sections" },
-  { category: "Brands", token: "--dss-hub-600", value: "#ef7a11", usage: "Brand Hub border" },
-  { category: "Brands", token: "--dss-water-500", value: "#0e88e4", usage: "Brand Water border" },
-  { category: "Brands", token: "--dss-waste-500", value: "#18b173", usage: "Brand Waste border" },
+  { category: "Spacing", token: "--dss-spacing-8", value: "32px", usage: "Espaçamento amplo" },
+  { category: "Spacing", token: "--dss-gap-2", value: "8px", usage: "Gap flex/grid pequeno" },
+  { category: "Spacing", token: "--dss-gap-3", value: "12px", usage: "Gap flex/grid médio" },
+  { category: "Spacing", token: "--dss-gap-4", value: "16px", usage: "Gap flex/grid padrão" },
+  
+  // ============================================================================
+  // ACTION COLORS - Cores de ação semânticas
+  // ============================================================================
+  { category: "Action", token: "--dss-action-primary", value: "#1f86de", usage: "Ação principal" },
+  { category: "Action", token: "--dss-action-primary-hover", value: "#1a70c2", usage: "Hover primary" },
+  { category: "Action", token: "--dss-action-primary-light", value: "#e5f0ff", usage: "Light primary" },
+  { category: "Action", token: "--dss-action-primary-deep", value: "#0d5aa0", usage: "Deep primary" },
+  { category: "Action", token: "--dss-action-secondary", value: "#26a69a", usage: "Ação secundária" },
+  { category: "Action", token: "--dss-action-secondary-hover", value: "#1e8e82", usage: "Hover secondary" },
+  { category: "Action", token: "--dss-action-tertiary", value: "#ff6607", usage: "Ação terciária" },
+  { category: "Action", token: "--dss-action-accent", value: "#b454c4", usage: "Ação accent" },
+  { category: "Action", token: "--dss-action-dark", value: "#454545", usage: "Ação escura" },
+  
+  // ============================================================================
+  // FEEDBACK COLORS - Cores de feedback
+  // ============================================================================
+  { category: "Feedback", token: "--dss-feedback-success", value: "#4dd228", usage: "Sucesso" },
+  { category: "Feedback", token: "--dss-feedback-success-light", value: "#e8f5e9", usage: "Sucesso light" },
+  { category: "Feedback", token: "--dss-feedback-error", value: "#d8182e", usage: "Erro" },
+  { category: "Feedback", token: "--dss-feedback-error-light", value: "#ffebee", usage: "Erro light" },
+  { category: "Feedback", token: "--dss-feedback-warning", value: "#fabd14", usage: "Aviso" },
+  { category: "Feedback", token: "--dss-feedback-warning-light", value: "#fff8e1", usage: "Aviso light" },
+  { category: "Feedback", token: "--dss-feedback-info", value: "#0cc4e9", usage: "Informação" },
+  { category: "Feedback", token: "--dss-feedback-info-light", value: "#e1f5fe", usage: "Info light" },
+  
+  // ============================================================================
+  // TEXT - Tipografia
+  // ============================================================================
+  { category: "Text", token: "--dss-text-body", value: "#454545", usage: "Texto principal" },
+  { category: "Text", token: "--dss-text-subtle", value: "#b0b0b0", usage: "Texto secundário" },
+  { category: "Text", token: "--dss-text-muted", value: "#d7d7d7", usage: "Texto terciário" },
+  { category: "Text", token: "--dss-text-inverse", value: "#ffffff", usage: "Texto sobre dark" },
+  { category: "Text", token: "--dss-text-disabled", value: "#d4d4d4", usage: "Texto desabilitado" },
+  { category: "Text", token: "--dss-text-action", value: "var(--dss-action-primary)", usage: "Links" },
+  { category: "Text", token: "--dss-text-success", value: "var(--dss-positive)", usage: "Texto sucesso" },
+  { category: "Text", token: "--dss-text-error", value: "var(--dss-negative)", usage: "Texto erro" },
+  
+  // ============================================================================
+  // MOTION - Animação e transição
+  // ============================================================================
+  { category: "Motion", token: "--dss-duration-fast", value: "150ms", usage: "Transição rápida" },
+  { category: "Motion", token: "--dss-duration-base", value: "250ms", usage: "Transição padrão" },
+  { category: "Motion", token: "--dss-duration-slow", value: "300ms", usage: "Transição lenta" },
+  { category: "Motion", token: "--dss-easing-standard", value: "cubic-bezier(0.4,0,0.2,1)", usage: "Easing padrão" },
+  { category: "Motion", token: "--dss-easing-ease-out", value: "cubic-bezier(0,0,0.58,1)", usage: "Easing hover" },
+  { category: "Motion", token: "--dss-transition-base", value: "all 250ms ease", usage: "Transição completa" },
+  { category: "Motion", token: "--dss-transition-shadow", value: "box-shadow 250ms ease", usage: "Transição shadow" },
+  
+  // ============================================================================
+  // Z-INDEX - Camadas
+  // ============================================================================
+  { category: "Z-Index", token: "--dss-z-index-default", value: "0", usage: "Posição padrão" },
+  { category: "Z-Index", token: "--dss-z-index-above", value: "1", usage: "Acima do padrão" },
+  { category: "Z-Index", token: "--dss-z-index-dropdown", value: "1000", usage: "Dropdowns" },
+  { category: "Z-Index", token: "--dss-z-index-modal", value: "1060", usage: "Modais" },
+  { category: "Z-Index", token: "--dss-z-index-tooltip", value: "1080", usage: "Tooltips" },
+  
+  // ============================================================================
+  // OPACITY - Transparência
+  // ============================================================================
+  { category: "Opacity", token: "--dss-opacity-disabled", value: "0.4", usage: "Estado desabilitado" },
+  { category: "Opacity", token: "--dss-opacity-hover", value: "0.1", usage: "Hover overlay" },
+  { category: "Opacity", token: "--dss-opacity-active", value: "0.2", usage: "Active overlay" },
+  { category: "Opacity", token: "--dss-opacity-overlay", value: "0.5", usage: "Backdrop overlay" },
+  
+  // ============================================================================
+  // BRANDS - Cores de marca (escalas completas)
+  // ============================================================================
+  { category: "Brand Hub", token: "--dss-hub-50", value: "#fff9ed", usage: "Hub background light" },
+  { category: "Brand Hub", token: "--dss-hub-100", value: "#fef2d6", usage: "Hub surface" },
+  { category: "Brand Hub", token: "--dss-hub-300", value: "#fbcb76", usage: "Hub light accent" },
+  { category: "Brand Hub", token: "--dss-hub-500", value: "#f5911a", usage: "Hub medium" },
+  { category: "Brand Hub", token: "--dss-hub-600", value: "#ef7a11", usage: "Hub principal" },
+  { category: "Brand Hub", token: "--dss-hub-700", value: "#bf590f", usage: "Hub hover" },
+  { category: "Brand Hub", token: "--dss-hub-800", value: "#984614", usage: "Hub deep" },
+  { category: "Brand Water", token: "--dss-water-50", value: "#f0f7ff", usage: "Water background light" },
+  { category: "Brand Water", token: "--dss-water-100", value: "#e0eefe", usage: "Water surface" },
+  { category: "Brand Water", token: "--dss-water-300", value: "#7dc4fc", usage: "Water light accent" },
+  { category: "Brand Water", token: "--dss-water-500", value: "#0e88e4", usage: "Water principal" },
+  { category: "Brand Water", token: "--dss-water-600", value: "#026cc7", usage: "Water hover" },
+  { category: "Brand Water", token: "--dss-water-700", value: "#0356a1", usage: "Water deep" },
+  { category: "Brand Waste", token: "--dss-waste-50", value: "#edfcf4", usage: "Waste background light" },
+  { category: "Brand Waste", token: "--dss-waste-100", value: "#d3f8e2", usage: "Waste surface" },
+  { category: "Brand Waste", token: "--dss-waste-300", value: "#74e1ae", usage: "Waste light accent" },
+  { category: "Brand Waste", token: "--dss-waste-500", value: "#18b173", usage: "Waste principal" },
+  { category: "Brand Waste", token: "--dss-waste-600", value: "#0b8154", usage: "Waste hover" },
+  { category: "Brand Waste", token: "--dss-waste-700", value: "#0a724e", usage: "Waste deep" },
+  
+  // ============================================================================
+  // GRAY SCALE - Escala de cinza
+  // ============================================================================
+  { category: "Gray Scale", token: "--dss-gray-50", value: "#ffffff", usage: "Branco" },
+  { category: "Gray Scale", token: "--dss-gray-100", value: "#fafafa", usage: "Cinza muito claro" },
+  { category: "Gray Scale", token: "--dss-gray-200", value: "#f5f5f5", usage: "Cinza claro" },
+  { category: "Gray Scale", token: "--dss-gray-300", value: "#e5e5e5", usage: "Cinza médio claro" },
+  { category: "Gray Scale", token: "--dss-gray-400", value: "#d4d4d4", usage: "Cinza médio" },
+  { category: "Gray Scale", token: "--dss-gray-500", value: "#a3a3a3", usage: "Cinza" },
+  { category: "Gray Scale", token: "--dss-gray-600", value: "#737373", usage: "Cinza escuro" },
+  { category: "Gray Scale", token: "--dss-gray-700", value: "#525252", usage: "Cinza muito escuro" },
+  { category: "Gray Scale", token: "--dss-gray-800", value: "#404040", usage: "Quase preto" },
+  { category: "Gray Scale", token: "--dss-gray-900", value: "#262626", usage: "Preto suave" },
+  { category: "Gray Scale", token: "--dss-gray-950", value: "#171717", usage: "Preto" },
 ];
 
 // Anatomia 4 Camadas DSS
