@@ -6,7 +6,8 @@ import { useState } from "react";
 import { 
   Copy, Check, Layers, Code, FileText, 
   LayoutDashboard, Image, CreditCard, User, Settings,
-  ChevronRight, MoreHorizontal, Heart, Share2, Bookmark
+  ChevronRight, MoreHorizontal, Heart, Share2, Bookmark,
+  Loader2, Mail, Star, Bell
 } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionHeader } from "@/components/ui/SectionHeader";
@@ -221,7 +222,391 @@ const anatomyLayers = [
 ];
 
 // ============================================================================
-// COMPONENTE CARD PREVIEW COM TOKENS REAIS
+// DSS INNER COMPONENTS - Componentes Internos Reais do DSS
+// ============================================================================
+
+// Utility para obter cores com base em colorKey ou brand
+function getColorConfig(colorKey?: string | null, brand?: string | null) {
+  if (colorKey && semanticColors[colorKey as keyof typeof semanticColors]) {
+    const color = semanticColors[colorKey as keyof typeof semanticColors];
+    return {
+      bg: color.bgFallback,
+      hover: color.hoverFallback,
+      light: color.lightFallback,
+      deep: color.deepFallback,
+      text: color.textColor,
+      token: `--dss-action-${colorKey}`
+    };
+  }
+  if (brand && brandColors[brand as keyof typeof brandColors]) {
+    const b = brandColors[brand as keyof typeof brandColors];
+    return {
+      bg: b.principal,
+      hover: b.scale[700],
+      light: b.scale[100],
+      deep: b.scale[800],
+      text: "#ffffff",
+      token: `--dss-${brand}-600`
+    };
+  }
+  return {
+    bg: "#1f86de",
+    hover: "#1a70c2",
+    light: "#e5f0ff",
+    deep: "#0d5aa0",
+    text: "#ffffff",
+    token: "--dss-action-primary"
+  };
+}
+
+// ============================================================================
+// DssAvatarPreview - Componente Avatar DSS com tokens reais
+// ============================================================================
+interface DssAvatarPreviewProps {
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  colorKey?: string | null;
+  brand?: string | null;
+  icon?: React.ReactNode;
+  src?: string;
+  initials?: string;
+  square?: boolean;
+  dark?: boolean;
+}
+
+function DssAvatarPreview({
+  size = "md",
+  colorKey = "primary",
+  brand = null,
+  icon,
+  src,
+  initials,
+  square = false,
+  dark = false,
+}: DssAvatarPreviewProps) {
+  const colors = getColorConfig(colorKey, brand);
+  
+  const sizeMap = {
+    xs: { container: 24, font: 10, icon: 12 },
+    sm: { container: 32, font: 12, icon: 16 },
+    md: { container: 40, font: 14, icon: 20 },
+    lg: { container: 56, font: 18, icon: 28 },
+    xl: { container: 72, font: 24, icon: 36 },
+  };
+  
+  const s = sizeMap[size];
+  
+  return (
+    <div
+      style={{
+        width: s.container,
+        height: s.container,
+        borderRadius: square ? "8px" : "50%",
+        backgroundColor: colors.light,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexShrink: 0,
+        overflow: "hidden",
+        transition: "all 0.2s ease",
+      }}
+      title="DssAvatar"
+    >
+      {src ? (
+        <img 
+          src={src} 
+          alt="Avatar" 
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        />
+      ) : icon ? (
+        <span style={{ color: colors.bg, width: s.icon, height: s.icon, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          {icon}
+        </span>
+      ) : initials ? (
+        <span style={{ color: colors.bg, fontSize: s.font, fontWeight: 600 }}>
+          {initials}
+        </span>
+      ) : (
+        <User style={{ color: colors.bg, width: s.icon, height: s.icon }} />
+      )}
+    </div>
+  );
+}
+
+// ============================================================================
+// DssBadgePreview - Componente Badge DSS com tokens reais
+// ============================================================================
+interface DssBadgePreviewProps {
+  label: string;
+  colorKey?: string | null;
+  brand?: string | null;
+  variant?: "filled" | "outline" | "soft";
+  size?: "xs" | "sm" | "md";
+  rounded?: boolean;
+  dark?: boolean;
+}
+
+function DssBadgePreview({
+  label,
+  colorKey = "primary",
+  brand = null,
+  variant = "filled",
+  size = "sm",
+  rounded = false,
+  dark = false,
+}: DssBadgePreviewProps) {
+  const colors = getColorConfig(colorKey, brand);
+  
+  const sizeStyles = {
+    xs: { padding: "2px 6px", fontSize: "9px" },
+    sm: { padding: "3px 8px", fontSize: "10px" },
+    md: { padding: "4px 10px", fontSize: "11px" },
+  };
+  
+  const getVariantStyles = (): React.CSSProperties => {
+    switch (variant) {
+      case "outline":
+        return {
+          backgroundColor: "transparent",
+          color: colors.bg,
+          border: `1px solid ${colors.bg}`,
+        };
+      case "soft":
+        return {
+          backgroundColor: colors.light,
+          color: colors.deep,
+          border: "none",
+        };
+      case "filled":
+      default:
+        return {
+          backgroundColor: colors.bg,
+          color: colors.text,
+          border: "none",
+        };
+    }
+  };
+  
+  return (
+    <span
+      style={{
+        ...sizeStyles[size],
+        ...getVariantStyles(),
+        display: "inline-flex",
+        alignItems: "center",
+        borderRadius: rounded ? "9999px" : "4px",
+        fontWeight: 600,
+        textTransform: "uppercase",
+        letterSpacing: "0.02em",
+        whiteSpace: "nowrap",
+        transition: "all 0.2s ease",
+      }}
+      title="DssBadge"
+    >
+      {label}
+    </span>
+  );
+}
+
+// ============================================================================
+// DssButtonPreview - Componente Button DSS com tokens reais (para uso interno)
+// ============================================================================
+interface DssButtonPreviewProps {
+  label?: string;
+  colorKey?: string | null;
+  brand?: string | null;
+  variant?: "elevated" | "flat" | "outline" | "unelevated";
+  size?: "xs" | "sm" | "md";
+  disabled?: boolean;
+  loading?: boolean;
+  icon?: React.ReactNode;
+  iconOnly?: boolean;
+  dark?: boolean;
+}
+
+function DssButtonPreview({
+  label = "Button",
+  colorKey = "primary",
+  brand = null,
+  variant = "elevated",
+  size = "sm",
+  disabled = false,
+  loading = false,
+  icon,
+  iconOnly = false,
+  dark = false,
+}: DssButtonPreviewProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  const colors = getColorConfig(colorKey, brand);
+  
+  const sizeStyles = {
+    xs: { height: 24, padding: iconOnly ? "0 6px" : "0 8px", fontSize: 10, iconSize: 12 },
+    sm: { height: 28, padding: iconOnly ? "0 8px" : "0 12px", fontSize: 11, iconSize: 14 },
+    md: { height: 36, padding: iconOnly ? "0 10px" : "0 16px", fontSize: 12, iconSize: 16 },
+  };
+  
+  const s = sizeStyles[size];
+  
+  const getVariantStyles = (): React.CSSProperties => {
+    const base: React.CSSProperties = {
+      display: "inline-flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "6px",
+      height: s.height,
+      padding: s.padding,
+      fontSize: s.fontSize,
+      fontWeight: 500,
+      textTransform: "uppercase",
+      letterSpacing: "0.05em",
+      borderRadius: "4px",
+      cursor: disabled ? "not-allowed" : "pointer",
+      opacity: disabled ? 0.5 : 1,
+      transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+      whiteSpace: "nowrap",
+    };
+    
+    switch (variant) {
+      case "flat":
+        return {
+          ...base,
+          backgroundColor: isHovered && !disabled ? colors.light : "transparent",
+          color: isHovered && !disabled ? colors.hover : colors.bg,
+          border: "none",
+          boxShadow: "none",
+        };
+      case "outline":
+        return {
+          ...base,
+          backgroundColor: isHovered && !disabled ? colors.light : "transparent",
+          color: isHovered && !disabled ? colors.hover : colors.bg,
+          border: `1px solid ${isHovered && !disabled ? colors.hover : colors.bg}`,
+          boxShadow: "none",
+        };
+      case "unelevated":
+        return {
+          ...base,
+          backgroundColor: isHovered && !disabled ? colors.hover : colors.bg,
+          color: colors.text,
+          border: "none",
+          boxShadow: "none",
+        };
+      case "elevated":
+      default:
+        return {
+          ...base,
+          backgroundColor: isHovered && !disabled ? colors.hover : colors.bg,
+          color: colors.text,
+          border: "none",
+          boxShadow: isHovered && !disabled 
+            ? "0 3px 6px rgba(0,0,0,0.16)" 
+            : "0 1px 3px rgba(0,0,0,0.12)",
+        };
+    }
+  };
+  
+  return (
+    <button
+      style={getVariantStyles()}
+      disabled={disabled || loading}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      title="DssButton"
+    >
+      {loading ? (
+        <Loader2 style={{ width: s.iconSize, height: s.iconSize }} className="animate-spin" />
+      ) : (
+        <>
+          {icon && <span style={{ width: s.iconSize, height: s.iconSize, display: "flex", alignItems: "center", justifyContent: "center" }}>{icon}</span>}
+          {!iconOnly && label && <span>{label}</span>}
+        </>
+      )}
+    </button>
+  );
+}
+
+// ============================================================================
+// DssSeparatorPreview - Componente Separator DSS com tokens reais
+// ============================================================================
+interface DssSeparatorPreviewProps {
+  orientation?: "horizontal" | "vertical";
+  colorKey?: string | null;
+  brand?: string | null;
+  inset?: boolean;
+  dark?: boolean;
+}
+
+function DssSeparatorPreview({
+  orientation = "horizontal",
+  colorKey = null,
+  brand = null,
+  inset = false,
+  dark = false,
+}: DssSeparatorPreviewProps) {
+  const colors = colorKey || brand ? getColorConfig(colorKey, brand) : null;
+  const borderColor = colors ? colors.light : (dark ? "rgba(255,255,255,0.12)" : "#e5e5e5");
+  
+  return (
+    <div
+      style={{
+        width: orientation === "horizontal" ? "100%" : "1px",
+        height: orientation === "horizontal" ? "1px" : "100%",
+        backgroundColor: borderColor,
+        margin: inset ? (orientation === "horizontal" ? "0 16px" : "16px 0") : 0,
+        flexShrink: 0,
+      }}
+      title="DssSeparator"
+    />
+  );
+}
+
+// ============================================================================
+// DssIconPreview - Componente Icon DSS com tokens reais
+// ============================================================================
+interface DssIconPreviewProps {
+  icon: React.ReactNode;
+  size?: "xs" | "sm" | "md" | "lg";
+  colorKey?: string | null;
+  brand?: string | null;
+  dark?: boolean;
+}
+
+function DssIconPreview({
+  icon,
+  size = "md",
+  colorKey = "primary",
+  brand = null,
+  dark = false,
+}: DssIconPreviewProps) {
+  const colors = getColorConfig(colorKey, brand);
+  
+  const sizeMap = {
+    xs: 12,
+    sm: 16,
+    md: 20,
+    lg: 24,
+  };
+  
+  const s = sizeMap[size];
+  
+  return (
+    <span
+      style={{
+        width: s,
+        height: s,
+        color: colors.bg,
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+      title="DssIcon"
+    >
+      {icon}
+    </span>
+  );
+}
+
+// ============================================================================
+// COMPONENTE CARD PREVIEW COM TOKENS REAIS E COMPONENTES INTERNOS DSS
 // ============================================================================
 
 interface DssCardPreviewProps {
@@ -248,7 +633,7 @@ function DssCardPreview({
   const [isHovered, setIsHovered] = useState(false);
 
   // Obter cor (semântica tem prioridade sobre brand)
-  const getColorConfig = () => {
+  const getCardColorConfig = () => {
     if (semanticColor && semanticColors[semanticColor as keyof typeof semanticColors]) {
       const color = semanticColors[semanticColor as keyof typeof semanticColors];
       return {
@@ -274,7 +659,7 @@ function DssCardPreview({
     return null;
   };
 
-  const colorConfig = getColorConfig();
+  const colorConfig = getCardColorConfig();
 
   // Estilos baseados na variante COM suporte a hover dinâmico e cores semânticas
   const getVariantStyles = (): React.CSSProperties => {
@@ -645,46 +1030,73 @@ export default function DssCardPage() {
               showToken={true}
             >
               <CardSection isFirst={true} brand={selectedSemanticColor ? null : selectedBrand} semanticColor={selectedSemanticColor}>
+                {/* Header com DssAvatar + DssBadge */}
                 <div className="flex items-center gap-3 mb-3">
-                  <div 
-                    className="w-10 h-10 rounded-full flex items-center justify-center"
-                    style={{ 
-                      backgroundColor: colorStyles?.light || '#e5f0ff'
-                    }}
-                  >
-                    <User className="w-5 h-5" style={{ color: colorStyles?.bg || '#1f86de' }} />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-sm" style={{ color: isDark ? '#ffffff' : '#1a1a1a' }}>
-                      Título do Card
-                    </h4>
+                  <DssAvatarPreview 
+                    size="md" 
+                    colorKey={selectedSemanticColor}
+                    brand={selectedSemanticColor ? null : selectedBrand}
+                    icon={<User style={{ width: 20, height: 20 }} />}
+                    dark={isDark}
+                  />
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <h4 className="font-semibold text-sm" style={{ color: isDark ? '#ffffff' : '#1a1a1a' }}>
+                        Título do Card
+                      </h4>
+                      <DssBadgePreview 
+                        label="NOVO" 
+                        colorKey={selectedSemanticColor}
+                        brand={selectedSemanticColor ? null : selectedBrand}
+                        variant="soft"
+                        size="xs"
+                        dark={isDark}
+                      />
+                    </div>
                     <p className="text-xs" style={{ color: isDark ? 'rgba(255,255,255,0.7)' : '#666' }}>
                       Subtítulo ou descrição
                     </p>
                   </div>
+                  <DssIconPreview 
+                    icon={<MoreHorizontal style={{ width: "100%", height: "100%" }} />}
+                    size="md"
+                    colorKey={isDark ? null : "primary"}
+                    dark={isDark}
+                  />
                 </div>
-                <p className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.8)' : '#444' }}>
-                  Este é um exemplo de conteúdo dentro do DssCard. O componente é flexível e suporta qualquer tipo de conteúdo.
+                
+                {/* DssSeparator */}
+                <DssSeparatorPreview 
+                  orientation="horizontal"
+                  colorKey={selectedSemanticColor}
+                  brand={selectedSemanticColor ? null : selectedBrand}
+                  dark={isDark}
+                />
+                
+                {/* Content */}
+                <p className="text-sm mt-3" style={{ color: isDark ? 'rgba(255,255,255,0.8)' : '#444' }}>
+                  Este é um exemplo de conteúdo dentro do DssCard usando componentes DSS reais: DssAvatar, DssBadge, DssSeparator, DssButton e DssIcon.
                 </p>
               </CardSection>
+              
+              {/* CardActions com DssButtons */}
               <CardActions align="right">
-                <button 
-                  className="px-3 py-1.5 text-xs font-medium rounded"
-                  style={{ 
-                    color: colorStyles?.bg || '#1f86de',
-                    backgroundColor: 'transparent'
-                  }}
-                >
-                  Cancelar
-                </button>
-                <button 
-                  className="px-3 py-1.5 text-xs font-medium text-white rounded"
-                  style={{ 
-                    backgroundColor: colorStyles?.bg || '#1f86de'
-                  }}
-                >
-                  Confirmar
-                </button>
+                <DssButtonPreview 
+                  label="Cancelar"
+                  variant="flat"
+                  colorKey={selectedSemanticColor}
+                  brand={selectedSemanticColor ? null : selectedBrand}
+                  size="sm"
+                  dark={isDark}
+                />
+                <DssButtonPreview 
+                  label="Confirmar"
+                  variant="elevated"
+                  colorKey={selectedSemanticColor}
+                  brand={selectedSemanticColor ? null : selectedBrand}
+                  size="sm"
+                  dark={isDark}
+                />
               </CardActions>
             </DssCardPreview>
           </div>
