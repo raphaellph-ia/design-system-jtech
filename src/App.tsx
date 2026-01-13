@@ -12,6 +12,7 @@ import SpacingPage from "./pages/tokens/SpacingPage";
 import ShadowsPage from "./pages/tokens/ShadowsPage";
 import BordersPage from "./pages/tokens/BordersPage";
 import DssButtonPage from "./pages/components/DssButtonPage";
+import DssCardPage from "./pages/components/DssCardPage";
 import ComponentPlaceholder from "./pages/components/ComponentPlaceholder";
 import ArchitecturePage from "./pages/governance/ArchitecturePage";
 import ClassificationPage from "./pages/governance/ClassificationPage";
@@ -48,6 +49,7 @@ const App = () => (
             
             {/* Componentes */}
             <Route path="/componentes/dss-button" element={<DssButtonPage />} />
+            <Route path="/componentes/dss-card" element={<DssCardPage />} />
             <Route path="/componentes/:componentId" element={<ComponentPlaceholder />} />
             
             {/* Governança */}
