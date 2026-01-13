@@ -305,26 +305,51 @@ function DssButtonPreview({
   brand,
   showToken = false,
 }: DssButtonPreviewProps) {
-  // Obter cores REAIS do DSS
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Obter cores REAIS do DSS incluindo light para hover de flat/outline
   const getColors = () => {
     if (brand && brandColors[brand as keyof typeof brandColors]) {
       const b = brandColors[brand as keyof typeof brandColors];
-      return { bg: b.principal, hover: b.scale[700] || b.scale[600], textColor: "#ffffff" };
+      return { 
+        bg: b.principal, 
+        hover: b.scale[700] || b.scale[600], 
+        light: b.scale[100],
+        deep: b.scale[800],
+        textColor: "#ffffff" 
+      };
     }
     
     if (feedbackColors[colorKey as keyof typeof feedbackColors]) {
       const f = feedbackColors[colorKey as keyof typeof feedbackColors];
-      // Warning precisa de texto escuro
       const textColor = colorKey === "warning" ? "#1a1a1a" : "#ffffff";
-      return { bg: f.bg, hover: f.hover, textColor };
+      return { 
+        bg: f.bg, 
+        hover: f.hover, 
+        light: f.light,
+        deep: f.deep,
+        textColor 
+      };
     }
     
     if (semanticColors[colorKey as keyof typeof semanticColors]) {
       const s = semanticColors[colorKey as keyof typeof semanticColors];
-      return { bg: s.bg, hover: s.hover, textColor: "#ffffff" };
+      return { 
+        bg: s.bg, 
+        hover: s.hover, 
+        light: s.light,
+        deep: s.deep,
+        textColor: "#ffffff" 
+      };
     }
     
-    return { bg: "#1f86de", hover: "#0f5295", textColor: "#ffffff" };
+    return { 
+      bg: "#1f86de", 
+      hover: "#0f5295", 
+      light: "#86c0f3",
+      deep: "#0a3a6a",
+      textColor: "#ffffff" 
+    };
   };
 
   const getSizeStyles = () => {
@@ -339,7 +364,7 @@ function DssButtonPreview({
   const colors = getColors();
   const sizeStyles = getSizeStyles();
 
-  // Estilos baseados na variante
+  // Estilos baseados na variante COM suporte a hover dinâmico
   const getVariantStyles = (): React.CSSProperties => {
     const base: React.CSSProperties = {
       display: "inline-flex",
@@ -361,25 +386,27 @@ function DssButtonPreview({
 
     switch (variant) {
       case "flat":
+        // Hover: bg usa light, text usa hover
         return {
           ...base,
-          backgroundColor: "transparent",
-          color: colors.bg,
+          backgroundColor: isHovered && !disabled ? colors.light : "transparent",
+          color: isHovered && !disabled ? colors.hover : colors.bg,
           border: "none",
           boxShadow: "none",
         };
       case "outline":
+        // Hover: bg usa light, text/borda usa hover
         return {
           ...base,
-          backgroundColor: "transparent",
-          color: colors.bg,
-          border: `1px solid ${colors.bg}`,
+          backgroundColor: isHovered && !disabled ? colors.light : "transparent",
+          color: isHovered && !disabled ? colors.hover : colors.bg,
+          border: `1px solid ${isHovered && !disabled ? colors.hover : colors.bg}`,
           boxShadow: "none",
         };
       case "unelevated":
         return {
           ...base,
-          backgroundColor: colors.bg,
+          backgroundColor: isHovered && !disabled ? colors.hover : colors.bg,
           color: colors.textColor,
           border: "none",
           boxShadow: "none",
@@ -387,16 +414,16 @@ function DssButtonPreview({
       case "push":
         return {
           ...base,
-          backgroundColor: colors.bg,
+          backgroundColor: isHovered && !disabled ? colors.hover : colors.bg,
           color: colors.textColor,
           border: "none",
-          boxShadow: `0 4px 0 ${colors.hover}`,
-          transform: "translateY(-2px)",
+          boxShadow: isHovered && !disabled ? `0 2px 0 ${colors.deep}` : `0 4px 0 ${colors.hover}`,
+          transform: isHovered && !disabled ? "translateY(0px)" : "translateY(-2px)",
         };
       case "glossy":
         return {
           ...base,
-          backgroundColor: colors.bg,
+          backgroundColor: isHovered && !disabled ? colors.hover : colors.bg,
           color: colors.textColor,
           border: "none",
           boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
@@ -406,10 +433,12 @@ function DssButtonPreview({
       default:
         return {
           ...base,
-          backgroundColor: colors.bg,
+          backgroundColor: isHovered && !disabled ? colors.hover : colors.bg,
           color: colors.textColor,
           border: "none",
-          boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08)",
+          boxShadow: isHovered && !disabled 
+            ? "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.12)" 
+            : "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08)",
         };
     }
   };
@@ -423,7 +452,9 @@ function DssButtonPreview({
       <button
         style={getVariantStyles()}
         disabled={disabled || loading}
-        className="hover:brightness-95 active:brightness-90 focus:outline-none focus:ring-2 focus:ring-offset-2"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className="focus:outline-none focus:ring-2 focus:ring-offset-2"
       >
         {loading ? (
           <Loader2 className="animate-spin" style={{ width: sizeStyles.fontSize, height: sizeStyles.fontSize }} />
