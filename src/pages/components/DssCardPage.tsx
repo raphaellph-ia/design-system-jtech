@@ -23,6 +23,103 @@ const variants = [
   { name: "outlined", label: "Outlined", desc: "Com borda, sem elevação", hasElevation: false },
 ];
 
+// ============================================================================
+// CORES SEMÂNTICAS DSS - Padrão Quasar
+// ============================================================================
+const semanticColors = {
+  primary: {
+    name: "primary",
+    label: "Primary",
+    icon: "🔵",
+    bg: "var(--dss-action-primary)",
+    hover: "var(--dss-action-primary-hover)",
+    light: "var(--dss-action-primary-light)",
+    deep: "var(--dss-action-primary-deep)",
+    disable: "var(--dss-action-primary-disable)",
+    textColor: "#ffffff",
+    // Fallback values
+    bgFallback: "#1f86de",
+    hoverFallback: "#1a70c2",
+    lightFallback: "#e5f0ff",
+    deepFallback: "#0d5aa0"
+  },
+  secondary: {
+    name: "secondary",
+    label: "Secondary",
+    icon: "🟣",
+    bg: "var(--dss-action-secondary)",
+    hover: "var(--dss-action-secondary-hover)",
+    light: "var(--dss-action-secondary-light)",
+    deep: "var(--dss-action-secondary-deep)",
+    disable: "var(--dss-action-secondary-disable)",
+    textColor: "#ffffff",
+    bgFallback: "#26a69a",
+    hoverFallback: "#1e8e82",
+    lightFallback: "#e0f2f1",
+    deepFallback: "#00695c"
+  },
+  positive: {
+    name: "positive",
+    label: "Positive",
+    icon: "✅",
+    bg: "var(--dss-feedback-success)",
+    hover: "var(--dss-feedback-success-hover)",
+    light: "var(--dss-feedback-success-light)",
+    deep: "var(--dss-feedback-success-deep)",
+    disable: "var(--dss-feedback-success-disable)",
+    textColor: "#ffffff",
+    bgFallback: "#21ba45",
+    hoverFallback: "#1aa23c",
+    lightFallback: "#e8f5e9",
+    deepFallback: "#0f7a26"
+  },
+  negative: {
+    name: "negative",
+    label: "Negative",
+    icon: "❌",
+    bg: "var(--dss-feedback-error)",
+    hover: "var(--dss-feedback-error-hover)",
+    light: "var(--dss-feedback-error-light)",
+    deep: "var(--dss-feedback-error-deep)",
+    disable: "var(--dss-feedback-error-disable)",
+    textColor: "#ffffff",
+    bgFallback: "#c10015",
+    hoverFallback: "#a60013",
+    lightFallback: "#ffebee",
+    deepFallback: "#8a000e"
+  },
+  warning: {
+    name: "warning",
+    label: "Warning",
+    icon: "⚠️",
+    bg: "var(--dss-feedback-warning)",
+    hover: "var(--dss-feedback-warning-hover)",
+    light: "var(--dss-feedback-warning-light)",
+    deep: "var(--dss-feedback-warning-deep)",
+    disable: "var(--dss-feedback-warning-disable)",
+    textColor: "#1a1a1a",
+    bgFallback: "#f2c037",
+    hoverFallback: "#d9a82f",
+    lightFallback: "#fff8e1",
+    deepFallback: "#c49a12"
+  },
+  info: {
+    name: "info",
+    label: "Info",
+    icon: "ℹ️",
+    bg: "var(--dss-feedback-info)",
+    hover: "var(--dss-feedback-info-hover)",
+    light: "var(--dss-feedback-info-light)",
+    deep: "var(--dss-feedback-info-deep)",
+    disable: "var(--dss-feedback-info-disable)",
+    textColor: "#ffffff",
+    bgFallback: "#31ccec",
+    hoverFallback: "#27b8d5",
+    lightFallback: "#e1f5fe",
+    deepFallback: "#1fa3bf"
+  }
+};
+
 // Paletas de Marca REAIS do DSS (Veolia Brands)
 const brandColors = {
   hub: {
@@ -133,6 +230,7 @@ interface DssCardPreviewProps {
   square?: boolean;
   dark?: boolean;
   brand?: string | null;
+  semanticColor?: string | null;
   children?: React.ReactNode;
   showToken?: boolean;
 }
@@ -143,23 +241,46 @@ function DssCardPreview({
   square = false,
   dark = false,
   brand = null,
+  semanticColor = null,
   children,
   showToken = false,
 }: DssCardPreviewProps) {
   const [isHovered, setIsHovered] = useState(false);
 
-  // Obter cor da marca
-  const getBrandColor = () => {
+  // Obter cor (semântica tem prioridade sobre brand)
+  const getColorConfig = () => {
+    if (semanticColor && semanticColors[semanticColor as keyof typeof semanticColors]) {
+      const color = semanticColors[semanticColor as keyof typeof semanticColors];
+      return {
+        border: color.bgFallback,
+        light: color.lightFallback,
+        hover: color.hoverFallback,
+        text: color.textColor,
+        bg: color.bgFallback,
+        token: `--dss-action-${semanticColor}`
+      };
+    }
     if (brand && brandColors[brand as keyof typeof brandColors]) {
-      return brandColors[brand as keyof typeof brandColors].principal;
+      const brandData = brandColors[brand as keyof typeof brandColors];
+      return {
+        border: brandData.principal,
+        light: brandData.scale[100],
+        hover: brandData.scale[700],
+        text: "#ffffff",
+        bg: brandData.principal,
+        token: `--dss-${brand}-600`
+      };
     }
     return null;
   };
 
-  const brandColor = getBrandColor();
+  const colorConfig = getColorConfig();
 
-  // Estilos baseados na variante COM suporte a hover dinâmico
+  // Estilos baseados na variante COM suporte a hover dinâmico e cores semânticas
   const getVariantStyles = (): React.CSSProperties => {
+    const borderColor = colorConfig?.border || undefined;
+    const lightBg = colorConfig?.light || undefined;
+    
     const base: React.CSSProperties = {
       position: "relative",
       display: "flex",
@@ -170,7 +291,7 @@ function DssCardPreview({
       overflow: "hidden",
       transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
       cursor: clickable ? "pointer" : "default",
-      borderLeft: brand ? `4px solid ${brandColor}` : undefined,
+      borderLeft: colorConfig ? `4px solid ${borderColor}` : undefined,
     };
 
     switch (variant) {
@@ -179,15 +300,15 @@ function DssCardPreview({
           ...base,
           boxShadow: "none",
           backgroundColor: isHovered && clickable 
-            ? (dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.04)") 
+            ? (colorConfig ? lightBg : (dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.04)"))
             : (dark ? "#2a2a2a" : "#ffffff"),
         };
       case "bordered":
         return {
           ...base,
-          border: `1px solid ${isHovered && clickable ? "#a3a3a3" : "#d4d4d4"}`,
-          borderLeftWidth: brand ? "4px" : "1px",
-          borderLeftColor: brand ? brandColor : (isHovered && clickable ? "#a3a3a3" : "#d4d4d4"),
+          border: `1px solid ${isHovered && clickable ? (colorConfig ? colorConfig.hover : "#a3a3a3") : "#d4d4d4"}`,
+          borderLeftWidth: colorConfig ? "4px" : "1px",
+          borderLeftColor: colorConfig ? (isHovered && clickable ? colorConfig.hover : borderColor) : (isHovered && clickable ? "#a3a3a3" : "#d4d4d4"),
           boxShadow: isHovered && clickable
             ? "0 4px 6px rgba(0,0,0,0.12)"
             : "0 1px 3px rgba(0,0,0,0.1)",
@@ -195,12 +316,12 @@ function DssCardPreview({
       case "outlined":
         return {
           ...base,
-          border: `1px solid ${isHovered && clickable ? (brand ? brandColor : "#1f86de") : "#d4d4d4"}`,
-          borderLeftWidth: brand ? "4px" : "1px",
-          borderLeftColor: brand ? brandColor : (isHovered && clickable ? "#1f86de" : "#d4d4d4"),
+          border: `1px solid ${isHovered && clickable ? (colorConfig ? colorConfig.hover : "#1f86de") : "#d4d4d4"}`,
+          borderLeftWidth: colorConfig ? "4px" : "1px",
+          borderLeftColor: colorConfig ? (isHovered && clickable ? colorConfig.hover : borderColor) : (isHovered && clickable ? "#1f86de" : "#d4d4d4"),
           boxShadow: "none",
           backgroundColor: isHovered && clickable 
-            ? (brand ? `${brandColor}0d` : "rgba(31, 134, 222, 0.05)") 
+            ? (colorConfig ? lightBg : "rgba(31, 134, 222, 0.05)") 
             : (dark ? "#2a2a2a" : "#ffffff"),
         };
       case "elevated":
@@ -214,7 +335,7 @@ function DssCardPreview({
     }
   };
 
-  const tokenName = `--dss-elevation-${variant === "elevated" ? "1" : "0"}`;
+  const tokenName = colorConfig?.token || `--dss-elevation-${variant === "elevated" ? "1" : "0"}`;
 
   return (
     <div className="flex flex-col items-center gap-1">
@@ -246,7 +367,8 @@ function CardSection({
   className = "",
   style = {},
   isFirst = false,
-  brand = null
+  brand = null,
+  semanticColor = null
 }: { 
   children: React.ReactNode; 
   horizontal?: boolean;
@@ -254,15 +376,24 @@ function CardSection({
   style?: React.CSSProperties;
   isFirst?: boolean;
   brand?: string | null;
+  semanticColor?: string | null;
 }) {
-  const brandColor = brand ? brandColors[brand as keyof typeof brandColors]?.principal : null;
+  // Cor semântica tem prioridade
+  let bgColor: string | undefined;
+  if (isFirst) {
+    if (semanticColor && semanticColors[semanticColor as keyof typeof semanticColors]) {
+      bgColor = semanticColors[semanticColor as keyof typeof semanticColors].lightFallback;
+    } else if (brand && brandColors[brand as keyof typeof brandColors]) {
+      bgColor = `${brandColors[brand as keyof typeof brandColors].principal}0d`;
+    }
+  }
   
   return (
     <div 
       className={`p-6 ${horizontal ? "flex items-center gap-4" : ""} ${className}`}
       style={{
         ...style,
-        backgroundColor: isFirst && brand ? `${brandColor}0d` : undefined,
+        backgroundColor: bgColor,
       }}
     >
       {children}
@@ -364,13 +495,18 @@ function TokenRow({ token, value, usage }: { token: string; value: string; usage
 export default function DssCardPage() {
   const [selectedVariant, setSelectedVariant] = useState("elevated");
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
+  const [selectedSemanticColor, setSelectedSemanticColor] = useState<string | null>(null);
   const [isClickable, setIsClickable] = useState(false);
   const [isSquare, setIsSquare] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [copied, setCopied] = useState(false);
 
+  // Determina qual cor usar (semântica tem prioridade sobre brand)
+  const activeColorType = selectedSemanticColor ? 'semantic' : (selectedBrand ? 'brand' : null);
+  const activeColor = selectedSemanticColor || selectedBrand;
+
   const codeExample = `<DssCard
-  variant="${selectedVariant}"${selectedBrand ? `\n  brand="${selectedBrand}"` : ""}${isClickable ? "\n  clickable" : ""}${isSquare ? "\n  square" : ""}${isDark ? "\n  dark" : ""}
+  variant="${selectedVariant}"${selectedSemanticColor ? `\n  color="${selectedSemanticColor}"` : ""}${selectedBrand && !selectedSemanticColor ? `\n  brand="${selectedBrand}"` : ""}${isClickable ? "\n  clickable" : ""}${isSquare ? "\n  square" : ""}${isDark ? "\n  dark" : ""}
 >
   <DssCardSection>
     <h3>Título do Card</h3>
@@ -393,6 +529,33 @@ export default function DssCardPage() {
     acc[token.category].push(token);
     return acc;
   }, {} as Record<string, typeof tokensUsed>);
+
+  // Obter cor ativa (semântica ou brand)
+  const getActiveColorStyles = () => {
+    if (selectedSemanticColor && semanticColors[selectedSemanticColor as keyof typeof semanticColors]) {
+      const color = semanticColors[selectedSemanticColor as keyof typeof semanticColors];
+      return {
+        border: color.bgFallback,
+        light: color.lightFallback,
+        hover: color.hoverFallback,
+        text: color.textColor,
+        bg: color.bgFallback
+      };
+    }
+    if (selectedBrand && brandColors[selectedBrand as keyof typeof brandColors]) {
+      const brand = brandColors[selectedBrand as keyof typeof brandColors];
+      return {
+        border: brand.principal,
+        light: brand.scale[100],
+        hover: brand.scale[700],
+        text: "#ffffff",
+        bg: brand.principal
+      };
+    }
+    return null;
+  };
+
+  const colorStyles = getActiveColorStyles();
 
   return (
     <div 
@@ -477,20 +640,19 @@ export default function DssCardPage() {
               clickable={isClickable}
               square={isSquare}
               dark={isDark}
-              brand={selectedBrand}
+              brand={selectedSemanticColor ? null : selectedBrand}
+              semanticColor={selectedSemanticColor}
               showToken={true}
             >
-              <CardSection isFirst={true} brand={selectedBrand}>
+              <CardSection isFirst={true} brand={selectedSemanticColor ? null : selectedBrand} semanticColor={selectedSemanticColor}>
                 <div className="flex items-center gap-3 mb-3">
                   <div 
                     className="w-10 h-10 rounded-full flex items-center justify-center"
                     style={{ 
-                      backgroundColor: selectedBrand 
-                        ? brandColors[selectedBrand as keyof typeof brandColors]?.scale[100]
-                        : '#e5f0ff'
+                      backgroundColor: colorStyles?.light || '#e5f0ff'
                     }}
                   >
-                    <User className="w-5 h-5" style={{ color: selectedBrand ? brandColors[selectedBrand as keyof typeof brandColors]?.principal : '#1f86de' }} />
+                    <User className="w-5 h-5" style={{ color: colorStyles?.bg || '#1f86de' }} />
                   </div>
                   <div>
                     <h4 className="font-semibold text-sm" style={{ color: isDark ? '#ffffff' : '#1a1a1a' }}>
@@ -509,7 +671,7 @@ export default function DssCardPage() {
                 <button 
                   className="px-3 py-1.5 text-xs font-medium rounded"
                   style={{ 
-                    color: selectedBrand ? brandColors[selectedBrand as keyof typeof brandColors]?.principal : '#1f86de',
+                    color: colorStyles?.bg || '#1f86de',
                     backgroundColor: 'transparent'
                   }}
                 >
@@ -518,9 +680,7 @@ export default function DssCardPage() {
                 <button 
                   className="px-3 py-1.5 text-xs font-medium text-white rounded"
                   style={{ 
-                    backgroundColor: selectedBrand 
-                      ? brandColors[selectedBrand as keyof typeof brandColors]?.principal 
-                      : '#1f86de'
+                    backgroundColor: colorStyles?.bg || '#1f86de'
                   }}
                 >
                   Confirmar
@@ -552,6 +712,42 @@ export default function DssCardPage() {
               </div>
             </div>
 
+            {/* Semantic Colors */}
+            <div className="space-y-2">
+              <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Cores Semânticas</label>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => setSelectedSemanticColor(null)}
+                  className="px-3 py-1.5 rounded text-xs font-medium transition-all"
+                  style={{
+                    backgroundColor: !selectedSemanticColor ? 'var(--dss-jtech-accent)' : 'rgba(255,255,255,0.05)',
+                    color: !selectedSemanticColor ? '#ffffff' : 'var(--jtech-text-body)',
+                    border: `1px solid ${!selectedSemanticColor ? 'var(--dss-jtech-accent)' : 'var(--jtech-card-border)'}`
+                  }}
+                >
+                  Nenhum
+                </button>
+                {Object.values(semanticColors).map((c) => (
+                  <button
+                    key={c.name}
+                    onClick={() => {
+                      setSelectedSemanticColor(c.name);
+                      setSelectedBrand(null); // Limpa brand ao selecionar cor semântica
+                    }}
+                    className="px-2 py-1.5 rounded text-xs font-medium transition-all flex items-center gap-1.5"
+                    style={{
+                      backgroundColor: selectedSemanticColor === c.name ? c.bgFallback : 'rgba(255,255,255,0.05)',
+                      color: selectedSemanticColor === c.name ? c.textColor : 'var(--jtech-text-body)',
+                      border: `1px solid ${selectedSemanticColor === c.name ? c.bgFallback : 'var(--jtech-card-border)'}`
+                    }}
+                  >
+                    <span>{c.icon}</span>
+                    {c.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {/* Brand */}
             <div className="space-y-2">
               <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Brand (Veolia)</label>
@@ -560,9 +756,9 @@ export default function DssCardPage() {
                   onClick={() => setSelectedBrand(null)}
                   className="px-3 py-1.5 rounded text-xs font-medium transition-all"
                   style={{
-                    backgroundColor: !selectedBrand ? 'var(--dss-jtech-accent)' : 'rgba(255,255,255,0.05)',
-                    color: !selectedBrand ? '#ffffff' : 'var(--jtech-text-body)',
-                    border: `1px solid ${!selectedBrand ? 'var(--dss-jtech-accent)' : 'var(--jtech-card-border)'}`
+                    backgroundColor: !selectedBrand && !selectedSemanticColor ? 'var(--dss-jtech-accent)' : 'rgba(255,255,255,0.05)',
+                    color: !selectedBrand && !selectedSemanticColor ? '#ffffff' : 'var(--jtech-text-body)',
+                    border: `1px solid ${!selectedBrand && !selectedSemanticColor ? 'var(--dss-jtech-accent)' : 'var(--jtech-card-border)'}`
                   }}
                 >
                   Nenhum
@@ -570,7 +766,10 @@ export default function DssCardPage() {
                 {Object.values(brandColors).map((b) => (
                   <button
                     key={b.name}
-                    onClick={() => setSelectedBrand(b.name)}
+                    onClick={() => {
+                      setSelectedBrand(b.name);
+                      setSelectedSemanticColor(null); // Limpa semântica ao selecionar brand
+                    }}
                     className="px-2 py-1.5 rounded text-xs font-medium transition-all flex items-center gap-1.5"
                     style={{
                       backgroundColor: selectedBrand === b.name ? b.principal : 'rgba(255,255,255,0.05)',
