@@ -25,11 +25,6 @@
       border-left-color: var(--dss-hub-700);
     }
   }
-
-  /* Background sutil da marca */
-  .dss-card-section:first-child {
-    background-color: rgba(var(--dss-hub-primary-rgb), 0.05);
-  }
 }
 
 /* ==========================================================================
@@ -52,11 +47,6 @@
       border-left-color: var(--dss-water-600);
     }
   }
-
-  /* Background sutil da marca */
-  .dss-card-section:first-child {
-    background-color: rgba(var(--dss-water-primary-rgb), 0.05);
-  }
 }
 
 /* ==========================================================================
@@ -78,11 +68,6 @@
       border-color: var(--dss-waste-300);
       border-left-color: var(--dss-waste-700);
     }
-  }
-
-  /* Background sutil da marca */
-  .dss-card-section:first-child {
-    background-color: rgba(var(--dss-waste-primary-rgb), 0.05);
   }
 }
 

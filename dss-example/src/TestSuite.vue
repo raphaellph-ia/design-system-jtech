@@ -240,7 +240,7 @@
               >
                 <span class="nav-icon">🃏</span>
                 <span class="nav-label">DssCard</span>
-                <span class="nav-badge">Em breve</span>
+                <span class="nav-badge">11 seções</span>
               </button>
 
               <button
@@ -338,11 +338,11 @@
         <div class="nav-section">
           <div class="stats-mini">
             <div class="stat-item">
-              <span class="stat-value">3</span>
+              <span class="stat-value">4</span>
               <span class="stat-label">Componentes</span>
             </div>
             <div class="stat-item">
-              <span class="stat-value">54</span>
+              <span class="stat-value">65</span>
               <span class="stat-label">Seções</span>
             </div>
             <div class="stat-item">
@@ -381,6 +381,11 @@
         <TestAvatar />
       </div>
 
+      <!-- DssCard Test View -->
+      <div v-if="activeComponent === 'card'" class="component-view">
+        <TestCard />
+      </div>
+
       <!-- Design Tokens View -->
       <div v-if="activeComponent === 'tokens'" class="component-view">
         <TestTokens />
@@ -395,6 +400,7 @@ import TestIndex from './TestIndex.vue'
 import TestButton from './TestButton.vue'
 import TestBadge from './TestBadge.vue'
 import TestAvatar from './TestAvatar.vue'
+import TestCard from './TestCard.vue'
 import TestTokens from './TestTokens.vue'
 
 // Active component state

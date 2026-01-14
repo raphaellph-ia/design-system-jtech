@@ -7,6 +7,136 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ---
 
+## [2.3.0] - 2025-01-13
+
+### ✨ Added - DssCard Component
+
+**Componente de superfície estrutural compatível com `q-card`**
+
+#### **Refatoração Completa Baseada em Documentação**
+
+O DssCard foi completamente refatorado para estar **100% alinhado** com a documentação oficial (DssCard.md - Template 13.1).
+
+#### **Props Implementadas (5 total)**
+- **`variant`** (String, default: `'elevated'`): Variante visual (elevated, flat, bordered, outlined)
+- **`square`** (Boolean): Remove border-radius (cantos quadrados)
+- **`clickable`** (Boolean): Torna o card clicável com hover effects e navegação por teclado
+- **`dark`** (Boolean): Ativa dark mode
+- **`brand`** (String): Tema de marca Veolia (hub, water, waste) - adiciona border-left colorida
+
+#### **Subcomponentes**
+- **`DssCardSection`**: Organiza conteúdo interno com padding consistente
+  - Prop `horizontal`: Layout horizontal (flex row)
+- **`DssCardActions`**: Área de ações (botões) na base do card
+  - Prop `align`: Alinhamento (left, center, right, between, around)
+  - Prop `vertical`: Layout vertical (botões empilhados)
+
+#### **Casos de Uso**
+```vue
+<!-- Card básico -->
+<DssCard variant="elevated">
+  <DssCardSection>
+    <h3>Card Title</h3>
+    <p>Content here.</p>
+  </DssCardSection>
+</DssCard>
+
+<!-- Card clickable com navegação por teclado -->
+<DssCard variant="elevated" clickable @click="viewDetails">
+  <DssCardSection>
+    <h3>Clickable Card</h3>
+    <p>Press Tab, Enter or Space</p>
+  </DssCardSection>
+</DssCard>
+
+<!-- Card com brandabilidade -->
+<DssCard variant="outlined" brand="hub">
+  <DssCardSection>
+    <h3>Hub Dashboard 🟠</h3>
+    <p>Border-left colorida.</p>
+  </DssCardSection>
+</DssCard>
+
+<!-- Card com ações -->
+<DssCard variant="elevated">
+  <DssCardSection>
+    <h3>Confirmation</h3>
+    <p>Are you sure?</p>
+  </DssCardSection>
+  <DssCardActions align="right">
+    <DssButton variant="flat">Cancel</DssButton>
+    <DssButton color="primary">Confirm</DssButton>
+  </DssCardActions>
+</DssCard>
+```
+
+#### **Mudanças Principais**
+
+##### 1. **Acessibilidade Aprimorada (WCAG 2.1 AA)**
+- ✅ Cards clickable navegáveis por teclado (Tab, Enter, Space)
+- ✅ Adicionado automaticamente `tabindex="0"` e `role="article"` quando `clickable="true"`
+- ✅ Handler `handleKeydown` para Enter e Space
+- ✅ Focus ring visível via `--dss-focus-shadow-primary`
+
+##### 2. **Brandabilidade Simplificada**
+- ✅ Brand **APENAS** via border-left colorida (4px)
+- ✅ Removido background sutil da primeira section (não documentado)
+- ✅ Mais sutil e consistente com diretrizes do DSS
+- ✅ Suporta `data-brand` no contexto pai para herança
+
+##### 3. **Estados Corrigidos**
+- ✅ Removido estado de loading (pertence a componentes internos)
+- ✅ Cards são **superfícies estruturais** - loading/disabled/error pertencem aos componentes internos
+- ✅ Adicionado `cursor: pointer` para cards clickable
+
+##### 4. **Arquitetura em 4 Camadas**
+```
+DssCard/
+├── 1-structure/              # Vue components
+├── 2-composition/            # Base styles
+├── 3-variants/               # 4 variantes (elevated, flat, bordered, outlined)
+└── 4-output/                 # States (dark mode, focus, clickable) + Brands (Hub, Water, Waste)
+```
+
+##### 5. **Tokens Reutilizáveis**
+- ✅ **ZERO tokens component-specific**
+- ✅ Usa apenas tokens genéricos do DSS
+- ✅ Categorias: Spacing, Border Radius, Borders, Colors (Surface), Elevation, Brands, Motion, Accessibility (Focus)
+
+#### **Documentação Criada**
+
+##### **[DssCard.md](./components/base/DssCard/DssCard.md) - Documentação Completa (Template 13.1)**
+- 📋 **1.227 linhas** de documentação técnica completa
+- ✅ **13 seções obrigatórias**: Visão Geral, Quando Usar/Não Usar, Anatomia, Tokens, API Pública, Estados, Variantes, Brandabilidade, Acessibilidade, Exemplos, Anti-patterns, Governança, Troubleshooting
+- ✅ **7 anti-patterns** documentados (❌ incorreto vs ✅ correto)
+- ✅ **9 exemplos práticos** de uso
+- ✅ **Conformidade WCAG 2.1 AA** documentada
+
+##### **[README.md](./components/base/DssCard/README.md) - Quick Start**
+- Guia rápido de uso
+- Referência à documentação completa
+- Seção de mudanças recentes
+
+##### **[DssCard.example.vue](./components/base/DssCard/DssCard.example.vue) - Exemplos Práticos**
+- ✅ **11 seções de exemplos**
+- ✅ **30+ exemplos** práticos
+- ✅ Todos os casos de uso documentados implementados
+
+#### **CSS Criado**
+- **Base styles**: Layout flexbox, background, border-radius, padding (`2-composition/_base.scss`)
+- **Variantes**: 4 arquivos separados (elevated, flat, bordered, outlined) em `3-variants/`
+- **States**: Dark mode, focus, clickable (`4-output/_states.scss`)
+- **Brands**: Hub, Water, Waste com border-left colorida (`4-output/_brands.scss`)
+- **Accessibility**: High contrast, reduced motion, keyboard navigation
+
+#### **Playground Visual**
+- ✅ Integrado ao `dss-example/src/TestCard.vue`
+- ✅ 11 seções de testes visuais
+- ✅ Navegação: Layout > DssCard
+- ✅ Estatísticas atualizadas: **4 componentes, 65 seções**
+
+---
+
 ## [2.2.0] - 2025-12-30
 
 ### 🎉 NEW COMPONENTS - DssBadge & DssAvatar

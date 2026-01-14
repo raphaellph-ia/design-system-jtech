@@ -4,7 +4,7 @@
     :style="avatarStyle"
   >
     <!-- Ícone (se fornecido) -->
-    <span v-if="icon" class="dss-avatar__icon material-icons">
+    <span v-if="icon" class="dss-avatar__icon material-icons" :style="iconStyle">
       {{ icon }}
     </span>
 
@@ -90,6 +90,33 @@ export default {
       if (this.size) {
         style.width = this.size;
         style.height = this.size;
+      }
+
+      // Border-radius baseado nas props de forma
+      if (this.square) {
+        style.borderRadius = '0';
+      } else if (this.rounded) {
+        style.borderRadius = '8px'; // var(--dss-border-radius-md)
+      } else {
+        // Padrão: circular (50%)
+        style.borderRadius = '50%';
+      }
+
+      return style;
+    },
+
+    iconStyle() {
+      const style = {};
+
+      // Calcular tamanho do ícone proporcionalmente ao avatar
+      if (this.size) {
+        // Extrair valor numérico do size (ex: "64px" -> 64)
+        const sizeValue = parseFloat(this.size);
+
+        // Ícone deve ser aproximadamente 50% do tamanho do avatar
+        const iconSize = sizeValue * 0.5;
+
+        style.fontSize = `${iconSize}px`;
       }
 
       return style;

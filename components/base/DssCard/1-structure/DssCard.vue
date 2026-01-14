@@ -2,8 +2,10 @@
   <div
     :class="cardClasses"
     :style="cardStyles"
-    v-bind="$attrs"
+    v-bind="cardAttrs"
     @click="handleClick"
+    @keydown.enter="handleKeydown"
+    @keydown.space.prevent="handleKeydown"
   >
     <!-- Card content slot -->
     <slot />
@@ -95,11 +97,35 @@ export default {
     cardStyles() {
       // Future: dynamic styles if needed
       return {}
+    },
+
+    /**
+     * Adiciona atributos de acessibilidade quando clickable
+     */
+    cardAttrs() {
+      const attrs = { ...this.$attrs }
+
+      if (this.clickable) {
+        attrs.tabindex = attrs.tabindex ?? '0'
+        attrs.role = attrs.role ?? 'article'
+      }
+
+      return attrs
     }
   },
 
   methods: {
     handleClick(event) {
+      if (this.clickable) {
+        this.$emit('click', event)
+      }
+    },
+
+    /**
+     * Handler para navegação por teclado (Enter e Space)
+     * Conforme WCAG 2.1 AA
+     */
+    handleKeydown(event) {
       if (this.clickable) {
         this.$emit('click', event)
       }

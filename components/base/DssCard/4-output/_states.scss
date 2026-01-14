@@ -40,31 +40,7 @@
     outline: none;
     box-shadow: var(--dss-focus-shadow-primary);
   }
-}
 
-/* ==========================================================================
-   LOADING STATE (opcional)
-   ========================================================================== */
-
-.dss-card--loading {
-  position: relative;
-  pointer-events: none;
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(255, 255, 255, 0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-}
-
-/* Dark mode loading */
-[data-theme="dark"] .dss-card--loading::after {
-  background-color: rgba(0, 0, 0, 0.5);
+  /* Cursor pointer para indicar clickable */
+  cursor: pointer;
 }

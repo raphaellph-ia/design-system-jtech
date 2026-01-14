@@ -2,6 +2,37 @@
 
 **Componente de Card** baseado no Quasar q-card, implementado com a nova arquitetura DSS em 4 camadas.
 
+> **📋 Documentação Completa:** [DssCard.md](./DssCard.md)
+> Este README é um guia rápido. Para documentação completa (Template 13.1), consulte **DssCard.md**.
+
+---
+
+## 🚀 Quick Start
+
+### Instalação
+
+```javascript
+import { DssCard, DssCardSection, DssCardActions } from '@/dss/components/base/DssCard'
+```
+
+### Uso Básico
+
+```vue
+<template>
+  <DssCard variant="elevated">
+    <DssCardSection>
+      <h3>Card Title</h3>
+      <p>Card content goes here.</p>
+    </DssCardSection>
+
+    <DssCardActions align="right">
+      <DssButton variant="flat">Cancel</DssButton>
+      <DssButton color="primary">Confirm</DssButton>
+    </DssCardActions>
+  </DssCard>
+</template>
+```
+
 ---
 
 ## 📁 Estrutura de Arquivos
@@ -9,7 +40,7 @@
 ```
 DssCard/
 ├── 1-structure/              # LAYER 1: Estrutura Vue
-│   ├── DssCard.vue           (template + props)
+│   ├── DssCard.vue           (template + props + acessibilidade)
 │   ├── DssCardSection.vue    (seções de conteúdo)
 │   └── DssCardActions.vue    (área de ações)
 │
@@ -24,14 +55,16 @@ DssCard/
 │   └── index.scss            (orquestrador)
 │
 ├── 4-output/                 # LAYER 4: Output Final
-│   ├── _states.scss          (dark mode, loading, focus)
+│   ├── _states.scss          (dark mode, focus, clickable)
 │   ├── _brands.scss          (Hub, Water, Waste)
 │   └── index.scss            (orquestrador)
 │
 ├── DssCard.module.scss       # Importa todas as camadas (~40 linhas)
-├── DssCard.example.vue       # Exemplos de uso
+├── DssCard.vue               # Re-export principal
+├── DssCard.example.vue       # 11 seções de exemplos práticos
+├── DssCard.md                # 📋 Documentação Completa (Template 13.1)
 ├── index.js                  # Exports
-└── README.md                 # Esta documentação
+└── README.md                 # Esta documentação (Quick Start)
 ```
 
 ---
@@ -288,6 +321,40 @@ Bug no hover do outlined clickable?
 vs ANTES:
 → DssCard.module.scss linha ??? (procurar em 800 linhas)
 ```
+
+---
+
+## ✨ Mudanças Recentes (Janeiro 2025)
+
+### Refatoração Completa Baseada em Documentação
+
+O DssCard foi completamente refatorado para estar **100% alinhado** com a documentação oficial ([DssCard.md](./DssCard.md)):
+
+#### 1. **Acessibilidade Aprimorada (WCAG 2.1 AA)**
+- ✅ Cards clickable agora são navegáveis por teclado (Tab, Enter, Space)
+- ✅ Adicionado automaticamente `tabindex="0"` e `role="article"` quando `clickable="true"`
+- ✅ Handler `handleKeydown` para Enter e Space
+- ✅ Focus ring visível via `--dss-focus-shadow-primary`
+
+#### 2. **Brandabilidade Simplificada**
+- ✅ Brand agora é **APENAS** via border-left colorida (4px)
+- ✅ Removido background sutil da primeira section (não documentado)
+- ✅ Mais sutil e consistente com diretrizes do DSS
+
+#### 3. **Estados Corrigidos**
+- ✅ Removido estado de loading (pertence a componentes internos)
+- ✅ Cards são **superfícies estruturais** - loading/disabled/error pertencem aos componentes internos
+- ✅ Adicionado `cursor: pointer` para cards clickable
+
+#### 4. **Exemplos Completos**
+- ✅ Arquivo `DssCard.example.vue` com **11 seções de exemplos**
+- ✅ 30+ exemplos práticos baseados na documentação oficial
+- ✅ Todos os casos de uso documentados implementados
+
+#### 5. **Documentação Completa**
+- ✅ [DssCard.md](./DssCard.md) criado seguindo **Template 13.1** (padrão DssButton)
+- ✅ 13 seções obrigatórias: Visão Geral, API, Estados, Variantes, Acessibilidade, Anti-patterns, etc.
+- ✅ 1.227 linhas de documentação técnica completa
 
 ---
 
