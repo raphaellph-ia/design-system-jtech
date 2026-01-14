@@ -247,23 +247,183 @@ const propsData = [
 
 // Tokens utilizados pelo DssButton
 const tokensUsed = [
-  { category: "Cores Semânticas", token: "--dss-primary", value: "#1f86de", usage: "Background primary" },
-  { category: "Cores Semânticas", token: "--dss-primary-hover", value: "#0f5295", usage: "Hover primary" },
-  { category: "Cores Semânticas", token: "--dss-secondary", value: "#26a69a", usage: "Background secondary" },
-  { category: "Cores Semânticas", token: "--dss-tertiary", value: "#ff6607", usage: "Background tertiary" },
-  { category: "Cores Semânticas", token: "--dss-accent", value: "#b454c4", usage: "Background accent" },
-  { category: "Feedback", token: "--dss-positive", value: "#4dd228", usage: "Sucesso" },
-  { category: "Feedback", token: "--dss-negative", value: "#d8182e", usage: "Erro/Exclusão" },
-  { category: "Feedback", token: "--dss-warning", value: "#fabd14", usage: "Atenção" },
-  { category: "Feedback", token: "--dss-info", value: "#0cc4e9", usage: "Informativo" },
-  { category: "Brands", token: "--dss-hub-600", value: "#ef7a11", usage: "Brand Hub" },
-  { category: "Brands", token: "--dss-water-500", value: "#0e88e4", usage: "Brand Water" },
-  { category: "Brands", token: "--dss-waste-500", value: "#18b173", usage: "Brand Waste" },
-  { category: "Touch Targets", token: "--dss-touch-target-md", value: "44px", usage: "Altura mínima WCAG" },
-  { category: "Border Radius", token: "--dss-radius-sm", value: "4px", usage: "Border-radius padrão" },
-  { category: "Border Radius", token: "--dss-radius-full", value: "9999px", usage: "Botão round" },
-  { category: "Shadows", token: "--dss-shadow-sm", value: "0 1px 3px rgba(0,0,0,0.25)", usage: "Elevated" },
-  { category: "Opacity", token: "--dss-opacity-disabled", value: "0.4", usage: "Estado disabled" },
+  // ============================================================================
+  // ACTION COLORS - Cores de ação semânticas
+  // ============================================================================
+  { category: "Action", token: "--dss-action-primary", value: "#1f86de", usage: "Background primary button" },
+  { category: "Action", token: "--dss-action-primary-hover", value: "#0f5295", usage: "Hover primary" },
+  { category: "Action", token: "--dss-action-primary-light", value: "#86c0f3", usage: "Light primary (outline bg)" },
+  { category: "Action", token: "--dss-action-primary-deep", value: "#0a3a6a", usage: "Deep primary (pressed)" },
+  { category: "Action", token: "--dss-action-primary-disable", value: "#b3dcff", usage: "Disabled primary" },
+  { category: "Action", token: "--dss-action-secondary", value: "#26a69a", usage: "Background secondary" },
+  { category: "Action", token: "--dss-action-secondary-hover", value: "#1c857e", usage: "Hover secondary" },
+  { category: "Action", token: "--dss-action-secondary-light", value: "#6ddbcb", usage: "Light secondary" },
+  { category: "Action", token: "--dss-action-tertiary", value: "#ff6607", usage: "Background tertiary" },
+  { category: "Action", token: "--dss-action-tertiary-hover", value: "#de5500", usage: "Hover tertiary" },
+  { category: "Action", token: "--dss-action-accent", value: "#b454c4", usage: "Background accent" },
+  { category: "Action", token: "--dss-action-accent-hover", value: "#883b90", usage: "Hover accent" },
+  { category: "Action", token: "--dss-action-dark", value: "#454545", usage: "Background dark" },
+  { category: "Action", token: "--dss-action-dark-hover", value: "#313131", usage: "Hover dark" },
+
+  // ============================================================================
+  // FEEDBACK COLORS - Cores de feedback
+  // ============================================================================
+  { category: "Feedback", token: "--dss-feedback-success", value: "#4dd228", usage: "Positive/Success button" },
+  { category: "Feedback", token: "--dss-feedback-success-hover", value: "#27910D", usage: "Hover positive" },
+  { category: "Feedback", token: "--dss-feedback-success-light", value: "#b9f2a4", usage: "Light positive" },
+  { category: "Feedback", token: "--dss-feedback-success-deep", value: "#246714", usage: "Deep positive" },
+  { category: "Feedback", token: "--dss-feedback-error", value: "#d8182e", usage: "Negative/Error button" },
+  { category: "Feedback", token: "--dss-feedback-error-hover", value: "#a01424", usage: "Hover negative" },
+  { category: "Feedback", token: "--dss-feedback-error-light", value: "#ffa0ab", usage: "Light negative" },
+  { category: "Feedback", token: "--dss-feedback-error-deep", value: "#720e19", usage: "Deep negative" },
+  { category: "Feedback", token: "--dss-feedback-warning", value: "#fabd14", usage: "Warning button" },
+  { category: "Feedback", token: "--dss-feedback-warning-hover", value: "#dd8e02", usage: "Hover warning" },
+  { category: "Feedback", token: "--dss-feedback-warning-light", value: "#fff488", usage: "Light warning" },
+  { category: "Feedback", token: "--dss-feedback-info", value: "#0cc4e9", usage: "Info button" },
+  { category: "Feedback", token: "--dss-feedback-info-hover", value: "#0c8bae", usage: "Hover info" },
+  { category: "Feedback", token: "--dss-feedback-info-light", value: "#a7effa", usage: "Light info" },
+
+  // ============================================================================
+  // BRANDS - Cores de marca Veolia
+  // ============================================================================
+  { category: "Brand Hub", token: "--dss-hub-50", value: "#fff9ed", usage: "Hub background light" },
+  { category: "Brand Hub", token: "--dss-hub-100", value: "#fef2d6", usage: "Hub surface" },
+  { category: "Brand Hub", token: "--dss-hub-300", value: "#fbcb76", usage: "Hub light accent" },
+  { category: "Brand Hub", token: "--dss-hub-500", value: "#f5911a", usage: "Hub medium" },
+  { category: "Brand Hub", token: "--dss-hub-600", value: "#ef7a11", usage: "Hub principal (button bg)" },
+  { category: "Brand Hub", token: "--dss-hub-700", value: "#bf590f", usage: "Hub hover" },
+  { category: "Brand Hub", token: "--dss-hub-800", value: "#984614", usage: "Hub deep/pressed" },
+  { category: "Brand Water", token: "--dss-water-50", value: "#f0f7ff", usage: "Water background light" },
+  { category: "Brand Water", token: "--dss-water-100", value: "#e0eefe", usage: "Water surface" },
+  { category: "Brand Water", token: "--dss-water-300", value: "#7dc4fc", usage: "Water light accent" },
+  { category: "Brand Water", token: "--dss-water-500", value: "#0e88e4", usage: "Water principal (button bg)" },
+  { category: "Brand Water", token: "--dss-water-600", value: "#026cc7", usage: "Water hover" },
+  { category: "Brand Water", token: "--dss-water-700", value: "#0356a1", usage: "Water deep/pressed" },
+  { category: "Brand Waste", token: "--dss-waste-50", value: "#edfcf4", usage: "Waste background light" },
+  { category: "Brand Waste", token: "--dss-waste-100", value: "#d3f8e2", usage: "Waste surface" },
+  { category: "Brand Waste", token: "--dss-waste-300", value: "#74e1ae", usage: "Waste light accent" },
+  { category: "Brand Waste", token: "--dss-waste-500", value: "#18b173", usage: "Waste principal (button bg)" },
+  { category: "Brand Waste", token: "--dss-waste-600", value: "#0b8154", usage: "Waste hover" },
+  { category: "Brand Waste", token: "--dss-waste-700", value: "#0a724e", usage: "Waste deep/pressed" },
+
+  // ============================================================================
+  // SIZING - Touch targets e dimensões
+  // ============================================================================
+  { category: "Sizing", token: "--dss-touch-target-xs", value: "24px", usage: "Altura extra small" },
+  { category: "Sizing", token: "--dss-touch-target-sm", value: "32px", usage: "Altura small" },
+  { category: "Sizing", token: "--dss-touch-target-md", value: "44px", usage: "Altura mínima WCAG 2.1 AA" },
+  { category: "Sizing", token: "--dss-touch-target-lg", value: "52px", usage: "Altura large" },
+  { category: "Sizing", token: "--dss-touch-target-xl", value: "64px", usage: "Altura extra large" },
+  { category: "Sizing", token: "--dss-btn-min-width", value: "64px", usage: "Largura mínima" },
+  { category: "Sizing", token: "--dss-btn-icon-size-xs", value: "14px", usage: "Ícone extra small" },
+  { category: "Sizing", token: "--dss-btn-icon-size-sm", value: "16px", usage: "Ícone small" },
+  { category: "Sizing", token: "--dss-btn-icon-size-md", value: "20px", usage: "Ícone medium" },
+  { category: "Sizing", token: "--dss-btn-icon-size-lg", value: "24px", usage: "Ícone large" },
+
+  // ============================================================================
+  // SPACING - Espaçamentos internos
+  // ============================================================================
+  { category: "Spacing", token: "--dss-spacing-1", value: "4px", usage: "Gap icon-label (xs)" },
+  { category: "Spacing", token: "--dss-spacing-2", value: "8px", usage: "Gap icon-label (sm/md)" },
+  { category: "Spacing", token: "--dss-spacing-3", value: "12px", usage: "Padding horizontal (sm)" },
+  { category: "Spacing", token: "--dss-spacing-4", value: "16px", usage: "Padding horizontal (md)" },
+  { category: "Spacing", token: "--dss-spacing-5", value: "20px", usage: "Padding horizontal (lg)" },
+  { category: "Spacing", token: "--dss-spacing-6", value: "24px", usage: "Padding horizontal (xl)" },
+  { category: "Spacing", token: "--dss-gap-2", value: "8px", usage: "Gap entre botões (group)" },
+  { category: "Spacing", token: "--dss-gap-3", value: "12px", usage: "Gap button group (md)" },
+
+  // ============================================================================
+  // BORDER RADIUS - Arredondamento
+  // ============================================================================
+  { category: "Border Radius", token: "--dss-radius-none", value: "0", usage: "Sem arredondamento" },
+  { category: "Border Radius", token: "--dss-radius-sm", value: "4px", usage: "Radius padrão (xs/sm)" },
+  { category: "Border Radius", token: "--dss-radius-md", value: "8px", usage: "Radius médio (md/lg)" },
+  { category: "Border Radius", token: "--dss-radius-lg", value: "12px", usage: "Radius grande (xl)" },
+  { category: "Border Radius", token: "--dss-radius-full", value: "9999px", usage: "Botão round/pill" },
+
+  // ============================================================================
+  // ELEVATION - Sombras
+  // ============================================================================
+  { category: "Elevation", token: "--dss-elevation-0", value: "none", usage: "Sem sombra (flat/outline)" },
+  { category: "Elevation", token: "--dss-elevation-1", value: "0 1px 3px rgba(0,0,0,0.25)", usage: "Sombra elevated" },
+  { category: "Elevation", token: "--dss-elevation-2", value: "0 4px 6px rgba(0,0,0,0.30)", usage: "Sombra hover" },
+  { category: "Elevation", token: "--dss-shadow-focus", value: "0 0 0 3px rgba(31,134,222,0.5)", usage: "Focus ring primary" },
+  { category: "Elevation", token: "--dss-shadow-focus-error", value: "0 0 0 3px rgba(216,24,46,0.5)", usage: "Focus ring error" },
+  { category: "Elevation", token: "--dss-shadow-hub-sm", value: "0 2px 4px rgba(239,122,17,0.25)", usage: "Sombra Hub" },
+  { category: "Elevation", token: "--dss-shadow-water-sm", value: "0 2px 4px rgba(14,136,228,0.25)", usage: "Sombra Water" },
+  { category: "Elevation", token: "--dss-shadow-waste-sm", value: "0 2px 4px rgba(24,177,115,0.25)", usage: "Sombra Waste" },
+
+  // ============================================================================
+  // BORDERS - Bordas
+  // ============================================================================
+  { category: "Borders", token: "--dss-border-gray-300", value: "1px solid #d4d4d4", usage: "Borda outline light" },
+  { category: "Borders", token: "--dss-border-gray-400", value: "1px solid #a3a3a3", usage: "Borda outline hover" },
+  { category: "Borders", token: "--dss-border-primary", value: "1px solid var(--dss-primary)", usage: "Borda outline primary" },
+  { category: "Borders", token: "--dss-border-focus", value: "2px solid var(--dss-action-primary)", usage: "Focus outline" },
+  { category: "Borders", token: "--dss-border-hub-600", value: "1px solid #ef7a11", usage: "Borda outline Hub" },
+  { category: "Borders", token: "--dss-border-water-500", value: "1px solid #0e88e4", usage: "Borda outline Water" },
+  { category: "Borders", token: "--dss-border-waste-500", value: "1px solid #18b173", usage: "Borda outline Waste" },
+
+  // ============================================================================
+  // TYPOGRAPHY - Tipografia
+  // ============================================================================
+  { category: "Typography", token: "--dss-font-size-xs", value: "10px", usage: "Texto extra small" },
+  { category: "Typography", token: "--dss-font-size-sm", value: "12px", usage: "Texto small" },
+  { category: "Typography", token: "--dss-font-size-md", value: "14px", usage: "Texto medium (padrão)" },
+  { category: "Typography", token: "--dss-font-size-lg", value: "16px", usage: "Texto large" },
+  { category: "Typography", token: "--dss-font-weight-medium", value: "500", usage: "Peso label" },
+  { category: "Typography", token: "--dss-font-weight-semibold", value: "600", usage: "Peso label forte" },
+  { category: "Typography", token: "--dss-text-transform-btn", value: "none", usage: "Transformação texto" },
+  { category: "Typography", token: "--dss-letter-spacing-btn", value: "0.02em", usage: "Espaçamento letras" },
+
+  // ============================================================================
+  // TEXT COLORS - Cores de texto
+  // ============================================================================
+  { category: "Text", token: "--dss-text-inverse", value: "#ffffff", usage: "Texto sobre bg escuro" },
+  { category: "Text", token: "--dss-text-body", value: "#454545", usage: "Texto sobre bg claro" },
+  { category: "Text", token: "--dss-text-disabled", value: "#d4d4d4", usage: "Texto desabilitado" },
+  { category: "Text", token: "--dss-text-action", value: "var(--dss-action-primary)", usage: "Texto link/flat button" },
+
+  // ============================================================================
+  // MOTION - Animações e transições
+  // ============================================================================
+  { category: "Motion", token: "--dss-duration-fast", value: "150ms", usage: "Transição rápida (hover)" },
+  { category: "Motion", token: "--dss-duration-base", value: "250ms", usage: "Transição padrão" },
+  { category: "Motion", token: "--dss-duration-slow", value: "300ms", usage: "Transição lenta" },
+  { category: "Motion", token: "--dss-easing-standard", value: "cubic-bezier(0.4,0,0.2,1)", usage: "Easing padrão" },
+  { category: "Motion", token: "--dss-easing-ease-out", value: "cubic-bezier(0,0,0.58,1)", usage: "Easing saída (hover)" },
+  { category: "Motion", token: "--dss-transition-base", value: "all 250ms ease", usage: "Transição completa" },
+  { category: "Motion", token: "--dss-transition-transform", value: "transform 150ms ease", usage: "Transição scale" },
+
+  // ============================================================================
+  // OPACITY - Transparências
+  // ============================================================================
+  { category: "Opacity", token: "--dss-opacity-disabled", value: "0.4", usage: "Estado desabilitado" },
+  { category: "Opacity", token: "--dss-opacity-hover", value: "0.1", usage: "Hover overlay flat" },
+  { category: "Opacity", token: "--dss-opacity-active", value: "0.2", usage: "Active/pressed overlay" },
+  { category: "Opacity", token: "--dss-opacity-loading", value: "0.7", usage: "Loading state" },
+
+  // ============================================================================
+  // STATES - Estados visuais
+  // ============================================================================
+  { category: "States", token: "--dss-state-hover-scale", value: "1.02", usage: "Scale no hover" },
+  { category: "States", token: "--dss-state-active-scale", value: "0.98", usage: "Scale no pressed" },
+  { category: "States", token: "--dss-state-focus-outline", value: "2px", usage: "Espessura focus ring" },
+  { category: "States", token: "--dss-state-focus-offset", value: "2px", usage: "Offset focus ring" },
+
+  // ============================================================================
+  // GRAY SCALE - Escala de cinza
+  // ============================================================================
+  { category: "Gray Scale", token: "--dss-gray-50", value: "#ffffff", usage: "Branco" },
+  { category: "Gray Scale", token: "--dss-gray-100", value: "#fafafa", usage: "Cinza muito claro" },
+  { category: "Gray Scale", token: "--dss-gray-200", value: "#f5f5f5", usage: "Cinza claro (disabled bg)" },
+  { category: "Gray Scale", token: "--dss-gray-300", value: "#e5e5e5", usage: "Borda light" },
+  { category: "Gray Scale", token: "--dss-gray-400", value: "#d4d4d4", usage: "Borda médio" },
+  { category: "Gray Scale", token: "--dss-gray-500", value: "#a3a3a3", usage: "Cinza médio" },
+  { category: "Gray Scale", token: "--dss-gray-600", value: "#737373", usage: "Texto secundário" },
+  { category: "Gray Scale", token: "--dss-gray-700", value: "#525252", usage: "Texto dark mode" },
+  { category: "Gray Scale", token: "--dss-gray-800", value: "#404040", usage: "Background dark" },
+  { category: "Gray Scale", token: "--dss-gray-900", value: "#262626", usage: "Background very dark" },
 ];
 
 // Anatomia 4 Camadas DSS
@@ -1162,30 +1322,82 @@ export default function DssButtonPage() {
         badge={`${tokensUsed.length} tokens`}
       />
 
-      <div className="space-y-4">
+      <Tabs defaultValue="Action" className="space-y-4">
+        <TabsList 
+          className="w-full justify-start gap-1 p-1 h-auto flex-wrap"
+          style={{ 
+            backgroundColor: 'rgba(255,255,255,0.03)',
+            borderRadius: '0.75rem'
+          }}
+        >
+          {Object.keys(tokensByCategory).map((category) => (
+            <TabsTrigger 
+              key={category}
+              value={category}
+              className="data-[state=active]:bg-[var(--dss-jtech-accent)] data-[state=active]:text-white text-xs"
+            >
+              {category}
+              <span 
+                className="ml-1.5 text-[10px] px-1.5 py-0.5 rounded-full"
+                style={{ 
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                }}
+              >
+                {tokensByCategory[category].length}
+              </span>
+            </TabsTrigger>
+          ))}
+        </TabsList>
+
         {Object.entries(tokensByCategory).map(([category, tokens]) => (
-          <Card 
-            key={category}
-            style={{ 
-              backgroundColor: 'var(--jtech-card-bg)', 
-              borderColor: 'var(--jtech-card-border)' 
-            }}
-          >
-            <CardHeader className="pb-3">
-              <div className="flex items-center gap-2">
-                <Palette className="h-4 w-4" style={{ color: 'var(--dss-jtech-accent)' }} />
-                <CardTitle className="text-base" style={{ color: 'var(--jtech-heading-secondary)' }}>{category}</CardTitle>
-                <Badge variant="outline" className="text-xs">{tokens.length}</Badge>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              {tokens.map((t) => (
-                <TokenRow key={t.token} token={t.token} value={t.value} usage={t.usage} />
-              ))}
-            </CardContent>
-          </Card>
+          <TabsContent key={category} value={category} className="space-y-4">
+            <Card 
+              className="transition-all duration-300"
+              style={{ 
+                backgroundColor: 'var(--jtech-card-bg)', 
+                borderColor: 'var(--jtech-card-border)' 
+              }}
+            >
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <Badge 
+                    className="text-xs text-white"
+                    style={{ backgroundColor: 'var(--dss-jtech-accent)' }}
+                  >
+                    {category}
+                  </Badge>
+                  <span className="text-sm" style={{ color: 'var(--jtech-text-body)' }}>
+                    {tokens.length} tokens disponíveis
+                  </span>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div 
+                  className="p-4 rounded-lg"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
+                >
+                  <div 
+                    className="grid grid-cols-[1fr_140px_1fr] gap-4 pb-3 mb-3 text-xs font-semibold"
+                    style={{ 
+                      color: 'var(--jtech-heading-tertiary)',
+                      borderBottom: '1px solid var(--jtech-card-border)'
+                    }}
+                  >
+                    <span>Token</span>
+                    <span>Valor</span>
+                    <span>Uso</span>
+                  </div>
+                  <div className="grid gap-2">
+                    {tokens.map((t) => (
+                      <TokenRow key={t.token} token={t.token} value={t.value} usage={t.usage} />
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
         ))}
-      </div>
+      </Tabs>
 
       {/* Anatomia */}
       <SectionHeader
