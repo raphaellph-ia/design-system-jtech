@@ -2305,45 +2305,62 @@ export default function DssCardPage() {
         badge={`${tokensUsed.length} tokens`}
       />
 
-      <Card 
-        style={{ 
-          backgroundColor: 'var(--jtech-card-bg)', 
-          borderColor: 'var(--jtech-card-border)' 
-        }}
-      >
-        <CardContent className="p-6">
-          <Tabs defaultValue="Surface" className="w-full">
-            <TabsList className="flex flex-wrap h-auto gap-1 p-1 mb-6" style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}>
-              {Object.keys(tokensByCategory).map((category) => (
-                <TabsTrigger
-                  key={category}
-                  value={category}
-                  className="text-xs px-3 py-1.5 data-[state=active]:text-white transition-all"
-                  style={{
-                    color: 'var(--jtech-text-muted)',
-                  }}
-                >
-                  <span className="flex items-center gap-1.5">
-                    {category}
-                    <span 
-                      className="text-[10px] px-1.5 py-0.5 rounded-full"
-                      style={{ 
-                        backgroundColor: 'rgba(255,255,255,0.1)',
-                        color: 'var(--jtech-text-muted)'
-                      }}
-                    >
-                      {tokensByCategory[category].length}
-                    </span>
-                  </span>
-                </TabsTrigger>
-              ))}
-            </TabsList>
+      <Tabs defaultValue="Surface" className="space-y-4">
+        <TabsList 
+          className="w-full justify-start gap-1 p-1 h-auto flex-wrap"
+          style={{ 
+            backgroundColor: 'rgba(255,255,255,0.03)',
+            borderRadius: '0.75rem'
+          }}
+        >
+          {Object.keys(tokensByCategory).map((category) => (
+            <TabsTrigger 
+              key={category}
+              value={category}
+              className="data-[state=active]:bg-[var(--dss-jtech-accent)] data-[state=active]:text-white text-xs"
+            >
+              {category}
+              <span 
+                className="ml-1.5 text-[10px] px-1.5 py-0.5 rounded-full"
+                style={{ 
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                }}
+              >
+                {tokensByCategory[category].length}
+              </span>
+            </TabsTrigger>
+          ))}
+        </TabsList>
 
-            {Object.entries(tokensByCategory).map(([category, tokens]) => (
-              <TabsContent key={category} value={category} className="mt-0">
-                <div className="space-y-1">
+        {Object.entries(tokensByCategory).map(([category, tokens]) => (
+          <TabsContent key={category} value={category} className="space-y-4">
+            <Card 
+              className="transition-all duration-300"
+              style={{ 
+                backgroundColor: 'var(--jtech-card-bg)', 
+                borderColor: 'var(--jtech-card-border)' 
+              }}
+            >
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <DssBadgePreview 
+                    label={category}
+                    colorKey="primary"
+                    variant="filled"
+                    size="sm"
+                  />
+                  <span className="text-sm" style={{ color: 'var(--jtech-text-body)' }}>
+                    {tokens.length} tokens disponíveis
+                  </span>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div 
+                  className="p-4 rounded-lg"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
+                >
                   <div 
-                    className="grid grid-cols-[1fr_140px_1fr] gap-4 pb-2 mb-2 text-xs font-semibold"
+                    className="grid grid-cols-[1fr_140px_1fr] gap-4 pb-3 mb-3 text-xs font-semibold"
                     style={{ 
                       color: 'var(--jtech-heading-tertiary)',
                       borderBottom: '1px solid var(--jtech-card-border)'
@@ -2353,17 +2370,17 @@ export default function DssCardPage() {
                     <span>Valor</span>
                     <span>Uso</span>
                   </div>
-                  <div className="grid gap-1.5">
+                  <div className="grid gap-2">
                     {tokens.map((token) => (
                       <TokenRow key={token.token} {...token} />
                     ))}
                   </div>
                 </div>
-              </TabsContent>
-            ))}
-          </Tabs>
-        </CardContent>
-      </Card>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        ))}
+      </Tabs>
 
       {/* Acessibilidade */}
       <SectionHeader
