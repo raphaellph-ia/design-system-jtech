@@ -10,9 +10,11 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
   },
   plugins: [
-    react(),
-    mode === 'development' &&
-    componentTagger(),
+    react({
+      // força JSX do React mesmo com tsconfig legado de Vue
+      jsxImportSource: "react",
+    }),
+    mode === "development" && componentTagger(),
   ].filter(Boolean),
   resolve: {
     alias: {
