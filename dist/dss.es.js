@@ -1,4 +1,4 @@
-import { computed as f, defineComponent as I, useSlots as F, createBlock as L, openBlock as a, resolveDynamicComponent as M, unref as o, mergeProps as z, withCtx as T, createElementBlock as d, createCommentVNode as r, createElementVNode as m, normalizeClass as h, normalizeStyle as v, toDisplayString as _, renderSlot as c, createTextVNode as C, useAttrs as E, withKeys as R, withModifiers as K, ref as N } from "vue";
+import { computed as f, defineComponent as I, useSlots as R, createBlock as F, openBlock as n, resolveDynamicComponent as M, unref as o, mergeProps as z, withCtx as T, createElementBlock as d, createCommentVNode as r, createElementVNode as v, normalizeClass as h, normalizeStyle as m, toDisplayString as _, renderSlot as c, createTextVNode as C, useAttrs as E, withKeys as L, withModifiers as K, ref as N } from "vue";
 function X(e, s) {
   return {
     buttonClasses: f(() => {
@@ -51,20 +51,26 @@ function G(e) {
 }
 const H = {
   key: 0,
-  class: "dss-button__loading"
-}, J = {
+  class: "dss-button__loading",
+  role: "status",
+  "aria-label": "Loading",
+  "aria-live": "polite"
+}, J = ["aria-valuenow", "aria-label"], Q = {
   key: 2,
-  class: "dss-button__icon dss-button__icon--left"
-}, Q = {
+  class: "dss-button__icon dss-button__icon--left",
+  "aria-hidden": "true"
+}, U = {
   key: 3,
   class: "dss-button__label"
-}, U = {
-  key: 4,
-  class: "dss-button__icon dss-button__icon--right"
 }, Y = {
+  key: 4,
+  class: "dss-button__icon dss-button__icon--right",
+  "aria-hidden": "true"
+}, Z = {
   key: 5,
-  class: "dss-button__ripple"
-}, rt = /* @__PURE__ */ I({
+  class: "dss-button__ripple",
+  "aria-hidden": "true"
+}, ct = /* @__PURE__ */ I({
   name: "DssButton",
   inheritAttrs: !1,
   __name: "DssButton.ts",
@@ -93,53 +99,66 @@ const H = {
     noWrap: { type: Boolean, default: !1 },
     padding: { default: null },
     ripple: { type: Boolean, default: !1 },
-    tabindex: { default: null }
+    tabindex: { default: null },
+    ariaLabel: { default: void 0 }
   },
   emits: ["click"],
   setup(e, { emit: s }) {
-    const t = e, i = s, l = F(), n = f(() => !!l.default), { componentType: u, nativeType: k } = j(t), { buttonClasses: S } = X(t, { hasDefaultSlot: n }), { percentageStyle: b } = G(t), $ = f(() => t.icon || ""), y = f(() => t.iconRight || ""), B = f(() => {
+    const t = e, i = s, l = R(), a = f(() => !!l.default), { componentType: u, nativeType: k } = j(t), { buttonClasses: S } = X(t, { hasDefaultSlot: a }), { percentageStyle: b } = G(t), $ = f(() => t.icon || ""), y = f(() => t.iconRight || ""), B = f(() => {
       const g = {};
       return t.padding && (g.padding = t.padding), g;
     }), x = f(() => t.disabled || t.loading ? -1 : t.tabindex !== null && t.tabindex !== void 0 ? typeof t.tabindex == "number" ? t.tabindex : parseInt(t.tabindex) : 0);
     function V(g) {
       !t.disabled && !t.loading && i("click", g);
     }
-    return (g, A) => (a(), L(M(o(u)), z({
+    return (g, A) => (n(), F(M(o(u)), z({
       type: o(k),
       to: e.to,
       replace: e.replace,
       disabled: e.disabled || e.loading,
       class: o(S),
       style: B.value,
-      tabindex: x.value
+      tabindex: x.value,
+      "aria-label": e.ariaLabel,
+      "aria-busy": e.loading ? "true" : void 0,
+      "aria-disabled": e.disabled ? "true" : void 0
     }, g.$attrs, { onClick: V }), {
       default: T(() => [
-        e.loading && e.percentage === null ? (a(), d("span", H, [...A[0] || (A[0] = [
-          m("span", { class: "dss-button__spinner" }, null, -1)
+        e.loading && e.percentage === null ? (n(), d("span", H, [...A[0] || (A[0] = [
+          v("span", {
+            class: "dss-button__spinner",
+            "aria-hidden": "true"
+          }, null, -1)
         ])])) : r("", !0),
-        e.loading && e.percentage !== null ? (a(), d("span", {
+        e.loading && e.percentage !== null ? (n(), d("span", {
           key: 1,
-          class: h(["dss-button__progress", { "dss-button__progress--dark": e.darkPercentage }])
+          class: h(["dss-button__progress", { "dss-button__progress--dark": e.darkPercentage }]),
+          role: "progressbar",
+          "aria-valuenow": e.percentage,
+          "aria-valuemin": "0",
+          "aria-valuemax": "100",
+          "aria-label": `Loading ${e.percentage}%`
         }, [
-          m("span", {
+          v("span", {
             class: "dss-button__progress-indicator",
-            style: v(o(b))
+            style: m(o(b)),
+            "aria-hidden": "true"
           }, null, 4)
-        ], 2)) : r("", !0),
-        $.value && !e.loading ? (a(), d("span", J, _($.value), 1)) : r("", !0),
-        e.label || g.$slots.default ? (a(), d("span", Q, [
+        ], 10, J)) : r("", !0),
+        $.value && !e.loading ? (n(), d("span", Q, _($.value), 1)) : r("", !0),
+        e.label || g.$slots.default ? (n(), d("span", U, [
           c(g.$slots, "default", {}, () => [
             C(_(e.label), 1)
           ])
         ])) : r("", !0),
-        y.value && !e.loading ? (a(), d("span", U, _(y.value), 1)) : r("", !0),
-        e.ripple ? (a(), d("span", Y)) : r("", !0)
+        y.value && !e.loading ? (n(), d("span", Y, _(y.value), 1)) : r("", !0),
+        e.ripple ? (n(), d("span", Z)) : r("", !0)
       ]),
       _: 3
-    }, 16, ["type", "to", "replace", "disabled", "class", "style", "tabindex"]));
+    }, 16, ["type", "to", "replace", "disabled", "class", "style", "tabindex", "aria-label", "aria-busy", "aria-disabled"]));
   }
 });
-function Z(e) {
+function ee(e) {
   return {
     badgeClasses: f(() => {
       let t = "";
@@ -160,7 +179,7 @@ function Z(e) {
     })
   };
 }
-const ut = /* @__PURE__ */ I({
+const te = ["aria-label"], ft = /* @__PURE__ */ I({
   name: "DssBadge",
   __name: "DssBadge.ts",
   props: {
@@ -172,24 +191,28 @@ const ut = /* @__PURE__ */ I({
     rounded: { type: Boolean, default: !1 },
     multiLine: { type: Boolean, default: !1 },
     floating: { type: Boolean, default: !1 },
-    align: { default: null }
+    align: { default: null },
+    ariaLabel: { default: void 0 }
   },
   setup(e) {
-    const s = e, { badgeClasses: t } = Z(s), i = f(() => {
+    const s = e, { badgeClasses: t } = ee(s), i = f(() => {
       const l = {};
       return s.align && (l.verticalAlign = s.align), l;
     });
-    return (l, n) => (a(), d("div", {
+    return (l, a) => (n(), d("div", {
       class: h(o(t)),
-      style: v(i.value)
+      style: m(i.value),
+      role: "status",
+      "aria-label": e.ariaLabel,
+      "aria-live": "polite"
     }, [
       c(l.$slots, "default", {}, () => [
         C(_(e.label), 1)
       ])
-    ], 6));
+    ], 14, te));
   }
 });
-function ee(e) {
+function se(e) {
   return {
     avatarClasses: f(() => {
       let t = "";
@@ -207,7 +230,7 @@ function ee(e) {
     })
   };
 }
-function te(e) {
+function ae(e) {
   const s = f(() => {
     const l = {};
     return e.size && (l.width = e.size, l.height = e.size), e.square ? l.borderRadius = "0" : e.rounded ? l.borderRadius = "8px" : l.borderRadius = "50%", l;
@@ -228,7 +251,7 @@ function te(e) {
     contentStyle: i
   };
 }
-const ct = /* @__PURE__ */ I({
+const bt = /* @__PURE__ */ I({
   name: "DssAvatar",
   __name: "DssAvatar.ts",
   props: {
@@ -241,19 +264,19 @@ const ct = /* @__PURE__ */ I({
     rounded: { type: Boolean, default: !1 }
   },
   setup(e) {
-    const s = e, { avatarClasses: t } = ee(s), { avatarStyle: i, iconStyle: l, contentStyle: n } = te(s);
-    return (u, k) => (a(), d("div", {
+    const s = e, { avatarClasses: t } = se(s), { avatarStyle: i, iconStyle: l, contentStyle: a } = ae(s);
+    return (u, k) => (n(), d("div", {
       class: h(o(t)),
-      style: v(o(i))
+      style: m(o(i))
     }, [
-      e.icon ? (a(), d("span", {
+      e.icon ? (n(), d("span", {
         key: 0,
         class: "dss-avatar__icon material-icons",
-        style: v(o(l))
+        style: m(o(l))
       }, _(e.icon), 5)) : r("", !0),
-      e.icon ? r("", !0) : (a(), d("div", {
+      e.icon ? r("", !0) : (n(), d("div", {
         key: 1,
-        style: v(o(n)),
+        style: m(o(a)),
         class: "dss-avatar__content"
       }, [
         c(u.$slots, "default")
@@ -261,7 +284,7 @@ const ct = /* @__PURE__ */ I({
     ], 6));
   }
 });
-function se(e) {
+function ne(e) {
   return {
     cardClasses: f(() => [
       // Classe base
@@ -278,7 +301,7 @@ function se(e) {
     ])
   };
 }
-function ne(e, s) {
+function le(e, s) {
   return {
     cardAttrs: f(() => {
       const i = { ...s };
@@ -286,7 +309,7 @@ function ne(e, s) {
     })
   };
 }
-function ae(e, s) {
+function de(e, s) {
   return {
     handleClick: (l) => {
       e.clickable && s("click", l);
@@ -296,7 +319,7 @@ function ae(e, s) {
     }
   };
 }
-function le(e) {
+function ie(e) {
   return {
     sectionClasses: f(() => [
       // Classe base
@@ -308,7 +331,7 @@ function le(e) {
     ])
   };
 }
-function de(e) {
+function oe(e) {
   return {
     actionsClasses: f(() => [
       // Classe base
@@ -322,7 +345,7 @@ function de(e) {
     ])
   };
 }
-const ie = /* @__PURE__ */ I({
+const re = /* @__PURE__ */ I({
   name: "DssCard",
   inheritAttrs: !1,
   __name: "DssCard.ts",
@@ -335,20 +358,20 @@ const ie = /* @__PURE__ */ I({
   },
   emits: ["click"],
   setup(e, { emit: s }) {
-    const t = e, i = s, l = E(), { cardClasses: n } = se(t), { cardAttrs: u } = ne(t, l), { handleClick: k, handleKeydown: S } = ae(t, i), b = f(() => ({}));
-    return ($, y) => (a(), d("div", z({
-      class: o(n),
+    const t = e, i = s, l = E(), { cardClasses: a } = ne(t), { cardAttrs: u } = le(t, l), { handleClick: k, handleKeydown: S } = de(t, i), b = f(() => ({}));
+    return ($, y) => (n(), d("div", z({
+      class: o(a),
       style: b.value
     }, o(u), {
       onClick: y[0] || (y[0] = //@ts-ignore
       (...B) => o(k) && o(k)(...B)),
       onKeydown: [
-        y[1] || (y[1] = R(
+        y[1] || (y[1] = L(
           //@ts-ignore
           (...B) => o(S) && o(S)(...B),
           ["enter"]
         )),
-        y[2] || (y[2] = R(K(
+        y[2] || (y[2] = L(K(
           //@ts-ignore
           (...B) => o(S) && o(S)(...B),
           ["prevent"]
@@ -363,21 +386,21 @@ const ie = /* @__PURE__ */ I({
   for (const [i, l] of s)
     t[i] = l;
   return t;
-}, ft = /* @__PURE__ */ p(ie, [["__scopeId", "data-v-33285652"]]), oe = /* @__PURE__ */ I({
+}, _t = /* @__PURE__ */ p(re, [["__scopeId", "data-v-33285652"]]), ue = /* @__PURE__ */ I({
   name: "DssCardSection",
   __name: "DssCardSection.ts",
   props: {
     horizontal: { type: Boolean, default: !1 }
   },
   setup(e) {
-    const s = e, { sectionClasses: t } = le(s);
-    return (i, l) => (a(), d("div", {
+    const s = e, { sectionClasses: t } = ie(s);
+    return (i, l) => (n(), d("div", {
       class: h(o(t))
     }, [
       c(i.$slots, "default", {}, void 0, !0)
     ], 2));
   }
-}), bt = /* @__PURE__ */ p(oe, [["__scopeId", "data-v-80db62cf"]]), re = /* @__PURE__ */ I({
+}), ht = /* @__PURE__ */ p(ue, [["__scopeId", "data-v-80db62cf"]]), ce = /* @__PURE__ */ I({
   name: "DssCardActions",
   __name: "DssCardActions.ts",
   props: {
@@ -385,15 +408,15 @@ const ie = /* @__PURE__ */ I({
     vertical: { type: Boolean, default: !1 }
   },
   setup(e) {
-    const s = e, { actionsClasses: t } = de(s);
-    return (i, l) => (a(), d("div", {
+    const s = e, { actionsClasses: t } = oe(s);
+    return (i, l) => (n(), d("div", {
       class: h(o(t))
     }, [
       c(i.$slots, "default", {}, void 0, !0)
     ], 2));
   }
-}), _t = /* @__PURE__ */ p(re, [["__scopeId", "data-v-3af48abe"]]);
-function ue(e, { isFocused: s, hasValue: t }) {
+}), yt = /* @__PURE__ */ p(ce, [["__scopeId", "data-v-3af48abe"]]);
+function fe(e, { isFocused: s, hasValue: t }) {
   const i = f(() => [
     // Classe base
     "dss-input",
@@ -418,14 +441,14 @@ function ue(e, { isFocused: s, hasValue: t }) {
       "dss-input__label--stack": e.stackLabel,
       "dss-input__label--float": t.value || s.value
     }
-  ]), n = f(() => "dss-input__native");
+  ]), a = f(() => "dss-input__native");
   return {
     wrapperClasses: i,
     labelClasses: l,
-    inputClasses: n
+    inputClasses: a
   };
 }
-function ce(e, s) {
+function be(e, s) {
   const t = N(!1), i = f(() => e.modelValue !== "" && e.modelValue !== null && e.modelValue !== void 0), l = f(() => e.error && e.errorMessage || e.hint || !!s.error || !!s.hint);
   return {
     isFocused: t,
@@ -433,7 +456,7 @@ function ce(e, s) {
     hasBottomSlot: l
   };
 }
-function fe(e, s, t) {
+function _e(e, s, t) {
   return {
     handleInput: (b) => {
       const $ = b.target;
@@ -459,28 +482,28 @@ function fe(e, s, t) {
     }
   };
 }
-const be = {
+const he = {
   key: 0,
   class: "dss-input__before"
-}, _e = { class: "dss-input__field" }, he = {
+}, ye = { class: "dss-input__field" }, ge = {
   key: 0,
   class: "dss-input__prepend"
-}, ye = { class: "dss-input__control" }, ge = ["type", "value", "placeholder", "disabled", "readonly"], pe = {
+}, pe = { class: "dss-input__control" }, ve = ["type", "value", "placeholder", "disabled", "readonly"], me = {
   key: 1,
   class: "dss-input__append"
-}, me = {
+}, Ce = {
   key: 1,
   class: "dss-input__after"
-}, ve = {
+}, ke = {
   key: 2,
   class: "dss-input__bottom"
-}, Ce = {
+}, Se = {
   key: 0,
   class: "dss-input__error"
-}, ke = {
+}, Be = {
   key: 1,
   class: "dss-input__hint"
-}, Se = /* @__PURE__ */ I({
+}, $e = /* @__PURE__ */ I({
   name: "DssInput",
   inheritAttrs: !1,
   __name: "DssInput.ts",
@@ -503,7 +526,7 @@ const be = {
   },
   emits: ["update:modelValue", "focus", "blur"],
   setup(e, { expose: s, emit: t }) {
-    const i = e, l = t, n = F(), u = N(null), { isFocused: k, hasValue: S, hasBottomSlot: b } = ce(i, n), { wrapperClasses: $, labelClasses: y, inputClasses: B } = ue(i, { isFocused: k, hasValue: S }), { handleInput: x, handleFocus: V, handleBlur: g, handleClear: A, focus: O, blur: W } = fe(
+    const i = e, l = t, a = R(), u = N(null), { isFocused: k, hasValue: S, hasBottomSlot: b } = be(i, a), { wrapperClasses: $, labelClasses: y, inputClasses: B } = fe(i, { isFocused: k, hasValue: S }), { handleInput: x, handleFocus: V, handleBlur: g, handleClear: A, focus: O, blur: W } = _e(
       l,
       u,
       k
@@ -511,18 +534,18 @@ const be = {
     return s({
       focus: O,
       blur: W
-    }), (D, q) => (a(), d("div", {
+    }), (D, q) => (n(), d("div", {
       class: h(o($))
     }, [
-      o(n).before ? (a(), d("div", be, [
+      o(a).before ? (n(), d("div", he, [
         c(D.$slots, "before")
       ])) : r("", !0),
-      m("div", _e, [
-        o(n).prepend ? (a(), d("div", he, [
+      v("div", ye, [
+        o(a).prepend ? (n(), d("div", ge, [
           c(D.$slots, "prepend")
         ])) : r("", !0),
-        m("div", ye, [
-          e.label || o(n).label ? (a(), d("label", {
+        v("div", pe, [
+          e.label || o(a).label ? (n(), d("label", {
             key: 0,
             class: h(o(y))
           }, [
@@ -530,7 +553,7 @@ const be = {
               C(_(e.label), 1)
             ])
           ], 2)) : r("", !0),
-          m("input", z({
+          v("input", z({
             ref_key: "inputRef",
             ref: u,
             type: e.type,
@@ -546,11 +569,11 @@ const be = {
             (...w) => o(V) && o(V)(...w)),
             onBlur: q[2] || (q[2] = //@ts-ignore
             (...w) => o(g) && o(g)(...w))
-          }), null, 16, ge)
+          }), null, 16, ve)
         ]),
-        o(n).append || e.clearable ? (a(), d("div", pe, [
+        o(a).append || e.clearable ? (n(), d("div", me, [
           c(D.$slots, "append"),
-          e.clearable && e.modelValue ? (a(), d("button", {
+          e.clearable && e.modelValue ? (n(), d("button", {
             key: 0,
             class: "dss-input__clear",
             type: "button",
@@ -560,15 +583,15 @@ const be = {
           }, " × ")) : r("", !0)
         ])) : r("", !0)
       ]),
-      o(n).after ? (a(), d("div", me, [
+      o(a).after ? (n(), d("div", Ce, [
         c(D.$slots, "after")
       ])) : r("", !0),
-      o(b) ? (a(), d("div", ve, [
-        e.error && e.errorMessage ? (a(), d("div", Ce, [
+      o(b) ? (n(), d("div", ke, [
+        e.error && e.errorMessage ? (n(), d("div", Se, [
           c(D.$slots, "error", {}, () => [
             C(_(e.errorMessage), 1)
           ])
-        ])) : e.hint ? (a(), d("div", ke, [
+        ])) : e.hint ? (n(), d("div", Be, [
           c(D.$slots, "hint", {}, () => [
             C(_(e.hint), 1)
           ])
@@ -606,9 +629,9 @@ const be = {
   "dss-input--brand-hub": "_dss-input--brand-hub_dqnng_622",
   "dss-input--brand-water": "_dss-input--brand-water_dqnng_661",
   "dss-input--brand-waste": "_dss-input--brand-waste_dqnng_692"
-}, Be = {
+}, De = {
   $style: P
-}, ht = /* @__PURE__ */ p(Se, [["__cssModules", Be]]), $e = {
+}, gt = /* @__PURE__ */ p($e, [["__cssModules", De]]), qe = {
   name: "DssButton",
   inheritAttrs: !1,
   props: {
@@ -798,58 +821,58 @@ const be = {
       !this.disabled && !this.loading && this.$emit("click", e);
     }
   }
-}, De = {
+}, we = {
   key: 0,
   class: "dss-button__loading"
-}, qe = {
+}, Ie = {
   key: 2,
   class: "dss-button__icon dss-button__icon--left"
-}, we = {
+}, ze = {
   key: 3,
   class: "dss-button__label"
-}, Ie = {
+}, Ae = {
   key: 4,
   class: "dss-button__icon dss-button__icon--right"
-}, ze = {
+}, xe = {
   key: 5,
   class: "dss-button__ripple"
 };
-function Ae(e, s, t, i, l, n) {
-  return a(), L(M(n.componentType), z({
-    type: n.nativeType,
+function Ve(e, s, t, i, l, a) {
+  return n(), F(M(a.componentType), z({
+    type: a.nativeType,
     to: t.to,
     replace: t.replace,
     disabled: t.disabled || t.loading,
-    class: n.buttonClasses,
-    style: n.buttonStyle,
-    tabindex: n.computedTabindex
-  }, e.$attrs, { onClick: n.handleClick }), {
+    class: a.buttonClasses,
+    style: a.buttonStyle,
+    tabindex: a.computedTabindex
+  }, e.$attrs, { onClick: a.handleClick }), {
     default: T(() => [
-      t.loading && t.percentage === null ? (a(), d("span", De, [...s[0] || (s[0] = [
-        m("span", { class: "dss-button__spinner" }, null, -1)
+      t.loading && t.percentage === null ? (n(), d("span", we, [...s[0] || (s[0] = [
+        v("span", { class: "dss-button__spinner" }, null, -1)
       ])])) : r("", !0),
-      t.loading && t.percentage !== null ? (a(), d("span", {
+      t.loading && t.percentage !== null ? (n(), d("span", {
         key: 1,
         class: h(["dss-button__progress", { "dss-button__progress--dark": t.darkPercentage }])
       }, [
-        m("span", {
+        v("span", {
           class: "dss-button__progress-indicator",
-          style: v(n.percentageStyle)
+          style: m(a.percentageStyle)
         }, null, 4)
       ], 2)) : r("", !0),
-      n.computedIconLeft && !t.loading ? (a(), d("span", qe, _(n.computedIconLeft), 1)) : r("", !0),
-      t.label || e.$slots.default ? (a(), d("span", we, [
+      a.computedIconLeft && !t.loading ? (n(), d("span", Ie, _(a.computedIconLeft), 1)) : r("", !0),
+      t.label || e.$slots.default ? (n(), d("span", ze, [
         c(e.$slots, "default", {}, () => [
           C(_(t.label), 1)
         ])
       ])) : r("", !0),
-      n.computedIconRight && !t.loading ? (a(), d("span", Ie, _(n.computedIconRight), 1)) : r("", !0),
-      t.ripple ? (a(), d("span", ze)) : r("", !0)
+      a.computedIconRight && !t.loading ? (n(), d("span", Ae, _(a.computedIconRight), 1)) : r("", !0),
+      t.ripple ? (n(), d("span", xe)) : r("", !0)
     ]),
     _: 3
   }, 16, ["type", "to", "replace", "disabled", "class", "style", "tabindex", "onClick"]);
 }
-const xe = /* @__PURE__ */ p($e, [["render", Ae]]), Ve = {
+const Le = /* @__PURE__ */ p(qe, [["render", Ve]]), Re = {
   name: "DssBadge",
   props: {
     // Conteúdo
@@ -918,17 +941,17 @@ const xe = /* @__PURE__ */ p($e, [["render", Ae]]), Ve = {
     }
   }
 };
-function Re(e, s, t, i, l, n) {
-  return a(), d("div", {
-    class: h(n.badgeClasses),
-    style: v(n.badgeStyle)
+function Fe(e, s, t, i, l, a) {
+  return n(), d("div", {
+    class: h(a.badgeClasses),
+    style: m(a.badgeStyle)
   }, [
     c(e.$slots, "default", {}, () => [
       C(_(t.label), 1)
     ])
   ], 6);
 }
-const Fe = /* @__PURE__ */ p(Ve, [["render", Re]]), Le = {
+const Me = /* @__PURE__ */ p(Re, [["render", Fe]]), Te = {
   name: "DssAvatar",
   props: {
     // Tamanho (compatível com Quasar - aceita qualquer unidade CSS)
@@ -998,26 +1021,26 @@ const Fe = /* @__PURE__ */ p(Ve, [["render", Re]]), Le = {
     }
   }
 };
-function Me(e, s, t, i, l, n) {
-  return a(), d("div", {
-    class: h(n.avatarClasses),
-    style: v(n.avatarStyle)
+function Ke(e, s, t, i, l, a) {
+  return n(), d("div", {
+    class: h(a.avatarClasses),
+    style: m(a.avatarStyle)
   }, [
-    t.icon ? (a(), d("span", {
+    t.icon ? (n(), d("span", {
       key: 0,
       class: "dss-avatar__icon material-icons",
-      style: v(n.iconStyle)
+      style: m(a.iconStyle)
     }, _(t.icon), 5)) : r("", !0),
-    t.icon ? r("", !0) : (a(), d("div", {
+    t.icon ? r("", !0) : (n(), d("div", {
       key: 1,
-      style: v(n.contentStyle),
+      style: m(a.contentStyle),
       class: "dss-avatar__content"
     }, [
       c(e.$slots, "default")
     ], 4))
   ], 6);
 }
-const Te = /* @__PURE__ */ p(Le, [["render", Me]]), Ke = {
+const Ne = /* @__PURE__ */ p(Te, [["render", Ke]]), Pe = {
   name: "DssCard",
   props: {
     /**
@@ -1098,21 +1121,21 @@ const Te = /* @__PURE__ */ p(Le, [["render", Me]]), Ke = {
     }
   }
 };
-function Ne(e, s, t, i, l, n) {
-  return a(), d("div", z({
-    class: n.cardClasses,
-    style: n.cardStyles
-  }, n.cardAttrs, {
-    onClick: s[0] || (s[0] = (...u) => n.handleClick && n.handleClick(...u)),
+function Oe(e, s, t, i, l, a) {
+  return n(), d("div", z({
+    class: a.cardClasses,
+    style: a.cardStyles
+  }, a.cardAttrs, {
+    onClick: s[0] || (s[0] = (...u) => a.handleClick && a.handleClick(...u)),
     onKeydown: [
-      s[1] || (s[1] = R((...u) => n.handleKeydown && n.handleKeydown(...u), ["enter"])),
-      s[2] || (s[2] = R(K((...u) => n.handleKeydown && n.handleKeydown(...u), ["prevent"]), ["space"]))
+      s[1] || (s[1] = L((...u) => a.handleKeydown && a.handleKeydown(...u), ["enter"])),
+      s[2] || (s[2] = L(K((...u) => a.handleKeydown && a.handleKeydown(...u), ["prevent"]), ["space"]))
     ]
   }), [
     c(e.$slots, "default", {}, void 0, !0)
   ], 16);
 }
-const Pe = /* @__PURE__ */ p(Ke, [["render", Ne], ["__scopeId", "data-v-570cd789"]]), Oe = {
+const We = /* @__PURE__ */ p(Pe, [["render", Oe], ["__scopeId", "data-v-570cd789"]]), Ee = {
   name: "DssCardSection",
   props: {
     /**
@@ -1134,14 +1157,14 @@ const Pe = /* @__PURE__ */ p(Ke, [["render", Ne], ["__scopeId", "data-v-570cd789
     }
   }
 };
-function We(e, s, t, i, l, n) {
-  return a(), d("div", {
-    class: h(n.sectionClasses)
+function Xe(e, s, t, i, l, a) {
+  return n(), d("div", {
+    class: h(a.sectionClasses)
   }, [
     c(e.$slots, "default", {}, void 0, !0)
   ], 2);
 }
-const Ee = /* @__PURE__ */ p(Oe, [["render", We], ["__scopeId", "data-v-a4819ae3"]]), Xe = {
+const je = /* @__PURE__ */ p(Ee, [["render", Xe], ["__scopeId", "data-v-a4819ae3"]]), Ge = {
   name: "DssCardActions",
   props: {
     /**
@@ -1173,14 +1196,14 @@ const Ee = /* @__PURE__ */ p(Oe, [["render", We], ["__scopeId", "data-v-a4819ae3
     }
   }
 };
-function je(e, s, t, i, l, n) {
-  return a(), d("div", {
-    class: h(n.actionsClasses)
+function He(e, s, t, i, l, a) {
+  return n(), d("div", {
+    class: h(a.actionsClasses)
   }, [
     c(e.$slots, "default", {}, void 0, !0)
   ], 2);
 }
-const Ge = /* @__PURE__ */ p(Xe, [["render", je], ["__scopeId", "data-v-fa8188fe"]]), He = {
+const Je = /* @__PURE__ */ p(Ge, [["render", He], ["__scopeId", "data-v-fa8188fe"]]), Qe = {
   name: "DssInput",
   inheritAttrs: !1,
   props: {
@@ -1310,82 +1333,82 @@ const Ge = /* @__PURE__ */ p(Xe, [["render", je], ["__scopeId", "data-v-fa8188fe
       (e = this.$refs.inputRef) == null || e.blur();
     }
   }
-}, Je = {
+}, Ue = {
   key: 0,
   class: "dss-input__before"
-}, Qe = { class: "dss-input__field" }, Ue = {
+}, Ye = { class: "dss-input__field" }, Ze = {
   key: 0,
   class: "dss-input__prepend"
-}, Ye = { class: "dss-input__control" }, Ze = ["type", "value", "placeholder", "disabled", "readonly"], et = {
+}, et = { class: "dss-input__control" }, tt = ["type", "value", "placeholder", "disabled", "readonly"], st = {
   key: 1,
   class: "dss-input__append"
-}, tt = {
+}, at = {
   key: 1,
   class: "dss-input__after"
-}, st = {
+}, nt = {
   key: 2,
   class: "dss-input__bottom"
-}, nt = {
+}, lt = {
   key: 0,
   class: "dss-input__error"
-}, at = {
+}, dt = {
   key: 1,
   class: "dss-input__hint"
 };
-function lt(e, s, t, i, l, n) {
-  return a(), d("div", {
-    class: h(n.wrapperClasses)
+function it(e, s, t, i, l, a) {
+  return n(), d("div", {
+    class: h(a.wrapperClasses)
   }, [
-    e.$slots.before ? (a(), d("div", Je, [
+    e.$slots.before ? (n(), d("div", Ue, [
       c(e.$slots, "before")
     ])) : r("", !0),
-    m("div", Qe, [
-      e.$slots.prepend ? (a(), d("div", Ue, [
+    v("div", Ye, [
+      e.$slots.prepend ? (n(), d("div", Ze, [
         c(e.$slots, "prepend")
       ])) : r("", !0),
-      m("div", Ye, [
-        t.label || e.$slots.label ? (a(), d("label", {
+      v("div", et, [
+        t.label || e.$slots.label ? (n(), d("label", {
           key: 0,
-          class: h(n.labelClasses)
+          class: h(a.labelClasses)
         }, [
           c(e.$slots, "label", {}, () => [
             C(_(t.label), 1)
           ])
         ], 2)) : r("", !0),
-        m("input", z({
+        v("input", z({
           ref: "inputRef",
           type: t.type,
           value: t.modelValue,
           placeholder: t.placeholder,
           disabled: t.disabled,
           readonly: t.readonly,
-          class: n.inputClasses
+          class: a.inputClasses
         }, e.$attrs, {
-          onInput: s[0] || (s[0] = (...u) => n.handleInput && n.handleInput(...u)),
-          onFocus: s[1] || (s[1] = (...u) => n.handleFocus && n.handleFocus(...u)),
-          onBlur: s[2] || (s[2] = (...u) => n.handleBlur && n.handleBlur(...u))
-        }), null, 16, Ze)
+          onInput: s[0] || (s[0] = (...u) => a.handleInput && a.handleInput(...u)),
+          onFocus: s[1] || (s[1] = (...u) => a.handleFocus && a.handleFocus(...u)),
+          onBlur: s[2] || (s[2] = (...u) => a.handleBlur && a.handleBlur(...u))
+        }), null, 16, tt)
       ]),
-      e.$slots.append || t.clearable ? (a(), d("div", et, [
+      e.$slots.append || t.clearable ? (n(), d("div", st, [
         c(e.$slots, "append"),
-        t.clearable && t.modelValue ? (a(), d("button", {
+        t.clearable && t.modelValue ? (n(), d("button", {
           key: 0,
           class: "dss-input__clear",
           type: "button",
-          onClick: s[3] || (s[3] = (...u) => n.handleClear && n.handleClear(...u)),
+          onClick: s[3] || (s[3] = (...u) => a.handleClear && a.handleClear(...u)),
           "aria-label": "Clear input"
         }, " × ")) : r("", !0)
       ])) : r("", !0)
     ]),
-    e.$slots.after ? (a(), d("div", tt, [
+    e.$slots.after ? (n(), d("div", at, [
       c(e.$slots, "after")
     ])) : r("", !0),
-    n.hasBottomSlot ? (a(), d("div", st, [
-      t.error && t.errorMessage ? (a(), d("div", nt, [
+    a.hasBottomSlot ? (n(), d("div", nt, [
+      t.error && t.errorMessage ? (n(), d("div", lt, [
         c(e.$slots, "error", {}, () => [
           C(_(t.errorMessage), 1)
         ])
-      ])) : t.hint ? (a(), d("div", at, [
+      ])) : t.hint ? (n(), d("div", dt, [
         c(e.$slots, "hint", {}, () => [
           C(_(t.hint), 1)
         ])
@@ -1393,11 +1416,11 @@ function lt(e, s, t, i, l, n) {
     ])) : r("", !0)
   ], 2);
 }
-const dt = {
+const ot = {
   $style: P
-}, it = /* @__PURE__ */ p(He, [["render", lt], ["__cssModules", dt]]), yt = {
+}, rt = /* @__PURE__ */ p(Qe, [["render", it], ["__cssModules", ot]]), pt = {
   install(e, s = {}) {
-    e.component("DssButton", xe), e.component("DssBadge", Fe), e.component("DssAvatar", Te), e.component("DssCard", Pe), e.component("DssCardSection", Ee), e.component("DssCardActions", Ge), e.component("DssInput", it), s.brand && e.provide("dss-default-brand", s.brand), s.theme && e.provide("dss-default-theme", s.theme), process.env.NODE_ENV !== "production" && (console.log("✅ Design System Sansys instalado com sucesso!"), console.log("📦 Componentes registrados:", [
+    e.component("DssButton", Le), e.component("DssBadge", Me), e.component("DssAvatar", Ne), e.component("DssCard", We), e.component("DssCardSection", je), e.component("DssCardActions", Je), e.component("DssInput", rt), s.brand && e.provide("dss-default-brand", s.brand), s.theme && e.provide("dss-default-theme", s.theme), process.env.NODE_ENV !== "production" && (console.log("✅ Design System Sansys instalado com sucesso!"), console.log("📦 Componentes registrados:", [
       "DssButton",
       "DssBadge",
       "DssAvatar",
@@ -1447,7 +1470,7 @@ const dt = {
  *
  * ==========================================================================
  */
-const gt = "2.2.0", pt = {
+const vt = "2.2.0", mt = {
   name: "Design System Sansys",
   version: "2.2.0",
   description: "Sistema de Design profissional com componentes Vue 3 e tokens DSS",
@@ -1467,15 +1490,15 @@ const gt = "2.2.0", pt = {
   frameworks: ["Vue 3"]
 };
 export {
-  ct as DssAvatar,
-  ut as DssBadge,
-  rt as DssButton,
-  ft as DssCard,
-  _t as DssCardActions,
-  bt as DssCardSection,
-  ht as DssInput,
-  yt as default,
-  pt as metadata,
-  gt as version
+  bt as DssAvatar,
+  ft as DssBadge,
+  ct as DssButton,
+  _t as DssCard,
+  yt as DssCardActions,
+  ht as DssCardSection,
+  gt as DssInput,
+  pt as default,
+  mt as metadata,
+  vt as version
 };
 //# sourceMappingURL=dss.es.js.map

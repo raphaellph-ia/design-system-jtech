@@ -74,11 +74,16 @@ export function useBrand(
 
 /**
  * Mapeamento de cores primárias por marca
+ *
+ * ✅ CORRIGIDO (Jan 2026): Cores oficiais Sansys
+ * - Hub: Laranja/Marrom (#ef7a11 = --dss-hub-600)
+ * - Water: Azul (#0e88e4 = --dss-water-500)
+ * - Waste: Verde (#0b8154 = --dss-waste-600)
  */
 export const BRAND_COLORS: Record<SansysBrand, string> = {
-  hub: '#1976D2',     // Azul Hub
-  water: '#0288D1',   // Azul Water
-  waste: '#388E3C'    // Verde Waste
+  hub: '#ef7a11',     // Laranja Hub (--dss-hub-600)
+  water: '#0e88e4',   // Azul Water (--dss-water-500)
+  waste: '#0b8154'    // Verde Waste (--dss-waste-600)
 }
 
 /**
@@ -86,7 +91,7 @@ export const BRAND_COLORS: Record<SansysBrand, string> = {
  *
  * @example
  * ```ts
- * const color = getBrandColor('hub') // '#1976D2'
+ * const color = getBrandColor('hub') // '#ef7a11'
  * ```
  */
 export function getBrandColor(brand: SansysBrand | null | undefined): string | null {

@@ -91,6 +91,22 @@ export interface BadgeProps {
 
   /** Alinhamento vertical quando não flutuante */
   align?: BadgeAlign | null
+
+  // ========================================
+  // Accessibility (WCAG 2.1 AA)
+  // ========================================
+
+  /**
+   * Label de acessibilidade customizado para screen readers
+   * Sobrescreve o label visual quando fornecido
+   *
+   * @example
+   * ```vue
+   * <DssBadge ariaLabel="5 unread notifications">5</DssBadge>
+   * <!-- Screen reader: "5 unread notifications" -->
+   * ```
+   */
+  ariaLabel?: string
 }
 
 /**

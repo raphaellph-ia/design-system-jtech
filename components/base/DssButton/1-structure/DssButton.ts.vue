@@ -8,28 +8,47 @@
     :class="buttonClasses"
     :style="buttonStyle"
     :tabindex="computedTabindex"
+    :aria-label="ariaLabel"
+    :aria-busy="loading ? 'true' : undefined"
+    :aria-disabled="disabled ? 'true' : undefined"
     v-bind="$attrs"
     @click="handleClick"
   >
-    <!-- Loading spinner -->
-    <span v-if="loading && percentage === null" class="dss-button__loading">
-      <span class="dss-button__spinner"></span>
+    <!-- Loading spinner with ARIA -->
+    <span
+      v-if="loading && percentage === null"
+      class="dss-button__loading"
+      role="status"
+      aria-label="Loading"
+      aria-live="polite"
+    >
+      <span class="dss-button__spinner" aria-hidden="true"></span>
     </span>
 
-    <!-- Progress bar (percentage mode) -->
+    <!-- Progress bar with ARIA -->
     <span
       v-if="loading && percentage !== null"
       class="dss-button__progress"
       :class="{ 'dss-button__progress--dark': darkPercentage }"
+      role="progressbar"
+      :aria-valuenow="percentage"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      :aria-label="`Loading ${percentage}%`"
     >
       <span
         class="dss-button__progress-indicator"
         :style="percentageStyle"
+        aria-hidden="true"
       ></span>
     </span>
 
-    <!-- Icon Left (before label) -->
-    <span v-if="computedIconLeft && !loading" class="dss-button__icon dss-button__icon--left">
+    <!-- Icon Left (decorative - hidden from screen readers) -->
+    <span
+      v-if="computedIconLeft && !loading"
+      class="dss-button__icon dss-button__icon--left"
+      aria-hidden="true"
+    >
       {{ computedIconLeft }}
     </span>
 
@@ -38,13 +57,17 @@
       <slot>{{ label }}</slot>
     </span>
 
-    <!-- Icon Right (after label) -->
-    <span v-if="computedIconRight && !loading" class="dss-button__icon dss-button__icon--right">
+    <!-- Icon Right (decorative - hidden from screen readers) -->
+    <span
+      v-if="computedIconRight && !loading"
+      class="dss-button__icon dss-button__icon--right"
+      aria-hidden="true"
+    >
       {{ computedIconRight }}
     </span>
 
-    <!-- Ripple effect container (opcional) -->
-    <span v-if="ripple" class="dss-button__ripple"></span>
+    <!-- Ripple effect (decorative - hidden from screen readers) -->
+    <span v-if="ripple" class="dss-button__ripple" aria-hidden="true"></span>
   </component>
 </template>
 
@@ -137,7 +160,10 @@ const props = withDefaults(defineProps<ButtonProps>(), {
 
   // Interaction
   ripple: false,
-  tabindex: null
+  tabindex: null,
+
+  // Accessibility
+  ariaLabel: undefined
 })
 
 // ==========================================================================

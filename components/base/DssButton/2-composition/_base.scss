@@ -47,8 +47,8 @@
   vertical-align: middle;
   outline: 0;
 
-  /* Transitions */
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Transitions (Issue #1.5 - Jan 2026) */
+  transition: all var(--dss-duration-200) var(--dss-easing-standard);
 
   /* Prevent text selection */
   -webkit-tap-highlight-color: transparent;
@@ -266,7 +266,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 4px;
+  height: var(--dss-spacing-1); /* 4px via token (Issue #1.4 - Jan 2026) */
   overflow: hidden;
   border-radius: inherit;
 }
@@ -279,7 +279,7 @@
   width: 100%;
   background-color: currentColor;
   opacity: var(--dss-opacity-30);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform var(--dss-duration-300) var(--dss-easing-standard); /* Issue #1.5 - Jan 2026 */
 }
 
 .dss-button__progress--dark .dss-button__progress-indicator {

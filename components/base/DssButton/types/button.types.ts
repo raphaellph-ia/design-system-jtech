@@ -203,6 +203,22 @@ export interface ButtonProps {
 
   /** Tabindex customizado */
   tabindex?: number | string | null
+
+  // ========================================
+  // Accessibility (WCAG 2.1 AA)
+  // ========================================
+
+  /**
+   * Label de acessibilidade customizado para screen readers
+   * Sobrescreve o label visual quando fornecido
+   *
+   * @example
+   * ```vue
+   * <DssButton ariaLabel="Save document" icon="save" />
+   * <!-- Screen reader: "Save document" -->
+   * ```
+   */
+  ariaLabel?: string
 }
 
 /**

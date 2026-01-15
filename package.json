@@ -40,6 +40,12 @@
     "vue": "^3.4.21",
     "vue-tsc": "^3.2.2"
   },
+  
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2"
+  },
   "keywords": [
     "design-system",
     "vue",

@@ -2,6 +2,9 @@
   <div
     :class="badgeClasses"
     :style="badgeStyle"
+    role="status"
+    :aria-label="ariaLabel"
+    aria-live="polite"
   >
     <!-- Conteúdo do badge -->
     <slot>{{ label }}</slot>
@@ -59,7 +62,9 @@ const props = withDefaults(defineProps<BadgeProps>(), {
   rounded: false,
   multiLine: false,
   floating: false,
-  align: null
+  align: null,
+  // Accessibility
+  ariaLabel: undefined
 })
 
 // ==========================================================================
