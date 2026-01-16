@@ -9,10 +9,15 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
   },
+  // Garante runtime JSX do React mesmo com tsconfig legado (Vue)
+  esbuild: {
+    jsx: "automatic",
+    jsxImportSource: "react",
+  },
   plugins: [
     react({
-      // força JSX do React mesmo com tsconfig legado de Vue
       jsxImportSource: "react",
+      jsxRuntime: "automatic",
     }),
     mode === "development" && componentTagger(),
   ].filter(Boolean),
