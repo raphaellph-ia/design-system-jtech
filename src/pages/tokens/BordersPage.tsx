@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { DssTabs, DssTabsList, DssTabsTrigger, DssTabsContent } from "@/components/ui/dss-tabs";
 import { Badge } from "@/components/ui/badge";
 import { Copy, Check, Circle, Square, RectangleHorizontal, Layers, Palette, AlertCircle, Info, CheckCircle, XCircle, AlertTriangle, Focus } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
@@ -275,19 +275,19 @@ export default function BordersPage() {
       />
 
       {/* Tabs */}
-      <Tabs defaultValue="widths" className="space-y-6">
-        <TabsList className="flex flex-wrap h-auto gap-1 bg-muted/50 p-1">
-          <TabsTrigger value="widths" className="text-xs">Espessuras</TabsTrigger>
-          <TabsTrigger value="radius" className="text-xs">Arredondamento</TabsTrigger>
-          <TabsTrigger value="neutral" className="text-xs">Neutras</TabsTrigger>
-          <TabsTrigger value="action" className="text-xs">Ações</TabsTrigger>
-          <TabsTrigger value="feedback" className="text-xs">Feedback</TabsTrigger>
-          <TabsTrigger value="brand" className="text-xs">Marcas</TabsTrigger>
-          <TabsTrigger value="functional" className="text-xs">Funcionais</TabsTrigger>
-        </TabsList>
+      <DssTabs defaultValue="widths" className="space-y-6">
+        <DssTabsList>
+          <DssTabsTrigger value="widths" badge={borderWidths.length}>Espessuras</DssTabsTrigger>
+          <DssTabsTrigger value="radius" badge={borderRadius.length}>Arredondamento</DssTabsTrigger>
+          <DssTabsTrigger value="neutral" badge={neutralBorders.length}>Neutras</DssTabsTrigger>
+          <DssTabsTrigger value="action" badge={actionBorders.length}>Ações</DssTabsTrigger>
+          <DssTabsTrigger value="feedback" badge={feedbackBorders.length}>Feedback</DssTabsTrigger>
+          <DssTabsTrigger value="brand" badge={brandBorders.length}>Marcas</DssTabsTrigger>
+          <DssTabsTrigger value="functional" badge={functionalBorders.length}>Funcionais</DssTabsTrigger>
+        </DssTabsList>
 
         {/* ESPESSURAS */}
-        <TabsContent value="widths" className="space-y-6">
+        <DssTabsContent value="widths" className="space-y-6">
           <SectionHeader 
             title="Espessuras de Borda"
             titleAccent="— escala genérica"
@@ -344,10 +344,10 @@ export default function BordersPage() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+        </DssTabsContent>
 
         {/* ARREDONDAMENTO */}
-        <TabsContent value="radius" className="space-y-6">
+        <DssTabsContent value="radius" className="space-y-6">
           <SectionHeader 
             title="Border Radius"
             titleAccent="— múltiplos de 4px"
@@ -401,10 +401,10 @@ export default function BordersPage() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+        </DssTabsContent>
 
         {/* NEUTRAS */}
-        <TabsContent value="neutral" className="space-y-6">
+        <DssTabsContent value="neutral" className="space-y-6">
           <SectionHeader 
             title="Bordas Neutras"
             titleAccent="— escala Gray"
@@ -438,10 +438,10 @@ export default function BordersPage() {
               ))}
             </CardContent>
           </Card>
-        </TabsContent>
+        </DssTabsContent>
 
         {/* AÇÕES */}
-        <TabsContent value="action" className="space-y-6">
+        <DssTabsContent value="action" className="space-y-6">
           <SectionHeader 
             title="Bordas de Ação"
             titleAccent="— estados interativos"
@@ -470,10 +470,10 @@ export default function BordersPage() {
               </Card>
             ))}
           </div>
-        </TabsContent>
+        </DssTabsContent>
 
         {/* FEEDBACK */}
-        <TabsContent value="feedback" className="space-y-6">
+        <DssTabsContent value="feedback" className="space-y-6">
           <SectionHeader 
             title="Bordas de Feedback"
             titleAccent="— estados semânticos"
@@ -504,10 +504,10 @@ export default function BordersPage() {
               );
             })}
           </div>
-        </TabsContent>
+        </DssTabsContent>
 
         {/* MARCAS */}
-        <TabsContent value="brand" className="space-y-6">
+        <DssTabsContent value="brand" className="space-y-6">
           <SectionHeader 
             title="Bordas de Marca"
             titleAccent="— Hub, Water, Waste"
@@ -562,10 +562,10 @@ export default function BordersPage() {
               </Card>
             ))}
           </div>
-        </TabsContent>
+        </DssTabsContent>
 
         {/* FUNCIONAIS */}
-        <TabsContent value="functional" className="space-y-6">
+        <DssTabsContent value="functional" className="space-y-6">
           <SectionHeader 
             title="Bordas Funcionais"
             titleAccent="— estados e acessibilidade"
@@ -620,8 +620,8 @@ export default function BordersPage() {
               </p>
             </CardContent>
           </Card>
-        </TabsContent>
-      </Tabs>
+        </DssTabsContent>
+      </DssTabs>
     </div>
   );
 }
