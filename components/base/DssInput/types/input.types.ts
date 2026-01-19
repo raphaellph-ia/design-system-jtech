@@ -7,7 +7,10 @@
  * Compatível 100% com Quasar q-input API
  *
  * @see https://quasar.dev/vue-components/input
+ * @version 2.3.0
  */
+
+import type { Ref } from 'vue'
 
 // ==========================================================================
 // ENUMS E LITERAIS
@@ -19,9 +22,19 @@
 export type InputVariant = 'filled' | 'outlined' | 'standout' | 'borderless'
 
 /**
- * Tipos HTML de input
+ * Tipos HTML de input suportados
  */
-export type InputType = 'text' | 'password' | 'email' | 'number' | 'tel' | 'url' | 'search'
+export type InputType =
+  | 'text'
+  | 'password'
+  | 'email'
+  | 'number'
+  | 'tel'
+  | 'url'
+  | 'search'
+  | 'date'
+  | 'time'
+  | 'datetime-local'
 
 /**
  * Marcas do sistema Sansys
@@ -42,6 +55,7 @@ export type InputBrand = 'hub' | 'water' | 'waste'
  *   type="email"
  *   label="Email"
  *   hint="Enter your email address"
+ *   clearable
  * />
  * ```
  */
@@ -88,7 +102,7 @@ export interface InputProps {
   // ========================================
 
   /**
-   * Label do input
+   * Label do input (floating label)
    */
   label?: string
 
@@ -136,10 +150,16 @@ export interface InputProps {
   readonly?: boolean
 
   /**
-   * Mostra indicador de loading
+   * Mostra indicador de loading (spinner)
    * @default false
    */
   loading?: boolean
+
+  /**
+   * Input obrigatório (adiciona aria-required)
+   * @default false
+   */
+  required?: boolean
 
   // ========================================
   // Features
@@ -150,10 +170,37 @@ export interface InputProps {
    * @default false
    */
   clearable?: boolean
+
+  // ========================================
+  // Accessibility (WCAG 2.1 AA)
+  // ========================================
+
+  /**
+   * Label de acessibilidade customizado para screen readers
+   * Sobrescreve o label visual quando fornecido
+   *
+   * @example
+   * ```vue
+   * <DssInput ariaLabel="Search products" type="search" />
+   * ```
+   */
+  ariaLabel?: string
+
+  /**
+   * Label de acessibilidade para o botão de limpar
+   * @default 'Clear input'
+   */
+  clearAriaLabel?: string
+
+  /**
+   * Tabindex customizado
+   * @default null (usa 0 por padrão)
+   */
+  tabindex?: number | string | null
 }
 
 /**
- * Emits do DssInput
+ * Eventos emitidos pelo DssInput
  */
 export interface InputEmits {
   /**
@@ -170,6 +217,11 @@ export interface InputEmits {
    * Emitido quando o input perde foco
    */
   (e: 'blur', event: FocusEvent): void
+
+  /**
+   * Emitido quando o input é limpo via botão clear
+   */
+  (e: 'clear'): void
 }
 
 /**
@@ -182,7 +234,7 @@ export interface InputSlots {
   label?(): any
 
   /**
-   * Conteúdo antes do campo (ícones, texto)
+   * Conteúdo antes do campo wrapper
    */
   before?(): any
 
@@ -197,7 +249,7 @@ export interface InputSlots {
   append?(): any
 
   /**
-   * Conteúdo depois do campo
+   * Conteúdo depois do campo wrapper
    */
   after?(): any
 
@@ -225,4 +277,81 @@ export interface InputExpose {
    * Remove foco do input
    */
   blur: () => void
+
+  /**
+   * Referência direta ao elemento input nativo
+   */
+  inputRef: Ref<HTMLInputElement | null>
+}
+
+// ==========================================================================
+// TIPOS AUXILIARES
+// ==========================================================================
+
+/**
+ * Estado interno do input (para composables)
+ */
+export interface InputState {
+  /** Input está focado */
+  isFocused: boolean
+  /** Input tem valor */
+  hasValue: boolean
+  /** Deve mostrar área inferior (hint/error) */
+  hasBottomSlot: boolean
+}
+
+/**
+ * Classes CSS do wrapper principal
+ */
+export interface InputWrapperClasses {
+  'dss-input': boolean
+  'dss-input--focused': boolean
+  'dss-input--error': boolean
+  'dss-input--disabled': boolean
+  'dss-input--readonly': boolean
+  'dss-input--dense': boolean
+  'dss-input--loading': boolean
+  'dss-input--filled': boolean
+  [key: `dss-input--${string}`]: boolean
+}
+
+/**
+ * Classes CSS da label
+ */
+export interface InputLabelClasses {
+  'dss-input__label': boolean
+  'dss-input__label--stack': boolean
+  'dss-input__label--float': boolean
+}
+
+/**
+ * IDs gerados para acessibilidade
+ */
+export interface InputAccessibilityIds {
+  /** ID do input nativo */
+  inputId: string
+  /** ID da label */
+  labelId: string
+  /** ID do hint */
+  hintId: string
+  /** ID do error */
+  errorId: string
+}
+
+/**
+ * Dados computados do input (para composables)
+ */
+export interface InputComputedData {
+  /** Classes CSS do wrapper */
+  wrapperClasses: (string | Record<string, boolean>)[]
+  /** Classes CSS da label */
+  labelClasses: (string | Record<string, boolean>)[]
+  /** Classes CSS do input nativo */
+  inputClasses: string
+  /** Placeholder computado */
+  computedPlaceholder: string
+  /** Tabindex computado */
+  computedTabindex: number
+  /** IDs para aria-describedby */
+  ariaDescribedBy: string | undefined
 }

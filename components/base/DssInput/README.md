@@ -2,14 +2,29 @@
 
 **Componente de Input** baseado no Quasar q-input, implementado com a nova arquitetura DSS em 4 camadas.
 
+> **v2.3.0** - Migrado para TypeScript + Composition API (Janeiro 2026)
+
 ---
 
-## 📁 Estrutura de Arquivos
+## 📚 Documentação Completa
+
+| Documento | Descrição |
+|-----------|-----------|
+| **[DssInput.md](./DssInput.md)** | Documentação principal - Template 13.1 (13 seções obrigatórias) |
+| **[DSSINPUT_API.md](./DSSINPUT_API.md)** | Referência técnica completa - Props, Eventos, Slots, TypeScript |
+| **[DOCUMENTATION_CHANGELOG.md](./DOCUMENTATION_CHANGELOG.md)** | Histórico de alterações na documentação |
+| **README.md** ← você está aqui | Índice de navegação e visão geral rápida |
+
+> **Golden Sample**: Esta documentação segue o padrão estabelecido pelo [DssButton](../DssButton/DssButton.md).
+
+---
+
+## Estrutura de Arquivos
 
 ```
 DssInput/
 ├── 1-structure/              # LAYER 1: Estrutura Vue
-│   └── DssInput.vue          (template + props + lógica)
+│   └── DssInput.ts.vue       (TypeScript + Composition API)
 │
 ├── 2-composition/            # LAYER 2: Composição Base
 │   └── _base.scss            (estilos fundamentais)
@@ -26,6 +41,15 @@ DssInput/
 │   ├── _brands.scss          (Hub, Water, Waste)
 │   └── index.scss            (orquestrador)
 │
+├── composables/              # Lógica reutilizável TypeScript
+│   ├── useInputClasses.ts    (classes CSS)
+│   ├── useInputState.ts      (estado interno)
+│   ├── useInputActions.ts    (handlers de eventos)
+│   └── index.ts              (barrel export)
+│
+├── types/                    # TypeScript Definitions
+│   └── input.types.ts        (props, emits, slots, expose)
+│
 ├── DssInput.module.scss      # Importa todas as camadas (~50 linhas)
 ├── DssInput.example.vue      # 18 exemplos de uso
 ├── index.js                  # Exports
@@ -34,36 +58,84 @@ DssInput/
 
 ---
 
-## 🎯 Filosofia das 4 Camadas
+## TypeScript + Composition API
+
+O DssInput foi migrado para TypeScript + Composition API, seguindo o padrão do DssButton (Golden Sample).
+
+### Características
+
+- **`<script setup lang="ts">`** - Composition API moderna
+- **100% tipado** - Props, emits, slots e expose
+- **Composables** - Lógica separada e reutilizável
+- **WCAG 2.1 AA** - Acessibilidade completa
+
+### Importação
+
+```typescript
+import { DssInput } from '@/dss/components/base/DssInput'
+import type { InputProps, InputEmits, InputExpose } from '@/dss/components/base/DssInput/types/input.types'
+```
+
+### Types Disponíveis
+
+```typescript
+// Variantes visuais
+type InputVariant = 'filled' | 'outlined' | 'standout' | 'borderless'
+
+// Tipos de input
+type InputType = 'text' | 'password' | 'email' | 'number' | 'tel' | 'url' | 'search' | 'date' | 'time' | 'datetime-local'
+
+// Brands
+type InputBrand = 'hub' | 'water' | 'waste'
+```
+
+---
+
+## Filosofia das 4 Camadas
 
 ### **LAYER 1: Structure (Estrutura)**
 **Responsabilidade:** Template HTML + Props + Lógica Vue
 
 **Características:**
-- ✅ Template, props, computed, methods
-- ✅ Lógica de estado (focus, blur, clear)
-- ✅ Slots bem definidos
-- ✅ v-model implementation
-- ❌ Zero lógica de estilos
+- Template, props, computed, methods
+- Lógica de estado (focus, blur, clear)
+- Slots bem definidos
+- v-model implementation
+- ZERO lógica de estilos
 
 **Props Principais:**
-```vue
-{
-  modelValue: String | Number,
-  variant: 'outlined' | 'filled' | 'standout' | 'borderless',
-  label: String,
-  stackLabel: Boolean,
-  placeholder: String,
-  type: String,
-  error: Boolean,
-  errorMessage: String,
-  hint: String,
-  dense: Boolean,
-  clearable: Boolean,
-  disabled: Boolean,
-  readonly: Boolean,
-  loading: Boolean,
-  brand: 'hub' | 'water' | 'waste'
+```typescript
+interface InputProps {
+  // Model
+  modelValue?: string | number
+
+  // Visual
+  variant?: 'outlined' | 'filled' | 'standout' | 'borderless'
+  type?: InputType
+  dense?: boolean
+  brand?: 'hub' | 'water' | 'waste' | null
+
+  // Content
+  label?: string
+  stackLabel?: boolean
+  placeholder?: string
+  hint?: string
+  errorMessage?: string
+
+  // State
+  error?: boolean
+  disabled?: boolean
+  readonly?: boolean
+  loading?: boolean
+  required?: boolean
+
+  // Features
+  clearable?: boolean
+
+  // Accessibility
+  ariaLabel?: string
+  clearAriaLabel?: string
+  tabindex?: number | string | null
 }
 ```
 
@@ -73,10 +145,10 @@ DssInput/
 **Responsabilidade:** Estilos fundamentais usando APENAS tokens genéricos
 
 **Características:**
-- ✅ Layout base (flexbox, positioning)
-- ✅ ZERO valores hardcoded
-- ✅ Usa tokens: `var(--dss-spacing-*)`, `var(--dss-radius-*)`
-- ✅ Mixins: `@include dss-transition()`
+- Layout base (flexbox, positioning)
+- ZERO valores hardcoded
+- Usa tokens: `var(--dss-spacing-*)`, `var(--dss-radius-*)`
+- Mixins: `@include dss-transition()`
 
 **Exemplo:**
 ```scss
@@ -99,9 +171,9 @@ DssInput/
 **Responsabilidade:** Variações visuais do componente
 
 **Características:**
-- ✅ 1 arquivo = 1 variante (~40 linhas)
-- ✅ Fácil debug (problema no outlined? → `_outlined.scss`)
-- ✅ Reutilizável
+- 1 arquivo = 1 variante (~40 linhas)
+- Fácil debug (problema no outlined? → `_outlined.scss`)
+- Reutilizável
 
 **Variantes Disponíveis:**
 - `outlined` - Borda completa (padrão Quasar)
@@ -130,10 +202,10 @@ DssInput/
 **Responsabilidade:** Estados especiais e orquestração final
 
 **Características:**
-- ✅ Dark mode
-- ✅ Brandability (Hub, Water, Waste)
-- ✅ Estados (focus, error, disabled, readonly)
-- ✅ Accessibility (high contrast, reduced motion)
+- Dark mode
+- Brandability (Hub, Water, Waste)
+- Estados (focus, error, disabled, readonly)
+- Accessibility (high contrast, reduced motion)
 
 **Exemplo - Brands:**
 ```scss
@@ -147,13 +219,7 @@ DssInput/
 
 ---
 
-## 🚀 Uso Básico
-
-### **Importação**
-
-```javascript
-import { DssInput } from '@/dss/components/base/DssInput'
-```
+## Uso Básico
 
 ### **Exemplo 1: Input Simples**
 
@@ -233,9 +299,41 @@ import { DssInput } from '@/dss/components/base/DssInput'
 />
 ```
 
+### **Exemplo 7: Input com Loading**
+
+```vue
+<DssInput
+  v-model="asyncValue"
+  variant="outlined"
+  label="Carregando..."
+  :loading="isLoading"
+/>
+```
+
+### **Exemplo 8: Acessando Referência do Input**
+
+```vue
+<template>
+  <DssInput ref="inputRef" v-model="value" label="Focus me" />
+  <button @click="focusInput">Focus</button>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import type { InputExpose } from '@/dss/components/base/DssInput/types/input.types'
+
+const inputRef = ref<InputExpose | null>(null)
+const value = ref('')
+
+const focusInput = () => {
+  inputRef.value?.focus()
+}
+</script>
+```
+
 ---
 
-## 🎨 Props API
+## Props API
 
 | Prop | Type | Default | Values | Description |
 |------|------|---------|--------|-------------|
@@ -253,11 +351,26 @@ import { DssInput } from '@/dss/components/base/DssInput'
 | `dense` | Boolean | `false` | - | Versão compacta |
 | `clearable` | Boolean | `false` | - | Botão de limpar |
 | `loading` | Boolean | `false` | - | Estado de loading |
+| `required` | Boolean | `false` | - | Campo obrigatório (aria-required) |
 | `brand` | String | `null` | `hub`, `water`, `waste` | Brand accent |
+| `ariaLabel` | String | `undefined` | - | Label para screen readers |
+| `clearAriaLabel` | String | `'Clear input'` | - | Label do botão limpar |
+| `tabindex` | Number\|String | `null` | - | Tabindex customizado |
 
 ---
 
-## 🔌 Slots API
+## Emits API
+
+| Event | Payload | Description |
+|-------|---------|-------------|
+| `update:modelValue` | `string` | Emitido quando o valor muda (v-model) |
+| `focus` | `FocusEvent` | Emitido quando o input recebe foco |
+| `blur` | `FocusEvent` | Emitido quando o input perde foco |
+| `clear` | - | Emitido quando o input é limpo via botão clear |
+
+---
+
+## Slots API
 
 | Slot | Description |
 |------|-------------|
@@ -271,7 +384,17 @@ import { DssInput } from '@/dss/components/base/DssInput'
 
 ---
 
-## 🎭 Estados Visuais
+## Expose API
+
+| Method/Ref | Type | Description |
+|------------|------|-------------|
+| `focus()` | `() => void` | Foca no input |
+| `blur()` | `() => void` | Remove foco do input |
+| `inputRef` | `Ref<HTMLInputElement \| null>` | Referência direta ao input nativo |
+
+---
+
+## Estados Visuais
 
 ### **Focus**
 - Border/background muda de cor
@@ -300,7 +423,36 @@ import { DssInput } from '@/dss/components/base/DssInput'
 
 ---
 
-## ✅ Benefícios da Arquitetura em 4 Camadas
+## Acessibilidade (WCAG 2.1 AA)
+
+O DssInput implementa acessibilidade completa:
+
+### IDs Únicos
+- Cada instância gera IDs únicos para label, hint e error
+- Conectados via `aria-labelledby` e `aria-describedby`
+
+### ARIA Attributes
+- `aria-label` - Label customizado para screen readers
+- `aria-labelledby` - Conecta com label visual
+- `aria-describedby` - Conecta com hint ou error
+- `aria-invalid` - Indica estado de erro
+- `aria-busy` - Indica estado de loading
+- `aria-disabled` - Indica estado desabilitado
+- `aria-readonly` - Indica estado somente leitura
+- `aria-required` - Indica campo obrigatório
+
+### Keyboard Navigation
+- Tab para focar
+- Escape para blur (quando implementado)
+- Enter para submit (em forms)
+
+### Touch Targets
+- Mínimo 48px de altura (WCAG AA)
+- Área de clique adequada
+
+---
+
+## Benefícios da Arquitetura em 4 Camadas
 
 ### **1. Separação de Responsabilidades**
 Cada arquivo tem 1 responsabilidade única:
@@ -354,7 +506,7 @@ vs ANTES:
 
 ---
 
-## 🔧 Tokens Utilizados
+## Tokens Utilizados
 
 **ZERO tokens component-specific!** Apenas tokens genéricos reutilizáveis:
 
@@ -390,32 +542,54 @@ vs ANTES:
 
 ---
 
-## 📝 Notas de Migração do Quasar
+## Notas de Migração do Quasar
 
 ### **Props Compatíveis**
-✅ `filled` → `variant="filled"`
-✅ `outlined` → `variant="outlined"`
-✅ `standout` → `variant="standout"`
-✅ `borderless` → `variant="borderless"`
-✅ `dense` → `dense`
-✅ `stack-label` → `stackLabel`
-✅ `clearable` → `clearable`
-✅ `disable` → `disabled`
-✅ `readonly` → `readonly`
+- `filled` → `variant="filled"`
+- `outlined` → `variant="outlined"`
+- `standout` → `variant="standout"`
+- `borderless` → `variant="borderless"`
+- `dense` → `dense`
+- `stack-label` → `stackLabel`
+- `clearable` → `clearable`
+- `disable` → `disabled`
+- `readonly` → `readonly`
 
 ### **Slots Compatíveis**
-✅ `prepend`, `append`, `before`, `after`
-✅ `error`, `hint`
-✅ `label`
+- `prepend`, `append`, `before`, `after`
+- `error`, `hint`
+- `label`
 
 ### **Diferenças**
-⚠️ `brand` é específico do DSS (Hub, Water, Waste)
-⚠️ Máscaras de input não implementadas (usar diretiva externa)
-⚠️ Regras de validação não built-in (implementar externamente)
+- `brand` é específico do DSS (Hub, Water, Waste)
+- Máscaras de input não implementadas (usar diretiva externa)
+- Regras de validação não built-in (implementar externamente)
 
 ---
 
-## 🎯 Próximos Passos
+## Changelog
+
+### v2.3.0 (Janeiro 2026)
+- **BREAKING:** Migrado para TypeScript + Composition API
+- Removida versão Options API (`DssInput.vue` → `DssInput.vue.legacy`)
+- Adicionadas props de acessibilidade: `ariaLabel`, `clearAriaLabel`, `required`, `tabindex`
+- Adicionado evento `clear`
+- IDs únicos gerados automaticamente para ARIA
+- Loading spinner com ARIA `role="status"`
+- Error message com `role="alert"` e `aria-live="assertive"`
+- Expose inclui `inputRef` para acesso direto ao input nativo
+- Composables totalmente tipados
+
+### v2.2.0 (Dezembro 2025)
+- Implementação inicial com arquitetura em 4 camadas
+- 4 variantes visuais
+- Suporte a brands (Hub, Water, Waste)
+- Dark mode
+- Acessibilidade WCAG 2.1 AA
+
+---
+
+## Próximos Passos
 
 ### **Melhorias Futuras**
 - [ ] Shared variants (`shared/variants/_outlined.scss`)
@@ -434,6 +608,7 @@ vs ANTES:
 ---
 
 **Criado:** 18 de Dezembro de 2025
+**Atualizado:** Janeiro 2026 (v2.3.0 - TypeScript Migration)
 **Arquitetura:** 4 Camadas DSS v2.0
 **Filosofia:** Tokens = Provedores, Componentes = Consumidores
 **Baseado em:** Quasar q-input API oficial
