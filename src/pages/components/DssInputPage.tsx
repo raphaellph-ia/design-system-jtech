@@ -177,9 +177,6 @@ const propsData = [
 
 // Tokens utilizados pelo DssInput
 const tokensUsed = [
-  // ============================================================================
-  // BORDERS - Tokens de borda
-  // ============================================================================
   { category: "Border", token: "--dss-border-width-thin", value: "1px", usage: "Borda padrão do input" },
   { category: "Border", token: "--dss-border-width-md", value: "2px", usage: "Borda no estado focus" },
   { category: "Border", token: "--dss-border-gray-300", value: "#d4d4d4", usage: "Cor da borda default" },
@@ -187,68 +184,36 @@ const tokensUsed = [
   { category: "Border", token: "--dss-radius-sm", value: "4px", usage: "Border-radius padrão" },
   { category: "Border", token: "--dss-radius-md", value: "8px", usage: "Border-radius large" },
   { category: "Border", token: "--dss-radius-none", value: "0", usage: "Sem arredondamento (square)" },
-  
-  // ============================================================================
-  // FOCUS COLORS - Cores de foco
-  // ============================================================================
   { category: "Focus", token: "--dss-action-primary", value: "#1f86de", usage: "Borda focus primary" },
   { category: "Focus", token: "--dss-action-secondary", value: "#26a69a", usage: "Borda focus secondary" },
   { category: "Focus", token: "--dss-shadow-focus", value: "0 0 0 3px rgba(31,134,222,0.25)", usage: "Focus ring primary" },
   { category: "Focus", token: "--dss-shadow-focus-error", value: "0 0 0 3px rgba(216,24,46,0.25)", usage: "Focus ring error" },
-  
-  // ============================================================================
-  // FEEDBACK - Estados de validação
-  // ============================================================================
   { category: "Feedback", token: "--dss-feedback-success", value: "#4dd228", usage: "Borda/ícone success" },
   { category: "Feedback", token: "--dss-feedback-success-light", value: "#e8f5e9", usage: "Background success (filled)" },
   { category: "Feedback", token: "--dss-feedback-error", value: "#d8182e", usage: "Borda/ícone error" },
   { category: "Feedback", token: "--dss-feedback-error-light", value: "#ffebee", usage: "Background error (filled)" },
   { category: "Feedback", token: "--dss-feedback-warning", value: "#fabd14", usage: "Borda/ícone warning" },
   { category: "Feedback", token: "--dss-feedback-warning-light", value: "#fff8e1", usage: "Background warning (filled)" },
-  
-  // ============================================================================
-  // SURFACES - Backgrounds
-  // ============================================================================
   { category: "Surface", token: "--dss-surface-default", value: "#ffffff", usage: "Background outlined" },
   { category: "Surface", token: "--dss-surface-subtle", value: "#fafafa", usage: "Background filled" },
   { category: "Surface", token: "--dss-surface-muted", value: "#f5f5f5", usage: "Background disabled" },
   { category: "Surface", token: "--dss-surface-hover", value: "rgba(0,0,0,0.04)", usage: "Hover filled" },
-  
-  // ============================================================================
-  // TEXT - Tipografia
-  // ============================================================================
   { category: "Text", token: "--dss-text-body", value: "#454545", usage: "Texto do input" },
   { category: "Text", token: "--dss-text-subtle", value: "#737373", usage: "Placeholder text" },
   { category: "Text", token: "--dss-text-muted", value: "#a3a3a3", usage: "Hint text" },
   { category: "Text", token: "--dss-text-disabled", value: "#d4d4d4", usage: "Texto disabled" },
   { category: "Text", token: "--dss-text-error", value: "#d8182e", usage: "Mensagem de erro" },
-  
-  // ============================================================================
-  // SIZING - Dimensões
-  // ============================================================================
   { category: "Sizing", token: "--dss-touch-target-sm", value: "36px", usage: "Altura dense" },
   { category: "Sizing", token: "--dss-touch-target-md", value: "44px", usage: "Altura padrão WCAG" },
   { category: "Sizing", token: "--dss-touch-target-lg", value: "52px", usage: "Altura large" },
   { category: "Sizing", token: "--dss-input-icon-size", value: "20px", usage: "Tamanho dos ícones" },
-  
-  // ============================================================================
-  // SPACING - Espaçamentos
-  // ============================================================================
   { category: "Spacing", token: "--dss-spacing-2", value: "8px", usage: "Gap icon-text" },
   { category: "Spacing", token: "--dss-spacing-3", value: "12px", usage: "Padding horizontal" },
   { category: "Spacing", token: "--dss-spacing-4", value: "16px", usage: "Padding horizontal (lg)" },
   { category: "Spacing", token: "--dss-spacing-1", value: "4px", usage: "Gap label-input" },
-  
-  // ============================================================================
-  // MOTION - Transições
-  // ============================================================================
   { category: "Motion", token: "--dss-duration-fast", value: "150ms", usage: "Transição focus" },
   { category: "Motion", token: "--dss-duration-base", value: "250ms", usage: "Transição hover" },
   { category: "Motion", token: "--dss-easing-standard", value: "cubic-bezier(0.4,0,0.2,1)", usage: "Easing padrão" },
-  
-  // ============================================================================
-  // BRANDS - Cores de marca
-  // ============================================================================
   { category: "Brand Hub", token: "--dss-hub-600", value: "#ef7a11", usage: "Focus border Hub" },
   { category: "Brand Hub", token: "--dss-hub-100", value: "#fef2d6", usage: "Background filled Hub" },
   { category: "Brand Water", token: "--dss-water-500", value: "#0e88e4", usage: "Focus border Water" },
@@ -280,6 +245,7 @@ interface InputPreviewProps {
   brand?: string | null;
   isFocused?: boolean;
   showPasswordToggle?: boolean;
+  showToken?: boolean;
 }
 
 const DssInputPreview: React.FC<InputPreviewProps> = ({
@@ -301,6 +267,7 @@ const DssInputPreview: React.FC<InputPreviewProps> = ({
   brand = null,
   isFocused = false,
   showPasswordToggle = false,
+  showToken = false,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [internalValue, setInternalValue] = useState(value);
@@ -403,6 +370,10 @@ const DssInputPreview: React.FC<InputPreviewProps> = ({
 
   const actualType = type === "password" && showPassword ? "text" : type;
 
+  const tokenName = brand 
+    ? brandColors[brand as keyof typeof brandColors]?.tokens.principal
+    : semanticColors[color as keyof typeof semanticColors]?.tokens.base;
+
   return (
     <div className="w-full">
       {/* Label */}
@@ -487,6 +458,16 @@ const DssInputPreview: React.FC<InputPreviewProps> = ({
         >
           {typeof error === "string" ? error : hint}
         </p>
+      )}
+
+      {/* Token Name */}
+      {showToken && tokenName && (
+        <code 
+          className="text-[10px] font-mono mt-1 block text-center"
+          style={{ color: 'var(--jtech-text-muted)' }}
+        >
+          {tokenName}
+        </code>
       )}
     </div>
   );
@@ -589,1016 +570,460 @@ const DssInputPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-12 pb-16">
+    <div 
+      className="p-6 lg:p-8 max-w-6xl mx-auto space-y-10"
+      style={{ backgroundColor: 'var(--dss-page-bg)' }}
+    >
       {/* ================================================================
-          HERO HEADER
+          HERO HEADER - Jtech Style
           ================================================================ */}
       <PageHeader
         icon={FileText}
         badge="Componente Base"
         badgeVariant="accent"
-        title="DssInput"
-        subtitle="Campo de entrada de dados com suporte a múltiplas variantes visuais, estados de validação, ícones, slots customizáveis e total compatibilidade com a API do Quasar q-input."
-        subtitleHighlights={["múltiplas variantes", "estados de validação", "Quasar q-input"]}
+        title="Componente"
+        titleAccent="DssInput"
+        subtitle="Campo de entrada de dados 100% compatível com a API do Quasar Framework. Implementa tokens DSS, brandability completa, estados de validação e acessibilidade WCAG 2.1 AA."
+        subtitleHighlights={["tokens DSS", "brandability", "WCAG 2.1 AA"]}
         extraBadges={[
           { label: "v1.2.0", variant: "info" },
-          { label: "WCAG 2.1 AA", variant: "success" }
+          { label: "Quasar Compatible", variant: "success" }
         ]}
       />
 
       {/* ================================================================
-          PLAYGROUND INTERATIVO
+          QUICK STATS - Jtech Style
           ================================================================ */}
-      <section className="space-y-6">
-        <SectionHeader 
-          icon={Layers}
-          title="Playground Interativo"
-          subtitle="Configure as props do DssInput e veja o resultado em tempo real com tokens DSS aplicados."
-        />
-
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-          {/* Controles */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {[
+          { value: "4", label: "Variantes", color: semanticColors.primary.bg },
+          { value: "8", label: "Tipos de Input", color: semanticColors.secondary.bg },
+          { value: "3", label: "Brands Veolia", color: brandColors.hub.principal },
+          { value: "6", label: "Estados", color: brandColors.waste.principal },
+        ].map((stat, i) => (
           <Card 
-            className="border-0"
+            key={i}
+            className="transition-all duration-300 hover:shadow-lg"
             style={{ 
-              backgroundColor: 'var(--jtech-card-surface)',
-              border: '1px solid var(--jtech-card-border)'
+              backgroundColor: 'var(--jtech-card-bg)', 
+              borderColor: 'var(--jtech-card-border)' 
             }}
           >
-            <CardHeader className="pb-4">
-              <CardTitle 
-                className="text-lg flex items-center gap-2"
-                style={{ color: 'var(--jtech-heading-primary)' }}
-              >
-                <Settings size={18} style={{ color: 'var(--dss-jtech-accent)' }} />
-                Configuração
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Variante */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium" style={{ color: 'var(--jtech-text-body)' }}>
-                  Variante
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {variants.map((v) => (
-                    <button
-                      key={v.name}
-                      onClick={() => setSelectedVariant(v.name)}
-                      className={`px-3 py-1.5 text-sm rounded-lg transition-all ${
-                        selectedVariant === v.name
-                          ? "text-white"
-                          : "hover:bg-white/10"
-                      }`}
-                      style={{
-                        backgroundColor: selectedVariant === v.name 
-                          ? 'var(--dss-jtech-accent)' 
-                          : 'rgba(255,255,255,0.05)',
-                        color: selectedVariant === v.name 
-                          ? '#fff' 
-                          : 'var(--jtech-text-body)',
-                        border: '1px solid',
-                        borderColor: selectedVariant === v.name 
-                          ? 'var(--dss-jtech-accent)' 
-                          : 'var(--jtech-card-border)'
-                      }}
-                    >
-                      {v.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Tipo */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium" style={{ color: 'var(--jtech-text-body)' }}>
-                  Tipo
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {inputTypes.slice(0, 5).map((t) => (
-                    <button
-                      key={t.name}
-                      onClick={() => setSelectedType(t.name)}
-                      className={`px-3 py-1.5 text-sm rounded-lg transition-all flex items-center gap-1.5 ${
-                        selectedType === t.name
-                          ? "text-white"
-                          : "hover:bg-white/10"
-                      }`}
-                      style={{
-                        backgroundColor: selectedType === t.name 
-                          ? 'var(--dss-jtech-accent)' 
-                          : 'rgba(255,255,255,0.05)',
-                        color: selectedType === t.name 
-                          ? '#fff' 
-                          : 'var(--jtech-text-body)',
-                        border: '1px solid',
-                        borderColor: selectedType === t.name 
-                          ? 'var(--dss-jtech-accent)' 
-                          : 'var(--jtech-card-border)'
-                      }}
-                    >
-                      <t.icon size={14} />
-                      {t.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Cor Semântica */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium" style={{ color: 'var(--jtech-text-body)' }}>
-                  Cor (Focus)
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {Object.values(semanticColors).map((c) => (
-                    <button
-                      key={c.name}
-                      onClick={() => { setSelectedColor(c.name); setSelectedBrand(null); }}
-                      className="px-3 py-1.5 text-sm rounded-lg transition-all flex items-center gap-2"
-                      style={{
-                        backgroundColor: selectedColor === c.name && !selectedBrand
-                          ? c.bg 
-                          : 'rgba(255,255,255,0.05)',
-                        color: selectedColor === c.name && !selectedBrand
-                          ? '#fff' 
-                          : 'var(--jtech-text-body)',
-                        border: '1px solid',
-                        borderColor: selectedColor === c.name && !selectedBrand
-                          ? c.bg 
-                          : 'var(--jtech-card-border)'
-                      }}
-                    >
-                      <span 
-                        className="w-3 h-3 rounded-full" 
-                        style={{ backgroundColor: c.bg }}
-                      />
-                      {c.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Brand */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium" style={{ color: 'var(--jtech-text-body)' }}>
-                  Marca (Brand)
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  <button
-                    onClick={() => setSelectedBrand(null)}
-                    className="px-3 py-1.5 text-sm rounded-lg transition-all"
-                    style={{
-                      backgroundColor: !selectedBrand 
-                        ? 'var(--dss-jtech-accent)' 
-                        : 'rgba(255,255,255,0.05)',
-                      color: !selectedBrand ? '#fff' : 'var(--jtech-text-body)',
-                      border: '1px solid',
-                      borderColor: !selectedBrand 
-                        ? 'var(--dss-jtech-accent)' 
-                        : 'var(--jtech-card-border)'
-                    }}
-                  >
-                    Nenhuma
-                  </button>
-                  {Object.values(brandColors).map((b) => (
-                    <button
-                      key={b.name}
-                      onClick={() => setSelectedBrand(b.name)}
-                      className="px-3 py-1.5 text-sm rounded-lg transition-all flex items-center gap-2"
-                      style={{
-                        backgroundColor: selectedBrand === b.name 
-                          ? b.principal 
-                          : 'rgba(255,255,255,0.05)',
-                        color: selectedBrand === b.name 
-                          ? '#fff' 
-                          : 'var(--jtech-text-body)',
-                        border: '1px solid',
-                        borderColor: selectedBrand === b.name 
-                          ? b.principal 
-                          : 'var(--jtech-card-border)'
-                      }}
-                    >
-                      <span>{b.icon}</span>
-                      {b.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Estados */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium" style={{ color: 'var(--jtech-text-body)' }}>
-                  Estados & Modificadores
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    { key: "error", label: "Error", state: showError, setState: setShowError },
-                    { key: "disabled", label: "Disabled", state: isDisabled, setState: setIsDisabled },
-                    { key: "readonly", label: "Readonly", state: isReadonly, setState: setIsReadonly },
-                    { key: "clearable", label: "Clearable", state: isClearable, setState: setIsClearable },
-                    { key: "dense", label: "Dense", state: isDense, setState: setIsDense },
-                    { key: "square", label: "Square", state: isSquare, setState: setIsSquare },
-                    { key: "prefix", label: "Prefix", state: showPrefix, setState: setShowPrefix },
-                    { key: "suffix", label: "Suffix", state: showSuffix, setState: setShowSuffix },
-                    { key: "hint", label: "Hint", state: showHint, setState: setShowHint },
-                  ].map((item) => (
-                    <button
-                      key={item.key}
-                      onClick={() => item.setState(!item.state)}
-                      className="px-3 py-1.5 text-sm rounded-lg transition-all"
-                      style={{
-                        backgroundColor: item.state 
-                          ? 'var(--dss-jtech-accent)' 
-                          : 'rgba(255,255,255,0.05)',
-                        color: item.state ? '#fff' : 'var(--jtech-text-body)',
-                        border: '1px solid',
-                        borderColor: item.state 
-                          ? 'var(--dss-jtech-accent)' 
-                          : 'var(--jtech-card-border)'
-                      }}
-                    >
-                      {item.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Label & Placeholder */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium" style={{ color: 'var(--jtech-text-body)' }}>
-                    Label
-                  </label>
-                  <input
-                    type="text"
-                    value={inputLabel}
-                    onChange={(e) => setInputLabel(e.target.value)}
-                    className="w-full px-3 py-2 text-sm rounded-lg"
-                    style={{
-                      backgroundColor: 'rgba(255,255,255,0.05)',
-                      border: '1px solid var(--jtech-card-border)',
-                      color: 'var(--jtech-text-body)'
-                    }}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium" style={{ color: 'var(--jtech-text-body)' }}>
-                    Placeholder
-                  </label>
-                  <input
-                    type="text"
-                    value={inputPlaceholder}
-                    onChange={(e) => setInputPlaceholder(e.target.value)}
-                    className="w-full px-3 py-2 text-sm rounded-lg"
-                    style={{
-                      backgroundColor: 'rgba(255,255,255,0.05)',
-                      border: '1px solid var(--jtech-card-border)',
-                      color: 'var(--jtech-text-body)'
-                    }}
-                  />
-                </div>
-              </div>
+            <CardContent className="p-4 text-center">
+              <div className="text-3xl font-bold" style={{ color: stat.color }}>{stat.value}</div>
+              <div className="text-sm" style={{ color: 'var(--jtech-text-body)' }}>{stat.label}</div>
             </CardContent>
           </Card>
-
-          {/* Preview */}
-          <Card 
-            className="border-0"
-            style={{ 
-              backgroundColor: 'var(--jtech-card-surface)',
-              border: '1px solid var(--jtech-card-border)'
-            }}
-          >
-            <CardHeader className="pb-4">
-              <CardTitle 
-                className="text-lg flex items-center gap-2"
-                style={{ color: 'var(--jtech-heading-primary)' }}
-              >
-                <Eye size={18} style={{ color: 'var(--dss-jtech-accent)' }} />
-                Preview
-              </CardTitle>
-              <CardDescription style={{ color: 'var(--jtech-text-muted)' }}>
-                Visualização com tokens DSS reais aplicados
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Live Preview */}
-              <div 
-                className="p-8 rounded-xl flex items-center justify-center min-h-[200px]"
-                style={{ 
-                  backgroundColor: '#ffffff',
-                  border: '1px dashed var(--jtech-card-border)'
-                }}
-              >
-                <div className="w-full max-w-sm">
-                  <DssInputPreview
-                    variant={selectedVariant}
-                    color={selectedColor}
-                    label={inputLabel}
-                    placeholder={inputPlaceholder}
-                    type={selectedType}
-                    value={inputValue}
-                    error={showError ? errorMessage : false}
-                    disabled={isDisabled}
-                    readonly={isReadonly}
-                    clearable={isClearable}
-                    dense={isDense}
-                    square={isSquare}
-                    prefix={showPrefix ? getPrefixIcon() : undefined}
-                    suffix={showSuffix ? <Search size={18} /> : undefined}
-                    hint={showHint ? hintText : undefined}
-                    brand={selectedBrand}
-                    showPasswordToggle={selectedType === "password" && showPasswordToggle}
-                  />
-                </div>
-              </div>
-
-              {/* Generated Code */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <label className="text-sm font-medium flex items-center gap-2" style={{ color: 'var(--jtech-text-body)' }}>
-                    <Code size={14} />
-                    Código Gerado
-                  </label>
-                  <button
-                    onClick={() => copyToClipboard(generateCode())}
-                    className="flex items-center gap-1.5 px-2 py-1 text-xs rounded transition-colors"
-                    style={{ 
-                      color: copiedCode ? '#4dd228' : 'var(--dss-jtech-accent)',
-                      backgroundColor: 'rgba(255,255,255,0.05)'
-                    }}
-                  >
-                    {copiedCode ? <Check size={12} /> : <Copy size={12} />}
-                    {copiedCode ? "Copiado!" : "Copiar"}
-                  </button>
-                </div>
-                <pre 
-                  className="p-4 rounded-lg text-xs overflow-x-auto"
-                  style={{ 
-                    backgroundColor: 'var(--jtech-surface-dark)',
-                    border: '1px solid var(--jtech-card-border)',
-                    color: '#e5e5e5'
-                  }}
-                >
-                  <code>{generateCode()}</code>
-                </pre>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
+        ))}
+      </div>
 
       {/* ================================================================
-          SHOWCASE DE VARIANTES
+          INTERACTIVE PLAYGROUND - Jtech Style
           ================================================================ */}
-      <section className="space-y-6">
-        <SectionHeader 
-          icon={Layers}
-          title="Variantes Visuais"
-          subtitle="Todas as variantes do DssInput demonstradas com seus estilos de borda e background."
-        />
+      <SectionHeader
+        title="Playground"
+        titleAccent="Interativo"
+        badge="Live Preview"
+      />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {variants.map((v) => (
-            <Card 
-              key={v.name}
-              className="border-0"
+      <Card 
+        className="overflow-hidden"
+        style={{ 
+          backgroundColor: 'var(--jtech-card-bg)', 
+          borderColor: 'var(--dss-jtech-accent)',
+          borderWidth: '2px'
+        }}
+      >
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2" style={{ color: 'var(--jtech-heading-secondary)' }}>
+            <Code className="h-5 w-5" style={{ color: 'var(--dss-jtech-accent)' }} />
+            Configure o Input
+          </CardTitle>
+          <CardDescription style={{ color: 'var(--jtech-text-body)' }}>
+            Selecione as props e veja o resultado em tempo real com tokens DSS reais.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Preview Area */}
+          <div 
+            className="p-8 rounded-lg flex items-center justify-center min-h-[180px] relative"
+            style={{ 
+              backgroundColor: '#ffffff',
+              border: '1px dashed var(--jtech-card-border)'
+            }}
+          >
+            <div className="w-full max-w-sm">
+              <DssInputPreview
+                variant={selectedVariant}
+                color={selectedColor}
+                label={inputLabel}
+                placeholder={inputPlaceholder}
+                type={selectedType}
+                value={inputValue}
+                error={showError ? errorMessage : false}
+                disabled={isDisabled}
+                readonly={isReadonly}
+                clearable={isClearable}
+                dense={isDense}
+                square={isSquare}
+                prefix={showPrefix ? getPrefixIcon() : undefined}
+                suffix={showSuffix ? <Search size={18} /> : undefined}
+                hint={showHint ? hintText : undefined}
+                brand={selectedBrand}
+                showPasswordToggle={selectedType === "password" && showPasswordToggle}
+                showToken
+              />
+            </div>
+          </div>
+
+          {/* Controls Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Variant */}
+            <div className="space-y-2">
+              <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Variant</label>
+              <div className="flex flex-wrap gap-2">
+                {variants.map((v) => (
+                  <button
+                    key={v.name}
+                    onClick={() => setSelectedVariant(v.name)}
+                    className="px-3 py-1.5 rounded text-xs font-medium transition-all"
+                    style={{
+                      backgroundColor: selectedVariant === v.name ? 'var(--dss-jtech-accent)' : 'rgba(255,255,255,0.05)',
+                      color: selectedVariant === v.name ? '#ffffff' : 'var(--jtech-text-body)',
+                      border: `1px solid ${selectedVariant === v.name ? 'var(--dss-jtech-accent)' : 'var(--jtech-card-border)'}`
+                    }}
+                  >
+                    {v.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Type */}
+            <div className="space-y-2">
+              <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Type</label>
+              <div className="flex flex-wrap gap-2">
+                {inputTypes.slice(0, 5).map((t) => (
+                  <button
+                    key={t.name}
+                    onClick={() => setSelectedType(t.name)}
+                    className="px-2 py-1.5 rounded text-xs font-medium transition-all flex items-center gap-1"
+                    style={{
+                      backgroundColor: selectedType === t.name ? 'var(--dss-jtech-accent)' : 'rgba(255,255,255,0.05)',
+                      color: selectedType === t.name ? '#ffffff' : 'var(--jtech-text-body)',
+                      border: `1px solid ${selectedType === t.name ? 'var(--dss-jtech-accent)' : 'var(--jtech-card-border)'}`
+                    }}
+                  >
+                    <t.icon size={12} />
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Color */}
+            <div className="space-y-2">
+              <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Color</label>
+              <div className="flex flex-wrap gap-2">
+                {Object.values(semanticColors).map((c) => (
+                  <button
+                    key={c.name}
+                    onClick={() => { setSelectedColor(c.name); setSelectedBrand(null); }}
+                    className="px-2 py-1.5 rounded text-xs font-medium transition-all flex items-center gap-1.5"
+                    style={{
+                      backgroundColor: selectedColor === c.name && !selectedBrand ? c.bg : 'rgba(255,255,255,0.05)',
+                      color: selectedColor === c.name && !selectedBrand ? '#ffffff' : 'var(--jtech-text-body)',
+                      border: `1px solid ${selectedColor === c.name && !selectedBrand ? c.bg : 'var(--jtech-card-border)'}`
+                    }}
+                  >
+                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: c.bg }} />
+                    {c.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Brand */}
+            <div className="space-y-2">
+              <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Brand (Veolia)</label>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => setSelectedBrand(null)}
+                  className="px-3 py-1.5 rounded text-xs font-medium transition-all"
+                  style={{
+                    backgroundColor: !selectedBrand ? 'var(--dss-jtech-accent)' : 'rgba(255,255,255,0.05)',
+                    color: !selectedBrand ? '#ffffff' : 'var(--jtech-text-body)',
+                    border: `1px solid ${!selectedBrand ? 'var(--dss-jtech-accent)' : 'var(--jtech-card-border)'}`
+                  }}
+                >
+                  Nenhum
+                </button>
+                {Object.values(brandColors).map((b) => (
+                  <button
+                    key={b.name}
+                    onClick={() => setSelectedBrand(b.name)}
+                    className="px-2 py-1.5 rounded text-xs font-medium transition-all flex items-center gap-1.5"
+                    style={{
+                      backgroundColor: selectedBrand === b.name ? b.principal : 'rgba(255,255,255,0.05)',
+                      color: selectedBrand === b.name ? '#ffffff' : 'var(--jtech-text-body)',
+                      border: `1px solid ${selectedBrand === b.name ? b.principal : 'var(--jtech-card-border)'}`
+                    }}
+                  >
+                    <span>{b.icon}</span>
+                    {b.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* States & Modifiers */}
+            <div className="space-y-2">
+              <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Estados & Modificadores</label>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { key: 'error', label: 'Error', active: showError, toggle: () => setShowError(!showError) },
+                  { key: 'disabled', label: 'Disabled', active: isDisabled, toggle: () => setIsDisabled(!isDisabled) },
+                  { key: 'readonly', label: 'Readonly', active: isReadonly, toggle: () => setIsReadonly(!isReadonly) },
+                  { key: 'clearable', label: 'Clearable', active: isClearable, toggle: () => setIsClearable(!isClearable) },
+                  { key: 'dense', label: 'Dense', active: isDense, toggle: () => setIsDense(!isDense) },
+                ].map((item) => (
+                  <button
+                    key={item.key}
+                    onClick={item.toggle}
+                    className="px-2 py-1.5 rounded text-xs font-medium transition-all"
+                    style={{
+                      backgroundColor: item.active ? 'var(--dss-positive)' : 'rgba(255,255,255,0.05)',
+                      color: item.active ? '#ffffff' : 'var(--jtech-text-body)',
+                      border: `1px solid ${item.active ? 'var(--dss-positive)' : 'var(--jtech-card-border)'}`
+                    }}
+                  >
+                    {item.active && "✓ "}{item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Icons & Extras */}
+            <div className="space-y-2">
+              <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Ícones & Extras</label>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { key: 'prefix', label: 'Prefix', active: showPrefix, toggle: () => setShowPrefix(!showPrefix) },
+                  { key: 'suffix', label: 'Suffix', active: showSuffix, toggle: () => setShowSuffix(!showSuffix) },
+                  { key: 'hint', label: 'Hint', active: showHint, toggle: () => setShowHint(!showHint) },
+                  { key: 'square', label: 'Square', active: isSquare, toggle: () => setIsSquare(!isSquare) },
+                ].map((item) => (
+                  <button
+                    key={item.key}
+                    onClick={item.toggle}
+                    className="px-2 py-1.5 rounded text-xs font-medium transition-all"
+                    style={{
+                      backgroundColor: item.active ? 'var(--dss-positive)' : 'rgba(255,255,255,0.05)',
+                      color: item.active ? '#ffffff' : 'var(--jtech-text-body)',
+                      border: `1px solid ${item.active ? 'var(--dss-positive)' : 'var(--jtech-card-border)'}`
+                    }}
+                  >
+                    {item.active && "✓ "}{item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Code Output */}
+          <div className="relative">
+            <pre 
+              className="p-4 overflow-x-auto rounded-lg font-mono text-sm"
               style={{ 
-                backgroundColor: 'var(--jtech-card-surface)',
+                backgroundColor: 'rgba(0,0,0,0.4)', 
+                color: 'var(--jtech-heading-secondary)',
                 border: '1px solid var(--jtech-card-border)'
               }}
             >
+              <code>{generateCode()}</code>
+            </pre>
+            <button
+              className="absolute top-2 right-2 p-2 rounded hover:bg-white/10 transition-colors"
+              onClick={() => copyToClipboard(generateCode())}
+              style={{ color: 'var(--jtech-text-muted)' }}
+            >
+              {copiedCode ? <Check className="h-4 w-4" style={{ color: 'var(--dss-positive)' }} /> : <Copy className="h-4 w-4" />}
+            </button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* ================================================================
+          GALERIA TABS - Jtech Style
+          ================================================================ */}
+      <SectionHeader
+        title="Galeria de"
+        titleAccent="Variantes"
+        badge="4 variantes • 8 tipos • 3 brands"
+      />
+
+      <DssTabs defaultValue="variantes" className="space-y-4">
+        <DssTabsList>
+          {["Variantes", "Tipos", "Estados", "Brands"].map((tab) => (
+            <DssTabsTrigger 
+              key={tab.toLowerCase()}
+              value={tab.toLowerCase()}
+            >
+              {tab}
+            </DssTabsTrigger>
+          ))}
+        </DssTabsList>
+
+        {/* Variantes Tab */}
+        <DssTabsContent value="variantes" className="space-y-4">
+          {variants.map((v) => (
+            <Card 
+              key={v.name}
+              className="transition-all duration-300"
+              style={{ 
+                backgroundColor: 'var(--jtech-card-bg)', 
+                borderColor: 'var(--jtech-card-border)' 
+              }}
+            >
               <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-base" style={{ color: 'var(--jtech-heading-primary)' }}>
-                    {v.label}
-                  </CardTitle>
+                <div className="flex items-center gap-3">
                   <Badge 
-                    variant="outline" 
                     className="text-xs"
-                    style={{ 
-                      borderColor: 'var(--dss-jtech-accent)',
-                      color: 'var(--dss-jtech-accent)'
-                    }}
+                    style={{ backgroundColor: 'var(--dss-jtech-accent)', color: 'white' }}
                   >
-                    variant="{v.name}"
+                    {v.name}
                   </Badge>
+                  <span className="text-sm" style={{ color: 'var(--jtech-text-body)' }}>{v.desc}</span>
                 </div>
-                <CardDescription style={{ color: 'var(--jtech-text-muted)' }}>
-                  {v.desc}
-                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div 
-                  className="p-6 rounded-lg"
+                  className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 rounded-lg"
                   style={{ backgroundColor: '#ffffff' }}
                 >
                   <DssInputPreview
                     variant={v.name}
                     color="primary"
-                    label="Campo de exemplo"
+                    label="Label Primary"
                     placeholder="Digite algo..."
                     type="text"
                     value=""
                   />
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      {/* ================================================================
-          ESTADOS
-          ================================================================ */}
-      <section className="space-y-6">
-        <SectionHeader 
-          icon={AlertCircle}
-          title="Estados do Input"
-          subtitle="Demonstração de todos os estados visuais do componente."
-        />
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {inputStates.map((state) => (
-            <Card 
-              key={state.name}
-              className="border-0"
-              style={{ 
-                backgroundColor: 'var(--jtech-card-surface)',
-                border: '1px solid var(--jtech-card-border)'
-              }}
-            >
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-base" style={{ color: 'var(--jtech-heading-primary)' }}>
-                    {state.label}
-                  </CardTitle>
-                </div>
-                <CardDescription style={{ color: 'var(--jtech-text-muted)' }}>
-                  {state.desc}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div 
-                  className="p-4 rounded-lg"
-                  style={{ backgroundColor: '#ffffff' }}
-                >
                   <DssInputPreview
-                    variant="outlined"
-                    color="primary"
-                    label={state.label}
-                    placeholder="Placeholder..."
+                    variant={v.name}
+                    color="secondary"
+                    label="Label Secondary"
+                    placeholder="Digite algo..."
                     type="text"
-                    value={state.name === "default" ? "" : "Valor digitado"}
-                    error={state.name === "error" ? "Mensagem de erro" : false}
-                    disabled={state.name === "disabled"}
-                    readonly={state.name === "readonly"}
-                    isFocused={state.name === "focus" || state.name === "success"}
+                    value=""
+                    isFocused
                   />
                 </div>
               </CardContent>
             </Card>
           ))}
-        </div>
-      </section>
+        </DssTabsContent>
 
-      {/* ================================================================
-          API & TOKENS - Tabs
-          ================================================================ */}
-      <section className="space-y-6">
-        <SectionHeader 
-          icon={FileText}
-          title="Documentação Técnica"
-          subtitle="API completa do componente e tokens DSS utilizados."
-        />
-
-        <DssTabs defaultValue="props" className="space-y-6">
-          <DssTabsList>
-            <DssTabsTrigger value="props" badge={propsData.length}>
-              Props API
-            </DssTabsTrigger>
-            <DssTabsTrigger value="tokens" badge={tokensUsed.length}>
-              Tokens DSS
-            </DssTabsTrigger>
-            <DssTabsTrigger value="slots" badge={6}>
-              Slots
-            </DssTabsTrigger>
-            <DssTabsTrigger value="events" badge={5}>
-              Eventos
-            </DssTabsTrigger>
-          </DssTabsList>
-
-          {/* Props API Tab */}
-          <DssTabsContent value="props">
-            <Card 
-              className="border-0 overflow-hidden"
-              style={{ 
-                backgroundColor: 'var(--jtech-card-surface)',
-                border: '1px solid var(--jtech-card-border)'
-              }}
-            >
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow style={{ borderColor: 'var(--jtech-card-border)' }}>
-                      <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Categoria</TableHead>
-                      <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Prop</TableHead>
-                      <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Tipo</TableHead>
-                      <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Default</TableHead>
-                      <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Descrição</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {propsData.map((prop, index) => (
-                      <TableRow 
-                        key={index}
-                        style={{ borderColor: 'var(--jtech-card-border)' }}
-                        className="hover:bg-white/5"
-                      >
-                        <TableCell>
-                          <Badge 
-                            variant="outline" 
-                            className="text-xs"
-                            style={{ 
-                              borderColor: 'var(--jtech-card-border)',
-                              color: 'var(--jtech-text-muted)'
-                            }}
-                          >
-                            {prop.category}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <code 
-                            className="text-sm font-mono px-1.5 py-0.5 rounded"
-                            style={{ 
-                              backgroundColor: 'rgba(255,255,255,0.1)',
-                              color: 'var(--dss-jtech-accent)'
-                            }}
-                          >
-                            {prop.prop}
-                          </code>
-                        </TableCell>
-                        <TableCell>
-                          <span 
-                            className="text-xs font-mono"
-                            style={{ color: 'var(--jtech-text-body)' }}
-                          >
-                            {prop.type}
-                          </span>
-                        </TableCell>
-                        <TableCell>
-                          <code 
-                            className="text-xs font-mono px-1.5 py-0.5 rounded"
-                            style={{ 
-                              backgroundColor: 'rgba(0,0,0,0.2)',
-                              color: '#a3a3a3'
-                            }}
-                          >
-                            {prop.default}
-                          </code>
-                        </TableCell>
-                        <TableCell style={{ color: 'var(--jtech-text-body)' }}>
-                          {prop.description}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+        {/* Tipos Tab */}
+        <DssTabsContent value="tipos" className="space-y-4">
+          <Card 
+            style={{ 
+              backgroundColor: 'var(--jtech-card-bg)', 
+              borderColor: 'var(--jtech-card-border)' 
+            }}
+          >
+            <CardHeader>
+              <CardTitle style={{ color: 'var(--jtech-heading-secondary)' }}>Tipos de Input HTML</CardTitle>
+              <CardDescription style={{ color: 'var(--jtech-text-body)' }}>
+                Diferentes tipos de entrada com comportamento nativo otimizado.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div 
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6 rounded-lg"
+                style={{ backgroundColor: '#ffffff' }}
+              >
+                {inputTypes.map((t) => (
+                  <DssInputPreview
+                    key={t.name}
+                    variant="outlined"
+                    color="primary"
+                    label={t.label}
+                    placeholder={t.desc}
+                    type={t.name}
+                    value=""
+                    prefix={<t.icon size={18} />}
+                    showPasswordToggle={t.name === "password"}
+                  />
+                ))}
               </div>
-            </Card>
-          </DssTabsContent>
+            </CardContent>
+          </Card>
+        </DssTabsContent>
 
-          {/* Tokens Tab */}
-          <DssTabsContent value="tokens">
-            <div className="space-y-6">
-              {tokenCategories.map((category) => (
-                <Card 
-                  key={category}
-                  className="border-0"
-                  style={{ 
-                    backgroundColor: 'var(--jtech-card-surface)',
-                    border: '1px solid var(--jtech-card-border)'
-                  }}
-                >
-                  <CardHeader className="pb-3">
-                    <CardTitle 
-                      className="text-base flex items-center gap-2"
-                      style={{ color: 'var(--jtech-heading-primary)' }}
-                    >
-                      <Layers size={16} style={{ color: 'var(--dss-jtech-accent)' }} />
-                      {category}
-                      <Badge 
-                        variant="outline" 
-                        className="text-xs ml-2"
-                        style={{ 
-                          borderColor: 'var(--jtech-card-border)',
-                          color: 'var(--jtech-text-muted)'
-                        }}
-                      >
-                        {tokensUsed.filter(t => t.category === category).length} tokens
-                      </Badge>
+        {/* Estados Tab */}
+        <DssTabsContent value="estados" className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {inputStates.map((state) => (
+              <Card 
+                key={state.name}
+                className="transition-all duration-300"
+                style={{ 
+                  backgroundColor: 'var(--jtech-card-bg)', 
+                  borderColor: 'var(--jtech-card-border)' 
+                }}
+              >
+                <CardHeader className="pb-3">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-base" style={{ color: 'var(--jtech-heading-primary)' }}>
+                      {state.label}
                     </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {tokensUsed
-                        .filter(t => t.category === category)
-                        .map((token, idx) => (
-                          <div 
-                            key={idx}
-                            className="flex items-center gap-3 p-3 rounded-lg group cursor-pointer transition-all hover:bg-white/5"
-                            onClick={() => copyToClipboard(token.token, true)}
-                            style={{ 
-                              backgroundColor: 'rgba(255,255,255,0.02)',
-                              border: '1px solid var(--jtech-card-border)'
-                            }}
-                          >
-                            {/* Color preview */}
-                            <div 
-                              className="w-8 h-8 rounded flex-shrink-0"
-                              style={{ 
-                                backgroundColor: token.value.startsWith("#") || token.value.startsWith("rgba") 
-                                  ? token.value 
-                                  : "transparent",
-                                border: token.value.startsWith("#") || token.value.startsWith("rgba")
-                                  ? "none"
-                                  : "1px dashed var(--jtech-card-border)"
-                              }}
-                            />
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center gap-2">
-                                <code 
-                                  className="text-xs font-mono truncate"
-                                  style={{ color: 'var(--dss-jtech-accent)' }}
-                                >
-                                  {token.token}
-                                </code>
-                                {copiedToken === token.token ? (
-                                  <Check size={12} style={{ color: '#4dd228' }} />
-                                ) : (
-                                  <Copy size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: 'var(--jtech-text-muted)' }} />
-                                )}
-                              </div>
-                              <p 
-                                className="text-xs truncate"
-                                style={{ color: 'var(--jtech-text-muted)' }}
-                              >
-                                {token.usage}
-                              </p>
-                            </div>
-                            <code 
-                              className="text-xs font-mono flex-shrink-0"
-                              style={{ color: 'var(--jtech-text-body)' }}
-                            >
-                              {token.value}
-                            </code>
-                          </div>
-                        ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </DssTabsContent>
+                  </div>
+                  <CardDescription style={{ color: 'var(--jtech-text-muted)' }}>
+                    {state.desc}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div 
+                    className="p-4 rounded-lg"
+                    style={{ backgroundColor: '#ffffff' }}
+                  >
+                    <DssInputPreview
+                      variant="outlined"
+                      color="primary"
+                      label={state.label}
+                      placeholder="Placeholder..."
+                      type="text"
+                      value={state.name === "default" ? "" : "Valor digitado"}
+                      error={state.name === "error" ? "Mensagem de erro" : false}
+                      disabled={state.name === "disabled"}
+                      readonly={state.name === "readonly"}
+                      isFocused={state.name === "focus" || state.name === "success"}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </DssTabsContent>
 
-          {/* Slots Tab */}
-          <DssTabsContent value="slots">
-            <Card 
-              className="border-0 overflow-hidden"
-              style={{ 
-                backgroundColor: 'var(--jtech-card-surface)',
-                border: '1px solid var(--jtech-card-border)'
-              }}
-            >
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow style={{ borderColor: 'var(--jtech-card-border)' }}>
-                      <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Slot</TableHead>
-                      <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Posição</TableHead>
-                      <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Descrição</TableHead>
-                      <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Exemplo</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {[
-                      { name: "prepend", position: "Dentro, à esquerda", desc: "Ícone ou conteúdo antes do texto", example: '<template #prepend><q-icon name="mail" /></template>' },
-                      { name: "append", position: "Dentro, à direita", desc: "Ícone ou conteúdo depois do texto", example: '<template #append><q-icon name="search" /></template>' },
-                      { name: "before", position: "Fora, à esquerda", desc: "Conteúdo externo antes do input", example: '<template #before><q-icon name="person" /></template>' },
-                      { name: "after", position: "Fora, à direita", desc: "Conteúdo externo depois do input", example: '<template #after><q-btn icon="send" /></template>' },
-                      { name: "label", position: "Acima", desc: "Customização do label", example: '<template #label>Custom <strong>Label</strong></template>' },
-                      { name: "error", position: "Abaixo", desc: "Mensagem de erro customizada", example: '<template #error><span class="custom">Erro!</span></template>' },
-                    ].map((slot, idx) => (
-                      <TableRow 
-                        key={idx}
-                        style={{ borderColor: 'var(--jtech-card-border)' }}
-                        className="hover:bg-white/5"
-                      >
-                        <TableCell>
-                          <code 
-                            className="text-sm font-mono px-1.5 py-0.5 rounded"
-                            style={{ 
-                              backgroundColor: 'rgba(255,255,255,0.1)',
-                              color: 'var(--dss-jtech-accent)'
-                            }}
-                          >
-                            #{slot.name}
-                          </code>
-                        </TableCell>
-                        <TableCell style={{ color: 'var(--jtech-text-body)' }}>
-                          {slot.position}
-                        </TableCell>
-                        <TableCell style={{ color: 'var(--jtech-text-body)' }}>
-                          {slot.desc}
-                        </TableCell>
-                        <TableCell>
-                          <code 
-                            className="text-xs font-mono"
-                            style={{ color: '#a3a3a3' }}
-                          >
-                            {slot.example}
-                          </code>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </Card>
-          </DssTabsContent>
-
-          {/* Events Tab */}
-          <DssTabsContent value="events">
-            <Card 
-              className="border-0 overflow-hidden"
-              style={{ 
-                backgroundColor: 'var(--jtech-card-surface)',
-                border: '1px solid var(--jtech-card-border)'
-              }}
-            >
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow style={{ borderColor: 'var(--jtech-card-border)' }}>
-                      <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Evento</TableHead>
-                      <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Payload</TableHead>
-                      <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Descrição</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {[
-                      { name: "@update:model-value", payload: "(value: string | number)", desc: "Emitido quando o valor muda (v-model)" },
-                      { name: "@focus", payload: "(event: FocusEvent)", desc: "Emitido quando o input recebe foco" },
-                      { name: "@blur", payload: "(event: FocusEvent)", desc: "Emitido quando o input perde foco" },
-                      { name: "@clear", payload: "()", desc: "Emitido quando o botão clear é clicado" },
-                      { name: "@keyup.enter", payload: "(event: KeyboardEvent)", desc: "Emitido ao pressionar Enter" },
-                    ].map((event, idx) => (
-                      <TableRow 
-                        key={idx}
-                        style={{ borderColor: 'var(--jtech-card-border)' }}
-                        className="hover:bg-white/5"
-                      >
-                        <TableCell>
-                          <code 
-                            className="text-sm font-mono px-1.5 py-0.5 rounded"
-                            style={{ 
-                              backgroundColor: 'rgba(255,255,255,0.1)',
-                              color: 'var(--dss-jtech-accent)'
-                            }}
-                          >
-                            {event.name}
-                          </code>
-                        </TableCell>
-                        <TableCell>
-                          <code 
-                            className="text-xs font-mono"
-                            style={{ color: '#a3a3a3' }}
-                          >
-                            {event.payload}
-                          </code>
-                        </TableCell>
-                        <TableCell style={{ color: 'var(--jtech-text-body)' }}>
-                          {event.desc}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </Card>
-          </DssTabsContent>
-        </DssTabs>
-      </section>
-
-      {/* ================================================================
-          EXEMPLOS PRÁTICOS
-          ================================================================ */}
-      <section className="space-y-6">
-        <SectionHeader 
-          icon={Code}
-          title="Exemplos Práticos"
-          subtitle="Casos de uso comuns com código pronto para copiar."
-        />
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Login Form Example */}
+        {/* Brands Tab */}
+        <DssTabsContent value="brands" className="space-y-4">
           <Card 
-            className="border-0"
             style={{ 
-              backgroundColor: 'var(--jtech-card-surface)',
-              border: '1px solid var(--jtech-card-border)'
+              backgroundColor: 'var(--jtech-card-bg)', 
+              borderColor: 'var(--jtech-card-border)' 
             }}
           >
             <CardHeader>
-              <CardTitle className="text-base" style={{ color: 'var(--jtech-heading-primary)' }}>
-                Formulário de Login
-              </CardTitle>
-              <CardDescription style={{ color: 'var(--jtech-text-muted)' }}>
-                Campos de email e senha com validação
+              <CardTitle style={{ color: 'var(--jtech-heading-secondary)' }}>Marcas Veolia</CardTitle>
+              <CardDescription style={{ color: 'var(--jtech-text-body)' }}>
+                Inputs com tematização de marca aplicada ao focus.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent>
               <div 
-                className="p-6 rounded-lg space-y-4"
-                style={{ backgroundColor: '#ffffff' }}
-              >
-                <DssInputPreview
-                  variant="outlined"
-                  color="primary"
-                  label="Email"
-                  placeholder="seu@email.com"
-                  type="email"
-                  value=""
-                  prefix={<Mail size={18} />}
-                />
-                <DssInputPreview
-                  variant="outlined"
-                  color="primary"
-                  label="Senha"
-                  placeholder="••••••••"
-                  type="password"
-                  value=""
-                  prefix={<Lock size={18} />}
-                  showPasswordToggle
-                />
-              </div>
-              <pre 
-                className="p-3 rounded-lg text-xs overflow-x-auto"
-                style={{ 
-                  backgroundColor: 'var(--jtech-surface-dark)',
-                  border: '1px solid var(--jtech-card-border)',
-                  color: '#e5e5e5'
-                }}
-              >
-{`<DssInput
-  v-model="email"
-  type="email"
-  label="Email"
-  placeholder="seu@email.com"
->
-  <template #prepend>
-    <q-icon name="mail" />
-  </template>
-</DssInput>
-
-<DssInput
-  v-model="password"
-  type="password"
-  label="Senha"
-  placeholder="••••••••"
->
-  <template #prepend>
-    <q-icon name="lock" />
-  </template>
-</DssInput>`}
-              </pre>
-            </CardContent>
-          </Card>
-
-          {/* Search Example */}
-          <Card 
-            className="border-0"
-            style={{ 
-              backgroundColor: 'var(--jtech-card-surface)',
-              border: '1px solid var(--jtech-card-border)'
-            }}
-          >
-            <CardHeader>
-              <CardTitle className="text-base" style={{ color: 'var(--jtech-heading-primary)' }}>
-                Campo de Busca
-              </CardTitle>
-              <CardDescription style={{ color: 'var(--jtech-text-muted)' }}>
-                Input de pesquisa com clearable
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div 
-                className="p-6 rounded-lg"
-                style={{ backgroundColor: '#ffffff' }}
-              >
-                <DssInputPreview
-                  variant="standout"
-                  color="primary"
-                  label=""
-                  placeholder="Buscar..."
-                  type="search"
-                  value=""
-                  prefix={<Search size={18} />}
-                  clearable
-                />
-              </div>
-              <pre 
-                className="p-3 rounded-lg text-xs overflow-x-auto"
-                style={{ 
-                  backgroundColor: 'var(--jtech-surface-dark)',
-                  border: '1px solid var(--jtech-card-border)',
-                  color: '#e5e5e5'
-                }}
-              >
-{`<DssInput
-  v-model="search"
-  variant="standout"
-  type="search"
-  placeholder="Buscar..."
-  clearable
->
-  <template #prepend>
-    <q-icon name="search" />
-  </template>
-</DssInput>`}
-              </pre>
-            </CardContent>
-          </Card>
-
-          {/* Validation Example */}
-          <Card 
-            className="border-0"
-            style={{ 
-              backgroundColor: 'var(--jtech-card-surface)',
-              border: '1px solid var(--jtech-card-border)'
-            }}
-          >
-            <CardHeader>
-              <CardTitle className="text-base" style={{ color: 'var(--jtech-heading-primary)' }}>
-                Validação
-              </CardTitle>
-              <CardDescription style={{ color: 'var(--jtech-text-muted)' }}>
-                Input com estado de erro
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div 
-                className="p-6 rounded-lg"
-                style={{ backgroundColor: '#ffffff' }}
-              >
-                <DssInputPreview
-                  variant="outlined"
-                  color="primary"
-                  label="CPF"
-                  placeholder="000.000.000-00"
-                  type="text"
-                  value="123.456.789"
-                  error="CPF inválido. Verifique os dígitos."
-                />
-              </div>
-              <pre 
-                className="p-3 rounded-lg text-xs overflow-x-auto"
-                style={{ 
-                  backgroundColor: 'var(--jtech-surface-dark)',
-                  border: '1px solid var(--jtech-card-border)',
-                  color: '#e5e5e5'
-                }}
-              >
-{`<DssInput
-  v-model="cpf"
-  label="CPF"
-  placeholder="000.000.000-00"
-  :error="cpfError"
-  :rules="[validateCPF]"
-/>`}
-              </pre>
-            </CardContent>
-          </Card>
-
-          {/* Brand Example */}
-          <Card 
-            className="border-0"
-            style={{ 
-              backgroundColor: 'var(--jtech-card-surface)',
-              border: '1px solid var(--jtech-card-border)'
-            }}
-          >
-            <CardHeader>
-              <CardTitle className="text-base" style={{ color: 'var(--jtech-heading-primary)' }}>
-                Brandabilidade
-              </CardTitle>
-              <CardDescription style={{ color: 'var(--jtech-text-muted)' }}>
-                Input com tema de marca Veolia
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div 
-                className="p-6 rounded-lg space-y-4"
+                className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6 rounded-lg"
                 style={{ backgroundColor: '#ffffff' }}
               >
                 {Object.values(brandColors).map((brand) => (
@@ -1606,7 +1031,7 @@ const DssInputPage: React.FC = () => {
                     key={brand.name}
                     variant="outlined"
                     color="primary"
-                    label={`${brand.label} Theme`}
+                    label={`${brand.icon} ${brand.label} Theme`}
                     placeholder={`Input ${brand.label}...`}
                     type="text"
                     value=""
@@ -1615,36 +1040,550 @@ const DssInputPage: React.FC = () => {
                   />
                 ))}
               </div>
-              <pre 
-                className="p-3 rounded-lg text-xs overflow-x-auto"
-                style={{ 
-                  backgroundColor: 'var(--jtech-surface-dark)',
-                  border: '1px solid var(--jtech-card-border)',
-                  color: '#e5e5e5'
-                }}
-              >
-{`<DssInput
-  v-model="value"
-  brand="hub"
-  label="Hub Theme"
-/>
-
-<DssInput
-  v-model="value"
-  brand="water"
-  label="Water Theme"
-/>
-
-<DssInput
-  v-model="value"
-  brand="waste"
-  label="Waste Theme"
-/>`}
-              </pre>
             </CardContent>
           </Card>
-        </div>
-      </section>
+        </DssTabsContent>
+      </DssTabs>
+
+      {/* ================================================================
+          DOCUMENTAÇÃO TÉCNICA - Tabs
+          ================================================================ */}
+      <SectionHeader
+        title="Documentação"
+        titleAccent="Técnica"
+        badge={`${propsData.length} props • ${tokensUsed.length} tokens`}
+      />
+
+      <DssTabs defaultValue="props" className="space-y-4">
+        <DssTabsList>
+          <DssTabsTrigger value="props" badge={propsData.length}>Props API</DssTabsTrigger>
+          <DssTabsTrigger value="tokens" badge={tokensUsed.length}>Tokens DSS</DssTabsTrigger>
+          <DssTabsTrigger value="slots" badge={6}>Slots</DssTabsTrigger>
+          <DssTabsTrigger value="events" badge={5}>Eventos</DssTabsTrigger>
+        </DssTabsList>
+
+        {/* Props API Tab */}
+        <DssTabsContent value="props">
+          <Card 
+            className="overflow-hidden"
+            style={{ 
+              backgroundColor: 'var(--jtech-card-bg)', 
+              borderColor: 'var(--jtech-card-border)' 
+            }}
+          >
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow style={{ borderColor: 'var(--jtech-card-border)' }}>
+                    <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Categoria</TableHead>
+                    <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Prop</TableHead>
+                    <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Tipo</TableHead>
+                    <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Default</TableHead>
+                    <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Descrição</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {propsData.map((prop, index) => (
+                    <TableRow 
+                      key={index}
+                      style={{ borderColor: 'var(--jtech-card-border)' }}
+                      className="hover:bg-white/5"
+                    >
+                      <TableCell>
+                        <Badge 
+                          variant="outline" 
+                          className="text-xs"
+                          style={{ 
+                            borderColor: 'var(--jtech-card-border)',
+                            color: 'var(--jtech-text-muted)'
+                          }}
+                        >
+                          {prop.category}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <code 
+                          className="text-sm font-mono px-1.5 py-0.5 rounded"
+                          style={{ 
+                            backgroundColor: 'rgba(255,255,255,0.1)',
+                            color: 'var(--dss-jtech-accent)'
+                          }}
+                        >
+                          {prop.prop}
+                        </code>
+                      </TableCell>
+                      <TableCell>
+                        <span 
+                          className="text-xs font-mono"
+                          style={{ color: 'var(--jtech-text-body)' }}
+                        >
+                          {prop.type}
+                        </span>
+                      </TableCell>
+                      <TableCell>
+                        <code 
+                          className="text-xs font-mono px-1.5 py-0.5 rounded"
+                          style={{ 
+                            backgroundColor: 'rgba(0,0,0,0.2)',
+                            color: '#a3a3a3'
+                          }}
+                        >
+                          {prop.default}
+                        </code>
+                      </TableCell>
+                      <TableCell style={{ color: 'var(--jtech-text-body)' }}>
+                        {prop.description}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </Card>
+        </DssTabsContent>
+
+        {/* Tokens Tab */}
+        <DssTabsContent value="tokens">
+          <div className="space-y-6">
+            {tokenCategories.map((category) => (
+              <Card 
+                key={category}
+                style={{ 
+                  backgroundColor: 'var(--jtech-card-bg)', 
+                  borderColor: 'var(--jtech-card-border)' 
+                }}
+              >
+                <CardHeader className="pb-3">
+                  <CardTitle 
+                    className="text-base flex items-center gap-2"
+                    style={{ color: 'var(--jtech-heading-primary)' }}
+                  >
+                    <Layers size={16} style={{ color: 'var(--dss-jtech-accent)' }} />
+                    {category}
+                    <Badge 
+                      variant="outline" 
+                      className="text-xs ml-2"
+                      style={{ 
+                        borderColor: 'var(--jtech-card-border)',
+                        color: 'var(--jtech-text-muted)'
+                      }}
+                    >
+                      {tokensUsed.filter(t => t.category === category).length} tokens
+                    </Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {tokensUsed
+                      .filter(t => t.category === category)
+                      .map((token, idx) => (
+                        <div 
+                          key={idx}
+                          className="flex items-center gap-3 p-3 rounded-lg group cursor-pointer transition-all hover:bg-white/5"
+                          onClick={() => copyToClipboard(token.token, true)}
+                          style={{ 
+                            backgroundColor: 'rgba(255,255,255,0.02)',
+                            border: '1px solid var(--jtech-card-border)'
+                          }}
+                        >
+                          <div 
+                            className="w-8 h-8 rounded flex-shrink-0"
+                            style={{ 
+                              backgroundColor: token.value.startsWith("#") || token.value.startsWith("rgba") 
+                                ? token.value 
+                                : "transparent",
+                              border: token.value.startsWith("#") || token.value.startsWith("rgba")
+                                ? "none"
+                                : "1px dashed var(--jtech-card-border)"
+                            }}
+                          />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2">
+                              <code 
+                                className="text-xs font-mono truncate"
+                                style={{ color: 'var(--dss-jtech-accent)' }}
+                              >
+                                {token.token}
+                              </code>
+                              {copiedToken === token.token ? (
+                                <Check size={12} style={{ color: '#4dd228' }} />
+                              ) : (
+                                <Copy size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: 'var(--jtech-text-muted)' }} />
+                              )}
+                            </div>
+                            <p 
+                              className="text-xs truncate"
+                              style={{ color: 'var(--jtech-text-muted)' }}
+                            >
+                              {token.usage}
+                            </p>
+                          </div>
+                          <code 
+                            className="text-xs font-mono flex-shrink-0"
+                            style={{ color: 'var(--jtech-text-body)' }}
+                          >
+                            {token.value}
+                          </code>
+                        </div>
+                      ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </DssTabsContent>
+
+        {/* Slots Tab */}
+        <DssTabsContent value="slots">
+          <Card 
+            className="overflow-hidden"
+            style={{ 
+              backgroundColor: 'var(--jtech-card-bg)', 
+              borderColor: 'var(--jtech-card-border)' 
+            }}
+          >
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow style={{ borderColor: 'var(--jtech-card-border)' }}>
+                    <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Slot</TableHead>
+                    <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Posição</TableHead>
+                    <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Descrição</TableHead>
+                    <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Exemplo</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {[
+                    { name: "prepend", position: "Dentro, à esquerda", desc: "Ícone ou conteúdo antes do texto", example: '<template #prepend><q-icon name="mail" /></template>' },
+                    { name: "append", position: "Dentro, à direita", desc: "Ícone ou conteúdo depois do texto", example: '<template #append><q-icon name="search" /></template>' },
+                    { name: "before", position: "Fora, à esquerda", desc: "Conteúdo externo antes do input", example: '<template #before><q-icon name="person" /></template>' },
+                    { name: "after", position: "Fora, à direita", desc: "Conteúdo externo depois do input", example: '<template #after><q-btn icon="send" /></template>' },
+                    { name: "label", position: "Acima", desc: "Customização do label", example: '<template #label>Custom <strong>Label</strong></template>' },
+                    { name: "error", position: "Abaixo", desc: "Mensagem de erro customizada", example: '<template #error><span class="custom">Erro!</span></template>' },
+                  ].map((slot, idx) => (
+                    <TableRow 
+                      key={idx}
+                      style={{ borderColor: 'var(--jtech-card-border)' }}
+                      className="hover:bg-white/5"
+                    >
+                      <TableCell>
+                        <code 
+                          className="text-sm font-mono px-1.5 py-0.5 rounded"
+                          style={{ 
+                            backgroundColor: 'rgba(255,255,255,0.1)',
+                            color: 'var(--dss-jtech-accent)'
+                          }}
+                        >
+                          #{slot.name}
+                        </code>
+                      </TableCell>
+                      <TableCell style={{ color: 'var(--jtech-text-body)' }}>
+                        {slot.position}
+                      </TableCell>
+                      <TableCell style={{ color: 'var(--jtech-text-body)' }}>
+                        {slot.desc}
+                      </TableCell>
+                      <TableCell>
+                        <code 
+                          className="text-xs font-mono"
+                          style={{ color: '#a3a3a3' }}
+                        >
+                          {slot.example}
+                        </code>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </Card>
+        </DssTabsContent>
+
+        {/* Events Tab */}
+        <DssTabsContent value="events">
+          <Card 
+            className="overflow-hidden"
+            style={{ 
+              backgroundColor: 'var(--jtech-card-bg)', 
+              borderColor: 'var(--jtech-card-border)' 
+            }}
+          >
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow style={{ borderColor: 'var(--jtech-card-border)' }}>
+                    <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Evento</TableHead>
+                    <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Payload</TableHead>
+                    <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Descrição</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {[
+                    { name: "@update:model-value", payload: "(value: string | number)", desc: "Emitido quando o valor muda (v-model)" },
+                    { name: "@focus", payload: "(event: FocusEvent)", desc: "Emitido quando o input recebe foco" },
+                    { name: "@blur", payload: "(event: FocusEvent)", desc: "Emitido quando o input perde foco" },
+                    { name: "@clear", payload: "()", desc: "Emitido quando o botão clear é clicado" },
+                    { name: "@keyup.enter", payload: "(event: KeyboardEvent)", desc: "Emitido ao pressionar Enter" },
+                  ].map((event, idx) => (
+                    <TableRow 
+                      key={idx}
+                      style={{ borderColor: 'var(--jtech-card-border)' }}
+                      className="hover:bg-white/5"
+                    >
+                      <TableCell>
+                        <code 
+                          className="text-sm font-mono px-1.5 py-0.5 rounded"
+                          style={{ 
+                            backgroundColor: 'rgba(255,255,255,0.1)',
+                            color: 'var(--dss-jtech-accent)'
+                          }}
+                        >
+                          {event.name}
+                        </code>
+                      </TableCell>
+                      <TableCell>
+                        <code 
+                          className="text-xs font-mono"
+                          style={{ color: '#a3a3a3' }}
+                        >
+                          {event.payload}
+                        </code>
+                      </TableCell>
+                      <TableCell style={{ color: 'var(--jtech-text-body)' }}>
+                        {event.desc}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </Card>
+        </DssTabsContent>
+      </DssTabs>
+
+      {/* ================================================================
+          EXEMPLOS PRÁTICOS
+          ================================================================ */}
+      <SectionHeader
+        title="Exemplos"
+        titleAccent="Práticos"
+        badge="Código pronto"
+      />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Login Form Example */}
+        <Card 
+          style={{ 
+            backgroundColor: 'var(--jtech-card-bg)', 
+            borderColor: 'var(--jtech-card-border)' 
+          }}
+        >
+          <CardHeader>
+            <CardTitle className="text-base" style={{ color: 'var(--jtech-heading-primary)' }}>
+              Formulário de Login
+            </CardTitle>
+            <CardDescription style={{ color: 'var(--jtech-text-muted)' }}>
+              Campos de email e senha com validação
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div 
+              className="p-6 rounded-lg space-y-4"
+              style={{ backgroundColor: '#ffffff' }}
+            >
+              <DssInputPreview
+                variant="outlined"
+                color="primary"
+                label="Email"
+                placeholder="seu@email.com"
+                type="email"
+                value=""
+                prefix={<Mail size={18} />}
+              />
+              <DssInputPreview
+                variant="outlined"
+                color="primary"
+                label="Senha"
+                placeholder="••••••••"
+                type="password"
+                value=""
+                prefix={<Lock size={18} />}
+                showPasswordToggle
+              />
+            </div>
+            <pre 
+              className="p-3 rounded-lg text-xs overflow-x-auto"
+              style={{ 
+                backgroundColor: 'rgba(0,0,0,0.4)',
+                border: '1px solid var(--jtech-card-border)',
+                color: '#e5e5e5'
+              }}
+            >
+{`<DssInput
+  v-model="email"
+  type="email"
+  label="Email"
+>
+  <template #prepend>
+    <q-icon name="mail" />
+  </template>
+</DssInput>`}
+            </pre>
+          </CardContent>
+        </Card>
+
+        {/* Search Example */}
+        <Card 
+          style={{ 
+            backgroundColor: 'var(--jtech-card-bg)', 
+            borderColor: 'var(--jtech-card-border)' 
+          }}
+        >
+          <CardHeader>
+            <CardTitle className="text-base" style={{ color: 'var(--jtech-heading-primary)' }}>
+              Campo de Busca
+            </CardTitle>
+            <CardDescription style={{ color: 'var(--jtech-text-muted)' }}>
+              Input de pesquisa com clearable
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div 
+              className="p-6 rounded-lg"
+              style={{ backgroundColor: '#ffffff' }}
+            >
+              <DssInputPreview
+                variant="standout"
+                color="primary"
+                label=""
+                placeholder="Buscar..."
+                type="search"
+                value=""
+                prefix={<Search size={18} />}
+                clearable
+              />
+            </div>
+            <pre 
+              className="p-3 rounded-lg text-xs overflow-x-auto"
+              style={{ 
+                backgroundColor: 'rgba(0,0,0,0.4)',
+                border: '1px solid var(--jtech-card-border)',
+                color: '#e5e5e5'
+              }}
+            >
+{`<DssInput
+  v-model="search"
+  variant="standout"
+  type="search"
+  clearable
+>
+  <template #prepend>
+    <q-icon name="search" />
+  </template>
+</DssInput>`}
+            </pre>
+          </CardContent>
+        </Card>
+
+        {/* Validation Example */}
+        <Card 
+          style={{ 
+            backgroundColor: 'var(--jtech-card-bg)', 
+            borderColor: 'var(--jtech-card-border)' 
+          }}
+        >
+          <CardHeader>
+            <CardTitle className="text-base" style={{ color: 'var(--jtech-heading-primary)' }}>
+              Validação
+            </CardTitle>
+            <CardDescription style={{ color: 'var(--jtech-text-muted)' }}>
+              Input com estado de erro
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div 
+              className="p-6 rounded-lg"
+              style={{ backgroundColor: '#ffffff' }}
+            >
+              <DssInputPreview
+                variant="outlined"
+                color="primary"
+                label="CPF"
+                placeholder="000.000.000-00"
+                type="text"
+                value="123.456.789"
+                error="CPF inválido. Verifique os dígitos."
+              />
+            </div>
+            <pre 
+              className="p-3 rounded-lg text-xs overflow-x-auto"
+              style={{ 
+                backgroundColor: 'rgba(0,0,0,0.4)',
+                border: '1px solid var(--jtech-card-border)',
+                color: '#e5e5e5'
+              }}
+            >
+{`<DssInput
+  v-model="cpf"
+  label="CPF"
+  :error="cpfError"
+  :rules="[validateCPF]"
+/>`}
+            </pre>
+          </CardContent>
+        </Card>
+
+        {/* Brand Example */}
+        <Card 
+          style={{ 
+            backgroundColor: 'var(--jtech-card-bg)', 
+            borderColor: 'var(--jtech-card-border)' 
+          }}
+        >
+          <CardHeader>
+            <CardTitle className="text-base" style={{ color: 'var(--jtech-heading-primary)' }}>
+              Brandabilidade
+            </CardTitle>
+            <CardDescription style={{ color: 'var(--jtech-text-muted)' }}>
+              Input com tema de marca Veolia
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div 
+              className="p-6 rounded-lg space-y-4"
+              style={{ backgroundColor: '#ffffff' }}
+            >
+              {Object.values(brandColors).map((brand) => (
+                <DssInputPreview
+                  key={brand.name}
+                  variant="outlined"
+                  color="primary"
+                  label={`${brand.label} Theme`}
+                  placeholder={`Input ${brand.label}...`}
+                  type="text"
+                  value=""
+                  brand={brand.name}
+                  isFocused
+                />
+              ))}
+            </div>
+            <pre 
+              className="p-3 rounded-lg text-xs overflow-x-auto"
+              style={{ 
+                backgroundColor: 'rgba(0,0,0,0.4)',
+                border: '1px solid var(--jtech-card-border)',
+                color: '#e5e5e5'
+              }}
+            >
+{`<DssInput
+  v-model="value"
+  label="Hub Theme"
+  brand="hub"
+/>`}
+            </pre>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
