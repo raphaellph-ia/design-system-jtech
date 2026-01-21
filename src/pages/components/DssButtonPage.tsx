@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionHeader } from "@/components/ui/SectionHeader";
+import { AnatomySection } from "@/components/ui/AnatomySection";
+import { CollapsibleSection } from "@/components/ui/CollapsibleSection";
 
 // ============================================================================
 // TOKENS REAIS DO DSS - Extraídos de index.css e globals.scss
@@ -426,13 +428,137 @@ const tokensUsed = [
   { category: "Gray Scale", token: "--dss-gray-900", value: "#262626", usage: "Background very dark" },
 ];
 
-// Anatomia 4 Camadas DSS
-const anatomyLayers = [
-  { layer: 1, name: "Structure", file: "1-structure/DssButton.vue", desc: "Template Vue + Props + Lógica", color: "#ef7a11" },
-  { layer: 2, name: "Composition", file: "2-composition/_base.scss", desc: "Layout, tipografia, reset", color: "#0e88e4" },
-  { layer: 3, name: "Variants", file: "3-variants/*.scss", desc: "elevated, flat, outline, push, glossy", color: "#18b173" },
-  { layer: 4, name: "Output", file: "4-output/*.scss", desc: "Cores finais, brands, estados", color: "#ff6607" },
-];
+// Anatomia 4 Camadas DSS - Novo formato expandido
+const anatomyData = {
+  structure: {
+    files: ["DssButton.vue"],
+    description: "Camada responsável pelo template Vue, definição de props e interface do componente. Aqui é onde toda a lógica de renderização e comunicação com o exterior acontece.",
+    responsibilities: [
+      "Definição do template HTML semântico (<button> ou <a>)",
+      "Declaração de props com validação TypeScript",
+      "Emissão de eventos (@click, @focus, @blur)",
+      "Binding de slots (default, icon, icon-right)",
+      "Lógica de estados (loading, disabled)",
+      "Composables locais (useButtonBase)"
+    ],
+    tokens: [],
+    codeExample: `<template>
+  <button
+    class="dss-button"
+    :class="buttonClasses"
+    :disabled="disabled || loading"
+    @click="handleClick"
+  >
+    <slot name="icon" />
+    <span class="dss-button__label">
+      <slot>{{ label }}</slot>
+    </span>
+    <slot name="icon-right" />
+  </button>
+</template>`
+  },
+  composition: {
+    files: ["_base.scss", "_reset.scss", "_layout.scss"],
+    description: "Estilos fundamentais que definem o layout, tipografia e reset do componente. Utiliza apenas tokens genéricos do design system, sem cores específicas.",
+    responsibilities: [
+      "Reset de estilos nativos do browser",
+      "Display flex e alinhamento de conteúdo",
+      "Tipografia base (font-family, font-weight, letter-spacing)",
+      "Espaçamentos internos via tokens --dss-spacing-*",
+      "Cursor e user-select",
+      "Transições base com --dss-duration-*"
+    ],
+    tokens: [
+      "--dss-font-size-md",
+      "--dss-font-weight-medium",
+      "--dss-spacing-2",
+      "--dss-spacing-4",
+      "--dss-duration-fast",
+      "--dss-easing-standard"
+    ],
+    codeExample: `.dss-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--dss-spacing-2);
+  font-family: var(--dss-font-family);
+  font-weight: var(--dss-font-weight-medium);
+  cursor: pointer;
+  transition: all var(--dss-duration-fast) var(--dss-easing-standard);
+}`
+  },
+  variants: {
+    files: ["_elevated.scss", "_flat.scss", "_outline.scss", "_unelevated.scss", "_push.scss", "_glossy.scss"],
+    description: "Define as variações visuais do componente sem incluir cores. Cada variante aplica estilos específicos como sombras, bordas e efeitos especiais.",
+    responsibilities: [
+      "Elevated: box-shadow com --dss-elevation-1",
+      "Flat: background transparent, sem borda",
+      "Outline: borda 1px, background transparent",
+      "Unelevated: background sólido, sem shadow",
+      "Push: efeito 3D com sombra inferior",
+      "Glossy: gradiente de brilho sobreposto"
+    ],
+    tokens: [
+      "--dss-elevation-0",
+      "--dss-elevation-1",
+      "--dss-elevation-2",
+      "--dss-radius-sm",
+      "--dss-radius-md",
+      "--dss-radius-full"
+    ],
+    codeExample: `// _elevated.scss
+.dss-button--elevated {
+  box-shadow: var(--dss-elevation-1);
+  
+  &:hover {
+    box-shadow: var(--dss-elevation-2);
+  }
+}
+
+// _outline.scss
+.dss-button--outline {
+  background: transparent;
+  border: 1px solid currentColor;
+}`
+  },
+  output: {
+    files: ["_colors.scss", "_brands.scss", "_states.scss", "_sizes.scss"],
+    description: "Camada final que aplica cores semânticas, temas de brand (Hub, Water, Waste), estados interativos e dimensionamento. É a orquestração final de todos os tokens visuais.",
+    responsibilities: [
+      "Aplicação de cores semânticas (primary, secondary, etc.)",
+      "Brandability completa (Hub, Water, Waste)",
+      "Estados hover, focus, active, disabled",
+      "Sizing responsivo (xs, sm, md, lg, xl)",
+      "Focus ring com --dss-shadow-focus",
+      "Opacity de disabled com --dss-opacity-disabled"
+    ],
+    tokens: [
+      "--dss-action-primary",
+      "--dss-action-primary-hover",
+      "--dss-hub-600",
+      "--dss-water-500",
+      "--dss-waste-500",
+      "--dss-touch-target-md",
+      "--dss-shadow-focus",
+      "--dss-opacity-disabled"
+    ],
+    codeExample: `// _colors.scss
+.dss-button--primary {
+  background: var(--dss-action-primary);
+  color: var(--dss-text-inverse);
+  
+  &:hover {
+    background: var(--dss-action-primary-hover);
+  }
+}
+
+// _brands.scss
+[data-brand="hub"] .dss-button {
+  background: var(--dss-hub-600);
+  &:hover { background: var(--dss-hub-700); }
+}`
+  }
+};
 
 // ============================================================================
 // COMPONENTE BUTTON PREVIEW COM TOKENS REAIS
@@ -1303,54 +1429,79 @@ export default function DssButtonPage() {
                   <DssButtonPreview label="Ver" icon={<Eye className="w-4 h-4" />} variant="flat" />
                 </div>
               </div>
-            </CardContent>
+        </CardContent>
           </Card>
         </DssTabsContent>
       </DssTabs>
 
-      {/* Tokens Section */}
+      {/* Anatomia 4 Camadas - Posição principal após Playground */}
       <SectionHeader
-        title="Tokens DSS"
-        titleAccent="Utilizados"
-        badge={`${tokensUsed.length} tokens`}
+        title="Anatomia"
+        titleAccent="4 Camadas"
+        badge="Arquitetura DSS"
       />
 
-      <DssTabs defaultValue="Action" className="space-y-4">
-        <DssTabsList>
-          {Object.keys(tokensByCategory).map((category) => (
-            <DssTabsTrigger 
-              key={category}
-              value={category}
-              badge={tokensByCategory[category].length}
-            >
-              {category}
-            </DssTabsTrigger>
-          ))}
-        </DssTabsList>
+      <AnatomySection componentName="DssButton" layers={anatomyData} />
 
-        {Object.entries(tokensByCategory).map(([category, tokens]) => (
-          <DssTabsContent key={category} value={category} className="space-y-4">
-            <Card 
-              className="transition-all duration-300"
-              style={{ 
-                backgroundColor: 'var(--jtech-card-bg)', 
-                borderColor: 'var(--jtech-card-border)' 
-              }}
-            >
-              <CardHeader className="pb-3">
-                <div className="flex items-center gap-3">
-                  <Badge 
-                    className="text-xs text-white"
-                    style={{ backgroundColor: 'var(--dss-jtech-accent)' }}
-                  >
-                    {category}
-                  </Badge>
-                  <span className="text-sm" style={{ color: 'var(--jtech-text-body)' }}>
-                    {tokens.length} tokens disponíveis
-                  </span>
-                </div>
-              </CardHeader>
-              <CardContent>
+      {/* Documentação Técnica - Seção Colapsável */}
+      <SectionHeader
+        title="Documentação"
+        titleAccent="Técnica"
+        badge="Referência completa"
+      />
+
+      <CollapsibleSection
+        icon={FileText}
+        title="Props API"
+        titleAccent="& Eventos"
+      >
+        <div className="space-y-6 pt-4">
+          <Table>
+            <TableHeader>
+              <TableRow style={{ borderColor: 'var(--jtech-card-border)' }}>
+                <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Categoria</TableHead>
+                <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Prop</TableHead>
+                <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Type</TableHead>
+                <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Default</TableHead>
+                <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Descrição</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {propsData.map((p, idx) => (
+                <TableRow key={idx} style={{ borderColor: 'var(--jtech-card-border)' }}>
+                  <TableCell style={{ color: 'var(--jtech-text-muted)' }}>{p.category}</TableCell>
+                  <TableCell className="font-mono font-medium" style={{ color: 'var(--dss-jtech-accent)' }}>{p.prop}</TableCell>
+                  <TableCell className="font-mono text-xs" style={{ color: 'var(--jtech-text-body)' }}>{p.type}</TableCell>
+                  <TableCell className="font-mono text-xs" style={{ color: 'var(--jtech-text-muted)' }}>{p.default}</TableCell>
+                  <TableCell style={{ color: 'var(--jtech-text-body)' }}>{p.description}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </CollapsibleSection>
+
+      <CollapsibleSection
+        icon={Palette}
+        title="Tokens DSS"
+        titleAccent="Utilizados"
+      >
+        <div className="pt-4">
+          <DssTabs defaultValue="Action" className="space-y-4">
+            <DssTabsList>
+              {Object.keys(tokensByCategory).map((category) => (
+                <DssTabsTrigger 
+                  key={category}
+                  value={category}
+                  badge={tokensByCategory[category].length}
+                >
+                  {category}
+                </DssTabsTrigger>
+              ))}
+            </DssTabsList>
+
+            {Object.entries(tokensByCategory).map(([category, tokens]) => (
+              <DssTabsContent key={category} value={category} className="space-y-4">
                 <div 
                   className="p-4 rounded-lg"
                   style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
@@ -1372,130 +1523,45 @@ export default function DssButtonPage() {
                     ))}
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          </DssTabsContent>
-        ))}
-      </DssTabs>
+              </DssTabsContent>
+            ))}
+          </DssTabs>
+        </div>
+      </CollapsibleSection>
 
-      {/* Anatomia */}
-      <SectionHeader
-        title="Anatomia"
-        titleAccent="4 Camadas"
-        badge="Arquitetura DSS"
-      />
-
-      <Card 
-        style={{ 
-          backgroundColor: 'var(--jtech-card-bg)', 
-          borderColor: 'var(--jtech-card-border)' 
-        }}
+      <CollapsibleSection
+        icon={CheckCircle}
+        title="Acessibilidade"
+        titleAccent="WCAG 2.1 AA"
       >
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2" style={{ color: 'var(--jtech-heading-secondary)' }}>
-            <Layers className="h-5 w-5" style={{ color: 'var(--dss-jtech-accent)' }} />
-            Arquitetura Modular DSS
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {anatomyLayers.map((layer) => (
-            <div 
-              key={layer.layer}
-              className="p-4 rounded-lg border-l-4 transition-all hover:translate-x-1"
-              style={{ 
-                backgroundColor: `${layer.color}15`,
-                borderLeftColor: layer.color
-              }}
-            >
-              <div className="flex items-center gap-3 mb-2">
-                <Badge style={{ backgroundColor: layer.color, color: '#ffffff' }}>
-                  Layer {layer.layer}
-                </Badge>
-                <span className="font-semibold" style={{ color: 'var(--jtech-heading-secondary)' }}>{layer.name}</span>
-              </div>
-              <code className="text-sm block mb-1" style={{ color: layer.color }}>{layer.file}</code>
-              <p className="text-sm" style={{ color: 'var(--jtech-text-body)' }}>{layer.desc}</p>
-            </div>
-          ))}
-
-          {/* File structure */}
-          <div className="mt-6">
-            <h4 className="font-medium mb-3" style={{ color: 'var(--jtech-heading-tertiary)' }}>Estrutura de Arquivos</h4>
+        <div className="grid md:grid-cols-2 gap-6 pt-4">
+          <div className="space-y-3">
+            <h4 className="font-medium" style={{ color: 'var(--jtech-heading-tertiary)' }}>✅ Implementado</h4>
+            <ul className="space-y-2 text-sm" style={{ color: 'var(--jtech-text-body)' }}>
+              {[
+                "Touch target mínimo 44x44px (WCAG 2.5.5)",
+                "Focus ring visível com :focus-visible",
+                "Contraste mínimo 4.5:1 em todas as cores",
+                "Respeita prefers-reduced-motion",
+                "Suporte a prefers-contrast: high"
+              ].map((item, i) => (
+                <li key={i} className="flex items-start gap-2">
+                  <Check className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: 'var(--dss-positive)' }} />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="space-y-3">
+            <h4 className="font-medium" style={{ color: 'var(--jtech-heading-tertiary)' }}>📋 Media Queries</h4>
             <pre 
-              className="p-4 rounded-lg text-sm font-mono overflow-x-auto"
+              className="p-3 rounded-lg text-xs font-mono overflow-x-auto"
               style={{ 
                 backgroundColor: 'rgba(0,0,0,0.4)', 
                 color: 'var(--jtech-text-body)',
                 border: '1px solid var(--jtech-card-border)'
               }}
             >
-{`components/base/DssButton/
-├── 1-structure/
-│   └── DssButton.vue          # Template + Props + Logic
-├── 2-composition/
-│   └── _base.scss             # Layout, typography, states
-├── 3-variants/
-│   ├── _elevated.scss         # box-shadow
-│   ├── _flat.scss             # transparent bg
-│   ├── _outline.scss          # border
-│   ├── _unelevated.scss       # no shadow
-│   ├── _push.scss             # 3D effect
-│   └── _glossy.scss           # gradient shine
-├── 4-output/
-│   ├── _colors.scss           # Semantic colors
-│   ├── _brands.scss           # Hub, Water, Waste
-│   └── _states.scss           # Hover, active, focus
-├── DssButton.module.scss      # Entry point (@use layers)
-└── index.js                   # Export`}
-            </pre>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Accessibility */}
-      <Card 
-        style={{ 
-          backgroundColor: 'var(--jtech-card-bg)', 
-          borderColor: 'var(--jtech-card-border)',
-          borderTopWidth: '3px',
-          borderTopColor: 'var(--dss-positive)'
-        }}
-      >
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2" style={{ color: 'var(--jtech-heading-secondary)' }}>
-            <FileText className="h-5 w-5" style={{ color: 'var(--dss-positive)' }} />
-            Acessibilidade WCAG 2.1 AA
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="space-y-3">
-              <h4 className="font-medium" style={{ color: 'var(--jtech-heading-tertiary)' }}>✅ Implementado</h4>
-              <ul className="space-y-2 text-sm" style={{ color: 'var(--jtech-text-body)' }}>
-                {[
-                  "Touch target mínimo 44x44px (WCAG 2.5.5)",
-                  "Focus ring visível com :focus-visible",
-                  "Contraste mínimo 4.5:1 em todas as cores",
-                  "Respeita prefers-reduced-motion",
-                  "Suporte a prefers-contrast: high"
-                ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <Check className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: 'var(--dss-positive)' }} />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="space-y-3">
-              <h4 className="font-medium" style={{ color: 'var(--jtech-heading-tertiary)' }}>📋 Media Queries</h4>
-              <pre 
-                className="p-3 rounded-lg text-xs font-mono overflow-x-auto"
-                style={{ 
-                  backgroundColor: 'rgba(0,0,0,0.4)', 
-                  color: 'var(--jtech-text-body)',
-                  border: '1px solid var(--jtech-card-border)'
-                }}
-              >
 {`/* High contrast mode */
 @media (prefers-contrast: high) {
   .dss-button {
@@ -1510,11 +1576,10 @@ export default function DssButtonPage() {
     transition: none !important;
   }
 }`}
-              </pre>
-            </div>
+            </pre>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </CollapsibleSection>
     </div>
   );
 }
