@@ -4,7 +4,7 @@
     <aside class="test-sidebar">
       <div class="sidebar-header">
         <h1>🧪 DSS Test Suite</h1>
-        <p class="version">v2.2.0</p>
+        <p class="version">v2.3.0</p>
       </div>
 
       <nav class="sidebar-nav">
@@ -164,7 +164,7 @@
               >
                 <span class="nav-icon">👤</span>
                 <span class="nav-label">DssAvatar</span>
-                <span class="nav-badge">20 seções</span>
+                <span class="nav-badge">24 secoes</span>
               </button>
 
               <button

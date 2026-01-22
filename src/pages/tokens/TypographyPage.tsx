@@ -10,7 +10,7 @@ import { Copy, Check, Type, Heading, AlignLeft, Space, Eye, Accessibility } from
 // DSS TOKENS - Conforme accessibility/_typography.scss
 // =============================================
 
-// Famílias de Fonte (Página 8 do Guia Veolia)
+// Famílias de Fonte (Página 8 do Guia de Acessibilidade DSS)
 const fontFamilies = [
   { 
     token: "--dss-font-family-sans", 
@@ -277,8 +277,8 @@ export default function TypographyPage() {
         badgeVariant="accent"
         title="Sistema"
         titleAccent="Tipográfico"
-        subtitle="Hierarquia tipográfica completa com famílias de fonte, tamanhos, pesos e tokens de acessibilidade. Baseado no Guia Veolia e WCAG 2.1 AA."
-        subtitleHighlights={["Guia Veolia", "WCAG 2.1 AA"]}
+        subtitle="Hierarquia tipográfica completa com famílias de fonte, tamanhos, pesos e tokens de acessibilidade. Baseado no Guia de Acessibilidade DSS e WCAG 2.1 AA."
+        subtitleHighlights={["Guia de Acessibilidade DSS", "WCAG 2.1 AA"]}
         extraBadges={[
           { label: "40+ Tokens", variant: "info" },
           { label: "Acessível", variant: "success" }

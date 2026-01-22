@@ -1,0 +1,98 @@
+/**
+ * ==========================================================================
+ * DssAvatar - LAYER 3: Variant Status
+ * ==========================================================================
+ *
+ * Estilos para indicador de status do avatar:
+ * - online (verde/positive)
+ * - away (amarelo/warning)
+ * - busy (vermelho/negative)
+ * - offline (cinza/neutral)
+ *
+ * @version 2.3.0
+ */
+
+/* ========================================
+   STATUS INDICATOR BASE
+   ======================================== */
+
+.dss-avatar__status {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 25%;
+  height: 25%;
+  min-width: 8px;
+  min-height: 8px;
+  border-radius: var(--dss-border-radius-full);
+  border: 2px solid var(--dss-surface-default, white);
+
+  // Status online por padrao
+  background-color: var(--dss-positive, #21BA45);
+
+  // Transicao suave
+  transition: background-color var(--dss-transition-base);
+}
+
+/* ========================================
+   STATUS VARIANTS
+   ======================================== */
+
+// Online - verde (positive)
+.dss-avatar__status--online {
+  background-color: var(--dss-positive, #21BA45);
+}
+
+// Away - amarelo (warning)
+.dss-avatar__status--away {
+  background-color: var(--dss-warning, #F2C037);
+}
+
+// Busy - vermelho (negative)
+.dss-avatar__status--busy {
+  background-color: var(--dss-negative, #C10015);
+}
+
+// Offline - cinza (neutral)
+.dss-avatar__status--offline {
+  background-color: var(--dss-neutral-400, #9E9E9E);
+}
+
+/* ========================================
+   STATUS SIZE ADJUSTMENTS
+   ======================================== */
+
+// Status menor em avatares pequenos
+.dss-avatar--xs .dss-avatar__status {
+  width: 8px;
+  height: 8px;
+  border-width: 1px;
+}
+
+.dss-avatar--sm .dss-avatar__status {
+  width: 10px;
+  height: 10px;
+  border-width: 1px;
+}
+
+// Status maior em avatares grandes
+.dss-avatar--lg .dss-avatar__status {
+  width: 16px;
+  height: 16px;
+  border-width: 2px;
+}
+
+.dss-avatar--xl .dss-avatar__status {
+  width: 20px;
+  height: 20px;
+  border-width: 3px;
+}
+
+/* ========================================
+   ACCESSIBILITY: Status com aria-label
+   ======================================== */
+
+// Screen readers receberao o aria-label do span
+.dss-avatar__status[aria-label] {
+  // O aria-label ja esta definido no componente Vue
+}

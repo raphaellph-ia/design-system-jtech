@@ -156,7 +156,7 @@ O DssCard utiliza tokens das seguintes categorias:
 
 | Prop | Type | Default | Valores | Descrição |
 |------|------|---------|---------|-----------|
-| `brand` | String | `null` | `hub`, `water`, `waste` | Tema de marca Veolia (adiciona border-left colorida) |
+| `brand` | String | `null` | `hub`, `water`, `waste` | Tema de marca Sansys (adiciona border-left colorida) |
 
 ### Eventos
 
@@ -608,7 +608,7 @@ export default {
       />
       <div>
         <h3>John Doe</h3>
-        <p>Software Engineer at Veolia</p>
+        <p>Software Engineer at Sansys</p>
       </div>
     </DssCardSection>
   </DssCard>

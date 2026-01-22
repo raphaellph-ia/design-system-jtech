@@ -561,4 +561,4 @@ Candidatos para migração TypeScript:
 
 **Desenvolvido com ❤️ por Hebert Daniel Oliveira Chaves**
 
-**Licença**: MIT © 2025 Sansys/Veolia
+**Licença**: Propriedade da Jtech

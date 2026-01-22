@@ -438,7 +438,7 @@ Ver: docs/WCAG_COMPLIANCE.md
 
 **ANTES:**
 ```scss
-/* 3. Tokens de acessibilidade (Guia Veolia) */
+/* 3. Tokens de acessibilidade (Guia de Acessibilidade DSS) */
 @import 'semantic/accessibility';  /* Agrega: contrast, focus, sizing, typography */
 ```
 

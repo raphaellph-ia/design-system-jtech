@@ -121,7 +121,7 @@ const semanticColors = {
   }
 };
 
-// Paletas de Marca REAIS do DSS (Veolia Brands)
+// Paletas de Marca REAIS do DSS (Sansys)
 const brandColors = {
   hub: {
     name: "hub",
@@ -182,7 +182,7 @@ const propsData = [
   { category: "Visual", prop: "square", type: "Boolean", default: "false", description: "Remove border-radius (cantos quadrados)" },
   { category: "Interação", prop: "clickable", type: "Boolean", default: "false", description: "Torna o card interativo (hover/focus)" },
   { category: "Tema", prop: "dark", type: "Boolean", default: "false", description: "Aplica modo escuro ao card" },
-  { category: "Brandabilidade", prop: "brand", type: "'hub' | 'water' | 'waste'", default: "null", description: "Tema de marca Veolia" },
+  { category: "Brandabilidade", prop: "brand", type: "'hub' | 'water' | 'waste'", default: "null", description: "Tema de marca Sansys" },
 ];
 
 // Props do DssCardSection
@@ -1121,7 +1121,7 @@ export default function DssCardPage() {
         {[
           { value: "4", label: "Variantes", color: "#1f86de" },
           { value: "3", label: "Subcomponentes", color: "#26a69a" },
-          { value: "3", label: "Brands Veolia", color: brandColors.hub.principal },
+          { value: "3", label: "Brands Sansys", color: brandColors.hub.principal },
           { value: "2", label: "Temas", color: brandColors.waste.principal },
         ].map((stat, i) => (
           <Card 
@@ -1316,7 +1316,7 @@ export default function DssCardPage() {
 
             {/* Brand */}
             <div className="space-y-2">
-              <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Brand (Veolia)</label>
+              <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Brand (Sansys)</label>
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => setSelectedBrand(null)}
@@ -1532,7 +1532,7 @@ export default function DssCardPage() {
                             <div className="flex items-center gap-2">
                               <h4 className="font-semibold text-sm">Brand {b.label}</h4>
                               <DssBadgePreview 
-                                label="VEOLIA"
+                                label="SANSYS"
                                 brand={b.name}
                                 variant="soft"
                                 size="xs"

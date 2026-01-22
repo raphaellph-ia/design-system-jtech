@@ -1,27 +1,25 @@
-@use './2-composition/base' as composition;
-
 /* ==========================================================================
+   DssBadge - Module Orchestrator
+   ==========================================================================
+
+   Orquestrador principal que importa todas as camadas do componente.
+
+   ARQUITETURA DE 4 CAMADAS:
+   - Layer 2: Composition (base styles)
+   - Layer 3: Variants (outline, floating, rounded, transparent, multi-line)
+   - Layer 4: Output (brands, states)
+
    CORES: Aplicadas via classes utilitárias (.bg-*, .text-*) - Padrão Quasar
    Definidas em: utils/_colors.scss
+
+   @version 2.3.0
    ========================================================================== */
 
-/* ==========================================================================
-   ACCESSIBILITY ENHANCEMENTS - DssBadge
-   ========================================================================== */
+/* Layer 2: Composition */
+@use './2-composition/base' as composition;
 
-/* High contrast mode */
-@media (prefers-contrast: high) {
-  .dss-badge {
-    border-width: var(--dss-border-width-md) !important;
-    font-weight: 700;
-  }
-}
+/* Layer 3: Variants */
+@use './3-variants' as variants;
 
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .dss-badge,
-  .dss-badge * {
-    transition: none !important;
-    animation: none !important;
-  }
-}
+/* Layer 4: Output */
+@use './4-output' as output;

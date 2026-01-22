@@ -1,10 +1,17 @@
 /**
- * DssAvatar - Arquivo de Compilação Final
- * Importa todos os módulos do componente DssAvatar
+ * ==========================================================================
+ * DssAvatar - LAYER 4: OUTPUT (Arquivo de Compilação Final)
+ * ==========================================================================
+ *
+ * Importa todos os módulos do componente DssAvatar na ordem correta:
+ * 1. Base styles (estrutura, layout, tipografia)
+ * 2. Variants (brands, status)
+ *
+ * @version 2.3.0
  */
 
 // Base styles (estrutura, layout, tipografia)
 @import '../2-composition/base';
 
-// Color variants (cores semânticas)
-@import '../3-variants/colors';
+// Variants (brands, status)
+@import '../3-variants/index';

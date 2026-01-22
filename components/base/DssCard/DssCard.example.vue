@@ -154,8 +154,8 @@
           ></div>
           <div>
             <h3>John Doe</h3>
-            <p>Software Engineer at Veolia</p>
-            <p><small>john.doe@veolia.com</small></p>
+            <p>Software Engineer at Sansys</p>
+            <p><small>john.doe@sansys.com.br</small></p>
           </div>
         </DssCardSection>
       </DssCard>

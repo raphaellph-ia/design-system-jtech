@@ -28,20 +28,27 @@ export function useBadgeClasses(props: Readonly<BadgeProps>) {
    * - textColor: sobrescreve cor do texto se fornecido
    */
   const badgeClasses = computed(() => {
-    // Lógica de cores
+    // Lógica de cores seguindo padrão Quasar QBadge:
+    // - outline/transparent: usa text-{color} (texto colorido, fundo transparente)
+    // - normal: usa bg-{color} + text-white (fundo colorido, texto branco)
+    // - brand: NÃO usa classes utilitárias (CSS próprio)
     let colorClasses = ''
 
-    if (props.outline || props.transparent) {
-      // Variantes transparentes: apenas cor de texto
-      colorClasses = `text-${props.color}`
-    } else {
-      // Variante sólida: fundo colorido + texto branco
-      colorClasses = `bg-${props.color} text-white`
-    }
+    // Se tem brand, NÃO aplicar classes utilitárias
+    // (brand usa CSS próprio sem !important)
+    if (!props.brand) {
+      if (props.outline || props.transparent) {
+        // Variantes transparentes: apenas cor de texto
+        colorClasses = `text-${props.color}`
+      } else {
+        // Variante sólida: fundo colorido + texto branco
+        colorClasses = `bg-${props.color} text-white`
+      }
 
-    // Override de text color se especificado
-    if (props.textColor) {
-      colorClasses += ` text-${props.textColor}`
+      // Override de text color se especificado
+      if (props.textColor) {
+        colorClasses += ` text-${props.textColor}`
+      }
     }
 
     return [
@@ -57,7 +64,10 @@ export function useBadgeClasses(props: Readonly<BadgeProps>) {
         'dss-badge--transparent': props.transparent,
         'dss-badge--multi-line': props.multiLine,
         'dss-badge--outline': props.outline,
-        'dss-badge--rounded': props.rounded
+        'dss-badge--rounded': props.rounded,
+
+        // Brand
+        [`dss-badge--brand-${props.brand}`]: !!props.brand
       }
     ]
   })

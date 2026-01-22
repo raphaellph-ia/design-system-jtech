@@ -210,7 +210,7 @@
                 <div>
                   <h4>John Doe</h4>
                   <p>Software Engineer</p>
-                  <small>john@veolia.com</small>
+                  <small>john@sansys.com.br</small>
                 </div>
               </DssCardSection>
             </DssCard>

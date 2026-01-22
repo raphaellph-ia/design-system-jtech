@@ -19,6 +19,22 @@ O **DSSButton** é o componente de referência oficial. Use-o como modelo para e
 
 A **documentação oficial do Quasar** do componente equivalente (q-btn, q-input, etc.) deve ser consultada como base. A documentação DSS complementa e adapta, não reinventa.
 
+### Linguagem DSS-First (OBRIGATORIO)
+
+> **CRITICO**: Componentes DSS sao **wrappers governados pelo Design System Sansys**, NAO copias ou espelhos do Quasar.
+
+**Linguagem PROIBIDA:**
+- ❌ "100% compativel com a API do Quasar"
+- ❌ "Props 100% implementadas do QComponent"
+- ❌ "Checklist de conformidade Quasar"
+- ❌ "Espelho do componente Quasar"
+
+**Linguagem OBRIGATORIA:**
+- ✅ "Wrapper DSS baseado no QComponent"
+- ✅ "API publica governada pelo Design System Sansys"
+- ✅ "Props governadas pelo DSS (API Publica)"
+- ✅ "O DSS curou deliberadamente esta API"
+
 ### Regra de Ouro
 
 > ❗ **Nunca invente informação para preencher uma seção. Se não há conteúdo relevante, a seção pode ser omitida ou marcada como N/A.**
@@ -48,9 +64,21 @@ As seções abaixo servem como **guia de referência**. Preencha as seções que
 ---
 
 ### 📘 4. Tokens Utilizados
-- [ ] Lista explícita de tokens consumidos
-- [ ] Nenhum token específico de componente criado
-- [ ] Fallbacks semânticos descritos
+
+**OBRIGATORIO - Nivel de Detalhe:**
+- [ ] Nomes EXATOS dos tokens (ex: `--dss-feedback-positive`, NAO "cores de feedback")
+- [ ] Link para secao especifica do [`DSS_TOKEN_REFERENCE.md`](../reference/DSS_TOKEN_REFERENCE.md)
+- [ ] Tabela com colunas: Categoria | Tokens Usados | Onde Encontrar | Aplicacao no Componente
+- [ ] Nota defensiva: "O componente NAO aceita valores arbitrarios" (quando aplicavel)
+- [ ] Nenhum token especifico de componente criado
+- [ ] Fallbacks semanticos descritos
+
+**Exemplo de Tabela Obrigatoria:**
+```markdown
+| Categoria | Tokens Usados | Onde Encontrar | Aplicacao |
+|-----------|---------------|----------------|-----------|
+| **Cores Semanticas** | `--dss-feedback-positive`, `--dss-feedback-negative` | [Secao 2.3](../reference/DSS_TOKEN_REFERENCE.md#23-cores-semânticas-base) | Cores de fundo |
+```
 
 ---
 
@@ -123,6 +151,26 @@ As seções abaixo servem como **guia de referência**. Preencha as seções que
 - Exceções devem ser explicitadas na documentação
 - Revisores validam qualidade, não quantidade de seções
 
+### Brandabilidade na Documentacao (OBRIGATORIO)
+
+Ao documentar brandabilidade (Hub, Water, Waste):
+
+**NAO FACA:**
+- ❌ Listar valores especificos de cores por brand (ex: `--dss-hub-600: #EF7A11`)
+- ❌ Criar tabelas detalhando RGB/hex de cada marca
+- ❌ Duplicar informacao que ja existe no DSS_TOKEN_REFERENCE
+
+**FACA:**
+- ✅ Explicar COMO o componente reage a brands (`data-brand`, `prop brand`)
+- ✅ Descrever prioridade entre metodos de aplicacao
+- ✅ Referenciar DSS_TOKEN_REFERENCE para paletas de cores:
+  ```markdown
+  > Para detalhes das paletas de cores, consulte
+  > [`DSS_TOKEN_REFERENCE.md - Secao 2.2`](../reference/DSS_TOKEN_REFERENCE.md#22-brand-palettes)
+  ```
+- ✅ Documentar comportamento de hover por brand (se aplicavel)
+- ✅ Documentar fallback quando nenhum brand esta definido
+
 ---
 
 ## 5️⃣ Integração com PR Checklist
@@ -132,6 +180,9 @@ Nenhuma PR de componente DSS deve ser aprovada sem:
 - [ ] Consulta à documentação Quasar realizada
 - [ ] Seções omitidas justificadas (quando questionado)
 - [ ] Documentação revisada
+- [ ] **Linguagem DSS-First verificada** (nenhuma afirmacao de "100% compatibilidade Quasar")
+- [ ] **Tokens com nomes exatos e links** para DSS_TOKEN_REFERENCE
+- [ ] **Brandabilidade referencia DSS_TOKEN_REFERENCE** (nao detalha cores por brand)
 
 ---
 

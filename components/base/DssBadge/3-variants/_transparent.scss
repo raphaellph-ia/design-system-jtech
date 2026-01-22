@@ -1,0 +1,18 @@
+/* ==========================================================================
+   DssBadge - LAYER 3: VARIANT - Transparent
+
+   RESPONSABILIDADE: Badge com fundo transparente
+
+   CARACTERÍSTICAS:
+   - Background transparente
+   - Borda fina para visibilidade
+   - Sem sombra
+   ========================================================================== */
+
+.dss-badge--transparent {
+  background-color: transparent !important;
+  box-shadow: none !important;
+
+  /* Borda fina para manter visibilidade */
+  border: var(--dss-border-width-thin) solid currentColor;
+}

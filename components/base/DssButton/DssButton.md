@@ -197,7 +197,7 @@ O DssButton utiliza tokens das seguintes categorias:
 
 | Prop | Type | Default | Valores | Descrição |
 |------|------|---------|---------|-----------|
-| `brand` | String | `null` | `hub`, `water`, `waste` | Tema de marca Veolia |
+| `brand` | String | `null` | `hub`, `water`, `waste` | Tema de marca Sansys |
 
 ### Props de Acessibilidade
 

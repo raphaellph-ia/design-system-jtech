@@ -6,6 +6,30 @@ Use este checklist ao criar ou revisar documentação de componentes DSS. Basead
 
 ---
 
+## ⚠️ Principios de Linguagem DSS-First (OBRIGATORIO)
+
+Antes de escrever qualquer documentacao, internalize estas regras:
+
+### Linguagem PROIBIDA (causa rejeicao de PR)
+- ❌ "100% compativel com a API do Quasar"
+- ❌ "Props 100% implementadas do QComponent"
+- ❌ "Checklist de conformidade Quasar"
+- ❌ "Espelho do componente Quasar"
+
+### Linguagem OBRIGATORIA
+- ✅ "Wrapper DSS baseado no QComponent"
+- ✅ "API publica governada pelo Design System Sansys"
+- ✅ "Props governadas pelo DSS (API Publica)"
+- ✅ "O DSS curou deliberadamente esta API"
+
+### Por que isso importa?
+O DSS e uma **camada de governanca** sobre o Quasar, nao um espelho. Componentes DSS podem intencionalmente:
+- Omitir props do Quasar que nao fazem sentido no contexto DSS
+- Adicionar props exclusivas DSS (ex: `brand`, `ariaLabel`)
+- Restringir valores aceitos (ex: apenas cores semanticas)
+
+---
+
 ## ✅ Estrutura Obrigatória (13 Seções)
 
 ### Seção 1 - Visão Geral
@@ -29,14 +53,17 @@ Use este checklist ao criar ou revisar documentação de componentes DSS. Basead
 - [ ] Dependências externas identificadas
 
 ### Seção 4 - Tokens Utilizados
-- [ ] **Tabela rastreável** com 4 colunas: Token | Tipo | Onde Atua | Observação
-- [ ] Tokens de **cor** documentados
+- [ ] **Tabela rastreável** com 4 colunas: Categoria | Tokens Usados | Onde Encontrar | Aplicacao no Componente
+- [ ] **Nomes EXATOS dos tokens** (ex: `--dss-feedback-positive`, NAO apenas "cores de feedback")
+- [ ] **Links para secoes do DSS_TOKEN_REFERENCE.md** (ex: `[Secao 2.3](../reference/DSS_TOKEN_REFERENCE.md#23-cores-semânticas-base)`)
+- [ ] Tokens de **cor** documentados com nomes exatos
 - [ ] Tokens de **acessibilidade** documentados (com 🔒)
-- [ ] Tokens de **espaçamento** documentados
-- [ ] Tokens de **forma** documentados
-- [ ] Tokens de **brand** documentados (se aplicável)
+- [ ] Tokens de **espaçamento** documentados com nomes exatos
+- [ ] Tokens de **forma** documentados com nomes exatos
+- [ ] Tokens de **brand** documentados (se aplicável) - **SEM listar valores especificos**
 - [ ] **Flags de proteção** (🔒) em tokens críticos
 - [ ] **Nota de fallback** explicando comportamento padrão
+- [ ] **Nota defensiva**: "O componente NAO aceita valores/cores arbitrarias" (quando aplicavel)
 
 ### Seção 5 - API Pública
 - [ ] Props organizadas por categoria (Principais, Forma, Estado, Layout, etc.)
@@ -62,10 +89,22 @@ Use este checklist ao criar ou revisar documentação de componentes DSS. Basead
 ### Seção 8 - Brandabilidade
 - [ ] Métodos de aplicação documentados (prop brand vs data-brand)
 - [ ] Prioridade entre métodos explicada
-- [ ] Comportamento de cada brand (Hub, Water, Waste)
+- [ ] Comportamento de cada brand (Hub, Water, Waste) - **APENAS descritivo, NAO listar cores**
 - [ ] Sistema de hover para brands (se aplicável)
-- [ ] Tabela comparativa se necessário
 - [ ] **Nota de fallback**: comportamento sem brand
+- [ ] **Referencia obrigatoria ao DSS_TOKEN_REFERENCE** para detalhes de paletas de cores
+
+**⚠️ NAO documentar valores especificos de cores por brand!**
+```markdown
+<!-- ❌ ERRADO -->
+| Brand | Cor Primaria |
+|-------|--------------|
+| Hub   | `--dss-hub-600` (#EF7A11) |
+
+<!-- ✅ CORRETO -->
+> Para detalhes das paletas de cores por brand, consulte
+> [`DSS_TOKEN_REFERENCE.md - Secao 2.2`](../reference/DSS_TOKEN_REFERENCE.md#22-brand-palettes)
+```
 
 ### Seção 9 - Acessibilidade
 - [ ] **Conformidade WCAG 2.1 AA** documentada
@@ -103,13 +142,52 @@ Use este checklist ao criar ou revisar documentação de componentes DSS. Basead
 
 ---
 
+## ✅ Documento de API Referencial (DSSCOMPONENT_API.md)
+
+Alem do documento normativo (DssComponente.md), cada componente PODE ter um documento de API referencial.
+
+### Estrutura do Documento API
+- [ ] **Titulo claro**: "DssComponente API - Referencia Tecnica"
+- [ ] **Nota de governanca**: "Documento referencial - Para governanca, consulte [DssComponente.md]"
+- [ ] **Visao geral com linguagem DSS-First** (wrapper governado, NAO "100% compativel")
+
+### Conteudo Obrigatorio
+- [ ] Props organizadas por categoria com tipos e defaults
+- [ ] Slots com descricao e exemplo
+- [ ] Eventos com payload e quando emitido
+- [ ] Casos de uso comuns com codigo
+
+### Secao "Relacao com Quasar QComponente" (OBRIGATORIO)
+Esta secao deve:
+- [ ] Explicitar que e um **wrapper governado**, NAO copia
+- [ ] Listar props **governadas pelo DSS** (API Publica)
+- [ ] Listar props **exclusivas DSS** (extensoes)
+- [ ] Listar props do Quasar **fora de escopo** (com justificativa)
+
+```markdown
+<!-- Exemplo de linguagem correta -->
+> **Governanca**: O DssComponente e um **wrapper governado pelo DSS**, nao uma copia
+> do QComponente. A API publica e deliberadamente curada para garantir consistencia,
+> acessibilidade e brandabilidade.
+```
+
+---
+
 ## ✅ Validações de Qualidade
 
+### Linguagem DSS-First
+- [ ] **ZERO** afirmacoes de "100% compatibilidade Quasar"
+- [ ] **ZERO** checklists de conformidade Quasar
+- [ ] Linguagem de **wrapper governado** usada consistentemente
+- [ ] Secao "Relacao com Quasar" (se existir) usa linguagem de governanca
+
 ### Tokens
-- [ ] **Todos os tokens usados** no componente estão na tabela
+- [ ] **Todos os tokens usados** no componente estão na tabela COM NOMES EXATOS
+- [ ] **Links para DSS_TOKEN_REFERENCE.md** em cada categoria
 - [ ] **Flags de proteção** (🔒) em tokens de acessibilidade e touch targets
 - [ ] **Nota de fallback** explica comportamento padrão sem brand/props
-- [ ] Tokens de **brand** têm coluna "Observação" explicando "Variável por brand"
+- [ ] **Nota defensiva** sobre nao aceitar valores arbitrarios (quando aplicavel)
+- [ ] Tokens de **brand** NAO listam valores especificos - referenciam DSS_TOKEN_REFERENCE
 
 ### Exemplos de Código
 - [ ] **Todo código é válido** e segue sintaxe Vue 3
@@ -163,6 +241,9 @@ Use este checklist ao criar ou revisar documentação de componentes DSS. Basead
 - [ ] **Links externos verificados**
 - [ ] **Sincronizado com código-fonte** atual
 - [ ] **Changelog atualizado** com mudanças
+- [ ] **Linguagem DSS-First verificada** (buscar por "100%", "compativel", "espelho")
+- [ ] **Tokens com nomes exatos** verificados (nao apenas categorias genericas)
+- [ ] **Brandabilidade referencia DSS_TOKEN_REFERENCE** (nao detalha cores)
 
 ### Durante o PR
 - [ ] **Checklist incluído** no corpo do PR

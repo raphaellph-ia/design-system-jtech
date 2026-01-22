@@ -266,7 +266,7 @@ Actual button classes: dss-button dss-button--elevated bg-primary text-white dss
 
 ### **Cores de Brand Funcionando**
 
-- ✅ **hub** (🟠 laranja Veolia)
+- ✅ **hub** (🟠 laranja Sansys)
 - ✅ **water** (🔵 azul)
 - ✅ **waste** (🟢 verde)
 

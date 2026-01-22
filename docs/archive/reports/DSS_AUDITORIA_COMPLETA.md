@@ -94,7 +94,7 @@ Existem DOIS sistemas de tokens focus paralelos:
 **Características:**
 - 5 cores básicas: primary, secondary, tertiary, error, success
 - Usa box-shadow com valores hardcoded rgba()
-- Baseado no Guia Veolia Página 10
+- Baseado no Guia de Acessibilidade DSS Página 10
 - Tokens: `--dss-focus-ring`, `--dss-focus-ring-primary`, etc.
 
 ```scss

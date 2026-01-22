@@ -1,0 +1,94 @@
+/* ==========================================================================
+   DssBadge - LAYER 4: OUTPUT - States
+
+   RESPONSABILIDADE: Estados especiais e acessibilidade
+
+   CARACTERÍSTICAS:
+   - Dark mode
+   - High contrast mode
+   - Reduced motion
+   - Badge vazio (dot indicator)
+   ========================================================================== */
+
+/* ==========================================================================
+   DARK MODE
+   ========================================================================== */
+
+[data-theme="dark"] {
+  .dss-badge {
+    /* Ajustar contraste para dark mode se necessário */
+    /* Tokens semânticos já fazem a maior parte do trabalho */
+  }
+
+  /* Brands em dark mode podem precisar de ajustes */
+  .dss-badge--brand-hub {
+    background-color: var(--dss-hub-500);
+  }
+
+  .dss-badge--brand-water {
+    background-color: var(--dss-water-400);
+  }
+
+  .dss-badge--brand-waste {
+    background-color: var(--dss-waste-500);
+  }
+}
+
+/* ==========================================================================
+   HIGH CONTRAST MODE
+   ========================================================================== */
+
+@media (prefers-contrast: high) {
+  .dss-badge {
+    border: var(--dss-border-width-md) solid currentColor !important;
+    font-weight: 700;
+  }
+
+  /* Focus ring mais visível */
+  .dss-badge:focus-visible {
+    outline-width: 3px;
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .dss-badge,
+  .dss-badge * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ==========================================================================
+   BADGE VAZIO (Dot Indicator)
+   ========================================================================== */
+
+.dss-badge:empty {
+  min-width: var(--dss-spacing-1-5);
+  min-height: var(--dss-spacing-1-5);
+  padding: 0;
+  border-radius: 50%;
+
+  &.dss-badge--floating {
+    min-width: var(--dss-spacing-2);
+    min-height: var(--dss-spacing-2);
+  }
+}
+
+/* ==========================================================================
+   ACESSIBILIDADE
+   ========================================================================== */
+
+/* Screen readers - cursor indica que há mais informação */
+.dss-badge[aria-label] {
+  cursor: help;
+}
+
+/* Focus states para badges interativos */
+.dss-badge:focus-visible {
+  outline: 2px solid var(--dss-focus-ring);
+  outline-offset: 2px;
+}

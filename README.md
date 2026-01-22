@@ -303,6 +303,6 @@ Após modificar arquivos `.vue` ou `.ts.vue`, execute `npm run build` (ou `build
 
 ## 📝 **Licença**
 
-MIT © 2025 Sansys/Veolia
+Propriedade da Jtech
 
 Desenvolvido com ❤️ por Hebert Daniel Oliveira Chaves

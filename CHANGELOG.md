@@ -22,7 +22,7 @@ O DssCard foi completamente refatorado para estar **100% alinhado** com a docume
 - **`square`** (Boolean): Remove border-radius (cantos quadrados)
 - **`clickable`** (Boolean): Torna o card clicável com hover effects e navegação por teclado
 - **`dark`** (Boolean): Ativa dark mode
-- **`brand`** (String): Tema de marca Veolia (hub, water, waste) - adiciona border-left colorida
+- **`brand`** (String): Tema de marca Sansys (hub, water, waste) - adiciona border-left colorida
 
 #### **Subcomponentes**
 - **`DssCardSection`**: Organiza conteúdo interno com padding consistente

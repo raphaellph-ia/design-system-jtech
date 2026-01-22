@@ -1,0 +1,73 @@
+/**
+ * ==========================================================================
+ * DssAvatar - LAYER 3: Variant Brands
+ * ==========================================================================
+ *
+ * Variantes de marca para brandabilidade Sansys:
+ * - Hub (laranja/orange)
+ * - Water (azul/blue)
+ * - Waste (verde/green)
+ *
+ * @version 2.3.0
+ */
+
+/* ========================================
+   BRAND: Hub (Orange)
+   ======================================== */
+
+.dss-avatar--brand-hub {
+  // Borda colorida indica a brand
+  border: 2px solid var(--dss-brand-hub-primary, #F7931E);
+
+  // Status indicator usa cor da brand
+  .dss-avatar__status--online {
+    background-color: var(--dss-brand-hub-primary, #F7931E);
+  }
+}
+
+/* ========================================
+   BRAND: Water (Blue)
+   ======================================== */
+
+.dss-avatar--brand-water {
+  border: 2px solid var(--dss-brand-water-primary, #1F86DE);
+
+  .dss-avatar__status--online {
+    background-color: var(--dss-brand-water-primary, #1F86DE);
+  }
+}
+
+/* ========================================
+   BRAND: Waste (Green)
+   ======================================== */
+
+.dss-avatar--brand-waste {
+  border: 2px solid var(--dss-brand-waste-primary, #70B62C);
+
+  .dss-avatar__status--online {
+    background-color: var(--dss-brand-waste-primary, #70B62C);
+  }
+}
+
+/* ========================================
+   BRAND: Context Aware (via data-brand)
+   ======================================== */
+
+// Quando o avatar herda brand do contexto do app
+[data-brand="hub"] .dss-avatar:not([class*="--brand"]) {
+  &.dss-avatar--with-status .dss-avatar__status--online {
+    background-color: var(--dss-brand-hub-primary, #F7931E);
+  }
+}
+
+[data-brand="water"] .dss-avatar:not([class*="--brand"]) {
+  &.dss-avatar--with-status .dss-avatar__status--online {
+    background-color: var(--dss-brand-water-primary, #1F86DE);
+  }
+}
+
+[data-brand="waste"] .dss-avatar:not([class*="--brand"]) {
+  &.dss-avatar--with-status .dss-avatar__status--online {
+    background-color: var(--dss-brand-waste-primary, #70B62C);
+  }
+}

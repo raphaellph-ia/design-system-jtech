@@ -14,10 +14,10 @@
 `DssInput`
 
 ### Descrição
-Componente de campo de entrada de texto completo com suporte a acessibilidade WCAG 2.1 AA, brandabilidade multi-marca (Hub/Water/Waste), e compatibilidade 100% com a API do Quasar Framework (`q-input`).
+Wrapper DSS baseado no QInput, com API pública governada pelo DSS. Componente de campo de entrada de texto completo com suporte a acessibilidade WCAG 2.1 AA e brandabilidade multi-marca (Hub/Water/Waste).
 
 ### Tipo do Componente
-**Básico** - Wrapper direto do Quasar Framework com extensões DSS (brandabilidade, acessibilidade aprimorada).
+**Básico** - Wrapper DSS que encapsula funcionalidades do Quasar Framework, expondo apenas a API aprovada pelo Design System.
 
 ### Características Principais
 
@@ -28,7 +28,17 @@ Componente de campo de entrada de texto completo com suporte a acessibilidade WC
 - **Floating label inteligente** - Label flutua automaticamente ou fica fixo (stackLabel)
 - **Clearable** - Botão de limpar com acessibilidade completa
 - **TypeScript + Composition API** - Totalmente tipado com composables reutilizáveis
-- **API 100% compatível com Quasar** - Todas as props principais do `q-input` + extensões DSS
+- **API governada pelo DSS** - Subconjunto curado das props do QInput + extensões DSS exclusivas
+
+### Classificação de Recursos
+
+| Categoria | Recursos | Significado |
+|-----------|----------|-------------|
+| ✅ **Recomendado** | `label`, `variant`, `error` + `errorMessage`, `brand`, IDs únicos, ARIA | Padrões estabelecidos pelo DSS - USE sempre que aplicável |
+| 🔶 **Opcional** | `clearable`, `dense`, `loading`, `stackLabel`, `hint`, slots | Funcionalidades disponíveis - USE conforme necessidade do caso de uso |
+| ⛔ **Fora de escopo DSS** | Máscaras, validação automática, autogrow, debounce | Funcionalidades NÃO governadas pelo DSS - implemente externamente se necessário |
+
+> **Nota:** Esta classificação reflete a **governança do DSS**, não limitações técnicas. Recursos "fora de escopo" podem ser implementados via wrappers ou diretivas externas.
 
 ---
 

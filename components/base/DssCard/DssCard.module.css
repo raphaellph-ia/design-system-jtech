@@ -94,7 +94,7 @@
  */
 /**
  * Garante tamanho mínimo para elementos tocáveis (WCAG)
- * 44×44px conforme diretrizes Veolia
+ * 44×44px conforme diretrizes DSS
  */
 /**
  * Mixin para aplicar transições consistentes
@@ -121,7 +121,7 @@
 /* 3. Mixins de acessibilidade avancada */
 /* ==========================================================================
    DSS - MIXINS DE ACESSIBILIDADE AVANÇADA
-   Implementação específica das diretrizes Veolia WCAG 2.1 AA
+   Implementação específica das diretrizes DSS WCAG 2.1 AA
    ========================================================================== */
 /**
  * Mixin para validação de contraste em tempo de compilação

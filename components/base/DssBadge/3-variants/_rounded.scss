@@ -1,0 +1,13 @@
+/* ==========================================================================
+   DssBadge - LAYER 3: VARIANT - Rounded
+
+   RESPONSABILIDADE: Badge com cantos mais arredondados (menos pill)
+
+   CARACTERÍSTICAS:
+   - Border-radius menor que o padrão (pill)
+   - Aparência mais "quadrada" mas ainda arredondada
+   ========================================================================== */
+
+.dss-badge--rounded {
+  border-radius: var(--dss-border-radius-lg);
+}

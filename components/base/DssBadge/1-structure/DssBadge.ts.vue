@@ -54,15 +54,24 @@ defineOptions({
 // ==========================================================================
 
 const props = withDefaults(defineProps<BadgeProps>(), {
+  // Content
   label: '',
+
+  // Visual
   color: 'primary',
   textColor: null,
   transparent: false,
   outline: false,
   rounded: false,
   multiLine: false,
+
+  // Positioning
   floating: false,
   align: null,
+
+  // Brand
+  brand: null,
+
   // Accessibility
   ariaLabel: undefined
 })

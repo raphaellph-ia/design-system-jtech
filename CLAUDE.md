@@ -93,11 +93,18 @@ components/base/DssNomeComponente/
 
 ### Anti-Patterns (EVITAR)
 
+**Codigo:**
 - ❌ Criar arquivos de cores por componente
 - ❌ Usar valores hardcoded (16px, #1F86DE, etc.)
 - ❌ Aplicar cores diretamente no SCSS
 - ❌ Ignorar estados (hover, focus, active, disabled, loading)
 - ❌ Esquecer suporte a dark mode e brands
+
+**Documentacao:**
+- ❌ Afirmar "100% compativel com a API do Quasar"
+- ❌ Listar "Props 100% implementadas do QComponente"
+- ❌ Detalhar cores hex por brand (usar referencia ao DSS_TOKEN_REFERENCE)
+- ❌ Listar tokens sem nomes exatos (ex: "cores de feedback" ao inves de `--dss-feedback-positive`)
 
 ### Checklist de Implementação
 
@@ -128,9 +135,11 @@ components/base/DssNomeComponente/
 
 #### Documentação
 - [ ] README.md com exemplos de uso
-- [ ] Tokens utilizados estão listados
+- [ ] Tokens utilizados estão listados **com nomes exatos** (ex: `--dss-feedback-positive`)
 - [ ] Estados centralizados
 - [ ] Anti-patterns documentados
+- [ ] **Linguagem DSS-First** - NUNCA afirmar "100% compativel com Quasar"
+- [ ] **Brandabilidade referencia DSS_TOKEN_REFERENCE** - NAO lista cores por brand
 
 #### Exports e Testes
 - [ ] Testes unitários cobrindo props, eventos, slots, acessibilidade

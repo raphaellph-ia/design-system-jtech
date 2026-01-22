@@ -1,7 +1,12 @@
 /**
- * DssAvatar - Base Styles
- * Compatível com q-avatar do Quasar Framework
- * Usa apenas tokens genéricos do DSS (cores vão em _colors.scss)
+ * ==========================================================================
+ * DssAvatar - LAYER 2: COMPOSITION (Base Styles)
+ * ==========================================================================
+ *
+ * Wrapper DSS baseado no QAvatar, com API pública governada pelo DSS.
+ * Usa apenas tokens genéricos do DSS (variantes em 3-variants/).
+ *
+ * @version 2.3.0
  */
 
 .dss-avatar {
@@ -237,36 +242,8 @@ a.dss-avatar,
    UTILITÁRIOS
    ======================================== */
 
-// Avatar com status indicator (online, offline, etc.)
+// Avatar com status indicator
+// Estilos de status definidos em 3-variants/_status.scss
 .dss-avatar--with-status {
   position: relative;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 25%;
-    height: 25%;
-    border-radius: 50%;
-    border: 2px solid white;
-    background-color: var(--dss-positive); // status online por padrão
-  }
-}
-
-// Modificadores de status
-.dss-avatar--status-online::after {
-  background-color: var(--dss-positive);
-}
-
-.dss-avatar--status-away::after {
-  background-color: var(--dss-warning);
-}
-
-.dss-avatar--status-busy::after {
-  background-color: var(--dss-negative);
-}
-
-.dss-avatar--status-offline::after {
-  background-color: var(--dss-neutral-400);
 }

@@ -1,8 +1,10 @@
-# DssInput API - Documentação Completa
+# DssInput API - Referência Técnica
+
+> **Documento referencial** - Para governança e boas práticas, consulte [DssInput.md](./DssInput.md) (normativo).
 
 ## Visão Geral
 
-O `DssInput` é um componente de campo de entrada **100% compatível com a API do Quasar Framework**, implementado seguindo rigorosamente as especificações oficiais do `q-input`.
+O `DssInput` é um **wrapper DSS baseado no QInput**, com API pública governada pelo Design System Sansys. Este documento serve como referência técnica para props, eventos, slots e tipos TypeScript.
 
 ---
 
@@ -335,63 +337,80 @@ function selectAll() {
 
 ---
 
-## Compatibilidade com Quasar
+## Relação com Quasar QInput
 
-### Props 100% Implementadas:
-- `modelValue` (v-model)
-- `type` (text, email, password, number, tel, url, search, date, time, datetime-local)
-- `label`
-- `stack-label` (`stackLabel`)
-- `placeholder`
-- `hint`
-- `error`
-- `error-message` (`errorMessage`)
-- `disable` (`disabled`)
-- `readonly`
-- `loading`
-- `clearable`
-- `dense`
+> **Governança**: O DssInput é um **wrapper governado pelo DSS**, não uma cópia do QInput. A API pública é deliberadamente curada para garantir consistência, acessibilidade e brandabilidade.
 
-### Props Mapeadas (Quasar -> DSS):
-| Quasar | DSS | Notas |
-|--------|-----|-------|
-| `filled` | `variant="filled"` | Variante unificada |
-| `outlined` | `variant="outlined"` | Variante unificada (padrão) |
-| `standout` | `variant="standout"` | Variante unificada |
-| `borderless` | `variant="borderless"` | Variante unificada |
-| `disable` | `disabled` | Nome normalizado |
+### ✅ Props Governadas pelo DSS (API Pública)
 
-### Slots Compatíveis:
-- `prepend`
-- `append`
-- `before`
-- `after`
-- `error`
-- `hint`
-- `label`
+Props aprovadas e mantidas pelo Design System:
 
-### Props Adicionadas pelo DSS:
-| Prop | Descrição |
-|------|-----------|
-| `brand` | Brandabilidade Sansys (hub, water, waste) |
-| `ariaLabel` | Label ARIA customizado |
-| `clearAriaLabel` | Label ARIA do botão clear |
-| `required` | Campo obrigatório com aria-required |
-| `tabindex` | Controle de ordem de foco |
+| Prop | Origem | Categoria |
+|------|--------|-----------|
+| `modelValue` | QInput | Recomendado |
+| `type` | QInput | Recomendado |
+| `label` | QInput | Recomendado |
+| `stackLabel` | QInput | Opcional |
+| `placeholder` | QInput | Opcional |
+| `hint` | QInput | Opcional |
+| `error` + `errorMessage` | QInput | Recomendado |
+| `disabled` | QInput | Recomendado |
+| `readonly` | QInput | Opcional |
+| `loading` | QInput | Opcional |
+| `clearable` | QInput | Opcional |
+| `dense` | QInput | Opcional |
+| `variant` | DSS | Recomendado |
+| `brand` | DSS | Recomendado |
+| `ariaLabel` | DSS | Recomendado |
+| `clearAriaLabel` | DSS | Opcional |
+| `required` | DSS | Recomendado |
+| `tabindex` | DSS | Opcional |
 
-### Props do Quasar NÃO Implementadas:
-| Prop | Motivo | Alternativa |
-|------|--------|-------------|
-| `mask` | Complexidade, usar diretiva externa | `v-maska` |
-| `rules` | Validação externa recomendada | `vee-validate`, `vuelidate` |
-| `autogrow` | Específico para textarea | Use `DssTextarea` |
-| `prefix` / `suffix` | Usar slots | `#prepend` / `#append` |
-| `input-class` / `input-style` | Usar slots ou CSS | CSS customizado |
-| `bottom-slots` | Estrutura diferente | Slots `error` e `hint` |
-| `counter` | Implementação futura | - |
-| `maxlength` | Usar atributo nativo | `v-bind="{ maxlength: 100 }"` |
-| `debounce` | Implementar externamente | Composable ou lodash |
-| `autofocus` | Usar ref.focus() no onMounted | `inputRef.value?.focus()` |
+### 🔄 Mapeamento de Variantes (Quasar → DSS)
+
+| Quasar (props separadas) | DSS (prop unificada) |
+|--------------------------|----------------------|
+| `filled` | `variant="filled"` |
+| `outlined` | `variant="outlined"` |
+| `standout` | `variant="standout"` |
+| `borderless` | `variant="borderless"` |
+
+### ✅ Slots Governados pelo DSS
+
+- `prepend` - Conteúdo à esquerda (dentro do field)
+- `append` - Conteúdo à direita (dentro do field)
+- `before` - Conteúdo antes do field wrapper
+- `after` - Conteúdo depois do field wrapper
+- `error` - Mensagem de erro customizada
+- `hint` - Texto de ajuda customizado
+- `label` - Label customizado
+
+### 🔶 Props Exclusivas DSS (Extensões)
+
+| Prop | Descrição | Categoria |
+|------|-----------|-----------|
+| `brand` | Brandabilidade Sansys (hub, water, waste) | Recomendado |
+| `ariaLabel` | Label ARIA customizado | Recomendado |
+| `clearAriaLabel` | Label ARIA do botão clear | Opcional |
+| `required` | Campo obrigatório com aria-required | Recomendado |
+| `tabindex` | Controle de ordem de foco | Opcional |
+
+### ⛔ Props do QInput FORA do Escopo DSS
+
+> Estas props existem no QInput mas **não são governadas pelo DSS**. Se necessárias, implemente via wrappers ou diretivas externas.
+
+| Prop QInput | Por que fora de escopo | Alternativa |
+|-------------|------------------------|-------------|
+| `mask` | Complexidade de manutenção | Diretiva `v-maska` |
+| `rules` | Validação deve ser externa | `vee-validate`, `vuelidate` |
+| `autogrow` | Comportamento de textarea | Use `DssTextarea` |
+| `prefix` / `suffix` | Slots resolvem | `#prepend` / `#append` |
+| `input-class` / `input-style` | Evitar CSS inline | Tokens ou slots |
+| `bottom-slots` | Estrutura diferente no DSS | Slots `error` e `hint` |
+| `counter` | Pode ser implementado via slot | Wrapper customizado |
+| `maxlength` | Atributo HTML nativo | `v-bind="{ maxlength: 100 }"` |
+| `debounce` | Lógica de aplicação | Composable ou lodash |
+| `autofocus` | Controle programático | `inputRef.value?.focus()` |
 
 ---
 

@@ -1,0 +1,42 @@
+/* ==========================================================================
+   DssBadge - LAYER 3: VARIANT - Floating
+
+   RESPONSABILIDADE: Badge flutuante para sobrepor outros elementos
+
+   CARACTERÍSTICAS:
+   - Posição absoluta
+   - Posicionado no canto superior direito
+   - Dimensões menores para não obstruir conteúdo
+   ========================================================================== */
+
+.dss-badge--floating {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  z-index: 10;
+
+  /* Badge floating é menor */
+  min-width: var(--dss-spacing-2-5);
+  min-height: var(--dss-spacing-2-5);
+  padding: var(--dss-spacing-0-5);
+  font-size: 11px;
+
+  /* Badge numérico (com conteúdo) tem padding horizontal maior */
+  &:not(:empty) {
+    padding: var(--dss-spacing-0-5) var(--dss-spacing-1);
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .dss-badge--floating {
+    /* Badge floating ligeiramente maior em mobile (melhor touch target) */
+    min-width: var(--dss-spacing-3);
+    min-height: var(--dss-spacing-3);
+    top: -6px;
+    right: -6px;
+  }
+}

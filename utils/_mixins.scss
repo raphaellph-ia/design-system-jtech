@@ -58,7 +58,7 @@
 
 /**
  * Garante tamanho mínimo para elementos tocáveis (WCAG)
- * 44×44px conforme diretrizes Veolia
+ * 44×44px conforme diretrizes DSS
  */
 @mixin dss-touch-target($size: 'default') {
   @if $size == 'default' or $size == 'min' {

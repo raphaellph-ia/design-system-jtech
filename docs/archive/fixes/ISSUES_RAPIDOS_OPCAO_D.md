@@ -648,4 +648,4 @@ TypeScript types substituem validators de Options API:
 ---
 
 **Desenvolvido com ❤️ por Hebert Daniel Oliveira Chaves**
-**Licença**: MIT © 2025 Sansys/Veolia
+**Licença**: Propriedade da Jtech

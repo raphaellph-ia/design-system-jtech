@@ -540,7 +540,7 @@
 
       <!-- 4. BRANDS -->
       <section v-if="activeCategory === 'brands'" class="token-section">
-        <h2>🏢 Brands Veolia</h2>
+        <h2>🏢 Brands Sansys</h2>
         <p class="section-desc">Paletas de cores das marcas Hub, Water e Waste</p>
 
         <!-- Hub -->

@@ -1,0 +1,88 @@
+/* ==========================================================================
+   DssBadge - LAYER 4: OUTPUT - Brands
+
+   RESPONSABILIDADE: Brandability (Hub, Water, Waste)
+
+   CARACTERÍSTICAS:
+   - Usa tokens genéricos de brand
+   - Aplica cor da brand ao badge
+   - Suporta variantes outline e transparent
+   ========================================================================== */
+
+/* ==========================================================================
+   HUB BRAND (Orange)
+   ========================================================================== */
+
+[data-brand="hub"],
+.dss-badge--brand-hub {
+  &.dss-badge {
+    background-color: var(--dss-hub-600);
+    color: var(--dss-gray-50);
+
+    /* Variante outline */
+    &.dss-badge--outline {
+      background-color: transparent;
+      border-color: var(--dss-hub-600);
+      color: var(--dss-hub-600);
+    }
+
+    /* Variante transparent */
+    &.dss-badge--transparent {
+      background-color: transparent;
+      border-color: var(--dss-hub-600);
+      color: var(--dss-hub-600);
+    }
+  }
+}
+
+/* ==========================================================================
+   WATER BRAND (Blue)
+   ========================================================================== */
+
+[data-brand="water"],
+.dss-badge--brand-water {
+  &.dss-badge {
+    background-color: var(--dss-water-500);
+    color: var(--dss-gray-50);
+
+    /* Variante outline */
+    &.dss-badge--outline {
+      background-color: transparent;
+      border-color: var(--dss-water-500);
+      color: var(--dss-water-500);
+    }
+
+    /* Variante transparent */
+    &.dss-badge--transparent {
+      background-color: transparent;
+      border-color: var(--dss-water-500);
+      color: var(--dss-water-500);
+    }
+  }
+}
+
+/* ==========================================================================
+   WASTE BRAND (Green)
+   ========================================================================== */
+
+[data-brand="waste"],
+.dss-badge--brand-waste {
+  &.dss-badge {
+    background-color: var(--dss-waste-600);
+    color: var(--dss-gray-50);
+
+    /* Variante outline */
+    &.dss-badge--outline {
+      background-color: transparent;
+      border-color: var(--dss-waste-600);
+      color: var(--dss-waste-600);
+    }
+
+    /* Variante transparent */
+    &.dss-badge--transparent {
+      background-color: transparent;
+      border-color: var(--dss-waste-600);
+      color: var(--dss-waste-600);
+    }
+  }
+}

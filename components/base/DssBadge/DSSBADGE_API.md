@@ -1,14 +1,16 @@
-# DssBadge API - Documentação Completa
+# DssBadge API - Referencia Tecnica
 
-## 📋 Visão Geral
+> **Documento referencial** - Para governanca e boas praticas, consulte [DssBadge.md](./DssBadge.md) (normativo).
 
-O `DssBadge` é um componente de badge **100% compatível com a API do Quasar Framework**, implementado seguindo rigorosamente as especificações oficiais do `q-badge`.
+## Visao Geral
+
+O `DssBadge` e um **wrapper DSS baseado no QBadge**, com API publica governada pelo Design System Sansys. Este documento serve como referencia tecnica para props, slots e tipos TypeScript.
 
 ---
 
-## 🎯 Props Completas
+## Props Completas
 
-### **Conteúdo**
+### Conteudo
 
 | Prop | Tipo | Default | Descrição |
 |------|------|---------|-----------| | `label` | String \| Number | `''` | Conteúdo do badge |
@@ -22,7 +24,7 @@ O `DssBadge` é um componente de badge **100% compatível com a API do Quasar Fr
 
 ---
 
-### **Cores**
+### Cores
 
 | Prop | Tipo | Default | Valores | Descrição |
 |------|------|---------|---------|-----------| | `color` | String | `'primary'` | `primary`, `secondary`, `tertiary`, `accent`, `positive`, `negative`, `warning`, `info` | Cor de fundo do badge |
@@ -39,7 +41,7 @@ O `DssBadge` é um componente de badge **100% compatível com a API do Quasar Fr
 
 ---
 
-### **Posicionamento**
+### Posicionamento
 
 | Prop | Tipo | Default | Descrição |
 |------|------|---------|-----------| | `floating` | Boolean | `false` | Badge posicionado de forma absoluta (top-right) |
@@ -59,7 +61,7 @@ O `DssBadge` é um componente de badge **100% compatível com a API do Quasar Fr
 
 ---
 
-### **Variantes Visuais**
+### Variantes Visuais
 
 | Prop | Tipo | Default | Descrição |
 |------|------|---------|-----------| | `transparent` | Boolean | `false` | Badge com fundo transparente (mantém cor do texto) |
@@ -84,7 +86,7 @@ O `DssBadge` é um componente de badge **100% compatível com a API do Quasar Fr
 
 ---
 
-## 🎨 Slots
+## Slots
 
 | Slot | Descrição |
 |------|-----------| | `default` | Conteúdo do badge (substitui `label`) |
@@ -102,7 +104,7 @@ O `DssBadge` é um componente de badge **100% compatível com a API do Quasar Fr
 
 ---
 
-## 🎬 Casos de Uso Comuns
+## Casos de Uso Comuns
 
 ### **1. Badge de Notificação (Floating)**
 
@@ -210,7 +212,7 @@ const unreadCount = ref(7)
 
 ---
 
-## 🎯 Integração com Outros Componentes
+## Integracao com Outros Componentes
 
 ### **Com DssButton**
 
@@ -253,30 +255,48 @@ const unreadCount = ref(7)
 
 ---
 
-## ✅ Compatibilidade com Quasar
+## Relacao com Quasar QBadge
 
-### Props 100% Implementadas:
-✅ `label` - Conteúdo do badge
-✅ `color` - Cor semântica
-✅ `textColor` - Cor do texto customizável
-✅ `floating` - Posicionamento absoluto
-✅ `align` - Alinhamento vertical
-✅ `transparent` - Fundo transparente
-✅ `outline` - Variante com borda
-✅ `rounded` - Bordas arredondadas
-✅ `multiLine` - Suporte a múltiplas linhas
+> **Governanca**: O DssBadge e um **wrapper governado pelo DSS**, nao uma copia do QBadge. A API publica e deliberadamente curada para garantir consistencia, acessibilidade e brandabilidade.
 
-### Props Adicionadas pelo DSS:
-🟠 `color="tertiary"` - Cor terciária (#ff6607)
+### Props Governadas pelo DSS (API Publica)
 
-### Diferenças:
-- **Quasar** usa `q-badge`, **DSS** usa `DssBadge`
-- **DSS** adiciona cor `tertiary` como semântica
-- **DSS** usa tokens DSS para consistência visual
+Props aprovadas e mantidas pelo Design System:
+
+| Prop | Origem | Categoria |
+|------|--------|-----------|
+| `label` | QBadge | Recomendado |
+| `color` | QBadge | Recomendado |
+| `textColor` | QBadge | Opcional |
+| `floating` | QBadge | Recomendado |
+| `align` | QBadge | Opcional |
+| `transparent` | QBadge | Opcional |
+| `outline` | QBadge | Recomendado |
+| `rounded` | QBadge | Opcional |
+| `multiLine` | QBadge | Opcional |
+| `brand` | DSS | Recomendado |
+| `ariaLabel` | DSS | Recomendado |
+
+### Props Exclusivas DSS (Extensoes)
+
+| Prop | Descricao | Categoria |
+|------|-----------|-----------|
+| `brand` | Brandabilidade Sansys (hub, water, waste) | Recomendado |
+| `ariaLabel` | Label ARIA customizado | Recomendado |
+| `color="tertiary"` | Cor terciaria semantica | Opcional |
+
+### Props do QBadge FORA do Escopo DSS
+
+> Estas props existem no QBadge mas **nao sao governadas pelo DSS**. Se necessarias, implemente via wrappers externos.
+
+| Prop QBadge | Por que fora de escopo | Alternativa |
+|-------------|------------------------|-------------|
+| Animacoes customizadas | Complexidade de manutencao | CSS externo |
+| Interacoes complexas | Badge nao e interativo | Use `DssChip` |
 
 ---
 
-## 📐 Dimensões Padrão
+## Dimensoes Padrao
 
 | Tipo | Min Width | Min Height | Padding | Font Size |
 |------|-----------|------------|---------|-----------|
@@ -288,7 +308,7 @@ const unreadCount = ref(7)
 
 ---
 
-## 🎨 Classes CSS Geradas
+## Classes CSS Geradas
 
 ```scss
 .dss-badge                    // Base
@@ -303,9 +323,9 @@ const unreadCount = ref(7)
 
 ---
 
-## ♿ Acessibilidade
+## Acessibilidade
 
-### **ARIA Labels**
+### ARIA Labels
 ```vue
 <DssBadge
   aria-label="3 novas notificações"
@@ -314,7 +334,7 @@ const unreadCount = ref(7)
 />
 ```
 
-### **High Contrast Mode**
+### High Contrast Mode
 ```scss
 @media (prefers-contrast: high) {
   .dss-badge {
@@ -324,7 +344,7 @@ const unreadCount = ref(7)
 }
 ```
 
-### **Reduced Motion**
+### Reduced Motion
 ```scss
 @media (prefers-reduced-motion: reduce) {
   .dss-badge {
@@ -335,15 +355,22 @@ const unreadCount = ref(7)
 
 ---
 
-## 📦 Versão
+## Versao
 
-**DSS v2.2.0** - Implementação completa da API do Quasar QBadge
-**Compatibilidade**: Quasar v2.x
+**DSS v2.3.0** - TypeScript + Composition API
+**Compatibilidade**: Quasar v2.x, Vue 3.x
+
+**Ultima atualizacao:** Janeiro 2026
+**Changelog:**
+- Migrado para TypeScript + Composition API
+- Prop `brand` para brandabilidade Sansys
+- Prop `ariaLabel` para acessibilidade
+- Composables totalmente tipados
 
 ---
 
-## 📚 Recursos
+## Recursos
 
-- [Documentação Oficial do Quasar QBadge](https://quasar.dev/vue-components/badge)
-- [Código-fonte do QBadge](https://github.com/quasarframework/quasar/blob/dev/ui/src/components/badge/QBadge.js)
-- [Design System Sansys](https://github.com/sansys/design-system)
+- [Documentacao Oficial do Quasar QBadge](https://quasar.dev/vue-components/badge)
+- [Design System Sansys - DssBadge.md](./DssBadge.md)
+- [DSS Token Reference](../../../docs/reference/DSS_TOKEN_REFERENCE.md)

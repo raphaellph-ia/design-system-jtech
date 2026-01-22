@@ -34,6 +34,14 @@ export type BadgeAlign =
   | 'middle'
   | 'bottom'
 
+/**
+ * Brands disponíveis
+ */
+export type BadgeBrand =
+  | 'hub'
+  | 'water'
+  | 'waste'
+
 // ==========================================================================
 // INTERFACES
 // ==========================================================================
@@ -91,6 +99,16 @@ export interface BadgeProps {
 
   /** Alinhamento vertical quando não flutuante */
   align?: BadgeAlign | null
+
+  // ========================================
+  // Brand
+  // ========================================
+
+  /**
+   * Brand override (Hub, Water, Waste)
+   * Aplica cores específicas da marca
+   */
+  brand?: BadgeBrand | null
 
   // ========================================
   // Accessibility (WCAG 2.1 AA)

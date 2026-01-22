@@ -1,0 +1,24 @@
+/* ==========================================================================
+   DssBadge - LAYER 3: VARIANT - Outline
+
+   RESPONSABILIDADE: Badge com borda, background transparente
+
+   CARACTERÍSTICAS:
+   - Background transparente
+   - Border colorida (currentColor)
+   - Padding ajustado para compensar border
+   ========================================================================== */
+
+.dss-badge--outline {
+  background-color: transparent !important;
+  border: var(--dss-border-width-md) solid currentColor;
+  box-shadow: none !important;
+
+  /* Ajustar padding para compensar border */
+  padding: calc(var(--dss-spacing-0-5) - 1px) calc(var(--dss-spacing-1) - 1px);
+
+  /* Outline + floating */
+  &.dss-badge--floating {
+    padding: calc(var(--dss-spacing-0-5) - 1px) calc(var(--dss-spacing-0-5) - 1px);
+  }
+}

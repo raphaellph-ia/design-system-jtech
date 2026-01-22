@@ -1,163 +1,57 @@
-/**
- * DssBadge - Base Styles
- * Compatível com q-badge do Quasar Framework
- * Usa apenas tokens genéricos do DSS (cores vão em _colors.scss)
- */
+/* ==========================================================================
+   DssBadge - LAYER 2: COMPOSITION (Base Styles)
+
+   RESPONSABILIDADE: Estilos fundamentais usando APENAS tokens genéricos
+
+   REGRAS:
+   ✅ APENAS tokens genéricos (--dss-spacing-*, --dss-border-radius-*, etc.)
+   ✅ Mixins reutilizáveis
+   ✅ Reset e layout base
+   ❌ ZERO valores hardcoded
+   ❌ ZERO lógica de variantes (variantes vão em 3-variants/)
+   ========================================================================== */
+
+/* ==========================================================================
+   BADGE BASE
+   ========================================================================== */
 
 .dss-badge {
-  // Display e Layout
+  /* Display e Layout */
   display: inline-flex;
   align-items: center;
   justify-content: center;
   position: relative;
   vertical-align: middle;
 
-  // Tipografia
-  font-family: var(--dss-font-family-base);
-  font-size: var(--dss-font-size-xs); // 12px
+  /* Tipografia */
+  font-family: var(--dss-font-family-sans);
+  font-size: var(--dss-font-size-xs);
   font-weight: var(--dss-font-weight-medium);
   line-height: 1;
   white-space: nowrap;
   text-align: center;
 
-  // Dimensões
-  min-width: var(--dss-spacing-3); // 24px - tamanho mínimo para badges numéricos
+  /* Dimensões */
+  min-width: var(--dss-spacing-3);
   min-height: var(--dss-spacing-3);
-  padding: var(--dss-spacing-0-5) var(--dss-spacing-1); // 4px 8px
+  padding: var(--dss-spacing-0-5) var(--dss-spacing-1);
 
-  // Forma
-  border-radius: var(--dss-border-radius-full); // Pill shape (999px)
+  /* Forma - Pill shape por padrão */
+  border-radius: var(--dss-border-radius-full);
 
-  // Transições
-  transition: all var(--dss-transition-base);
+  /* Transições */
+  transition: all var(--dss-duration-200) var(--dss-easing-standard);
 
-  // Comportamento de overflow
+  /* Comportamento de overflow */
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* ========================================
-   FLOATING MODE
-   ======================================== */
-
-.dss-badge--floating {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  z-index: 10;
-
-  // Badge floating é menor
-  min-width: var(--dss-spacing-2-5); // 20px
-  min-height: var(--dss-spacing-2-5);
-  padding: var(--dss-spacing-0-5) var(--dss-spacing-0-5); // 4px 4px
-  font-size: 11px;
-
-  // Badge numérico pequeno fica circular
-  &:not(:empty) {
-    padding: var(--dss-spacing-0-5) var(--dss-spacing-1);
-  }
-}
-
-/* ========================================
-   MULTI-LINE
-   ======================================== */
-
-.dss-badge--multi-line {
-  white-space: normal;
-  word-break: break-word;
-  line-height: var(--dss-line-height-tight); // 1.25
-  padding: var(--dss-spacing-0-5) var(--dss-spacing-1-5); // 4px 12px - mais padding horizontal
-  min-height: var(--dss-spacing-4); // 32px - altura maior para múltiplas linhas
-}
-
-/* ========================================
-   TRANSPARENT
-   ======================================== */
-
-.dss-badge--transparent {
-  background-color: transparent !important;
-  box-shadow: none !important;
-
-  // Outline fino para badge transparente
-  border: var(--dss-border-width-thin) solid currentColor;
-}
-
-/* ========================================
-   OUTLINE
-   ======================================== */
-
-.dss-badge--outline {
-  background-color: transparent !important;
-  border: var(--dss-border-width-medium) solid currentColor; // 2px border
-  box-shadow: none !important;
-
-  // Aumentar padding para compensar border
-  padding: calc(var(--dss-spacing-0-5) - 1px) calc(var(--dss-spacing-1) - 1px);
-
-  &.dss-badge--floating {
-    padding: calc(var(--dss-spacing-0-5) - 1px) calc(var(--dss-spacing-0-5) - 1px);
-  }
-}
-
-/* ========================================
-   ROUNDED (mais arredondado que padrão)
-   ======================================== */
-
-.dss-badge--rounded {
-  border-radius: var(--dss-border-radius-lg); // 12px - menos pill, mais rounded
-}
-
-/* ========================================
-   BADGE VAZIO (dot indicator)
-   ======================================== */
-
-.dss-badge:empty {
-  min-width: var(--dss-spacing-1-5); // 12px - dot pequeno
-  min-height: var(--dss-spacing-1-5);
-  padding: 0;
-  border-radius: 50%;
-
-  &.dss-badge--floating {
-    min-width: var(--dss-spacing-2); // 16px - dot floating maior
-    min-height: var(--dss-spacing-2);
-  }
-}
-
-/* ========================================
-   ACESSIBILIDADE
-   ======================================== */
-
-// Screen readers
-.dss-badge[aria-label] {
-  cursor: help;
-}
-
-// Focus states para badges interativos
-.dss-badge:focus-visible {
-  outline: 2px solid var(--dss-focus-ring);
-  outline-offset: 2px;
-}
-
-/* ========================================
-   RESPONSIVIDADE
-   ======================================== */
-
-@media (max-width: 768px) {
-  .dss-badge--floating {
-    // Badge floating ligeiramente maior em mobile (melhor touch target)
-    min-width: var(--dss-spacing-3);
-    min-height: var(--dss-spacing-3);
-    top: -6px;
-    right: -6px;
-  }
-}
-
-/* ========================================
+/* ==========================================================================
    VARIAÇÕES DE ALINHAMENTO VERTICAL
-   ======================================== */
+   Aplicado via style binding no component (vertical-align: top | middle | bottom)
+   ========================================================================== */
 
-// Aplicado via style binding no component
-// vertical-align: top | middle | bottom
 .dss-badge[style*="vertical-align: top"] {
   vertical-align: top;
 }

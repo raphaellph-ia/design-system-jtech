@@ -6,16 +6,20 @@
 
 ---
 
-## 📚 Documentação Completa
+## 📚 Documentação - Papéis dos Documentos
 
-| Documento | Descrição |
-|-----------|-----------|
-| **[DssInput.md](./DssInput.md)** | Documentação principal - Template 13.1 (13 seções obrigatórias) |
-| **[DSSINPUT_API.md](./DSSINPUT_API.md)** | Referência técnica completa - Props, Eventos, Slots, TypeScript |
-| **[DOCUMENTATION_CHANGELOG.md](./DOCUMENTATION_CHANGELOG.md)** | Histórico de alterações na documentação |
-| **README.md** ← você está aqui | Índice de navegação e visão geral rápida |
+| Documento | Papel | Quando Usar |
+|-----------|-------|-------------|
+| **[DssInput.md](./DssInput.md)** | **Normativo** | Regras, governança, anti-patterns, decisões de design |
+| **[DSSINPUT_API.md](./DSSINPUT_API.md)** | **Referencial** | Consulta técnica de props, eventos, slots, TypeScript |
+| **[DOCUMENTATION_CHANGELOG.md](./DOCUMENTATION_CHANGELOG.md)** | **Histórico** | Rastreamento de mudanças na documentação |
+| **README.md** ← você está aqui | **Onboarding** | Primeiro contato, visão geral rápida, início rápido |
 
 > **Golden Sample**: Esta documentação segue o padrão estabelecido pelo [DssButton](../DssButton/DssButton.md).
+
+### Governança
+
+O DssInput é um **wrapper DSS baseado no QInput**, com API pública governada pelo Design System Sansys. Para detalhes completos sobre governança, consulte [DssInput.md](./DssInput.md).
 
 ---
 
@@ -542,28 +546,19 @@ vs ANTES:
 
 ---
 
-## Notas de Migração do Quasar
+## Relação com Quasar QInput
 
-### **Props Compatíveis**
-- `filled` → `variant="filled"`
-- `outlined` → `variant="outlined"`
-- `standout` → `variant="standout"`
-- `borderless` → `variant="borderless"`
-- `dense` → `dense`
-- `stack-label` → `stackLabel`
-- `clearable` → `clearable`
-- `disable` → `disabled`
-- `readonly` → `readonly`
+> Para detalhes completos, consulte [DSSINPUT_API.md - Relação com Quasar](./DSSINPUT_API.md#relação-com-quasar-qinput)
 
-### **Slots Compatíveis**
-- `prepend`, `append`, `before`, `after`
-- `error`, `hint`
-- `label`
+### Resumo Rápido
 
-### **Diferenças**
-- `brand` é específico do DSS (Hub, Water, Waste)
-- Máscaras de input não implementadas (usar diretiva externa)
-- Regras de validação não built-in (implementar externamente)
+| Aspecto | Status |
+|---------|--------|
+| Variantes (`filled`, `outlined`, etc.) | ✅ Mapeadas para `variant="..."` |
+| Props de estado (`disabled`, `readonly`, `error`) | ✅ Governadas pelo DSS |
+| Slots (`prepend`, `append`, etc.) | ✅ Governados pelo DSS |
+| `brand` (Hub/Water/Waste) | 🔶 **Extensão DSS** |
+| Máscaras, validação, autogrow | ⛔ Fora de escopo - usar externamente |
 
 ---
 

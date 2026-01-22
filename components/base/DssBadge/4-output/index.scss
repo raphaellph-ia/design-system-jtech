@@ -1,0 +1,11 @@
+/* ==========================================================================
+   DssBadge - LAYER 4: OUTPUT (Orchestrator)
+
+   Importa brands e states
+
+   NOTA: Cores são aplicadas via classes utilitárias (.bg-*, .text-*)
+   definidas em utils/_colors.scss (padrão Quasar Framework)
+   ========================================================================== */
+
+@forward './brands';
+@forward './states';

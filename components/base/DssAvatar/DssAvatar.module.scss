@@ -1,9 +1,21 @@
+/**
+ * ==========================================================================
+ * DssAvatar - Module Orchestrator
+ * ==========================================================================
+ *
+ * Orquestrador principal que importa todas as camadas do componente.
+ *
+ * CORES: Aplicadas via classes utilitárias (.bg-*, .text-*) - Padrão Quasar
+ * Definidas em: utils/_colors.scss
+ *
+ * @version 2.3.0
+ */
+
+// Layer 2: Composition (base styles)
 @use './2-composition/base' as composition;
 
-/* ==========================================================================
-   CORES: Aplicadas via classes utilitárias (.bg-*, .text-*) - Padrão Quasar
-   Definidas em: utils/_colors.scss
-   ========================================================================== */
+// Layer 3: Variants (brands, status)
+@use './3-variants/index' as variants;
 
 /* ==========================================================================
    ACCESSIBILITY ENHANCEMENTS - DssAvatar
@@ -15,13 +27,30 @@
     border: 2px solid currentColor !important;
     font-weight: 700;
   }
+
+  .dss-avatar__status {
+    border-width: 3px !important;
+  }
 }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .dss-avatar,
-  .dss-avatar * {
+  .dss-avatar *,
+  .dss-avatar__status {
     transition: none !important;
     animation: none !important;
+  }
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] {
+  .dss-avatar {
+    background-color: var(--dss-neutral-700, #424242);
+    color: var(--dss-neutral-100, #F5F5F5);
+  }
+
+  .dss-avatar__status {
+    border-color: var(--dss-surface-dark, #1E1E1E);
   }
 }

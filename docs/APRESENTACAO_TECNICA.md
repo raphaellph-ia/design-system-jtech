@@ -316,13 +316,13 @@ Funciona out-of-the-box, sem configuração adicional.
 **Hebert Daniel Oliveira Chaves**
 
 - GitHub: [@hebertchaves](https://github.com/hebertchaves)
-- Email: hebert.chaves@veolia.com
+- Email: hebert.chaves@jtech.com.br
 
 ---
 
 ## 📝 Licença
 
-MIT © 2025 Sansys/Veolia
+Propriedade da Jtech
 
 ---
 

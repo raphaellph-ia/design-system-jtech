@@ -4,10 +4,13 @@
  * ==========================================================================
  *
  * Tipos e interfaces para o componente DssAvatar
- * Compatível 100% com Quasar q-avatar API
+ * Wrapper DSS baseado no QAvatar, com API governada pelo DSS
  *
  * @see https://quasar.dev/vue-components/avatar
+ * @version 2.3.0
  */
+
+import type { Ref } from 'vue'
 
 // ==========================================================================
 // ENUMS E LITERAIS
@@ -26,6 +29,21 @@ export type AvatarColor =
   | 'warning'
   | 'info'
 
+/**
+ * Tamanhos predefinidos do avatar
+ */
+export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+
+/**
+ * Marcas do sistema Sansys
+ */
+export type AvatarBrand = 'hub' | 'water' | 'waste'
+
+/**
+ * Status indicators
+ */
+export type AvatarStatus = 'online' | 'away' | 'busy' | 'offline'
+
 // ==========================================================================
 // INTERFACES
 // ==========================================================================
@@ -37,8 +55,9 @@ export type AvatarColor =
  * ```vue
  * <DssAvatar
  *   color="primary"
- *   size="64px"
+ *   size="lg"
  *   icon="person"
+ *   brand="hub"
  * />
  * ```
  */
@@ -48,11 +67,12 @@ export interface AvatarProps {
   // ========================================
 
   /**
-   * Tamanho do avatar (aceita qualquer unidade CSS)
-   * @default null (usa 48px padrão)
-   * @example "64px", "3rem", "80px"
+   * Tamanho do avatar
+   * - Aceita tamanhos predefinidos: 'xs', 'sm', 'md', 'lg', 'xl'
+   * - Aceita valores CSS customizados: '64px', '3rem'
+   * @default 'md'
    */
-  size?: string | null
+  size?: AvatarSize | string | null
 
   /**
    * Tamanho da fonte do conteúdo
@@ -64,11 +84,22 @@ export interface AvatarProps {
   // Visual
   // ========================================
 
-  /** Cor semântica do avatar (background) */
+  /**
+   * Cor semântica do avatar (background)
+   */
   color?: AvatarColor | null
 
-  /** Cor customizada do texto (sobrescreve cor padrão) */
+  /**
+   * Cor customizada do texto (sobrescreve cor padrão)
+   */
   textColor?: string | null
+
+  /**
+   * Marca Sansys (Hub, Water, Waste)
+   * Aplica cores de borda/destaque da brand
+   * @default null
+   */
+  brand?: AvatarBrand | null
 
   // ========================================
   // Content
@@ -84,11 +115,52 @@ export interface AvatarProps {
   // Shape
   // ========================================
 
-  /** Avatar quadrado (border-radius: 0) */
+  /**
+   * Avatar quadrado (border-radius: 0)
+   * @default false
+   */
   square?: boolean
 
-  /** Avatar arredondado (border-radius: 8px) */
+  /**
+   * Avatar arredondado (border-radius: 8px)
+   * @default false
+   */
   rounded?: boolean
+
+  // ========================================
+  // Status
+  // ========================================
+
+  /**
+   * Indicador de status (online, away, busy, offline)
+   * @default null
+   */
+  status?: AvatarStatus | null
+
+  // ========================================
+  // Accessibility (WCAG 2.1 AA)
+  // ========================================
+
+  /**
+   * Label de acessibilidade para screen readers
+   * @example "Avatar de João Silva"
+   */
+  ariaLabel?: string
+
+  /**
+   * Alt text para imagens (usado no slot default)
+   */
+  alt?: string
+}
+
+/**
+ * Eventos emitidos pelo DssAvatar
+ */
+export interface AvatarEmits {
+  /**
+   * Emitido quando o avatar é clicado (se interativo)
+   */
+  (e: 'click', event: MouseEvent): void
 }
 
 /**
@@ -101,11 +173,21 @@ export interface AvatarSlots {
    * @example
    * ```vue
    * <DssAvatar>
-   *   <img src="user.jpg" />
+   *   <img src="user.jpg" alt="User" />
    * </DssAvatar>
    * ```
    */
   default(): any
+}
+
+/**
+ * Referências expostas pelo DssAvatar
+ */
+export interface AvatarExpose {
+  /**
+   * Referência ao elemento root do avatar
+   */
+  rootRef: Ref<HTMLDivElement | null>
 }
 
 // ==========================================================================
@@ -119,6 +201,7 @@ export interface AvatarStyle {
   width?: string
   height?: string
   borderRadius?: string
+  fontSize?: string
 }
 
 /**
@@ -133,4 +216,37 @@ export interface IconStyle {
  */
 export interface ContentStyle {
   fontSize?: string
+}
+
+/**
+ * Mapeamento de tamanhos para pixels
+ */
+export const AVATAR_SIZE_MAP: Record<AvatarSize, string> = {
+  xs: '32px',
+  sm: '40px',
+  md: '48px',
+  lg: '64px',
+  xl: '80px'
+}
+
+/**
+ * Mapeamento de tamanhos de ícone por tamanho de avatar
+ */
+export const AVATAR_ICON_SIZE_MAP: Record<AvatarSize, string> = {
+  xs: '16px',
+  sm: '20px',
+  md: '24px',
+  lg: '32px',
+  xl: '48px'
+}
+
+/**
+ * Mapeamento de tamanhos de fonte por tamanho de avatar
+ */
+export const AVATAR_FONT_SIZE_MAP: Record<AvatarSize, string> = {
+  xs: '12px',
+  sm: '14px',
+  md: '16px',
+  lg: '18px',
+  xl: '20px'
 }

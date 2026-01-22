@@ -1,0 +1,18 @@
+/* ==========================================================================
+   DssBadge - LAYER 3: VARIANT - Multi-line
+
+   RESPONSABILIDADE: Badge que permite múltiplas linhas de texto
+
+   CARACTERÍSTICAS:
+   - White-space normal (permite quebra)
+   - Line-height ajustado
+   - Altura mínima maior
+   ========================================================================== */
+
+.dss-badge--multi-line {
+  white-space: normal;
+  word-break: break-word;
+  line-height: var(--dss-line-height-tight);
+  padding: var(--dss-spacing-0-5) var(--dss-spacing-1-5);
+  min-height: var(--dss-spacing-4);
+}

@@ -1,405 +1,414 @@
-# DssAvatar API - Documentação Completa
+# DssAvatar API - Referencia Tecnica
 
-## 📋 Visão Geral
+> **Documento referencial** - Para governanca e boas praticas, consulte [DssAvatar.md](./DssAvatar.md) (normativo).
 
-O `DssAvatar` é um componente de avatar **100% compatível com a API do Quasar Framework**, implementado seguindo rigorosamente as especificações oficiais do `q-avatar`.
+## Visao Geral
+
+O `DssAvatar` e um **wrapper DSS baseado no QAvatar**, com API publica governada pelo Design System Sansys. Este documento serve como referencia tecnica para props, eventos, slots e tipos TypeScript.
 
 ---
 
-## 🎯 Props Completas
+## Props Completas
 
-### **Dimensões**
+### **Tamanho**
 
-| Prop | Tipo | Default | Descrição |
-|------|------|---------|-----------| | `size` | String | `null` | Tamanho customizado (aceita qualquer unidade CSS: px, rem, em, etc.) |
-| `fontSize` | String | `null` | Tamanho da fonte do conteúdo (aceita qualquer unidade CSS) |
+| Prop | Tipo | Default | Valores | Descricao |
+|------|------|---------|---------|-----------|
+| `size` | String | `'md'` | `xs`, `sm`, `md`, `lg`, `xl` ou CSS unit | Tamanho do avatar |
+| `fontSize` | String | `null` | CSS unit | Tamanho da fonte customizado |
+
+**Tamanhos Predefinidos:**
+
+| Size | Width/Height | Font Size | Icon Size |
+|------|--------------|-----------|-----------|
+| `xs` | 32px | 12px | 16px |
+| `sm` | 40px | 14px | 20px |
+| `md` | 48px | 16px | 24px |
+| `lg` | 64px | 18px | 32px |
+| `xl` | 80px | 20px | 48px |
 
 **Exemplo:**
 ```vue
-<!-- Tamanho padrão (48px) -->
-<DssAvatar>JD</DssAvatar>
+<!-- Tamanhos predefinidos -->
+<DssAvatar size="xs">XS</DssAvatar>
+<DssAvatar size="sm">SM</DssAvatar>
+<DssAvatar size="md">MD</DssAvatar>
+<DssAvatar size="lg">LG</DssAvatar>
+<DssAvatar size="xl">XL</DssAvatar>
 
-<!-- Tamanhos customizados -->
-<DssAvatar size="32px">JD</DssAvatar>
-<DssAvatar size="64px">JD</DssAvatar>
-<DssAvatar size="80px">JD</DssAvatar>
-<DssAvatar size="5rem">JD</DssAvatar>
+<!-- Tamanho customizado -->
+<DssAvatar size="100px">100</DssAvatar>
+<DssAvatar size="5rem">5rem</DssAvatar>
 
 <!-- Font size customizado -->
-<DssAvatar size="64px" font-size="24px">JD</DssAvatar>
+<DssAvatar size="lg" font-size="24px">JD</DssAvatar>
 ```
 
 ---
 
 ### **Cores**
 
-| Prop | Tipo | Default | Valores | Descrição |
-|------|------|---------|---------|-----------| | `color` | String | `null` | `primary`, `secondary`, `tertiary`, `accent`, `positive`, `negative`, `warning`, `info` | Cor de fundo do avatar |
-| `textColor` | String | `null` | Qualquer cor semântica | Cor do texto/ícone |
+| Prop | Tipo | Default | Valores | Descricao |
+|------|------|---------|---------|-----------|
+| `color` | String | `null` | `primary`, `secondary`, `tertiary`, `accent`, `positive`, `negative`, `warning`, `info` | Cor de fundo |
+| `textColor` | String | `null` | Qualquer cor semantica | Cor do texto/icone |
 
 **Exemplo:**
 ```vue
 <DssAvatar color="primary">JD</DssAvatar>
 <DssAvatar color="secondary">AB</DssAvatar>
-<DssAvatar color="positive">✓</DssAvatar>
-<DssAvatar color="primary" text-color="white">JD</DssAvatar>
+<DssAvatar color="positive" text-color="white">OK</DssAvatar>
 ```
+
+> **Nota:** Cores sao aplicadas via classes utilitarias CSS (`.bg-*`, `.text-*`) seguindo o padrao Quasar/DSS.
 
 ---
 
-### **Ícone**
+### **Icone**
 
-| Prop | Tipo | Default | Descrição |
-|------|------|---------|-----------| | `icon` | String | `null` | Material Icon name |
+| Prop | Tipo | Default | Descricao |
+|------|------|---------|-----------|
+| `icon` | String | `null` | Nome do icone Material Icons |
 
 **Exemplo:**
 ```vue
 <DssAvatar icon="person" color="primary" />
 <DssAvatar icon="account_circle" color="secondary" />
 <DssAvatar icon="business" color="accent" />
+<DssAvatar icon="group" color="info" />
 ```
+
+> **Importante:** Quando `icon` e fornecido, o slot default e ignorado.
 
 ---
 
 ### **Forma**
 
-| Prop | Tipo | Default | Descrição |
-|------|------|---------|-----------| | `square` | Boolean | `false` | Avatar quadrado (sem border-radius) |
-| `rounded` | Boolean | `false` | Avatar com bordas arredondadas (não circular) |
+| Prop | Tipo | Default | Descricao |
+|------|------|---------|-----------|
+| `square` | Boolean | `false` | Avatar quadrado (border-radius: 0) |
+| `rounded` | Boolean | `false` | Avatar arredondado (border-radius: 8px) |
 
 **Exemplo:**
 ```vue
-<!-- Circular (padrão) -->
+<!-- Circular (padrao) -->
 <DssAvatar color="primary">JD</DssAvatar>
 
 <!-- Quadrado -->
 <DssAvatar square color="secondary">AB</DssAvatar>
 
-<!-- Arredondado (meio-termo) -->
+<!-- Arredondado -->
 <DssAvatar rounded color="accent">XY</DssAvatar>
 ```
 
 ---
 
-## 🎨 Slots
+### **Brand**
 
-| Slot | Descrição |
-|------|-----------| | `default` | Conteúdo do avatar (texto, imagem, ícones customizados) |
+| Prop | Tipo | Default | Valores | Descricao |
+|------|------|---------|---------|-----------|
+| `brand` | String | `null` | `hub`, `water`, `waste` | Tema de marca Sansys |
 
 **Exemplo:**
 ```vue
-<!-- Texto simples -->
-<DssAvatar color="primary">
-  JD
-</DssAvatar>
+<!-- Borda laranja (Hub) -->
+<DssAvatar brand="hub" icon="person" />
 
-<!-- Imagem -->
-<DssAvatar>
-  <img src="/path/to/avatar.jpg" alt="John Doe">
-</DssAvatar>
+<!-- Borda azul (Water) -->
+<DssAvatar brand="water" icon="person" />
 
-<!-- Ícone customizado -->
-<DssAvatar color="primary">
-  <span class="material-icons">person</span>
-</DssAvatar>
+<!-- Borda verde (Waste) -->
+<DssAvatar brand="waste" icon="person" />
+```
 
-<!-- Múltiplos elementos -->
-<DssAvatar color="secondary">
-  <strong>JD</strong>
+---
+
+### **Status**
+
+| Prop | Tipo | Default | Valores | Descricao |
+|------|------|---------|---------|-----------|
+| `status` | String | `null` | `online`, `away`, `busy`, `offline` | Indicador de status |
+
+**Exemplo:**
+```vue
+<DssAvatar status="online" color="primary">JD</DssAvatar>
+<DssAvatar status="away" color="secondary">AB</DssAvatar>
+<DssAvatar status="busy" color="accent">XY</DssAvatar>
+<DssAvatar status="offline" color="info">ZZ</DssAvatar>
+```
+
+**Cores de Status:**
+| Status | Cor | Token |
+|--------|-----|-------|
+| `online` | Verde | `--dss-positive` |
+| `away` | Amarelo | `--dss-warning` |
+| `busy` | Vermelho | `--dss-negative` |
+| `offline` | Cinza | `--dss-neutral-400` |
+
+---
+
+### **Acessibilidade**
+
+| Prop | Tipo | Default | Descricao |
+|------|------|---------|-----------|
+| `ariaLabel` | String | `undefined` | Label ARIA para screen readers |
+| `alt` | String | `undefined` | Alt text para imagens no slot |
+
+**Exemplo:**
+```vue
+<DssAvatar
+  icon="person"
+  aria-label="Avatar de Joao Silva"
+  color="primary"
+/>
+
+<DssAvatar color="secondary" aria-label="Foto do usuario">
+  <img src="/avatar.jpg" alt="Joao Silva" />
 </DssAvatar>
 ```
 
 ---
 
-## 🎬 Casos de Uso Comuns
+## Eventos
 
-### **1. Avatar com Iniciais**
+| Evento | Payload | Quando Emitido | Descricao |
+|--------|---------|----------------|-----------|
+| `click` | `MouseEvent` | Ao clicar no avatar | Permite avatares clicaveis |
 
+**Exemplo:**
 ```vue
 <template>
   <DssAvatar
+    @click="openProfile"
     color="primary"
-    size="48px"
+    aria-label="Abrir perfil do usuario"
   >
-    {{ userInitials }}
+    JD
   </DssAvatar>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+const openProfile = (event) => {
+  console.log('Avatar clicado', event)
+}
+</script>
+```
 
-const props = defineProps({
-  user: Object
-})
+---
 
-const userInitials = computed(() => {
-  const names = props.user.name.split(' ')
-  return names[0][0] + (names[1]?.[0] || '')
+## Slots
+
+| Slot | Descricao |
+|------|-----------|
+| `default` | Conteudo principal do avatar (texto, imagem, elementos customizados) |
+
+**Exemplo:**
+```vue
+<!-- Iniciais -->
+<DssAvatar color="primary">JD</DssAvatar>
+
+<!-- Imagem -->
+<DssAvatar>
+  <img src="/avatar.jpg" alt="Joao Silva" />
+</DssAvatar>
+
+<!-- Elemento customizado -->
+<DssAvatar color="secondary">
+  <strong>AB</strong>
+</DssAvatar>
+```
+
+---
+
+## Expose (Ref)
+
+| Ref | Tipo | Descricao |
+|-----|------|-----------|
+| `rootRef` | `Ref<HTMLDivElement \| null>` | Referencia direta ao elemento root |
+
+**Exemplo:**
+```vue
+<template>
+  <DssAvatar ref="avatarRef" color="primary">JD</DssAvatar>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import type { AvatarExpose } from './types/avatar.types'
+
+const avatarRef = ref<AvatarExpose | null>(null)
+
+onMounted(() => {
+  console.log(avatarRef.value?.rootRef)
 })
 </script>
 ```
 
-### **2. Avatar com Imagem**
+---
 
-```vue
-<DssAvatar size="64px">
-  <img :src="user.avatarUrl" :alt="user.name">
-</DssAvatar>
-```
+## Classes CSS Geradas
 
-### **3. Avatar com Ícone**
+```scss
+// Base
+.dss-avatar
 
-```vue
-<DssAvatar icon="person" color="primary" size="48px" />
-<DssAvatar icon="business" color="secondary" size="48px" />
-<DssAvatar icon="group" color="accent" size="48px" />
-```
+// Tamanhos
+.dss-avatar--xs
+.dss-avatar--sm
+.dss-avatar--md
+.dss-avatar--lg
+.dss-avatar--xl
 
-### **4. Avatar com Status Indicator**
+// Formas
+.dss-avatar--square
+.dss-avatar--rounded
 
-```vue
-<DssAvatar color="primary" class="dss-avatar--with-status dss-avatar--status-online">
-  JD
-</DssAvatar>
+// Brands
+.dss-avatar--brand-hub
+.dss-avatar--brand-water
+.dss-avatar--brand-waste
 
-<DssAvatar color="secondary" class="dss-avatar--with-status dss-avatar--status-away">
-  AB
-</DssAvatar>
-```
+// Status
+.dss-avatar--with-status
+.dss-avatar__status
+.dss-avatar__status--online
+.dss-avatar__status--away
+.dss-avatar__status--busy
+.dss-avatar__status--offline
 
-### **5. Grupo de Avatars (Sobreposição)**
-
-```vue
-<div class="dss-avatar-group">
-  <DssAvatar color="primary">JD</DssAvatar>
-  <DssAvatar color="secondary">AB</DssAvatar>
-  <DssAvatar color="accent">XY</DssAvatar>
-  <DssAvatar color="info">+5</DssAvatar>
-</div>
-```
-
-### **6. Avatar em Diferentes Tamanhos**
-
-```vue
-<!-- Extra Small -->
-<DssAvatar size="32px" color="primary">JS</DssAvatar>
-
-<!-- Small -->
-<DssAvatar size="40px" color="secondary">AB</DssAvatar>
-
-<!-- Medium (padrão) -->
-<DssAvatar color="accent">XY</DssAvatar>
-
-<!-- Large -->
-<DssAvatar size="64px" color="positive">LG</DssAvatar>
-
-<!-- Extra Large -->
-<DssAvatar size="80px" color="info">XL</DssAvatar>
-```
-
-### **7. Avatar Quadrado para Empresas**
-
-```vue
-<DssAvatar
-  square
-  color="primary"
-  icon="business"
-  size="64px"
-/>
-
-<DssAvatar
-  square
-  size="64px"
->
-  <img src="/logo.png" alt="Company Logo">
-</DssAvatar>
-```
-
-### **8. Avatar Clicável**
-
-```vue
-<button class="dss-avatar" @click="openProfile">
-  <DssAvatar color="primary">JD</DssAvatar>
-</button>
-
-<a href="/profile" class="dss-avatar">
-  <DssAvatar color="secondary">AB</DssAvatar>
-</a>
+// Partes internas
+.dss-avatar__icon
+.dss-avatar__content
 ```
 
 ---
 
-## 🎯 Integração com Outros Componentes
+## Tipos TypeScript
 
-### **Com DssBadge**
+### AvatarProps
 
-```vue
-<DssAvatar color="primary" icon="person" size="48px">
-  <DssBadge floating color="positive" />
-</DssAvatar>
-
-<DssAvatar color="secondary" size="48px">
-  AB
-  <DssBadge floating color="negative" label="3" />
-</DssAvatar>
+```typescript
+interface AvatarProps {
+  size?: AvatarSize | string | null
+  fontSize?: string | null
+  color?: AvatarColor | null
+  textColor?: string | null
+  icon?: string | null
+  square?: boolean
+  rounded?: boolean
+  brand?: AvatarBrand | null
+  status?: AvatarStatus | null
+  ariaLabel?: string
+  alt?: string
+}
 ```
 
-### **Com DssButton**
+### AvatarSize
 
-```vue
-<DssButton>
-  <DssAvatar size="32px" color="primary">JD</DssAvatar>
-  John Doe
-</DssButton>
+```typescript
+type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 ```
 
-### **Em Listas de Comentários**
+### AvatarColor
 
-```vue
-<div class="comment">
-  <DssAvatar color="primary">JD</DssAvatar>
-  <div class="comment-content">
-    <strong>John Doe</strong>
-    <p>Great article!</p>
-  </div>
-</div>
+```typescript
+type AvatarColor =
+  | 'primary'
+  | 'secondary'
+  | 'tertiary'
+  | 'accent'
+  | 'positive'
+  | 'negative'
+  | 'warning'
+  | 'info'
 ```
 
-### **Em Cards de Perfil**
+### AvatarBrand
+
+```typescript
+type AvatarBrand = 'hub' | 'water' | 'waste'
+```
+
+### AvatarStatus
+
+```typescript
+type AvatarStatus = 'online' | 'away' | 'busy' | 'offline'
+```
+
+### AvatarEmits
+
+```typescript
+interface AvatarEmits {
+  (e: 'click', event: MouseEvent): void
+}
+```
+
+### AvatarExpose
+
+```typescript
+interface AvatarExpose {
+  rootRef: Ref<HTMLDivElement | null>
+}
+```
+
+---
+
+## Integracao com Outros Componentes
+
+### Com DssBadge
 
 ```vue
-<DssCard>
-  <div style="text-align: center; padding: 24px;">
-    <DssAvatar
-      color="primary"
-      size="96px"
-      icon="person"
+<template>
+  <div style="position: relative; display: inline-block;">
+    <DssAvatar color="primary" icon="person" size="lg" />
+    <DssBadge
+      floating
+      color="positive"
+      style="position: absolute; top: 0; right: 0;"
     />
-    <h3>John Doe</h3>
-    <p>Software Engineer</p>
   </div>
-</DssCard>
+</template>
 ```
 
----
+### Em Listas
 
-## ✅ Compatibilidade com Quasar
-
-### Props 100% Implementadas:
-✅ `size` - Tamanho customizável (qualquer unidade CSS)
-✅ `fontSize` - Font size customizável
-✅ `color` - Cor semântica
-✅ `textColor` - Cor do texto/ícone
-✅ `icon` - Material Icons
-✅ `square` - Forma quadrada
-✅ `rounded` - Bordas arredondadas
-
-### Props Adicionadas pelo DSS:
-🟠 `color="tertiary"` - Cor terciária (#ff6607)
-
-### Recursos Extras do DSS:
-🟠 `.dss-avatar-group` - Grupo de avatars com sobreposição
-🟠 `.dss-avatar--with-status` - Indicadores de status (online, away, busy, offline)
-🟠 Estados hover/active para avatars clicáveis
-
-### Diferenças:
-- **Quasar** usa `q-avatar`, **DSS** usa `DssAvatar`
-- **DSS** adiciona cor `tertiary` como semântica
-- **DSS** usa tokens DSS para consistência visual
-- **DSS** adiciona utilidades extras para status e grupos
-
----
-
-## 📐 Dimensões Padrão
-
-| Tamanho | Width/Height | Font Size | Icon Size | Uso |
-|---------|--------------|-----------|-----------|------|
-| **xs** | 32px | 12px | 16px | Listas compactas |
-| **sm** | 40px | 14px | 20px | Comentários |
-| **md** | 48px | 16px | 24px | Padrão |
-| **lg** | 64px | 18px | 32px | Perfis |
-| **xl** | 80px | 20px | 48px | Páginas de perfil |
-
----
-
-## 🎨 Classes CSS Geradas
-
-```scss
-.dss-avatar                   // Base
-.dss-avatar--primary          // Cor primária
-.dss-avatar--square           // Quadrado
-.dss-avatar--rounded          // Arredondado
-.dss-avatar--xs               // Extra small
-.dss-avatar--sm               // Small
-.dss-avatar--lg               // Large
-.dss-avatar--xl               // Extra large
-.dss-avatar--text-{color}     // Cor de texto customizada
-
-// Utilitários extras
-.dss-avatar-group             // Grupo de avatars
-.dss-avatar--with-status      // Avatar com status indicator
-.dss-avatar--status-online    // Status online (verde)
-.dss-avatar--status-away      // Status away (amarelo)
-.dss-avatar--status-busy      // Status busy (vermelho)
-.dss-avatar--status-offline   // Status offline (cinza)
-```
-
----
-
-## ♿ Acessibilidade
-
-### **Role e Labels**
 ```vue
-<DssAvatar
-  role="img"
-  aria-label="Avatar de John Doe"
-  color="primary"
->
-  JD
-</DssAvatar>
+<template>
+  <div class="user-item">
+    <DssAvatar color="primary" size="sm">JD</DssAvatar>
+    <div class="user-info">
+      <strong>Joao Silva</strong>
+      <span>joao.silva@sansys.com.br</span>
+    </div>
+  </div>
+</template>
 ```
 
-### **Imagens com Alt Text**
+### Grupo de Avatares
+
 ```vue
-<DssAvatar>
-  <img
-    src="/avatar.jpg"
-    alt="John Doe - Software Engineer"
-  >
-</DssAvatar>
-```
-
-### **High Contrast Mode**
-```scss
-@media (prefers-contrast: high) {
-  .dss-avatar {
-    border: 2px solid currentColor !important;
-    font-weight: 700;
-  }
-}
-```
-
-### **Reduced Motion**
-```scss
-@media (prefers-reduced-motion: reduce) {
-  .dss-avatar {
-    transition: none !important;
-  }
-}
+<template>
+  <div class="dss-avatar-group">
+    <DssAvatar color="primary">JD</DssAvatar>
+    <DssAvatar color="secondary">AB</DssAvatar>
+    <DssAvatar color="accent">XY</DssAvatar>
+    <DssAvatar color="info">+5</DssAvatar>
+  </div>
+</template>
 ```
 
 ---
 
-## 📦 Versão
+## Versao
 
-**DSS v2.2.0** - Implementação completa da API do Quasar QAvatar
+**DSS v2.3.0** - Implementacao completa da API do Quasar QAvatar com extensoes DSS
 **Compatibilidade**: Quasar v2.x
 
 ---
 
-## 📚 Recursos
+## Recursos
 
-- [Documentação Oficial do Quasar QAvatar](https://quasar.dev/vue-components/avatar)
-- [Código-fonte do QAvatar](https://github.com/quasarframework/quasar/blob/dev/ui/src/components/avatar/QAvatar.js)
-- [Design System Sansys](https://github.com/sansys/design-system)
+- [Documentacao Oficial do Quasar QAvatar](https://quasar.dev/vue-components/avatar)
+- [Codigo-fonte do QAvatar](https://github.com/quasarframework/quasar/blob/dev/ui/src/components/avatar/QAvatar.js)
 - [Material Icons](https://fonts.google.com/icons)
+- [DssAvatar.md - Documentacao Normativa](./DssAvatar.md)

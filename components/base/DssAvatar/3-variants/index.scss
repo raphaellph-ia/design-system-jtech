@@ -1,0 +1,12 @@
+/* ==========================================================================
+   DssAvatar - LAYER 3: VARIANTS (Orchestrator)
+
+   Importa todas as variantes disponíveis:
+   - brands: Hub, Water, Waste
+   - status: online, away, busy, offline
+
+   @version 2.3.0
+   ========================================================================== */
+
+@forward './brands';
+@forward './status';

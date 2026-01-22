@@ -74,6 +74,7 @@ O DSS **NÃO** é um sistema de componentes standalone. O DSS é um **sistema de
 9. [📚 Referências Rápidas](#referências-rápidas) ← **NOVO**
 10. [🚨 Gaps Identificados vs Quasar](#gaps-identificados-vs-quasar)
 11. [✅ Resumo Executivo](#resumo-executivo)
+12. [📝 Padroes de Documentacao - Linguagem DSS-First](#padroes-de-documentacao---linguagem-dss-first) ← **NOVO**
 
 ---
 
@@ -1721,4 +1722,68 @@ Use como exemplo ao criar novos componentes:
 
 ---
 
-**Próximo Passo:** Use este guia para criar **DssCard** ou **DssInput** seguindo exatamente os mesmos padrões! 🚀
+## 📝 Padroes de Documentacao - Linguagem DSS-First
+
+### Por que isso importa?
+
+O DSS e uma **camada de governanca** sobre o Quasar, nao um espelho. A documentacao deve refletir isso.
+
+### Linguagem PROIBIDA (causa rejeicao de PR)
+
+```markdown
+<!-- ❌ NUNCA ESCREVA ISSO -->
+O DssComponente é 100% compatível com a API do Quasar Framework.
+
+<!-- ❌ NUNCA ESCREVA ISSO -->
+Props 100% implementadas do QComponente:
+- ✅ color
+- ✅ size
+- ✅ ...
+
+<!-- ❌ NUNCA ESCREVA ISSO -->
+| Brand | Cor Primaria |
+|-------|--------------|
+| Hub   | #EF7A11      |
+```
+
+### Linguagem OBRIGATORIA
+
+```markdown
+<!-- ✅ ESCREVA ASSIM -->
+O DssComponente e um **wrapper DSS baseado no QComponente**, com API publica
+governada pelo Design System Sansys.
+
+<!-- ✅ ESCREVA ASSIM -->
+> **Governanca**: O DssComponente e um **wrapper governado pelo DSS**, nao
+> uma copia do QComponente. A API publica e deliberadamente curada.
+
+<!-- ✅ ESCREVA ASSIM para brandabilidade -->
+> Para detalhes das paletas de cores por brand, consulte
+> [`DSS_TOKEN_REFERENCE.md - Secao 2.2`](./DSS_TOKEN_REFERENCE.md#22-brand-palettes)
+```
+
+### Tokens na Documentacao
+
+Ao documentar tokens:
+
+```markdown
+<!-- ❌ ERRADO - muito vago -->
+Tokens de cor: cores de feedback, cores semanticas
+
+<!-- ✅ CORRETO - nomes exatos + links -->
+| Categoria | Tokens Usados | Onde Encontrar |
+|-----------|---------------|----------------|
+| **Cores Semanticas** | `--dss-feedback-positive`, `--dss-feedback-negative` | [Secao 2.3](./DSS_TOKEN_REFERENCE.md#23-cores-semânticas-base) |
+```
+
+### Checklist de Validacao de Documentacao
+
+Antes de submeter PR, verifique:
+- [ ] Busque por "100%" - nao deve existir
+- [ ] Busque por "compativel" - deve ser "wrapper governado"
+- [ ] Busque por cores hex em secao de brandabilidade - deve referenciar DSS_TOKEN_REFERENCE
+- [ ] Tokens tem nomes exatos (`--dss-*`) e links
+
+---
+
+**Próximo Passo:** Use este guia para criar **DssCard** ou **DssInput** seguindo exatamente os mesmos padrões!

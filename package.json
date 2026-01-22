@@ -1,6 +1,6 @@
 {
   "name": "@sansys/design-system",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Design System Sansys - Vue 3 Component Library with TypeScript, Composition API, and DSS Tokens",
   "type": "module",
   "main": "./dist/dss.umd.js",

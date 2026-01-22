@@ -10,10 +10,24 @@
  * ```ts
  * const { avatarStyle, iconStyle, contentStyle } = useAvatarStyles(props)
  * ```
+ *
+ * @version 2.3.0
  */
 
 import { computed, type CSSProperties } from 'vue'
-import type { AvatarProps } from '../types/avatar.types'
+import type { AvatarProps, AvatarSize } from '../types/avatar.types'
+import {
+  AVATAR_SIZE_MAP,
+  AVATAR_ICON_SIZE_MAP,
+  AVATAR_FONT_SIZE_MAP
+} from '../types/avatar.types'
+
+/**
+ * Verifica se o size é um tamanho predefinido
+ */
+function isPredefinedSize(size: string | null | undefined): size is AvatarSize {
+  return ['xs', 'sm', 'md', 'lg', 'xl'].includes(size as string)
+}
 
 /**
  * Composable para estilos inline do avatar
@@ -23,27 +37,26 @@ export function useAvatarStyles(props: Readonly<AvatarProps>) {
    * Estilo inline do container do avatar
    *
    * Gerencia:
-   * - Tamanho (width/height) customizável
+   * - Tamanho (width/height) customizável ou predefinido
    * - Border-radius baseado em square/rounded/circular
    */
   const avatarStyle = computed<CSSProperties>(() => {
     const style: CSSProperties = {}
 
-    // Tamanho customizável (compatível com Quasar)
-    if (props.size) {
+    // Tamanho customizável (não usa classes predefinidas)
+    if (props.size && !isPredefinedSize(props.size)) {
       style.width = props.size
       style.height = props.size
     }
 
     // Border-radius baseado nas props de forma
+    // (Classes CSS já lidam com isso, mas mantemos para override inline)
     if (props.square) {
       style.borderRadius = '0'
     } else if (props.rounded) {
-      style.borderRadius = '8px' // var(--dss-border-radius-md)
-    } else {
-      // Padrão: circular (50%)
-      style.borderRadius = '50%'
+      style.borderRadius = 'var(--dss-radius-md)' // 8px via token
     }
+    // Padrão circular é definido no CSS
 
     return style
   })
@@ -52,21 +65,24 @@ export function useAvatarStyles(props: Readonly<AvatarProps>) {
    * Estilo inline do ícone
    *
    * Calcula fontSize proporcionalmente ao tamanho do avatar:
-   * - Ícone = 50% do tamanho do avatar
-   * - Ex: avatar 64px → ícone 32px
+   * - Para tamanhos predefinidos: usa mapa de tamanhos
+   * - Para tamanhos custom: calcula 50% do tamanho
    */
   const iconStyle = computed<CSSProperties>(() => {
     const style: CSSProperties = {}
 
-    // Calcular tamanho do ícone proporcionalmente ao avatar
     if (props.size) {
-      // Extrair valor numérico do size (ex: "64px" -> 64)
-      const sizeValue = parseFloat(props.size)
-
-      // Ícone deve ser aproximadamente 50% do tamanho do avatar
-      const iconSize = sizeValue * 0.5
-
-      style.fontSize = `${iconSize}px`
+      if (isPredefinedSize(props.size)) {
+        // Usar tamanho de ícone do mapa
+        style.fontSize = AVATAR_ICON_SIZE_MAP[props.size]
+      } else {
+        // Calcular tamanho do ícone proporcionalmente ao avatar
+        const sizeValue = parseFloat(props.size)
+        if (!isNaN(sizeValue)) {
+          const iconSize = sizeValue * 0.5
+          style.fontSize = `${iconSize}px`
+        }
+      }
     }
 
     return style
@@ -80,9 +96,12 @@ export function useAvatarStyles(props: Readonly<AvatarProps>) {
   const contentStyle = computed<CSSProperties>(() => {
     const style: CSSProperties = {}
 
-    // Font size customizável (compatível com Quasar)
+    // Font size customizável via prop
     if (props.fontSize) {
       style.fontSize = props.fontSize
+    } else if (props.size && isPredefinedSize(props.size)) {
+      // Usar tamanho de fonte do mapa se não customizado
+      style.fontSize = AVATAR_FONT_SIZE_MAP[props.size]
     }
 
     return style

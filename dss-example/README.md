@@ -230,6 +230,6 @@ Para documentação detalhada de cada componente, consulte:
 
 ## 📝 Licença
 
-MIT © 2025 Sansys/Veolia
+Propriedade da Jtech
 
 Desenvolvido com ❤️ por Hebert Daniel Oliveira Chaves

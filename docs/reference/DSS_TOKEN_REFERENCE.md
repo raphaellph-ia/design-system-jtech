@@ -1,6 +1,6 @@
 # DSS - Referência Completa de Tokens
 
-**Design System Sansys (DSS) - Sistema Multi-Marca Veolia**
+**Design System Sansys (DSS) - Sistema Multi-Marca Sansys**
 **Versão:** v2.2.0
 **Data:** Janeiro 2025
 **Tokens Documentados:** 903 tokens
@@ -867,7 +867,7 @@ Sistema de temporização, curvas de easing e animações predefinidas.
 
 # 6. Tipografia
 
-Sistema de fontes, tamanhos e hierarquia tipográfica baseado no Guia Veolia (Página 8).
+Sistema de fontes, tamanhos e hierarquia tipográfica baseado no Guia de Acessibilidade DSS (Página 8).
 
 ## 6.1 Famílias de Fonte
 
@@ -1631,7 +1631,7 @@ Tokens component-specific removidos na refatoração de Janeiro 2025 seguindo a 
 - **DSS_TOKEN_GUIDELINES.md**: Filosofia e boas práticas
 - **TOKENS_CONFORMIDADE_AUDITORIA.md**: Relatório de auditoria (Janeiro 2025)
 - **AUDITORIA_DSS_JAN_2025.md**: Auditoria completa do sistema
-- **Guia Veolia**: Páginas 7-9 (Tipografia, Contraste, Legibilidade)
+- **Guia de Acessibilidade DSS**: Páginas 7-9 (Tipografia, Contraste, Legibilidade)
 
 ### Conformidade WCAG
 - **WCAG 2.1 AA**: https://www.w3.org/WAI/WCAG21/quickref/

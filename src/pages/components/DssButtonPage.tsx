@@ -154,7 +154,7 @@ const feedbackColors = {
   },
 };
 
-// Paletas de Marca REAIS do DSS (Veolia Brands)
+// Paletas de Marca REAIS do DSS (Sansys)
 const brandColors = {
   hub: {
     name: "hub",
@@ -242,7 +242,7 @@ const propsData = [
   { category: "Estados", prop: "loading", type: "Boolean", default: "false", description: "Exibe spinner de carregamento" },
   { category: "Estados", prop: "percentage", type: "Number", default: "null", description: "Barra de progresso (0-100)" },
   { category: "Estados", prop: "disabled", type: "Boolean", default: "false", description: "Estado desabilitado" },
-  { category: "Brandabilidade", prop: "brand", type: "'hub' | 'water' | 'waste'", default: "null", description: "Tema de marca Veolia" },
+  { category: "Brandabilidade", prop: "brand", type: "'hub' | 'water' | 'waste'", default: "null", description: "Tema de marca Sansys" },
 ];
 
 // Tokens utilizados pelo DssButton
@@ -284,7 +284,7 @@ const tokensUsed = [
   { category: "Feedback", token: "--dss-feedback-info-light", value: "#a7effa", usage: "Light info" },
 
   // ============================================================================
-  // BRANDS - Cores de marca Veolia
+  // BRANDS - Cores de marca Sansys
   // ============================================================================
   { category: "Brand Hub", token: "--dss-hub-50", value: "#fff9ed", usage: "Hub background light" },
   { category: "Brand Hub", token: "--dss-hub-100", value: "#fef2d6", usage: "Hub surface" },
@@ -756,7 +756,7 @@ export default function DssButtonPage() {
         {[
           { value: "6", label: "Variantes", color: semanticColors.primary.bg },
           { value: "8", label: "Cores Semânticas", color: semanticColors.secondary.bg },
-          { value: "3", label: "Brands Veolia", color: brandColors.hub.principal },
+          { value: "3", label: "Brands Sansys", color: brandColors.hub.principal },
           { value: "5", label: "Tamanhos", color: brandColors.waste.principal },
         ].map((stat, i) => (
           <Card 
@@ -893,7 +893,7 @@ export default function DssButtonPage() {
 
             {/* Brand */}
             <div className="space-y-2">
-              <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Brand (Veolia)</label>
+              <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Brand (Sansys)</label>
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => setSelectedBrand(null)}

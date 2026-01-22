@@ -268,7 +268,7 @@ function startUpload() {
 
 | Prop | Tipo | Default | Valores | Descrição |
 |------|------|---------|---------|-----------|
-| `brand` | String | `null` | `hub`, `water`, `waste` | Tema de marca Veolia |
+| `brand` | String | `null` | `hub`, `water`, `waste` | Tema de marca Sansys |
 
 **Exemplo:**
 ```vue
@@ -327,7 +327,7 @@ function handleClick(event) {
 ✅ `type`, `to`, `replace`
 
 ### Props Adicionadas pelo DSS:
-🟠 `brand` (hub, water, waste) - Brandabilidade Veolia
+🟠 `brand` (hub, water, waste) - Brandabilidade Sansys
 🟠 `variant="glossy"` - Efeito glossy exclusivo
 🟠 `color="tertiary"` - Cor semântica adicional
 
