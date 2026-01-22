@@ -3,11 +3,29 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { DssTabs, DssTabsContent, DssTabsList, DssTabsTrigger } from "@/components/ui/dss-tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { 
-  Copy, Check, Layers, Code, FileText, Settings,
-  Eye, EyeOff, Search, Mail, Lock, User, Phone,
-  AlertCircle, CheckCircle2, Info, X, Calendar,
-  CreditCard, AtSign, Hash, Globe
+import {
+  Copy,
+  Check,
+  Layers,
+  Code,
+  FileText,
+  Settings,
+  Eye,
+  EyeOff,
+  Search,
+  Mail,
+  Lock,
+  User,
+  Phone,
+  AlertCircle,
+  CheckCircle2,
+  Info,
+  X,
+  Calendar,
+  CreditCard,
+  AtSign,
+  Hash,
+  Globe,
 } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionHeader } from "@/components/ui/SectionHeader";
@@ -48,67 +66,67 @@ const inputTypes = [
 
 // Cores Semânticas aplicáveis ao Input
 const semanticColors = {
-  primary: { 
-    name: "primary", 
-    label: "Primary", 
-    bg: "#1f86de", 
-    hover: "#0f5295", 
+  primary: {
+    name: "primary",
+    label: "Primary",
+    bg: "#1f86de",
+    hover: "#0f5295",
     light: "#86c0f3",
     focus: "#006AC5",
     tokens: {
       base: "--dss-primary",
       focus: "--dss-primary-hover",
-      light: "--dss-primary-light"
-    }
+      light: "--dss-primary-light",
+    },
   },
-  secondary: { 
-    name: "secondary", 
-    label: "Secondary", 
-    bg: "#26a69a", 
+  secondary: {
+    name: "secondary",
+    label: "Secondary",
+    bg: "#26a69a",
     hover: "#1c857e",
     light: "#6ddbcb",
     focus: "#009C8D",
     tokens: {
       base: "--dss-secondary",
-      focus: "--dss-secondary-hover"
-    }
+      focus: "--dss-secondary-hover",
+    },
   },
 };
 
 // Cores de Feedback para estados
 const feedbackColors = {
-  positive: { 
-    name: "positive", 
-    label: "Success", 
+  positive: {
+    name: "positive",
+    label: "Success",
     icon: CheckCircle2,
-    bg: "#4dd228", 
+    bg: "#4dd228",
     light: "#b9f2a4",
     tokens: {
       base: "--dss-positive",
-      light: "--dss-positive-light"
-    }
+      light: "--dss-positive-light",
+    },
   },
-  negative: { 
-    name: "negative", 
-    label: "Error", 
+  negative: {
+    name: "negative",
+    label: "Error",
     icon: AlertCircle,
-    bg: "#d8182e", 
+    bg: "#d8182e",
     light: "#ffa0ab",
     tokens: {
       base: "--dss-negative",
-      light: "--dss-negative-light"
-    }
+      light: "--dss-negative-light",
+    },
   },
-  warning: { 
-    name: "warning", 
-    label: "Warning", 
+  warning: {
+    name: "warning",
+    label: "Warning",
     icon: Info,
-    bg: "#fabd14", 
+    bg: "#fabd14",
     light: "#fff488",
     tokens: {
       base: "--dss-warning",
-      light: "--dss-warning-light"
-    }
+      light: "--dss-warning-light",
+    },
   },
 };
 
@@ -122,8 +140,8 @@ const brandColors = {
     tokens: {
       principal: "--dss-hub-600",
       focus: "--dss-hub-700",
-      light: "--dss-hub-100"
-    }
+      light: "--dss-hub-100",
+    },
   },
   water: {
     name: "water",
@@ -133,8 +151,8 @@ const brandColors = {
     tokens: {
       principal: "--dss-water-500",
       focus: "--dss-water-600",
-      light: "--dss-water-100"
-    }
+      light: "--dss-water-100",
+    },
   },
   waste: {
     name: "waste",
@@ -144,33 +162,87 @@ const brandColors = {
     tokens: {
       principal: "--dss-waste-500",
       focus: "--dss-waste-600",
-      light: "--dss-waste-100"
-    }
-  }
+      light: "--dss-waste-100",
+    },
+  },
 };
 
 // Props API do DssInput
 const propsData = [
-  { category: "Valor", prop: "modelValue", type: "String | Number", default: "''", description: "Valor do input (v-model)" },
-  { category: "Valor", prop: "type", type: "'text' | 'email' | 'password' | 'search' | 'tel' | 'number' | 'url' | 'date'", default: "'text'", description: "Tipo do input HTML" },
+  {
+    category: "Valor",
+    prop: "modelValue",
+    type: "String | Number",
+    default: "''",
+    description: "Valor do input (v-model)",
+  },
+  {
+    category: "Valor",
+    prop: "type",
+    type: "'text' | 'email' | 'password' | 'search' | 'tel' | 'number' | 'url' | 'date'",
+    default: "'text'",
+    description: "Tipo do input HTML",
+  },
   { category: "Valor", prop: "placeholder", type: "String", default: "''", description: "Texto placeholder" },
   { category: "Label", prop: "label", type: "String", default: "''", description: "Label do campo" },
   { category: "Label", prop: "hint", type: "String", default: "''", description: "Texto de ajuda abaixo do input" },
-  { category: "Variantes", prop: "variant", type: "'outlined' | 'filled' | 'standout' | 'borderless'", default: "'outlined'", description: "Estilo visual do input" },
-  { category: "Variantes", prop: "color", type: "'primary' | 'secondary' | 'positive' | 'negative' | 'warning' | 'info'", default: "'primary'", description: "Cor semântica (focus)" },
-  { category: "Estados", prop: "error", type: "Boolean | String", default: "false", description: "Estado de erro (string = mensagem)" },
+  {
+    category: "Variantes",
+    prop: "variant",
+    type: "'outlined' | 'filled' | 'standout' | 'borderless'",
+    default: "'outlined'",
+    description: "Estilo visual do input",
+  },
+  {
+    category: "Variantes",
+    prop: "color",
+    type: "'primary' | 'secondary' | 'positive' | 'negative' | 'warning' | 'info'",
+    default: "'primary'",
+    description: "Cor semântica (focus)",
+  },
+  {
+    category: "Estados",
+    prop: "error",
+    type: "Boolean | String",
+    default: "false",
+    description: "Estado de erro (string = mensagem)",
+  },
   { category: "Estados", prop: "disabled", type: "Boolean", default: "false", description: "Estado desabilitado" },
   { category: "Estados", prop: "readonly", type: "Boolean", default: "false", description: "Apenas leitura" },
   { category: "Estados", prop: "loading", type: "Boolean", default: "false", description: "Exibe spinner de loading" },
-  { category: "Ícones", prop: "prefix", type: "String | Slot", default: "null", description: "Ícone/conteúdo à esquerda dentro do input" },
-  { category: "Ícones", prop: "suffix", type: "String | Slot", default: "null", description: "Ícone/conteúdo à direita dentro do input" },
+  {
+    category: "Ícones",
+    prop: "prefix",
+    type: "String | Slot",
+    default: "null",
+    description: "Ícone/conteúdo à esquerda dentro do input",
+  },
+  {
+    category: "Ícones",
+    prop: "suffix",
+    type: "String | Slot",
+    default: "null",
+    description: "Ícone/conteúdo à direita dentro do input",
+  },
   { category: "Ícones", prop: "before", type: "Slot", default: "null", description: "Conteúdo antes do input (fora)" },
   { category: "Ícones", prop: "after", type: "Slot", default: "null", description: "Conteúdo depois do input (fora)" },
   { category: "Ações", prop: "clearable", type: "Boolean", default: "false", description: "Exibe botão de limpar" },
-  { category: "Ações", prop: "counter", type: "Boolean", default: "false", description: "Exibe contador de caracteres" },
+  {
+    category: "Ações",
+    prop: "counter",
+    type: "Boolean",
+    default: "false",
+    description: "Exibe contador de caracteres",
+  },
   { category: "Validação", prop: "rules", type: "Array<Function>", default: "[]", description: "Regras de validação" },
   { category: "Validação", prop: "maxlength", type: "Number", default: "null", description: "Máximo de caracteres" },
-  { category: "Brandabilidade", prop: "brand", type: "'hub' | 'water' | 'waste'", default: "null", description: "Tema de marca Veolia" },
+  {
+    category: "Brandabilidade",
+    prop: "brand",
+    type: "'hub' | 'water' | 'waste'",
+    default: "null",
+    description: "Tema de marca Veolia",
+  },
   { category: "Densidade", prop: "dense", type: "Boolean", default: "false", description: "Versão compacta" },
   { category: "Densidade", prop: "square", type: "Boolean", default: "false", description: "Bordas quadradas" },
 ];
@@ -186,14 +258,34 @@ const tokensUsed = [
   { category: "Border", token: "--dss-radius-none", value: "0", usage: "Sem arredondamento (square)" },
   { category: "Focus", token: "--dss-action-primary", value: "#1f86de", usage: "Borda focus primary" },
   { category: "Focus", token: "--dss-action-secondary", value: "#26a69a", usage: "Borda focus secondary" },
-  { category: "Focus", token: "--dss-shadow-focus", value: "0 0 0 3px rgba(31,134,222,0.25)", usage: "Focus ring primary" },
-  { category: "Focus", token: "--dss-shadow-focus-error", value: "0 0 0 3px rgba(216,24,46,0.25)", usage: "Focus ring error" },
+  {
+    category: "Focus",
+    token: "--dss-shadow-focus",
+    value: "0 0 0 3px rgba(31,134,222,0.25)",
+    usage: "Focus ring primary",
+  },
+  {
+    category: "Focus",
+    token: "--dss-shadow-focus-error",
+    value: "0 0 0 3px rgba(216,24,46,0.25)",
+    usage: "Focus ring error",
+  },
   { category: "Feedback", token: "--dss-feedback-success", value: "#4dd228", usage: "Borda/ícone success" },
-  { category: "Feedback", token: "--dss-feedback-success-light", value: "#e8f5e9", usage: "Background success (filled)" },
+  {
+    category: "Feedback",
+    token: "--dss-feedback-success-light",
+    value: "#e8f5e9",
+    usage: "Background success (filled)",
+  },
   { category: "Feedback", token: "--dss-feedback-error", value: "#d8182e", usage: "Borda/ícone error" },
   { category: "Feedback", token: "--dss-feedback-error-light", value: "#ffebee", usage: "Background error (filled)" },
   { category: "Feedback", token: "--dss-feedback-warning", value: "#fabd14", usage: "Borda/ícone warning" },
-  { category: "Feedback", token: "--dss-feedback-warning-light", value: "#fff8e1", usage: "Background warning (filled)" },
+  {
+    category: "Feedback",
+    token: "--dss-feedback-warning-light",
+    value: "#fff8e1",
+    usage: "Background warning (filled)",
+  },
   { category: "Surface", token: "--dss-surface-default", value: "#ffffff", usage: "Background outlined" },
   { category: "Surface", token: "--dss-surface-subtle", value: "#fafafa", usage: "Background filled" },
   { category: "Surface", token: "--dss-surface-muted", value: "#f5f5f5", usage: "Background disabled" },
@@ -283,7 +375,7 @@ const DssInputPreview: React.FC<InputPreviewProps> = ({
         iconColor: "#d8182e",
       };
     }
-    
+
     if (brand) {
       const brandData = brandColors[brand as keyof typeof brandColors];
       return {
@@ -293,7 +385,7 @@ const DssInputPreview: React.FC<InputPreviewProps> = ({
         iconColor: brandData?.principal || "#1f86de",
       };
     }
-    
+
     const colorData = semanticColors[color as keyof typeof semanticColors];
     return {
       border: colorData?.bg || "#1f86de",
@@ -328,9 +420,7 @@ const DssInputPreview: React.FC<InputPreviewProps> = ({
       case "outlined":
         return {
           ...base,
-          border: focused 
-            ? `2px solid ${colors.border}` 
-            : `1px solid ${error ? "#d8182e" : "#d4d4d4"}`,
+          border: focused ? `2px solid ${colors.border}` : `1px solid ${error ? "#d8182e" : "#d4d4d4"}`,
           boxShadow: focused ? colors.focusShadow : "none",
           backgroundColor: disabled ? "#f5f5f5" : "#ffffff",
         };
@@ -338,9 +428,7 @@ const DssInputPreview: React.FC<InputPreviewProps> = ({
         return {
           ...base,
           border: "none",
-          borderBottom: focused 
-            ? `2px solid ${colors.border}` 
-            : `1px solid ${error ? "#d8182e" : "#d4d4d4"}`,
+          borderBottom: focused ? `2px solid ${colors.border}` : `1px solid ${error ? "#d8182e" : "#d4d4d4"}`,
           backgroundColor: disabled ? "#f5f5f5" : "#fafafa",
           borderRadius: square ? "0" : "4px 4px 0 0",
         };
@@ -348,18 +436,20 @@ const DssInputPreview: React.FC<InputPreviewProps> = ({
         return {
           ...base,
           border: "none",
-          backgroundColor: focused 
-            ? (brand ? `${brandColors[brand as keyof typeof brandColors]?.principal}15` : `${colors.border}15`)
-            : (disabled ? "#f5f5f5" : "#f0f0f0"),
+          backgroundColor: focused
+            ? brand
+              ? `${brandColors[brand as keyof typeof brandColors]?.principal}15`
+              : `${colors.border}15`
+            : disabled
+              ? "#f5f5f5"
+              : "#f0f0f0",
           boxShadow: focused ? colors.focusShadow : "none",
         };
       case "borderless":
         return {
           ...base,
           border: "none",
-          borderBottom: focused 
-            ? `2px solid ${colors.border}` 
-            : `1px solid transparent`,
+          borderBottom: focused ? `2px solid ${colors.border}` : `1px solid transparent`,
           backgroundColor: "transparent",
           borderRadius: "0",
         };
@@ -370,7 +460,7 @@ const DssInputPreview: React.FC<InputPreviewProps> = ({
 
   const actualType = type === "password" && showPassword ? "text" : type;
 
-  const tokenName = brand 
+  const tokenName = brand
     ? brandColors[brand as keyof typeof brandColors]?.tokens.principal
     : semanticColors[color as keyof typeof semanticColors]?.tokens.base;
 
@@ -378,26 +468,22 @@ const DssInputPreview: React.FC<InputPreviewProps> = ({
     <div className="w-full">
       {/* Label */}
       {label && (
-        <label 
+        <label
           className="block text-sm font-medium mb-1.5"
-          style={{ 
-            color: error ? "#d8182e" : (focused ? colors.labelColor : "#454545"),
-            transition: "color 150ms ease"
+          style={{
+            color: error ? "#d8182e" : focused ? colors.labelColor : "#454545",
+            transition: "color 150ms ease",
           }}
         >
           {label}
         </label>
       )}
-      
+
       {/* Input Container */}
       <div style={getVariantStyles()}>
         {/* Prefix */}
-        {prefix && (
-          <span style={{ color: focused ? colors.iconColor : "#737373", flexShrink: 0 }}>
-            {prefix}
-          </span>
-        )}
-        
+        {prefix && <span style={{ color: focused ? colors.iconColor : "#737373", flexShrink: 0 }}>{prefix}</span>}
+
         {/* Input */}
         <input
           type={actualType}
@@ -414,7 +500,7 @@ const DssInputPreview: React.FC<InputPreviewProps> = ({
             fontSize: "14px",
           }}
         />
-        
+
         {/* Clearable */}
         {clearable && internalValue && !disabled && !readonly && (
           <button
@@ -425,7 +511,7 @@ const DssInputPreview: React.FC<InputPreviewProps> = ({
             <X size={16} />
           </button>
         )}
-        
+
         {/* Password Toggle */}
         {type === "password" && showPasswordToggle && (
           <button
@@ -436,36 +522,24 @@ const DssInputPreview: React.FC<InputPreviewProps> = ({
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
         )}
-        
+
         {/* Suffix */}
-        {suffix && (
-          <span style={{ color: focused ? colors.iconColor : "#737373", flexShrink: 0 }}>
-            {suffix}
-          </span>
-        )}
-        
+        {suffix && <span style={{ color: focused ? colors.iconColor : "#737373", flexShrink: 0 }}>{suffix}</span>}
+
         {/* Error/Success Icon */}
-        {error && (
-          <AlertCircle size={18} style={{ color: "#d8182e", flexShrink: 0 }} />
-        )}
+        {error && <AlertCircle size={18} style={{ color: "#d8182e", flexShrink: 0 }} />}
       </div>
-      
+
       {/* Hint/Error Message */}
       {(hint || (typeof error === "string" && error)) && (
-        <p 
-          className="text-xs mt-1.5"
-          style={{ color: error ? "#d8182e" : "#a3a3a3" }}
-        >
+        <p className="text-xs mt-1.5" style={{ color: error ? "#d8182e" : "#a3a3a3" }}>
           {typeof error === "string" ? error : hint}
         </p>
       )}
 
       {/* Token Name */}
       {showToken && tokenName && (
-        <code 
-          className="text-[10px] font-mono mt-1 block text-center"
-          style={{ color: 'var(--jtech-text-muted)' }}
-        >
+        <code className="text-[10px] font-mono mt-1 block text-center" style={{ color: "var(--jtech-text-muted)" }}>
           {tokenName}
         </code>
       )}
@@ -498,7 +572,7 @@ const DssInputPage: React.FC = () => {
   const [hintText, setHintText] = useState("Informe um email válido");
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [showPasswordToggle, setShowPasswordToggle] = useState(true);
-  
+
   // Clipboard
   const [copiedCode, setCopiedCode] = useState(false);
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
@@ -517,7 +591,7 @@ const DssInputPage: React.FC = () => {
   // Gera código do componente
   const generateCode = () => {
     const props: string[] = [];
-    
+
     if (selectedVariant !== "outlined") props.push(`variant="${selectedVariant}"`);
     if (selectedColor !== "primary") props.push(`color="${selectedColor}"`);
     if (selectedType !== "text") props.push(`type="${selectedType}"`);
@@ -537,11 +611,11 @@ const DssInputPage: React.FC = () => {
     if (isSquare) props.push("square");
     if (showHint && hintText) props.push(`hint="${hintText}"`);
     if (selectedBrand) props.push(`brand="${selectedBrand}"`);
-    
+
     const propsStr = props.length > 0 ? `\n  ${props.join("\n  ")}\n` : " ";
-    
+
     let code = `<DssInput${propsStr.length > 1 ? propsStr : " "}v-model="value"`;
-    
+
     if (showPrefix || showSuffix) {
       code += ">\n";
       if (showPrefix) code += '  <template #prepend>\n    <q-icon name="mail" />\n  </template>\n';
@@ -550,30 +624,33 @@ const DssInputPage: React.FC = () => {
     } else {
       code += " />";
     }
-    
+
     return code;
   };
 
   // Categorias de tokens únicas
-  const tokenCategories = [...new Set(tokensUsed.map(t => t.category))];
+  const tokenCategories = [...new Set(tokensUsed.map((t) => t.category))];
 
   // Get prefix icon based on type
   const getPrefixIcon = () => {
     switch (selectedType) {
-      case "email": return <Mail size={18} />;
-      case "search": return <Search size={18} />;
-      case "tel": return <Phone size={18} />;
-      case "password": return <Lock size={18} />;
-      case "url": return <Globe size={18} />;
-      default: return <User size={18} />;
+      case "email":
+        return <Mail size={18} />;
+      case "search":
+        return <Search size={18} />;
+      case "tel":
+        return <Phone size={18} />;
+      case "password":
+        return <Lock size={18} />;
+      case "url":
+        return <Globe size={18} />;
+      default:
+        return <User size={18} />;
     }
   };
 
   return (
-    <div 
-      className="p-6 lg:p-8 max-w-6xl mx-auto space-y-10"
-      style={{ backgroundColor: 'var(--dss-page-bg)' }}
-    >
+    <div className="p-6 lg:p-8 max-w-6xl mx-auto space-y-10" style={{ backgroundColor: "var(--dss-page-bg)" }}>
       {/* ================================================================
           HERO HEADER - Jtech Style
           ================================================================ */}
@@ -583,11 +660,12 @@ const DssInputPage: React.FC = () => {
         badgeVariant="accent"
         title="Componente"
         titleAccent="DssInput"
-        subtitle="Campo de entrada de dados 100% compatível com a API do Quasar Framework. Implementa tokens DSS, brandability completa, estados de validação e acessibilidade WCAG 2.1 AA."
+        subtitle="DssInput é o componente responsável pela entrada de dados do usuário em formulários e fluxos interativos.
+Ele oferece suporte a diferentes tipos de entrada, estados e feedbacks visuais, garantindo clareza, previsibilidade e boa experiência durante o preenchimento."
         subtitleHighlights={["tokens DSS", "brandability", "WCAG 2.1 AA"]}
         extraBadges={[
           { label: "v1.2.0", variant: "info" },
-          { label: "Quasar Compatible", variant: "success" }
+          { label: "Quasar Compatible", variant: "success" },
         ]}
       />
 
@@ -601,17 +679,21 @@ const DssInputPage: React.FC = () => {
           { value: "3", label: "Brands Veolia", color: brandColors.hub.principal },
           { value: "6", label: "Estados", color: brandColors.waste.principal },
         ].map((stat, i) => (
-          <Card 
+          <Card
             key={i}
             className="transition-all duration-300 hover:shadow-lg"
-            style={{ 
-              backgroundColor: 'var(--jtech-card-bg)', 
-              borderColor: 'var(--jtech-card-border)' 
+            style={{
+              backgroundColor: "var(--jtech-card-bg)",
+              borderColor: "var(--jtech-card-border)",
             }}
           >
             <CardContent className="p-4 text-center">
-              <div className="text-3xl font-bold" style={{ color: stat.color }}>{stat.value}</div>
-              <div className="text-sm" style={{ color: 'var(--jtech-text-body)' }}>{stat.label}</div>
+              <div className="text-3xl font-bold" style={{ color: stat.color }}>
+                {stat.value}
+              </div>
+              <div className="text-sm" style={{ color: "var(--jtech-text-body)" }}>
+                {stat.label}
+              </div>
             </CardContent>
           </Card>
         ))}
@@ -620,36 +702,32 @@ const DssInputPage: React.FC = () => {
       {/* ================================================================
           INTERACTIVE PLAYGROUND - Jtech Style
           ================================================================ */}
-      <SectionHeader
-        title="Playground"
-        titleAccent="Interativo"
-        badge="Live Preview"
-      />
+      <SectionHeader title="Playground" titleAccent="Interativo" badge="Live Preview" />
 
-      <Card 
+      <Card
         className="overflow-hidden"
-        style={{ 
-          backgroundColor: 'var(--jtech-card-bg)', 
-          borderColor: 'var(--dss-jtech-accent)',
-          borderWidth: '2px'
+        style={{
+          backgroundColor: "var(--jtech-card-bg)",
+          borderColor: "var(--dss-jtech-accent)",
+          borderWidth: "2px",
         }}
       >
         <CardHeader>
-          <CardTitle className="flex items-center gap-2" style={{ color: 'var(--jtech-heading-secondary)' }}>
-            <Code className="h-5 w-5" style={{ color: 'var(--dss-jtech-accent)' }} />
+          <CardTitle className="flex items-center gap-2" style={{ color: "var(--jtech-heading-secondary)" }}>
+            <Code className="h-5 w-5" style={{ color: "var(--dss-jtech-accent)" }} />
             Configure o Input
           </CardTitle>
-          <CardDescription style={{ color: 'var(--jtech-text-body)' }}>
+          <CardDescription style={{ color: "var(--jtech-text-body)" }}>
             Selecione as props e veja o resultado em tempo real com tokens DSS reais.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Preview Area */}
-          <div 
+          <div
             className="p-8 rounded-lg flex items-center justify-center min-h-[180px] relative"
-            style={{ 
-              backgroundColor: '#ffffff',
-              border: '1px dashed var(--jtech-card-border)'
+            style={{
+              backgroundColor: "#ffffff",
+              border: "1px dashed var(--jtech-card-border)",
             }}
           >
             <div className="w-full max-w-sm">
@@ -680,7 +758,9 @@ const DssInputPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Variant */}
             <div className="space-y-2">
-              <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Variant</label>
+              <label className="text-sm font-semibold" style={{ color: "var(--jtech-heading-tertiary)" }}>
+                Variant
+              </label>
               <div className="flex flex-wrap gap-2">
                 {variants.map((v) => (
                   <button
@@ -688,9 +768,10 @@ const DssInputPage: React.FC = () => {
                     onClick={() => setSelectedVariant(v.name)}
                     className="px-3 py-1.5 rounded text-xs font-medium transition-all"
                     style={{
-                      backgroundColor: selectedVariant === v.name ? 'var(--dss-jtech-accent)' : 'rgba(255,255,255,0.05)',
-                      color: selectedVariant === v.name ? '#ffffff' : 'var(--jtech-text-body)',
-                      border: `1px solid ${selectedVariant === v.name ? 'var(--dss-jtech-accent)' : 'var(--jtech-card-border)'}`
+                      backgroundColor:
+                        selectedVariant === v.name ? "var(--dss-jtech-accent)" : "rgba(255,255,255,0.05)",
+                      color: selectedVariant === v.name ? "#ffffff" : "var(--jtech-text-body)",
+                      border: `1px solid ${selectedVariant === v.name ? "var(--dss-jtech-accent)" : "var(--jtech-card-border)"}`,
                     }}
                   >
                     {v.label}
@@ -701,7 +782,9 @@ const DssInputPage: React.FC = () => {
 
             {/* Type */}
             <div className="space-y-2">
-              <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Type</label>
+              <label className="text-sm font-semibold" style={{ color: "var(--jtech-heading-tertiary)" }}>
+                Type
+              </label>
               <div className="flex flex-wrap gap-2">
                 {inputTypes.slice(0, 5).map((t) => (
                   <button
@@ -709,9 +792,9 @@ const DssInputPage: React.FC = () => {
                     onClick={() => setSelectedType(t.name)}
                     className="px-2 py-1.5 rounded text-xs font-medium transition-all flex items-center gap-1"
                     style={{
-                      backgroundColor: selectedType === t.name ? 'var(--dss-jtech-accent)' : 'rgba(255,255,255,0.05)',
-                      color: selectedType === t.name ? '#ffffff' : 'var(--jtech-text-body)',
-                      border: `1px solid ${selectedType === t.name ? 'var(--dss-jtech-accent)' : 'var(--jtech-card-border)'}`
+                      backgroundColor: selectedType === t.name ? "var(--dss-jtech-accent)" : "rgba(255,255,255,0.05)",
+                      color: selectedType === t.name ? "#ffffff" : "var(--jtech-text-body)",
+                      border: `1px solid ${selectedType === t.name ? "var(--dss-jtech-accent)" : "var(--jtech-card-border)"}`,
                     }}
                   >
                     <t.icon size={12} />
@@ -723,17 +806,22 @@ const DssInputPage: React.FC = () => {
 
             {/* Color */}
             <div className="space-y-2">
-              <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Color</label>
+              <label className="text-sm font-semibold" style={{ color: "var(--jtech-heading-tertiary)" }}>
+                Color
+              </label>
               <div className="flex flex-wrap gap-2">
                 {Object.values(semanticColors).map((c) => (
                   <button
                     key={c.name}
-                    onClick={() => { setSelectedColor(c.name); setSelectedBrand(null); }}
+                    onClick={() => {
+                      setSelectedColor(c.name);
+                      setSelectedBrand(null);
+                    }}
                     className="px-2 py-1.5 rounded text-xs font-medium transition-all flex items-center gap-1.5"
                     style={{
-                      backgroundColor: selectedColor === c.name && !selectedBrand ? c.bg : 'rgba(255,255,255,0.05)',
-                      color: selectedColor === c.name && !selectedBrand ? '#ffffff' : 'var(--jtech-text-body)',
-                      border: `1px solid ${selectedColor === c.name && !selectedBrand ? c.bg : 'var(--jtech-card-border)'}`
+                      backgroundColor: selectedColor === c.name && !selectedBrand ? c.bg : "rgba(255,255,255,0.05)",
+                      color: selectedColor === c.name && !selectedBrand ? "#ffffff" : "var(--jtech-text-body)",
+                      border: `1px solid ${selectedColor === c.name && !selectedBrand ? c.bg : "var(--jtech-card-border)"}`,
                     }}
                   >
                     <span className="w-2 h-2 rounded-full" style={{ backgroundColor: c.bg }} />
@@ -745,15 +833,17 @@ const DssInputPage: React.FC = () => {
 
             {/* Brand */}
             <div className="space-y-2">
-              <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Brand (Veolia)</label>
+              <label className="text-sm font-semibold" style={{ color: "var(--jtech-heading-tertiary)" }}>
+                Brand (Veolia)
+              </label>
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => setSelectedBrand(null)}
                   className="px-3 py-1.5 rounded text-xs font-medium transition-all"
                   style={{
-                    backgroundColor: !selectedBrand ? 'var(--dss-jtech-accent)' : 'rgba(255,255,255,0.05)',
-                    color: !selectedBrand ? '#ffffff' : 'var(--jtech-text-body)',
-                    border: `1px solid ${!selectedBrand ? 'var(--dss-jtech-accent)' : 'var(--jtech-card-border)'}`
+                    backgroundColor: !selectedBrand ? "var(--dss-jtech-accent)" : "rgba(255,255,255,0.05)",
+                    color: !selectedBrand ? "#ffffff" : "var(--jtech-text-body)",
+                    border: `1px solid ${!selectedBrand ? "var(--dss-jtech-accent)" : "var(--jtech-card-border)"}`,
                   }}
                 >
                   Nenhum
@@ -764,9 +854,9 @@ const DssInputPage: React.FC = () => {
                     onClick={() => setSelectedBrand(b.name)}
                     className="px-2 py-1.5 rounded text-xs font-medium transition-all flex items-center gap-1.5"
                     style={{
-                      backgroundColor: selectedBrand === b.name ? b.principal : 'rgba(255,255,255,0.05)',
-                      color: selectedBrand === b.name ? '#ffffff' : 'var(--jtech-text-body)',
-                      border: `1px solid ${selectedBrand === b.name ? b.principal : 'var(--jtech-card-border)'}`
+                      backgroundColor: selectedBrand === b.name ? b.principal : "rgba(255,255,255,0.05)",
+                      color: selectedBrand === b.name ? "#ffffff" : "var(--jtech-text-body)",
+                      border: `1px solid ${selectedBrand === b.name ? b.principal : "var(--jtech-card-border)"}`,
                     }}
                   >
                     <span>{b.icon}</span>
@@ -778,26 +868,34 @@ const DssInputPage: React.FC = () => {
 
             {/* States & Modifiers */}
             <div className="space-y-2">
-              <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Estados & Modificadores</label>
+              <label className="text-sm font-semibold" style={{ color: "var(--jtech-heading-tertiary)" }}>
+                Estados & Modificadores
+              </label>
               <div className="flex flex-wrap gap-2">
                 {[
-                  { key: 'error', label: 'Error', active: showError, toggle: () => setShowError(!showError) },
-                  { key: 'disabled', label: 'Disabled', active: isDisabled, toggle: () => setIsDisabled(!isDisabled) },
-                  { key: 'readonly', label: 'Readonly', active: isReadonly, toggle: () => setIsReadonly(!isReadonly) },
-                  { key: 'clearable', label: 'Clearable', active: isClearable, toggle: () => setIsClearable(!isClearable) },
-                  { key: 'dense', label: 'Dense', active: isDense, toggle: () => setIsDense(!isDense) },
+                  { key: "error", label: "Error", active: showError, toggle: () => setShowError(!showError) },
+                  { key: "disabled", label: "Disabled", active: isDisabled, toggle: () => setIsDisabled(!isDisabled) },
+                  { key: "readonly", label: "Readonly", active: isReadonly, toggle: () => setIsReadonly(!isReadonly) },
+                  {
+                    key: "clearable",
+                    label: "Clearable",
+                    active: isClearable,
+                    toggle: () => setIsClearable(!isClearable),
+                  },
+                  { key: "dense", label: "Dense", active: isDense, toggle: () => setIsDense(!isDense) },
                 ].map((item) => (
                   <button
                     key={item.key}
                     onClick={item.toggle}
                     className="px-2 py-1.5 rounded text-xs font-medium transition-all"
                     style={{
-                      backgroundColor: item.active ? 'var(--dss-positive)' : 'rgba(255,255,255,0.05)',
-                      color: item.active ? '#ffffff' : 'var(--jtech-text-body)',
-                      border: `1px solid ${item.active ? 'var(--dss-positive)' : 'var(--jtech-card-border)'}`
+                      backgroundColor: item.active ? "var(--dss-positive)" : "rgba(255,255,255,0.05)",
+                      color: item.active ? "#ffffff" : "var(--jtech-text-body)",
+                      border: `1px solid ${item.active ? "var(--dss-positive)" : "var(--jtech-card-border)"}`,
                     }}
                   >
-                    {item.active && "✓ "}{item.label}
+                    {item.active && "✓ "}
+                    {item.label}
                   </button>
                 ))}
               </div>
@@ -805,25 +903,28 @@ const DssInputPage: React.FC = () => {
 
             {/* Icons & Extras */}
             <div className="space-y-2">
-              <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Ícones & Extras</label>
+              <label className="text-sm font-semibold" style={{ color: "var(--jtech-heading-tertiary)" }}>
+                Ícones & Extras
+              </label>
               <div className="flex flex-wrap gap-2">
                 {[
-                  { key: 'prefix', label: 'Prefix', active: showPrefix, toggle: () => setShowPrefix(!showPrefix) },
-                  { key: 'suffix', label: 'Suffix', active: showSuffix, toggle: () => setShowSuffix(!showSuffix) },
-                  { key: 'hint', label: 'Hint', active: showHint, toggle: () => setShowHint(!showHint) },
-                  { key: 'square', label: 'Square', active: isSquare, toggle: () => setIsSquare(!isSquare) },
+                  { key: "prefix", label: "Prefix", active: showPrefix, toggle: () => setShowPrefix(!showPrefix) },
+                  { key: "suffix", label: "Suffix", active: showSuffix, toggle: () => setShowSuffix(!showSuffix) },
+                  { key: "hint", label: "Hint", active: showHint, toggle: () => setShowHint(!showHint) },
+                  { key: "square", label: "Square", active: isSquare, toggle: () => setIsSquare(!isSquare) },
                 ].map((item) => (
                   <button
                     key={item.key}
                     onClick={item.toggle}
                     className="px-2 py-1.5 rounded text-xs font-medium transition-all"
                     style={{
-                      backgroundColor: item.active ? 'var(--dss-positive)' : 'rgba(255,255,255,0.05)',
-                      color: item.active ? '#ffffff' : 'var(--jtech-text-body)',
-                      border: `1px solid ${item.active ? 'var(--dss-positive)' : 'var(--jtech-card-border)'}`
+                      backgroundColor: item.active ? "var(--dss-positive)" : "rgba(255,255,255,0.05)",
+                      color: item.active ? "#ffffff" : "var(--jtech-text-body)",
+                      border: `1px solid ${item.active ? "var(--dss-positive)" : "var(--jtech-card-border)"}`,
                     }}
                   >
-                    {item.active && "✓ "}{item.label}
+                    {item.active && "✓ "}
+                    {item.label}
                   </button>
                 ))}
               </div>
@@ -832,12 +933,12 @@ const DssInputPage: React.FC = () => {
 
           {/* Code Output */}
           <div className="relative">
-            <pre 
+            <pre
               className="p-4 overflow-x-auto rounded-lg font-mono text-sm"
-              style={{ 
-                backgroundColor: 'rgba(0,0,0,0.4)', 
-                color: 'var(--jtech-heading-secondary)',
-                border: '1px solid var(--jtech-card-border)'
+              style={{
+                backgroundColor: "rgba(0,0,0,0.4)",
+                color: "var(--jtech-heading-secondary)",
+                border: "1px solid var(--jtech-card-border)",
               }}
             >
               <code>{generateCode()}</code>
@@ -845,9 +946,13 @@ const DssInputPage: React.FC = () => {
             <button
               className="absolute top-2 right-2 p-2 rounded hover:bg-white/10 transition-colors"
               onClick={() => copyToClipboard(generateCode())}
-              style={{ color: 'var(--jtech-text-muted)' }}
+              style={{ color: "var(--jtech-text-muted)" }}
             >
-              {copiedCode ? <Check className="h-4 w-4" style={{ color: 'var(--dss-positive)' }} /> : <Copy className="h-4 w-4" />}
+              {copiedCode ? (
+                <Check className="h-4 w-4" style={{ color: "var(--dss-positive)" }} />
+              ) : (
+                <Copy className="h-4 w-4" />
+              )}
             </button>
           </div>
         </CardContent>
@@ -856,19 +961,12 @@ const DssInputPage: React.FC = () => {
       {/* ================================================================
           GALERIA TABS - Jtech Style
           ================================================================ */}
-      <SectionHeader
-        title="Galeria de"
-        titleAccent="Variantes"
-        badge="4 variantes • 8 tipos • 3 brands"
-      />
+      <SectionHeader title="Galeria de" titleAccent="Variantes" badge="4 variantes • 8 tipos • 3 brands" />
 
       <DssTabs defaultValue="variantes" className="space-y-4">
         <DssTabsList>
           {["Variantes", "Tipos", "Estados", "Brands"].map((tab) => (
-            <DssTabsTrigger 
-              key={tab.toLowerCase()}
-              value={tab.toLowerCase()}
-            >
+            <DssTabsTrigger key={tab.toLowerCase()} value={tab.toLowerCase()}>
               {tab}
             </DssTabsTrigger>
           ))}
@@ -877,29 +975,28 @@ const DssInputPage: React.FC = () => {
         {/* Variantes Tab */}
         <DssTabsContent value="variantes" className="space-y-4">
           {variants.map((v) => (
-            <Card 
+            <Card
               key={v.name}
               className="transition-all duration-300"
-              style={{ 
-                backgroundColor: 'var(--jtech-card-bg)', 
-                borderColor: 'var(--jtech-card-border)' 
+              style={{
+                backgroundColor: "var(--jtech-card-bg)",
+                borderColor: "var(--jtech-card-border)",
               }}
             >
               <CardHeader className="pb-3">
                 <div className="flex items-center gap-3">
-                  <Badge 
-                    className="text-xs"
-                    style={{ backgroundColor: 'var(--dss-jtech-accent)', color: 'white' }}
-                  >
+                  <Badge className="text-xs" style={{ backgroundColor: "var(--dss-jtech-accent)", color: "white" }}>
                     {v.name}
                   </Badge>
-                  <span className="text-sm" style={{ color: 'var(--jtech-text-body)' }}>{v.desc}</span>
+                  <span className="text-sm" style={{ color: "var(--jtech-text-body)" }}>
+                    {v.desc}
+                  </span>
                 </div>
               </CardHeader>
               <CardContent>
-                <div 
+                <div
                   className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 rounded-lg"
-                  style={{ backgroundColor: '#ffffff' }}
+                  style={{ backgroundColor: "#ffffff" }}
                 >
                   <DssInputPreview
                     variant={v.name}
@@ -926,22 +1023,22 @@ const DssInputPage: React.FC = () => {
 
         {/* Tipos Tab */}
         <DssTabsContent value="tipos" className="space-y-4">
-          <Card 
-            style={{ 
-              backgroundColor: 'var(--jtech-card-bg)', 
-              borderColor: 'var(--jtech-card-border)' 
+          <Card
+            style={{
+              backgroundColor: "var(--jtech-card-bg)",
+              borderColor: "var(--jtech-card-border)",
             }}
           >
             <CardHeader>
-              <CardTitle style={{ color: 'var(--jtech-heading-secondary)' }}>Tipos de Input HTML</CardTitle>
-              <CardDescription style={{ color: 'var(--jtech-text-body)' }}>
+              <CardTitle style={{ color: "var(--jtech-heading-secondary)" }}>Tipos de Input HTML</CardTitle>
+              <CardDescription style={{ color: "var(--jtech-text-body)" }}>
                 Diferentes tipos de entrada com comportamento nativo otimizado.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div 
+              <div
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6 rounded-lg"
-                style={{ backgroundColor: '#ffffff' }}
+                style={{ backgroundColor: "#ffffff" }}
               >
                 {inputTypes.map((t) => (
                   <DssInputPreview
@@ -965,29 +1062,24 @@ const DssInputPage: React.FC = () => {
         <DssTabsContent value="estados" className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {inputStates.map((state) => (
-              <Card 
+              <Card
                 key={state.name}
                 className="transition-all duration-300"
-                style={{ 
-                  backgroundColor: 'var(--jtech-card-bg)', 
-                  borderColor: 'var(--jtech-card-border)' 
+                style={{
+                  backgroundColor: "var(--jtech-card-bg)",
+                  borderColor: "var(--jtech-card-border)",
                 }}
               >
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-base" style={{ color: 'var(--jtech-heading-primary)' }}>
+                    <CardTitle className="text-base" style={{ color: "var(--jtech-heading-primary)" }}>
                       {state.label}
                     </CardTitle>
                   </div>
-                  <CardDescription style={{ color: 'var(--jtech-text-muted)' }}>
-                    {state.desc}
-                  </CardDescription>
+                  <CardDescription style={{ color: "var(--jtech-text-muted)" }}>{state.desc}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div 
-                    className="p-4 rounded-lg"
-                    style={{ backgroundColor: '#ffffff' }}
-                  >
+                  <div className="p-4 rounded-lg" style={{ backgroundColor: "#ffffff" }}>
                     <DssInputPreview
                       variant="outlined"
                       color="primary"
@@ -1009,22 +1101,22 @@ const DssInputPage: React.FC = () => {
 
         {/* Brands Tab */}
         <DssTabsContent value="brands" className="space-y-4">
-          <Card 
-            style={{ 
-              backgroundColor: 'var(--jtech-card-bg)', 
-              borderColor: 'var(--jtech-card-border)' 
+          <Card
+            style={{
+              backgroundColor: "var(--jtech-card-bg)",
+              borderColor: "var(--jtech-card-border)",
             }}
           >
             <CardHeader>
-              <CardTitle style={{ color: 'var(--jtech-heading-secondary)' }}>Marcas Veolia</CardTitle>
-              <CardDescription style={{ color: 'var(--jtech-text-body)' }}>
+              <CardTitle style={{ color: "var(--jtech-heading-secondary)" }}>Marcas Veolia</CardTitle>
+              <CardDescription style={{ color: "var(--jtech-text-body)" }}>
                 Inputs com tematização de marca aplicada ao focus.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div 
+              <div
                 className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6 rounded-lg"
-                style={{ backgroundColor: '#ffffff' }}
+                style={{ backgroundColor: "#ffffff" }}
               >
                 {Object.values(brandColors).map((brand) => (
                   <DssInputPreview
@@ -1056,84 +1148,87 @@ const DssInputPage: React.FC = () => {
 
       <DssTabs defaultValue="props" className="space-y-4">
         <DssTabsList>
-          <DssTabsTrigger value="props" badge={propsData.length}>Props API</DssTabsTrigger>
-          <DssTabsTrigger value="tokens" badge={tokensUsed.length}>Tokens DSS</DssTabsTrigger>
-          <DssTabsTrigger value="slots" badge={6}>Slots</DssTabsTrigger>
-          <DssTabsTrigger value="events" badge={5}>Eventos</DssTabsTrigger>
+          <DssTabsTrigger value="props" badge={propsData.length}>
+            Props API
+          </DssTabsTrigger>
+          <DssTabsTrigger value="tokens" badge={tokensUsed.length}>
+            Tokens DSS
+          </DssTabsTrigger>
+          <DssTabsTrigger value="slots" badge={6}>
+            Slots
+          </DssTabsTrigger>
+          <DssTabsTrigger value="events" badge={5}>
+            Eventos
+          </DssTabsTrigger>
         </DssTabsList>
 
         {/* Props API Tab */}
         <DssTabsContent value="props">
-          <Card 
+          <Card
             className="overflow-hidden"
-            style={{ 
-              backgroundColor: 'var(--jtech-card-bg)', 
-              borderColor: 'var(--jtech-card-border)' 
+            style={{
+              backgroundColor: "var(--jtech-card-bg)",
+              borderColor: "var(--jtech-card-border)",
             }}
           >
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
-                  <TableRow style={{ borderColor: 'var(--jtech-card-border)' }}>
-                    <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Categoria</TableHead>
-                    <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Prop</TableHead>
-                    <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Tipo</TableHead>
-                    <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Default</TableHead>
-                    <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Descrição</TableHead>
+                  <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
+                    <TableHead style={{ color: "var(--jtech-text-muted)" }}>Categoria</TableHead>
+                    <TableHead style={{ color: "var(--jtech-text-muted)" }}>Prop</TableHead>
+                    <TableHead style={{ color: "var(--jtech-text-muted)" }}>Tipo</TableHead>
+                    <TableHead style={{ color: "var(--jtech-text-muted)" }}>Default</TableHead>
+                    <TableHead style={{ color: "var(--jtech-text-muted)" }}>Descrição</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {propsData.map((prop, index) => (
-                    <TableRow 
+                    <TableRow
                       key={index}
-                      style={{ borderColor: 'var(--jtech-card-border)' }}
+                      style={{ borderColor: "var(--jtech-card-border)" }}
                       className="hover:bg-white/5"
                     >
                       <TableCell>
-                        <Badge 
-                          variant="outline" 
+                        <Badge
+                          variant="outline"
                           className="text-xs"
-                          style={{ 
-                            borderColor: 'var(--jtech-card-border)',
-                            color: 'var(--jtech-text-muted)'
+                          style={{
+                            borderColor: "var(--jtech-card-border)",
+                            color: "var(--jtech-text-muted)",
                           }}
                         >
                           {prop.category}
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <code 
+                        <code
                           className="text-sm font-mono px-1.5 py-0.5 rounded"
-                          style={{ 
-                            backgroundColor: 'rgba(255,255,255,0.1)',
-                            color: 'var(--dss-jtech-accent)'
+                          style={{
+                            backgroundColor: "rgba(255,255,255,0.1)",
+                            color: "var(--dss-jtech-accent)",
                           }}
                         >
                           {prop.prop}
                         </code>
                       </TableCell>
                       <TableCell>
-                        <span 
-                          className="text-xs font-mono"
-                          style={{ color: 'var(--jtech-text-body)' }}
-                        >
+                        <span className="text-xs font-mono" style={{ color: "var(--jtech-text-body)" }}>
                           {prop.type}
                         </span>
                       </TableCell>
                       <TableCell>
-                        <code 
+                        <code
                           className="text-xs font-mono px-1.5 py-0.5 rounded"
-                          style={{ 
-                            backgroundColor: 'rgba(0,0,0,0.2)',
-                            color: '#a3a3a3'
+                          style={{
+                            backgroundColor: "rgba(0,0,0,0.2)",
+                            color: "#a3a3a3",
                           }}
                         >
                           {prop.default}
                         </code>
                       </TableCell>
-                      <TableCell style={{ color: 'var(--jtech-text-body)' }}>
-                        {prop.description}
-                      </TableCell>
+                      <TableCell style={{ color: "var(--jtech-text-body)" }}>{prop.description}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -1146,82 +1241,79 @@ const DssInputPage: React.FC = () => {
         <DssTabsContent value="tokens">
           <div className="space-y-6">
             {tokenCategories.map((category) => (
-              <Card 
+              <Card
                 key={category}
-                style={{ 
-                  backgroundColor: 'var(--jtech-card-bg)', 
-                  borderColor: 'var(--jtech-card-border)' 
+                style={{
+                  backgroundColor: "var(--jtech-card-bg)",
+                  borderColor: "var(--jtech-card-border)",
                 }}
               >
                 <CardHeader className="pb-3">
-                  <CardTitle 
+                  <CardTitle
                     className="text-base flex items-center gap-2"
-                    style={{ color: 'var(--jtech-heading-primary)' }}
+                    style={{ color: "var(--jtech-heading-primary)" }}
                   >
-                    <Layers size={16} style={{ color: 'var(--dss-jtech-accent)' }} />
+                    <Layers size={16} style={{ color: "var(--dss-jtech-accent)" }} />
                     {category}
-                    <Badge 
-                      variant="outline" 
+                    <Badge
+                      variant="outline"
                       className="text-xs ml-2"
-                      style={{ 
-                        borderColor: 'var(--jtech-card-border)',
-                        color: 'var(--jtech-text-muted)'
+                      style={{
+                        borderColor: "var(--jtech-card-border)",
+                        color: "var(--jtech-text-muted)",
                       }}
                     >
-                      {tokensUsed.filter(t => t.category === category).length} tokens
+                      {tokensUsed.filter((t) => t.category === category).length} tokens
                     </Badge>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {tokensUsed
-                      .filter(t => t.category === category)
+                      .filter((t) => t.category === category)
                       .map((token, idx) => (
-                        <div 
+                        <div
                           key={idx}
                           className="flex items-center gap-3 p-3 rounded-lg group cursor-pointer transition-all hover:bg-white/5"
                           onClick={() => copyToClipboard(token.token, true)}
-                          style={{ 
-                            backgroundColor: 'rgba(255,255,255,0.02)',
-                            border: '1px solid var(--jtech-card-border)'
+                          style={{
+                            backgroundColor: "rgba(255,255,255,0.02)",
+                            border: "1px solid var(--jtech-card-border)",
                           }}
                         >
-                          <div 
+                          <div
                             className="w-8 h-8 rounded flex-shrink-0"
-                            style={{ 
-                              backgroundColor: token.value.startsWith("#") || token.value.startsWith("rgba") 
-                                ? token.value 
-                                : "transparent",
-                              border: token.value.startsWith("#") || token.value.startsWith("rgba")
-                                ? "none"
-                                : "1px dashed var(--jtech-card-border)"
+                            style={{
+                              backgroundColor:
+                                token.value.startsWith("#") || token.value.startsWith("rgba")
+                                  ? token.value
+                                  : "transparent",
+                              border:
+                                token.value.startsWith("#") || token.value.startsWith("rgba")
+                                  ? "none"
+                                  : "1px dashed var(--jtech-card-border)",
                             }}
                           />
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2">
-                              <code 
-                                className="text-xs font-mono truncate"
-                                style={{ color: 'var(--dss-jtech-accent)' }}
-                              >
+                              <code className="text-xs font-mono truncate" style={{ color: "var(--dss-jtech-accent)" }}>
                                 {token.token}
                               </code>
                               {copiedToken === token.token ? (
-                                <Check size={12} style={{ color: '#4dd228' }} />
+                                <Check size={12} style={{ color: "#4dd228" }} />
                               ) : (
-                                <Copy size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: 'var(--jtech-text-muted)' }} />
+                                <Copy
+                                  size={12}
+                                  className="opacity-0 group-hover:opacity-100 transition-opacity"
+                                  style={{ color: "var(--jtech-text-muted)" }}
+                                />
                               )}
                             </div>
-                            <p 
-                              className="text-xs truncate"
-                              style={{ color: 'var(--jtech-text-muted)' }}
-                            >
+                            <p className="text-xs truncate" style={{ color: "var(--jtech-text-muted)" }}>
                               {token.usage}
                             </p>
                           </div>
-                          <code 
-                            className="text-xs font-mono flex-shrink-0"
-                            style={{ color: 'var(--jtech-text-body)' }}
-                          >
+                          <code className="text-xs font-mono flex-shrink-0" style={{ color: "var(--jtech-text-body)" }}>
                             {token.value}
                           </code>
                         </div>
@@ -1235,59 +1327,82 @@ const DssInputPage: React.FC = () => {
 
         {/* Slots Tab */}
         <DssTabsContent value="slots">
-          <Card 
+          <Card
             className="overflow-hidden"
-            style={{ 
-              backgroundColor: 'var(--jtech-card-bg)', 
-              borderColor: 'var(--jtech-card-border)' 
+            style={{
+              backgroundColor: "var(--jtech-card-bg)",
+              borderColor: "var(--jtech-card-border)",
             }}
           >
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
-                  <TableRow style={{ borderColor: 'var(--jtech-card-border)' }}>
-                    <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Slot</TableHead>
-                    <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Posição</TableHead>
-                    <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Descrição</TableHead>
-                    <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Exemplo</TableHead>
+                  <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
+                    <TableHead style={{ color: "var(--jtech-text-muted)" }}>Slot</TableHead>
+                    <TableHead style={{ color: "var(--jtech-text-muted)" }}>Posição</TableHead>
+                    <TableHead style={{ color: "var(--jtech-text-muted)" }}>Descrição</TableHead>
+                    <TableHead style={{ color: "var(--jtech-text-muted)" }}>Exemplo</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {[
-                    { name: "prepend", position: "Dentro, à esquerda", desc: "Ícone ou conteúdo antes do texto", example: '<template #prepend><q-icon name="mail" /></template>' },
-                    { name: "append", position: "Dentro, à direita", desc: "Ícone ou conteúdo depois do texto", example: '<template #append><q-icon name="search" /></template>' },
-                    { name: "before", position: "Fora, à esquerda", desc: "Conteúdo externo antes do input", example: '<template #before><q-icon name="person" /></template>' },
-                    { name: "after", position: "Fora, à direita", desc: "Conteúdo externo depois do input", example: '<template #after><q-btn icon="send" /></template>' },
-                    { name: "label", position: "Acima", desc: "Customização do label", example: '<template #label>Custom <strong>Label</strong></template>' },
-                    { name: "error", position: "Abaixo", desc: "Mensagem de erro customizada", example: '<template #error><span class="custom">Erro!</span></template>' },
+                    {
+                      name: "prepend",
+                      position: "Dentro, à esquerda",
+                      desc: "Ícone ou conteúdo antes do texto",
+                      example: '<template #prepend><q-icon name="mail" /></template>',
+                    },
+                    {
+                      name: "append",
+                      position: "Dentro, à direita",
+                      desc: "Ícone ou conteúdo depois do texto",
+                      example: '<template #append><q-icon name="search" /></template>',
+                    },
+                    {
+                      name: "before",
+                      position: "Fora, à esquerda",
+                      desc: "Conteúdo externo antes do input",
+                      example: '<template #before><q-icon name="person" /></template>',
+                    },
+                    {
+                      name: "after",
+                      position: "Fora, à direita",
+                      desc: "Conteúdo externo depois do input",
+                      example: '<template #after><q-btn icon="send" /></template>',
+                    },
+                    {
+                      name: "label",
+                      position: "Acima",
+                      desc: "Customização do label",
+                      example: "<template #label>Custom <strong>Label</strong></template>",
+                    },
+                    {
+                      name: "error",
+                      position: "Abaixo",
+                      desc: "Mensagem de erro customizada",
+                      example: '<template #error><span class="custom">Erro!</span></template>',
+                    },
                   ].map((slot, idx) => (
-                    <TableRow 
+                    <TableRow
                       key={idx}
-                      style={{ borderColor: 'var(--jtech-card-border)' }}
+                      style={{ borderColor: "var(--jtech-card-border)" }}
                       className="hover:bg-white/5"
                     >
                       <TableCell>
-                        <code 
+                        <code
                           className="text-sm font-mono px-1.5 py-0.5 rounded"
-                          style={{ 
-                            backgroundColor: 'rgba(255,255,255,0.1)',
-                            color: 'var(--dss-jtech-accent)'
+                          style={{
+                            backgroundColor: "rgba(255,255,255,0.1)",
+                            color: "var(--dss-jtech-accent)",
                           }}
                         >
                           #{slot.name}
                         </code>
                       </TableCell>
-                      <TableCell style={{ color: 'var(--jtech-text-body)' }}>
-                        {slot.position}
-                      </TableCell>
-                      <TableCell style={{ color: 'var(--jtech-text-body)' }}>
-                        {slot.desc}
-                      </TableCell>
+                      <TableCell style={{ color: "var(--jtech-text-body)" }}>{slot.position}</TableCell>
+                      <TableCell style={{ color: "var(--jtech-text-body)" }}>{slot.desc}</TableCell>
                       <TableCell>
-                        <code 
-                          className="text-xs font-mono"
-                          style={{ color: '#a3a3a3' }}
-                        >
+                        <code className="text-xs font-mono" style={{ color: "#a3a3a3" }}>
                           {slot.example}
                         </code>
                       </TableCell>
@@ -1301,57 +1416,56 @@ const DssInputPage: React.FC = () => {
 
         {/* Events Tab */}
         <DssTabsContent value="events">
-          <Card 
+          <Card
             className="overflow-hidden"
-            style={{ 
-              backgroundColor: 'var(--jtech-card-bg)', 
-              borderColor: 'var(--jtech-card-border)' 
+            style={{
+              backgroundColor: "var(--jtech-card-bg)",
+              borderColor: "var(--jtech-card-border)",
             }}
           >
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
-                  <TableRow style={{ borderColor: 'var(--jtech-card-border)' }}>
-                    <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Evento</TableHead>
-                    <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Payload</TableHead>
-                    <TableHead style={{ color: 'var(--jtech-text-muted)' }}>Descrição</TableHead>
+                  <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
+                    <TableHead style={{ color: "var(--jtech-text-muted)" }}>Evento</TableHead>
+                    <TableHead style={{ color: "var(--jtech-text-muted)" }}>Payload</TableHead>
+                    <TableHead style={{ color: "var(--jtech-text-muted)" }}>Descrição</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {[
-                    { name: "@update:model-value", payload: "(value: string | number)", desc: "Emitido quando o valor muda (v-model)" },
+                    {
+                      name: "@update:model-value",
+                      payload: "(value: string | number)",
+                      desc: "Emitido quando o valor muda (v-model)",
+                    },
                     { name: "@focus", payload: "(event: FocusEvent)", desc: "Emitido quando o input recebe foco" },
                     { name: "@blur", payload: "(event: FocusEvent)", desc: "Emitido quando o input perde foco" },
                     { name: "@clear", payload: "()", desc: "Emitido quando o botão clear é clicado" },
                     { name: "@keyup.enter", payload: "(event: KeyboardEvent)", desc: "Emitido ao pressionar Enter" },
                   ].map((event, idx) => (
-                    <TableRow 
+                    <TableRow
                       key={idx}
-                      style={{ borderColor: 'var(--jtech-card-border)' }}
+                      style={{ borderColor: "var(--jtech-card-border)" }}
                       className="hover:bg-white/5"
                     >
                       <TableCell>
-                        <code 
+                        <code
                           className="text-sm font-mono px-1.5 py-0.5 rounded"
-                          style={{ 
-                            backgroundColor: 'rgba(255,255,255,0.1)',
-                            color: 'var(--dss-jtech-accent)'
+                          style={{
+                            backgroundColor: "rgba(255,255,255,0.1)",
+                            color: "var(--dss-jtech-accent)",
                           }}
                         >
                           {event.name}
                         </code>
                       </TableCell>
                       <TableCell>
-                        <code 
-                          className="text-xs font-mono"
-                          style={{ color: '#a3a3a3' }}
-                        >
+                        <code className="text-xs font-mono" style={{ color: "#a3a3a3" }}>
                           {event.payload}
                         </code>
                       </TableCell>
-                      <TableCell style={{ color: 'var(--jtech-text-body)' }}>
-                        {event.desc}
-                      </TableCell>
+                      <TableCell style={{ color: "var(--jtech-text-body)" }}>{event.desc}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -1364,33 +1478,26 @@ const DssInputPage: React.FC = () => {
       {/* ================================================================
           EXEMPLOS PRÁTICOS
           ================================================================ */}
-      <SectionHeader
-        title="Exemplos"
-        titleAccent="Práticos"
-        badge="Código pronto"
-      />
+      <SectionHeader title="Exemplos" titleAccent="Práticos" badge="Código pronto" />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Login Form Example */}
-        <Card 
-          style={{ 
-            backgroundColor: 'var(--jtech-card-bg)', 
-            borderColor: 'var(--jtech-card-border)' 
+        <Card
+          style={{
+            backgroundColor: "var(--jtech-card-bg)",
+            borderColor: "var(--jtech-card-border)",
           }}
         >
           <CardHeader>
-            <CardTitle className="text-base" style={{ color: 'var(--jtech-heading-primary)' }}>
+            <CardTitle className="text-base" style={{ color: "var(--jtech-heading-primary)" }}>
               Formulário de Login
             </CardTitle>
-            <CardDescription style={{ color: 'var(--jtech-text-muted)' }}>
+            <CardDescription style={{ color: "var(--jtech-text-muted)" }}>
               Campos de email e senha com validação
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div 
-              className="p-6 rounded-lg space-y-4"
-              style={{ backgroundColor: '#ffffff' }}
-            >
+            <div className="p-6 rounded-lg space-y-4" style={{ backgroundColor: "#ffffff" }}>
               <DssInputPreview
                 variant="outlined"
                 color="primary"
@@ -1411,15 +1518,15 @@ const DssInputPage: React.FC = () => {
                 showPasswordToggle
               />
             </div>
-            <pre 
+            <pre
               className="p-3 rounded-lg text-xs overflow-x-auto"
-              style={{ 
-                backgroundColor: 'rgba(0,0,0,0.4)',
-                border: '1px solid var(--jtech-card-border)',
-                color: '#e5e5e5'
+              style={{
+                backgroundColor: "rgba(0,0,0,0.4)",
+                border: "1px solid var(--jtech-card-border)",
+                color: "#e5e5e5",
               }}
             >
-{`<DssInput
+              {`<DssInput
   v-model="email"
   type="email"
   label="Email"
@@ -1433,25 +1540,22 @@ const DssInputPage: React.FC = () => {
         </Card>
 
         {/* Search Example */}
-        <Card 
-          style={{ 
-            backgroundColor: 'var(--jtech-card-bg)', 
-            borderColor: 'var(--jtech-card-border)' 
+        <Card
+          style={{
+            backgroundColor: "var(--jtech-card-bg)",
+            borderColor: "var(--jtech-card-border)",
           }}
         >
           <CardHeader>
-            <CardTitle className="text-base" style={{ color: 'var(--jtech-heading-primary)' }}>
+            <CardTitle className="text-base" style={{ color: "var(--jtech-heading-primary)" }}>
               Campo de Busca
             </CardTitle>
-            <CardDescription style={{ color: 'var(--jtech-text-muted)' }}>
+            <CardDescription style={{ color: "var(--jtech-text-muted)" }}>
               Input de pesquisa com clearable
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div 
-              className="p-6 rounded-lg"
-              style={{ backgroundColor: '#ffffff' }}
-            >
+            <div className="p-6 rounded-lg" style={{ backgroundColor: "#ffffff" }}>
               <DssInputPreview
                 variant="standout"
                 color="primary"
@@ -1463,15 +1567,15 @@ const DssInputPage: React.FC = () => {
                 clearable
               />
             </div>
-            <pre 
+            <pre
               className="p-3 rounded-lg text-xs overflow-x-auto"
-              style={{ 
-                backgroundColor: 'rgba(0,0,0,0.4)',
-                border: '1px solid var(--jtech-card-border)',
-                color: '#e5e5e5'
+              style={{
+                backgroundColor: "rgba(0,0,0,0.4)",
+                border: "1px solid var(--jtech-card-border)",
+                color: "#e5e5e5",
               }}
             >
-{`<DssInput
+              {`<DssInput
   v-model="search"
   variant="standout"
   type="search"
@@ -1486,25 +1590,20 @@ const DssInputPage: React.FC = () => {
         </Card>
 
         {/* Validation Example */}
-        <Card 
-          style={{ 
-            backgroundColor: 'var(--jtech-card-bg)', 
-            borderColor: 'var(--jtech-card-border)' 
+        <Card
+          style={{
+            backgroundColor: "var(--jtech-card-bg)",
+            borderColor: "var(--jtech-card-border)",
           }}
         >
           <CardHeader>
-            <CardTitle className="text-base" style={{ color: 'var(--jtech-heading-primary)' }}>
+            <CardTitle className="text-base" style={{ color: "var(--jtech-heading-primary)" }}>
               Validação
             </CardTitle>
-            <CardDescription style={{ color: 'var(--jtech-text-muted)' }}>
-              Input com estado de erro
-            </CardDescription>
+            <CardDescription style={{ color: "var(--jtech-text-muted)" }}>Input com estado de erro</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div 
-              className="p-6 rounded-lg"
-              style={{ backgroundColor: '#ffffff' }}
-            >
+            <div className="p-6 rounded-lg" style={{ backgroundColor: "#ffffff" }}>
               <DssInputPreview
                 variant="outlined"
                 color="primary"
@@ -1515,15 +1614,15 @@ const DssInputPage: React.FC = () => {
                 error="CPF inválido. Verifique os dígitos."
               />
             </div>
-            <pre 
+            <pre
               className="p-3 rounded-lg text-xs overflow-x-auto"
-              style={{ 
-                backgroundColor: 'rgba(0,0,0,0.4)',
-                border: '1px solid var(--jtech-card-border)',
-                color: '#e5e5e5'
+              style={{
+                backgroundColor: "rgba(0,0,0,0.4)",
+                border: "1px solid var(--jtech-card-border)",
+                color: "#e5e5e5",
               }}
             >
-{`<DssInput
+              {`<DssInput
   v-model="cpf"
   label="CPF"
   :error="cpfError"
@@ -1534,25 +1633,22 @@ const DssInputPage: React.FC = () => {
         </Card>
 
         {/* Brand Example */}
-        <Card 
-          style={{ 
-            backgroundColor: 'var(--jtech-card-bg)', 
-            borderColor: 'var(--jtech-card-border)' 
+        <Card
+          style={{
+            backgroundColor: "var(--jtech-card-bg)",
+            borderColor: "var(--jtech-card-border)",
           }}
         >
           <CardHeader>
-            <CardTitle className="text-base" style={{ color: 'var(--jtech-heading-primary)' }}>
+            <CardTitle className="text-base" style={{ color: "var(--jtech-heading-primary)" }}>
               Brandabilidade
             </CardTitle>
-            <CardDescription style={{ color: 'var(--jtech-text-muted)' }}>
+            <CardDescription style={{ color: "var(--jtech-text-muted)" }}>
               Input com tema de marca Veolia
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div 
-              className="p-6 rounded-lg space-y-4"
-              style={{ backgroundColor: '#ffffff' }}
-            >
+            <div className="p-6 rounded-lg space-y-4" style={{ backgroundColor: "#ffffff" }}>
               {Object.values(brandColors).map((brand) => (
                 <DssInputPreview
                   key={brand.name}
@@ -1567,15 +1663,15 @@ const DssInputPage: React.FC = () => {
                 />
               ))}
             </div>
-            <pre 
+            <pre
               className="p-3 rounded-lg text-xs overflow-x-auto"
-              style={{ 
-                backgroundColor: 'rgba(0,0,0,0.4)',
-                border: '1px solid var(--jtech-card-border)',
-                color: '#e5e5e5'
+              style={{
+                backgroundColor: "rgba(0,0,0,0.4)",
+                border: "1px solid var(--jtech-card-border)",
+                color: "#e5e5e5",
               }}
             >
-{`<DssInput
+              {`<DssInput
   v-model="value"
   label="Hub Theme"
   brand="hub"
