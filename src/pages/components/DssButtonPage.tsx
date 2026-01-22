@@ -8,7 +8,7 @@ import {
   Copy, Check, Layers, Code, FileText, Palette, Box,
   Loader2, ChevronRight, Save, Send, Upload, Plus, Trash2, 
   Settings, Menu, ArrowRight, Download, Eye, EyeOff, Heart,
-  Zap, AlertTriangle, CheckCircle, XCircle, Info
+  Zap, AlertTriangle, CheckCircle, XCircle, Info, Sun, Moon
 } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionHeader } from "@/components/ui/SectionHeader";
@@ -837,6 +837,7 @@ export default function DssButtonPage() {
   const [hasIcon, setHasIcon] = useState(false);
   const [hasIconRight, setHasIconRight] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
   const codeExample = `<DssButton
   label="Clique aqui"
@@ -904,13 +905,41 @@ export default function DssButtonPage() {
         <CardContent className="space-y-6">
           {/* Preview Area */}
           <div 
-            className="p-8 rounded-lg flex items-center justify-center min-h-[140px] relative"
+            className="p-8 rounded-lg flex items-center justify-center min-h-[140px] relative transition-colors duration-300"
             style={{ 
-              backgroundColor: 'rgba(0,0,0,0.3)',
-              backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)',
-              backgroundSize: '20px 20px'
+              backgroundColor: isDarkMode ? 'rgba(0,0,0,0.4)' : 'rgba(255,255,255,0.95)',
+              backgroundImage: isDarkMode 
+                ? 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)'
+                : 'radial-gradient(circle at 1px 1px, rgba(0,0,0,0.08) 1px, transparent 0)',
+              backgroundSize: '20px 20px',
+              border: isDarkMode ? '1px solid var(--jtech-card-border)' : '1px solid #e5e5e5'
             }}
           >
+            {/* Dark Mode Toggle */}
+            <button
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className="absolute top-3 right-3 p-2 rounded-lg transition-all duration-200 hover:scale-105"
+              style={{
+                backgroundColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)',
+                color: isDarkMode ? '#ffffff' : '#1a1a1a',
+                border: isDarkMode ? '1px solid rgba(255,255,255,0.2)' : '1px solid rgba(0,0,0,0.15)'
+              }}
+              title={isDarkMode ? 'Mudar para tema claro' : 'Mudar para tema escuro'}
+            >
+              {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </button>
+
+            {/* Theme Label */}
+            <span 
+              className="absolute top-3 left-3 text-xs font-medium px-2 py-1 rounded"
+              style={{
+                backgroundColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)',
+                color: isDarkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)'
+              }}
+            >
+              {isDarkMode ? '🌙 Dark' : '☀️ Light'}
+            </span>
+
             <DssButtonPreview
               label="Clique aqui"
               variant={selectedVariant}
