@@ -1063,7 +1063,7 @@ export default function DssButtonPage() {
   );
 
   return (
-    <div className="p-6 lg:p-8 max-w-6xl mx-auto space-y-10" style={{ backgroundColor: "var(--dss-page-bg)" }}>
+    <div className="p-6 lg:p-8 max-w-8xl mx-auto space-y-10" style={{ backgroundColor: "var(--dss-page-bg)" }}>
       {/* Badges + Título + Descrição */}
       <PageHeader
         icon={Box}
