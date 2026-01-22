@@ -839,10 +839,13 @@ export default function DssButtonPage() {
   const [copied, setCopied] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
 
+  // Lógica de exclusão mútua: brand tem precedência sobre color
+  // Quando brand está selecionado, color não é incluído no código
+  const effectiveColor = selectedBrand ? null : selectedColor;
+
   const codeExample = `<DssButton
   label="Clique aqui"
-  variant="${selectedVariant}"
-  color="${selectedColor}"
+  variant="${selectedVariant}"${effectiveColor ? `\n  color="${effectiveColor}"` : ""}
   size="${selectedSize}"${selectedBrand ? `\n  brand="${selectedBrand}"` : ""}${isDisabled ? "\n  disabled" : ""}${isLoading ? "\n  loading" : ""}${isRound ? "\n  round" : ""}${hasIcon ? '\n  icon="save"' : ""}${hasIconRight ? '\n  icon-right="arrow_forward"' : ""}
 />`;
 
@@ -1040,7 +1043,7 @@ export default function DssButtonPage() {
                 {Object.values(brandColors).map((b) => (
                   <button
                     key={b.name}
-                    onClick={() => setSelectedBrand(b.name)}
+                    onClick={() => { setSelectedBrand(b.name); setSelectedColor("primary"); }}
                     className="px-2 py-1.5 rounded text-xs font-medium transition-all flex items-center gap-1.5"
                     style={{
                       backgroundColor: selectedBrand === b.name ? b.principal : 'rgba(255,255,255,0.05)',
