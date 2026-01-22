@@ -11,27 +11,34 @@ Este documento define a hierarquia oficial de informações para todas as págin
 Todas as páginas de componentes DEVEM seguir esta estrutura na ordem especificada:
 
 ### 1. Badges de Metadados
+
 - Versão do componente (ex: `v2.1.0`)
 - Compatibilidade (ex: `Quasar Compatible`)
 - Status (ex: `Golden Sample`, `Beta`, `Deprecated`)
 - Referências relevantes
 
 ### 2. Título do Componente
+
 - Usar componente `PageHeader`
 - Ícone representativo do componente
 - Nome do componente com destaque (ex: "Componente **DssButton**")
 
 ### 3. Descrição Básica
-- Descrição concisa do propósito do componente
-- Destaques em palavras-chave importantes (tokens DSS, brandability, WCAG)
-- Máximo 2-3 linhas
+
+- Descreva o papel funcional do componente na interface, começando por “o que ele representa” ou “para que ele é usado”
+- Use linguagem orientada a UX e produto, ajudando o leitor a entender quando e por que usar o componente
+- Evite explicações sobre governança, implementação interna ou compatibilidade com frameworks
+- Não repita conceitos transversais do DSS (tokens, brandability, acessibilidade), a menos que sejam essenciais para entender o uso do componente.
+- Máximo de 4 a 5 linhas, com foco em clareza, fluidez e leitura rápida
 
 ### 4. Quick Stats (Opcional)
+
 - Grid de 4 cards com estatísticas rápidas
 - Variantes, Cores, Brands, Tamanhos, etc.
 - Cores visuais para cada stat
 
 ### 5. Playground Interativo
+
 - Card único contendo:
   - Preview visual do componente
   - Controles interativos (variante, cor, tamanho, estados)
@@ -39,11 +46,13 @@ Todas as páginas de componentes DEVEM seguir esta estrutura na ordem especifica
 - Usar seção `SectionHeader` com título "Playground **Interativo**"
 
 ### 6. Galeria de Variantes
+
 - Tabs organizados por categoria (Variantes, Cores, Brands, Tamanhos, Estados)
 - Demonstração visual de cada opção
 - Usar componente `DssTabs`
 
 ### 7. Anatomia 4 Camadas ⭐ OBRIGATÓRIO
+
 - Usar componente `AnatomySection`
 - Cards clicáveis para cada camada:
   1. **Structure** - Template, Props, Lógica
@@ -58,6 +67,7 @@ Todas as páginas de componentes DEVEM seguir esta estrutura na ordem especifica
   - Exemplo de código
 
 ### 8. Documentação Técnica (Colapsável)
+
 - Usar componente `CollapsibleSection`
 - Seções:
   - **Props API & Eventos** - Tabela com todas as props
@@ -69,6 +79,7 @@ Todas as páginas de componentes DEVEM seguir esta estrutura na ordem especifica
 ## 🧩 Componentes Reutilizáveis
 
 ### PageHeader
+
 ```tsx
 <PageHeader
   icon={Box}
@@ -86,6 +97,7 @@ Todas as páginas de componentes DEVEM seguir esta estrutura na ordem especifica
 ```
 
 ### SectionHeader
+
 ```tsx
 <SectionHeader
   title="Playground"
@@ -95,19 +107,21 @@ Todas as páginas de componentes DEVEM seguir esta estrutura na ordem especifica
 ```
 
 ### AnatomySection
+
 ```tsx
-<AnatomySection 
-  componentName="DssButton" 
+<AnatomySection
+  componentName="DssButton"
   layers={{
     structure: { files: [...], description: "...", responsibilities: [...], tokens: [...], codeExample: "..." },
     composition: { ... },
     variants: { ... },
     output: { ... }
-  }} 
+  }}
 />
 ```
 
 ### CollapsibleSection
+
 ```tsx
 <CollapsibleSection
   icon={FileText}
