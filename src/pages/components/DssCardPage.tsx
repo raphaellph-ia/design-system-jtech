@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { DssTabs, DssTabsContent, DssTabsList, DssTabsTrigger } from "@/components/ui/dss-tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { 
   Copy, Check, Layers, Code, FileText, 
-  LayoutDashboard, Image, CreditCard, User, Settings,
-  ChevronRight, MoreHorizontal, Heart, Share2, Bookmark,
-  Loader2, Mail, Star, Bell
+  LayoutDashboard, User, Settings,
+  MoreHorizontal,
+  Loader2, Star, Sun, Moon
 } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionHeader } from "@/components/ui/SectionHeader";
+import { AnatomySection } from "@/components/ui/AnatomySection";
+import { CollapsibleSection } from "@/components/ui/CollapsibleSection";
 
 // ============================================================================
 // TOKENS REAIS DO DSS - Extraídos de index.css e globals.scss
@@ -1031,6 +1032,87 @@ function TokenRow({ token, value, usage }: { token: string; value: string; usage
 // COMPONENTE PRINCIPAL
 // ============================================================================
 
+// Dados da Anatomia 4 Camadas
+const cardAnatomyLayers = {
+  structure: {
+    files: ["DssCard.vue", "DssCardSection.vue", "DssCardActions.vue"],
+    description: "Define a estrutura Vue do componente, incluindo template, props, slots e lógica de eventos. O DssCard aceita variant, clickable, square, dark e brand como props principais. Inclui subcomponentes DssCardSection e DssCardActions.",
+    responsibilities: [
+      "Definição do template HTML semântico",
+      "Declaração e validação de props",
+      "Gerenciamento de slots (content, actions)",
+      "Lógica de eventos click e keyboard",
+      "Atributos ARIA para acessibilidade"
+    ],
+    tokens: [],
+    codeExample: `<DssCard variant="elevated" clickable>
+  <DssCardSection>
+    <h3>Título</h3>
+    <p>Conteúdo</p>
+  </DssCardSection>
+  <DssCardActions>
+    <DssButton>Ação</DssButton>
+  </DssCardActions>
+</DssCard>`
+  },
+  composition: {
+    files: ["_base.scss"],
+    description: "Estilos fundamentais que são aplicados independente da variante. Define layout flexbox, overflow, transições base e estrutura de padding dos subcomponentes.",
+    responsibilities: [
+      "Display flex e direction column",
+      "Overflow hidden para conteúdo",
+      "Transições base (all 250ms ease)",
+      "Padding padrão das sections",
+      "Gap entre elementos internos"
+    ],
+    tokens: ["--dss-spacing-4", "--dss-spacing-6", "--dss-duration-base", "--dss-easing-standard"],
+    codeExample: `.dss-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: var(--dss-transition-base);
+}`
+  },
+  variants: {
+    files: ["_elevated.scss", "_flat.scss", "_bordered.scss", "_outlined.scss"],
+    description: "Cada variante define características visuais específicas: elevated (sombra), flat (sem elevação), bordered (borda + sombra), outlined (apenas borda).",
+    responsibilities: [
+      "Elevated: box-shadow com --dss-elevation-1",
+      "Flat: sem sombra, hover com background sutil",
+      "Bordered: border-radius + shadow",
+      "Outlined: apenas border, sem shadow",
+      "Square modifier para cantos retos"
+    ],
+    tokens: ["--dss-elevation-1", "--dss-elevation-2", "--dss-radius-lg", "--dss-border-gray-300"],
+    codeExample: `.dss-card--elevated {
+  box-shadow: var(--dss-elevation-1);
+}
+.dss-card--elevated:hover {
+  box-shadow: var(--dss-elevation-2);
+}`
+  },
+  output: {
+    files: ["_states.scss", "_brands.scss"],
+    description: "Camada final que aplica estados interativos (hover, focus, disabled), modo escuro e personalização por marca (Hub, Water, Waste).",
+    responsibilities: [
+      "Estados hover com elevação aumentada",
+      "Focus ring para acessibilidade",
+      "Modo dark com cores invertidas",
+      "Brand Hub: borda laranja",
+      "Brand Water: borda azul",
+      "Brand Waste: borda verde"
+    ],
+    tokens: ["--dss-hub-600", "--dss-water-500", "--dss-waste-500", "--dss-shadow-focus"],
+    codeExample: `.dss-card--brand-hub {
+  border-left: 4px solid var(--dss-hub-600);
+}
+.dss-card--dark {
+  background-color: var(--dss-surface-dark);
+  color: var(--dss-text-inverse);
+}`
+  }
+};
+
 export default function DssCardPage() {
   const [selectedVariant, setSelectedVariant] = useState("elevated");
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
@@ -1039,13 +1121,14 @@ export default function DssCardPage() {
   const [isSquare, setIsSquare] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
-  // Determina qual cor usar (semântica tem prioridade sobre brand)
-  const activeColorType = selectedSemanticColor ? 'semantic' : (selectedBrand ? 'brand' : null);
-  const activeColor = selectedSemanticColor || selectedBrand;
+  // Lógica de exclusão mútua: brand e semanticColor são mutuamente exclusivos
+  const effectiveSemanticColor = selectedBrand ? null : selectedSemanticColor;
+  const effectiveBrand = selectedSemanticColor ? null : selectedBrand;
 
   const codeExample = `<DssCard
-  variant="${selectedVariant}"${selectedSemanticColor ? `\n  color="${selectedSemanticColor}"` : ""}${selectedBrand && !selectedSemanticColor ? `\n  brand="${selectedBrand}"` : ""}${isClickable ? "\n  clickable" : ""}${isSquare ? "\n  square" : ""}${isDark ? "\n  dark" : ""}
+  variant="${selectedVariant}"${effectiveSemanticColor ? `\n  color="${effectiveSemanticColor}"` : ""}${effectiveBrand ? `\n  brand="${effectiveBrand}"` : ""}${isClickable ? "\n  clickable" : ""}${isSquare ? "\n  square" : ""}${isDark ? "\n  dark" : ""}
 >
   <DssCardSection>
     <h3>Título do Card</h3>
@@ -1063,45 +1146,14 @@ export default function DssCardPage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const tokensByCategory = tokensUsed.reduce((acc, token) => {
-    if (!acc[token.category]) acc[token.category] = [];
-    acc[token.category].push(token);
-    return acc;
-  }, {} as Record<string, typeof tokensUsed>);
-
-  // Obter cor ativa (semântica ou brand)
-  const getActiveColorStyles = () => {
-    if (selectedSemanticColor && semanticColors[selectedSemanticColor as keyof typeof semanticColors]) {
-      const color = semanticColors[selectedSemanticColor as keyof typeof semanticColors];
-      return {
-        border: color.bgFallback,
-        light: color.lightFallback,
-        hover: color.hoverFallback,
-        text: color.textColor,
-        bg: color.bgFallback
-      };
-    }
-    if (selectedBrand && brandColors[selectedBrand as keyof typeof brandColors]) {
-      const brand = brandColors[selectedBrand as keyof typeof brandColors];
-      return {
-        border: brand.principal,
-        light: brand.scale[100],
-        hover: brand.scale[700],
-        text: "#ffffff",
-        bg: brand.principal
-      };
-    }
-    return null;
-  };
-
-  const colorStyles = getActiveColorStyles();
-
   return (
     <div 
       className="p-6 lg:p-8 max-w-6xl mx-auto space-y-10"
       style={{ backgroundColor: 'var(--dss-page-bg)' }}
     >
-      {/* Hero Header - Jtech Style */}
+      {/* ============================================================ */}
+      {/* 1. BADGES + TÍTULO + DESCRIÇÃO (PageHeader) */}
+      {/* ============================================================ */}
       <PageHeader
         icon={LayoutDashboard}
         badge="DSS Component"
@@ -1116,31 +1168,9 @@ export default function DssCardPage() {
         ]}
       />
 
-      {/* Quick Stats - Jtech Style */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {[
-          { value: "4", label: "Variantes", color: "#1f86de" },
-          { value: "3", label: "Subcomponentes", color: "#26a69a" },
-          { value: "3", label: "Brands Veolia", color: brandColors.hub.principal },
-          { value: "2", label: "Temas", color: brandColors.waste.principal },
-        ].map((stat, i) => (
-          <Card 
-            key={i}
-            className="transition-all duration-300 hover:shadow-lg"
-            style={{ 
-              backgroundColor: 'var(--jtech-card-bg)', 
-              borderColor: 'var(--jtech-card-border)' 
-            }}
-          >
-            <CardContent className="p-4 text-center">
-              <div className="text-3xl font-bold" style={{ color: stat.color }}>{stat.value}</div>
-              <div className="text-sm" style={{ color: 'var(--jtech-text-body)' }}>{stat.label}</div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      {/* Interactive Playground - Jtech Style */}
+      {/* ============================================================ */}
+      {/* 2. PLAYGROUND INTERATIVO (com Dark Mode Toggle) */}
+      {/* ============================================================ */}
       <SectionHeader
         title="Playground"
         titleAccent="Interativo"
@@ -1165,31 +1195,59 @@ export default function DssCardPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Preview Area */}
+          {/* Preview Area com Dark Mode Toggle */}
           <div 
-            className="p-8 rounded-lg flex items-center justify-center min-h-[280px] relative"
+            className="p-8 rounded-lg flex items-center justify-center min-h-[280px] relative transition-colors duration-300"
             style={{ 
-              backgroundColor: 'rgba(0,0,0,0.3)',
-              backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)',
-              backgroundSize: '20px 20px'
+              backgroundColor: isDarkMode ? 'rgba(0,0,0,0.4)' : 'rgba(255,255,255,0.95)',
+              backgroundImage: isDarkMode 
+                ? 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)'
+                : 'radial-gradient(circle at 1px 1px, rgba(0,0,0,0.08) 1px, transparent 0)',
+              backgroundSize: '20px 20px',
+              border: isDarkMode ? '1px solid var(--jtech-card-border)' : '1px solid #e5e5e5'
             }}
           >
+            {/* Dark Mode Toggle */}
+            <button
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className="absolute top-3 right-3 p-2 rounded-lg transition-all duration-200 hover:scale-105"
+              style={{
+                backgroundColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)',
+                color: isDarkMode ? '#ffffff' : '#1a1a1a',
+                border: isDarkMode ? '1px solid rgba(255,255,255,0.2)' : '1px solid rgba(0,0,0,0.15)'
+              }}
+              title={isDarkMode ? 'Mudar para tema claro' : 'Mudar para tema escuro'}
+            >
+              {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </button>
+
+            {/* Theme Label */}
+            <span 
+              className="absolute top-3 left-3 text-xs font-medium px-2 py-1 rounded"
+              style={{
+                backgroundColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)',
+                color: isDarkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)'
+              }}
+            >
+              {isDarkMode ? '🌙 Dark' : '☀️ Light'}
+            </span>
+
             <DssCardPreview
               variant={selectedVariant}
               clickable={isClickable}
               square={isSquare}
               dark={isDark}
-              brand={selectedSemanticColor ? null : selectedBrand}
-              semanticColor={selectedSemanticColor}
+              brand={effectiveBrand}
+              semanticColor={effectiveSemanticColor}
               showToken={true}
             >
-              <CardSection isFirst={true} brand={selectedSemanticColor ? null : selectedBrand} semanticColor={selectedSemanticColor}>
+              <CardSection isFirst={true} brand={effectiveBrand} semanticColor={effectiveSemanticColor}>
                 {/* Header com DssAvatar + DssBadge */}
                 <div className="flex items-center gap-3 mb-3">
                   <DssAvatarPreview 
                     size="md" 
-                    colorKey={selectedSemanticColor}
-                    brand={selectedSemanticColor ? null : selectedBrand}
+                    colorKey={effectiveSemanticColor}
+                    brand={effectiveBrand}
                     icon={<User style={{ width: 20, height: 20 }} />}
                     dark={isDark}
                   />
@@ -1200,8 +1258,8 @@ export default function DssCardPage() {
                       </h4>
                       <DssBadgePreview 
                         label="NOVO" 
-                        colorKey={selectedSemanticColor}
-                        brand={selectedSemanticColor ? null : selectedBrand}
+                        colorKey={effectiveSemanticColor}
+                        brand={effectiveBrand}
                         variant="soft"
                         size="xs"
                         dark={isDark}
@@ -1222,14 +1280,14 @@ export default function DssCardPage() {
                 {/* DssSeparator */}
                 <DssSeparatorPreview 
                   orientation="horizontal"
-                  colorKey={selectedSemanticColor}
-                  brand={selectedSemanticColor ? null : selectedBrand}
+                  colorKey={effectiveSemanticColor}
+                  brand={effectiveBrand}
                   dark={isDark}
                 />
                 
                 {/* Content */}
                 <p className="text-sm mt-3" style={{ color: isDark ? 'rgba(255,255,255,0.8)' : '#444' }}>
-                  Este é um exemplo de conteúdo dentro do DssCard usando componentes DSS reais: DssAvatar, DssBadge, DssSeparator, DssButton e DssIcon.
+                  Este é um exemplo de conteúdo dentro do DssCard usando componentes DSS reais.
                 </p>
               </CardSection>
               
@@ -1238,16 +1296,16 @@ export default function DssCardPage() {
                 <DssButtonPreview 
                   label="Cancelar"
                   variant="flat"
-                  colorKey={selectedSemanticColor}
-                  brand={selectedSemanticColor ? null : selectedBrand}
+                  colorKey={effectiveSemanticColor}
+                  brand={effectiveBrand}
                   size="sm"
                   dark={isDark}
                 />
                 <DssButtonPreview 
                   label="Confirmar"
                   variant="elevated"
-                  colorKey={selectedSemanticColor}
-                  brand={selectedSemanticColor ? null : selectedBrand}
+                  colorKey={effectiveSemanticColor}
+                  brand={effectiveBrand}
                   size="sm"
                   dark={isDark}
                 />
@@ -1283,12 +1341,12 @@ export default function DssCardPage() {
               <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Cores Semânticas</label>
               <div className="flex flex-wrap gap-2">
                 <button
-                  onClick={() => setSelectedSemanticColor(null)}
+                  onClick={() => { setSelectedSemanticColor(null); }}
                   className="px-3 py-1.5 rounded text-xs font-medium transition-all"
                   style={{
-                    backgroundColor: !selectedSemanticColor ? 'var(--dss-jtech-accent)' : 'rgba(255,255,255,0.05)',
-                    color: !selectedSemanticColor ? '#ffffff' : 'var(--jtech-text-body)',
-                    border: `1px solid ${!selectedSemanticColor ? 'var(--dss-jtech-accent)' : 'var(--jtech-card-border)'}`
+                    backgroundColor: !selectedSemanticColor && !selectedBrand ? 'var(--dss-jtech-accent)' : 'rgba(255,255,255,0.05)',
+                    color: !selectedSemanticColor && !selectedBrand ? '#ffffff' : 'var(--jtech-text-body)',
+                    border: `1px solid ${!selectedSemanticColor && !selectedBrand ? 'var(--dss-jtech-accent)' : 'var(--jtech-card-border)'}`
                   }}
                 >
                   Nenhum
@@ -1399,1037 +1457,211 @@ export default function DssCardPage() {
         </CardContent>
       </Card>
 
-      {/* Galeria Tabs - Jtech Style */}
+      {/* ============================================================ */}
+      {/* 3. ANATOMIA 4 CAMADAS */}
+      {/* ============================================================ */}
       <SectionHeader
-        title="Galeria de"
-        titleAccent="Variantes"
-        badge="4 variantes • 3 brands"
-      />
-
-      <DssTabs defaultValue="variantes" className="space-y-4">
-        <DssTabsList>
-          {["Variantes", "Brands", "Exemplos", "Dark Mode"].map((tab) => (
-            <DssTabsTrigger 
-              key={tab.toLowerCase().replace(" ", "-")}
-              value={tab.toLowerCase().replace(" ", "-")}
-            >
-              {tab}
-            </DssTabsTrigger>
-          ))}
-        </DssTabsList>
-
-        {/* Variantes Tab */}
-        <DssTabsContent value="variantes" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {variants.map((v) => (
-              <Card 
-                key={v.name}
-                className="transition-all duration-300"
-                style={{ 
-                  backgroundColor: 'var(--jtech-card-bg)', 
-                  borderColor: 'var(--jtech-card-border)' 
-                }}
-              >
-                <CardHeader className="pb-3">
-                  <div className="flex items-center gap-3">
-                    <DssBadgePreview 
-                      label={v.name}
-                      colorKey="primary"
-                      variant="filled"
-                      size="sm"
-                    />
-                    <span className="text-sm" style={{ color: 'var(--jtech-text-body)' }}>{v.desc}</span>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div 
-                    className="p-6 rounded-lg"
-                    style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
-                  >
-                    <DssCardPreview variant={v.name} clickable={true}>
-                      <CardSection>
-                        <div className="flex items-center gap-3 mb-3">
-                          <DssAvatarPreview 
-                            size="sm" 
-                            colorKey="primary"
-                            icon={<Layers style={{ width: 14, height: 14 }} />}
-                          />
-                          <div className="flex-1">
-                            <h4 className="font-semibold text-sm">Card {v.label}</h4>
-                            <p className="text-xs" style={{ color: '#666' }}>Variante {v.name}</p>
-                          </div>
-                          <DssBadgePreview 
-                            label={v.hasElevation ? "SHADOW" : "FLAT"}
-                            colorKey={v.hasElevation ? "info" : "secondary"}
-                            variant="soft"
-                            size="xs"
-                          />
-                        </div>
-                        <DssSeparatorPreview orientation="horizontal" />
-                        <p className="text-xs mt-3" style={{ color: '#666' }}>
-                          Passe o mouse para ver o efeito de hover.
-                        </p>
-                      </CardSection>
-                      <CardActions align="right">
-                        <DssButtonPreview 
-                          label="Detalhes"
-                          variant="flat"
-                          colorKey="primary"
-                          size="xs"
-                        />
-                        <DssButtonPreview 
-                          label="Ação"
-                          variant="elevated"
-                          colorKey="primary"
-                          size="xs"
-                        />
-                      </CardActions>
-                    </DssCardPreview>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </DssTabsContent>
-
-        {/* Brands Tab */}
-        <DssTabsContent value="brands" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {Object.values(brandColors).map((b) => (
-              <Card 
-                key={b.name}
-                className="transition-all duration-300"
-                style={{ 
-                  backgroundColor: 'var(--jtech-card-bg)', 
-                  borderColor: 'var(--jtech-card-border)' 
-                }}
-              >
-                <CardHeader className="pb-3">
-                  <div className="flex items-center gap-3">
-                    <span className="text-xl">{b.icon}</span>
-                    <DssBadgePreview 
-                      label={b.label}
-                      brand={b.name}
-                      variant="filled"
-                      size="sm"
-                    />
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div 
-                    className="p-4 rounded-lg"
-                    style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
-                  >
-                    <DssCardPreview variant="bordered" brand={b.name} clickable={true}>
-                      <CardSection isFirst={true} brand={b.name}>
-                        <div className="flex items-center gap-3 mb-3">
-                          <DssAvatarPreview 
-                            size="md" 
-                            brand={b.name}
-                            icon={<Star style={{ width: 18, height: 18 }} />}
-                          />
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2">
-                              <h4 className="font-semibold text-sm">Brand {b.label}</h4>
-                              <DssBadgePreview 
-                                label="VEOLIA"
-                                brand={b.name}
-                                variant="soft"
-                                size="xs"
-                              />
-                            </div>
-                            <p className="text-xs" style={{ color: '#666' }}>
-                              Identidade visual {b.label}
-                            </p>
-                          </div>
-                        </div>
-                        <DssSeparatorPreview orientation="horizontal" brand={b.name} />
-                        <p className="text-xs mt-3" style={{ color: '#666' }}>
-                          Card com brandability completa usando tokens {b.label}.
-                        </p>
-                      </CardSection>
-                      <CardActions align="right">
-                        <DssButtonPreview 
-                          label="Cancelar"
-                          variant="flat"
-                          brand={b.name}
-                          size="sm"
-                        />
-                        <DssButtonPreview 
-                          label="Ver mais"
-                          variant="elevated"
-                          brand={b.name}
-                          size="sm"
-                        />
-                      </CardActions>
-                    </DssCardPreview>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </DssTabsContent>
-
-        {/* Exemplos Tab */}
-        <DssTabsContent value="exemplos" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Product Card */}
-            <Card 
-              className="transition-all duration-300"
-              style={{ 
-                backgroundColor: 'var(--jtech-card-bg)', 
-                borderColor: 'var(--jtech-card-border)' 
-              }}
-            >
-              <CardHeader className="pb-2">
-                <DssBadgePreview label="Product Card" colorKey="primary" variant="filled" size="sm" />
-              </CardHeader>
-              <CardContent>
-                <div className="p-4 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
-                  <DssCardPreview variant="elevated" clickable={true}>
-                    <div 
-                      className="h-32 flex items-center justify-center"
-                      style={{ backgroundColor: '#f5f5f5' }}
-                    >
-                      <DssIconPreview 
-                        icon={<Image style={{ width: "100%", height: "100%" }} />}
-                        size="lg"
-                        colorKey={null}
-                      />
-                    </div>
-                    <CardSection>
-                      <div className="flex justify-between items-start mb-2">
-                        <h4 className="font-semibold text-sm">Produto Premium</h4>
-                        <DssBadgePreview 
-                          label="R$ 299"
-                          colorKey="primary"
-                          variant="soft"
-                          size="sm"
-                        />
-                      </div>
-                      <p className="text-xs mb-3" style={{ color: '#666' }}>
-                        Descrição breve do produto.
-                      </p>
-                      <DssSeparatorPreview orientation="horizontal" />
-                      <div className="flex gap-2 mt-3">
-                        <DssButtonPreview 
-                          label="Comprar"
-                          variant="elevated"
-                          colorKey="primary"
-                          size="sm"
-                        />
-                        <DssButtonPreview 
-                          icon={<Heart style={{ width: "100%", height: "100%" }} />}
-                          iconOnly
-                          variant="flat"
-                          colorKey="negative"
-                          size="sm"
-                        />
-                        <DssButtonPreview 
-                          icon={<Share2 style={{ width: "100%", height: "100%" }} />}
-                          iconOnly
-                          variant="flat"
-                          colorKey="info"
-                          size="sm"
-                        />
-                      </div>
-                    </CardSection>
-                  </DssCardPreview>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* User Profile Card */}
-            <Card 
-              className="transition-all duration-300"
-              style={{ 
-                backgroundColor: 'var(--jtech-card-bg)', 
-                borderColor: 'var(--jtech-card-border)' 
-              }}
-            >
-              <CardHeader className="pb-2">
-                <DssBadgePreview label="Profile Card" colorKey="secondary" variant="filled" size="sm" />
-              </CardHeader>
-              <CardContent>
-                <div className="p-4 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
-                  <DssCardPreview variant="bordered" semanticColor="secondary">
-                    <CardSection horizontal={true} isFirst={true} semanticColor="secondary">
-                      <DssAvatarPreview 
-                        size="lg" 
-                        colorKey="secondary"
-                        initials="JS"
-                      />
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <h4 className="font-semibold text-sm">João Silva</h4>
-                          <DssBadgePreview 
-                            label="PRO"
-                            colorKey="positive"
-                            variant="filled"
-                            size="xs"
-                            rounded
-                          />
-                        </div>
-                        <p className="text-xs" style={{ color: '#666' }}>Desenvolvedor Senior</p>
-                        <div className="flex gap-2 mt-2">
-                          <DssBadgePreview label="React" colorKey="info" variant="soft" size="xs" />
-                          <DssBadgePreview label="TypeScript" colorKey="primary" variant="soft" size="xs" />
-                        </div>
-                      </div>
-                      <DssButtonPreview 
-                        icon={<MoreHorizontal style={{ width: "100%", height: "100%" }} />}
-                        iconOnly
-                        variant="flat"
-                        colorKey="secondary"
-                        size="sm"
-                      />
-                    </CardSection>
-                    <CardActions align="between">
-                      <DssButtonPreview 
-                        label="Mensagem"
-                        icon={<Mail style={{ width: "100%", height: "100%" }} />}
-                        variant="flat"
-                        colorKey="secondary"
-                        size="xs"
-                      />
-                      <DssButtonPreview 
-                        label="Seguir"
-                        variant="elevated"
-                        colorKey="secondary"
-                        size="xs"
-                      />
-                    </CardActions>
-                  </DssCardPreview>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Stats Card */}
-            <Card 
-              className="transition-all duration-300"
-              style={{ 
-                backgroundColor: 'var(--jtech-card-bg)', 
-                borderColor: 'var(--jtech-card-border)' 
-              }}
-            >
-              <CardHeader className="pb-2">
-                <DssBadgePreview label="Stats Card" brand="waste" variant="filled" size="sm" />
-              </CardHeader>
-              <CardContent>
-                <div className="p-4 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
-                  <DssCardPreview variant="flat" brand="waste">
-                    <CardSection isFirst={true} brand="waste">
-                      <div className="flex items-center justify-between mb-3">
-                        <DssBadgePreview 
-                          label="ECONOMIA MENSAL"
-                          brand="waste"
-                          variant="soft"
-                          size="xs"
-                        />
-                        <DssButtonPreview 
-                          icon={<Settings style={{ width: "100%", height: "100%" }} />}
-                          iconOnly
-                          variant="flat"
-                          brand="waste"
-                          size="xs"
-                        />
-                      </div>
-                      <div className="text-3xl font-bold mb-1" style={{ color: '#18b173' }}>
-                        42.5%
-                      </div>
-                      <DssSeparatorPreview orientation="horizontal" brand="waste" />
-                      <div className="flex items-center gap-2 mt-3">
-                        <DssBadgePreview 
-                          label="↑ 12%"
-                          colorKey="positive"
-                          variant="filled"
-                          size="xs"
-                          rounded
-                        />
-                        <span className="text-xs" style={{ color: '#666' }}>vs mês anterior</span>
-                      </div>
-                    </CardSection>
-                  </DssCardPreview>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Notification Card */}
-            <Card 
-              className="transition-all duration-300"
-              style={{ 
-                backgroundColor: 'var(--jtech-card-bg)', 
-                borderColor: 'var(--jtech-card-border)' 
-              }}
-            >
-              <CardHeader className="pb-2">
-                <DssBadgePreview label="Notification Card" colorKey="warning" variant="filled" size="sm" />
-              </CardHeader>
-              <CardContent>
-                <div className="p-4 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
-                  <DssCardPreview variant="outlined" semanticColor="warning" clickable>
-                    <CardSection isFirst={true} semanticColor="warning">
-                      <div className="flex items-start gap-3">
-                        <DssAvatarPreview 
-                          size="md" 
-                          colorKey="warning"
-                          icon={<Bell style={{ width: 18, height: 18 }} />}
-                        />
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h4 className="font-semibold text-sm">Atenção Necessária</h4>
-                            <DssBadgePreview 
-                              label="URGENTE"
-                              colorKey="warning"
-                              variant="filled"
-                              size="xs"
-                            />
-                          </div>
-                          <p className="text-xs" style={{ color: '#666' }}>
-                            Você tem 3 tarefas pendentes que precisam de revisão antes do prazo.
-                          </p>
-                        </div>
-                      </div>
-                    </CardSection>
-                    <CardActions align="right">
-                      <DssButtonPreview 
-                        label="Ignorar"
-                        variant="flat"
-                        colorKey="warning"
-                        size="xs"
-                      />
-                      <DssButtonPreview 
-                        label="Ver Tarefas"
-                        variant="elevated"
-                        colorKey="warning"
-                        size="xs"
-                      />
-                    </CardActions>
-                  </DssCardPreview>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Error Card */}
-            <Card 
-              className="transition-all duration-300"
-              style={{ 
-                backgroundColor: 'var(--jtech-card-bg)', 
-                borderColor: 'var(--jtech-card-border)' 
-              }}
-            >
-              <CardHeader className="pb-2">
-                <DssBadgePreview label="Error Card" colorKey="negative" variant="filled" size="sm" />
-              </CardHeader>
-              <CardContent>
-                <div className="p-4 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
-                  <DssCardPreview variant="bordered" semanticColor="negative">
-                    <CardSection isFirst={true} semanticColor="negative">
-                      <div className="flex items-center gap-3 mb-3">
-                        <DssAvatarPreview 
-                          size="sm" 
-                          colorKey="negative"
-                          icon={<span style={{ fontSize: 14 }}>!</span>}
-                          square
-                        />
-                        <h4 className="font-semibold text-sm">Erro de Conexão</h4>
-                      </div>
-                      <p className="text-xs mb-3" style={{ color: '#666' }}>
-                        Não foi possível conectar ao servidor. Verifique sua conexão.
-                      </p>
-                      <DssSeparatorPreview orientation="horizontal" colorKey="negative" />
-                    </CardSection>
-                    <CardActions align="right">
-                      <DssButtonPreview 
-                        label="Tentar Novamente"
-                        variant="elevated"
-                        colorKey="negative"
-                        size="sm"
-                      />
-                    </CardActions>
-                  </DssCardPreview>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Success Card */}
-            <Card 
-              className="transition-all duration-300"
-              style={{ 
-                backgroundColor: 'var(--jtech-card-bg)', 
-                borderColor: 'var(--jtech-card-border)' 
-              }}
-            >
-              <CardHeader className="pb-2">
-                <DssBadgePreview label="Success Card" colorKey="positive" variant="filled" size="sm" />
-              </CardHeader>
-              <CardContent>
-                <div className="p-4 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
-                  <DssCardPreview variant="elevated" semanticColor="positive">
-                    <CardSection isFirst={true} semanticColor="positive">
-                      <div className="flex items-center gap-3 mb-3">
-                        <DssAvatarPreview 
-                          size="md" 
-                          colorKey="positive"
-                          icon={<span style={{ fontSize: 18 }}>✓</span>}
-                        />
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-sm">Operação Concluída!</h4>
-                          <p className="text-xs" style={{ color: '#666' }}>
-                            Seus dados foram salvos com sucesso.
-                          </p>
-                        </div>
-                        <DssBadgePreview 
-                          label="100%"
-                          colorKey="positive"
-                          variant="soft"
-                          size="sm"
-                          rounded
-                        />
-                      </div>
-                    </CardSection>
-                    <CardActions align="right">
-                      <DssButtonPreview 
-                        label="Fechar"
-                        variant="flat"
-                        colorKey="positive"
-                        size="sm"
-                      />
-                      <DssButtonPreview 
-                        label="Ver Detalhes"
-                        variant="elevated"
-                        colorKey="positive"
-                        size="sm"
-                      />
-                    </CardActions>
-                  </DssCardPreview>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </DssTabsContent>
-
-        {/* Dark Mode Tab */}
-        <DssTabsContent value="dark-mode" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Light Mode */}
-            <Card 
-              className="transition-all duration-300"
-              style={{ 
-                backgroundColor: 'var(--jtech-card-bg)', 
-                borderColor: 'var(--jtech-card-border)' 
-              }}
-            >
-              <CardHeader className="pb-3">
-                <div className="flex items-center gap-3">
-                  <DssBadgePreview label="Light Mode" colorKey="info" variant="outline" size="sm" />
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="p-6 rounded-lg" style={{ backgroundColor: '#f5f5f5' }}>
-                  <DssCardPreview variant="elevated" clickable={true} dark={false}>
-                    <CardSection>
-                      <div className="flex items-center gap-3 mb-3">
-                        <DssAvatarPreview 
-                          size="md" 
-                          colorKey="primary"
-                          icon={<User style={{ width: 18, height: 18 }} />}
-                          dark={false}
-                        />
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2">
-                            <h4 className="font-semibold text-sm" style={{ color: '#1a1a1a' }}>Card Light</h4>
-                            <DssBadgePreview 
-                              label="PADRÃO"
-                              colorKey="primary"
-                              variant="soft"
-                              size="xs"
-                              dark={false}
-                            />
-                          </div>
-                          <p className="text-xs" style={{ color: '#666' }}>Tema claro padrão</p>
-                        </div>
-                      </div>
-                      <DssSeparatorPreview orientation="horizontal" dark={false} />
-                      <p className="text-xs mt-3" style={{ color: '#666' }}>
-                        Visualização com background claro e contraste alto.
-                      </p>
-                    </CardSection>
-                    <CardActions>
-                      <DssButtonPreview 
-                        label="Cancelar"
-                        variant="flat"
-                        colorKey="primary"
-                        size="sm"
-                        dark={false}
-                      />
-                      <DssButtonPreview 
-                        label="Ação"
-                        variant="elevated"
-                        colorKey="primary"
-                        size="sm"
-                        dark={false}
-                      />
-                    </CardActions>
-                  </DssCardPreview>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Dark Mode */}
-            <Card 
-              className="transition-all duration-300"
-              style={{ 
-                backgroundColor: 'var(--jtech-card-bg)', 
-                borderColor: 'var(--jtech-card-border)' 
-              }}
-            >
-              <CardHeader className="pb-3">
-                <div className="flex items-center gap-3">
-                  <DssBadgePreview label="Dark Mode" colorKey={null} variant="filled" size="sm" />
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="p-6 rounded-lg" style={{ backgroundColor: '#1a1a1a' }}>
-                  <DssCardPreview variant="elevated" clickable={true} dark={true}>
-                    <CardSection>
-                      <div className="flex items-center gap-3 mb-3">
-                        <DssAvatarPreview 
-                          size="md" 
-                          colorKey="primary"
-                          icon={<User style={{ width: 18, height: 18 }} />}
-                          dark={true}
-                        />
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2">
-                            <h4 className="font-semibold text-sm" style={{ color: '#ffffff' }}>Card Dark</h4>
-                            <DssBadgePreview 
-                              label="ESCURO"
-                              colorKey="primary"
-                              variant="soft"
-                              size="xs"
-                              dark={true}
-                            />
-                          </div>
-                          <p className="text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>Tema escuro</p>
-                        </div>
-                      </div>
-                      <DssSeparatorPreview orientation="horizontal" dark={true} />
-                      <p className="text-xs mt-3" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                        Visualização com background escuro e acessibilidade.
-                      </p>
-                    </CardSection>
-                    <CardActions>
-                      <DssButtonPreview 
-                        label="Cancelar"
-                        variant="flat"
-                        colorKey="primary"
-                        size="sm"
-                        dark={true}
-                      />
-                      <DssButtonPreview 
-                        label="Ação"
-                        variant="elevated"
-                        colorKey="primary"
-                        size="sm"
-                        dark={true}
-                      />
-                    </CardActions>
-                  </DssCardPreview>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Brand Dark Comparison */}
-            <Card 
-              className="transition-all duration-300 md:col-span-2"
-              style={{ 
-                backgroundColor: 'var(--jtech-card-bg)', 
-                borderColor: 'var(--jtech-card-border)' 
-              }}
-            >
-              <CardHeader className="pb-3">
-                <div className="flex items-center gap-3">
-                  <DssBadgePreview label="Brands + Dark Mode" brand="hub" variant="filled" size="sm" />
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {Object.values(brandColors).map((b) => (
-                    <div key={b.name} className="p-4 rounded-lg" style={{ backgroundColor: '#1a1a1a' }}>
-                      <DssCardPreview variant="bordered" brand={b.name} clickable={true} dark={true}>
-                        <CardSection isFirst={true} brand={b.name}>
-                          <div className="flex items-center gap-3 mb-2">
-                            <DssAvatarPreview 
-                              size="sm" 
-                              brand={b.name}
-                              icon={<Star style={{ width: 14, height: 14 }} />}
-                              dark={true}
-                            />
-                            <div className="flex-1">
-                              <h4 className="font-semibold text-sm" style={{ color: '#ffffff' }}>{b.label} Dark</h4>
-                            </div>
-                            <DssBadgePreview 
-                              label="DARK"
-                              brand={b.name}
-                              variant="soft"
-                              size="xs"
-                              dark={true}
-                            />
-                          </div>
-                          <p className="text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                            Brand {b.label} no tema escuro.
-                          </p>
-                        </CardSection>
-                        <CardActions>
-                          <DssButtonPreview 
-                            label="Ação"
-                            variant="elevated"
-                            brand={b.name}
-                            size="xs"
-                            dark={true}
-                          />
-                        </CardActions>
-                      </DssCardPreview>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </DssTabsContent>
-      </DssTabs>
-
-      {/* Arquitetura 4 Camadas */}
-      <SectionHeader
-        title="Arquitetura"
+        title="Anatomia"
         titleAccent="4 Camadas"
-        badge="DSS Pattern"
+        badge="Arquitetura DSS"
       />
 
-      <Card 
-        style={{ 
-          backgroundColor: 'var(--jtech-card-bg)', 
-          borderColor: 'var(--jtech-card-border)' 
-        }}
+      <AnatomySection 
+        componentName="DssCard" 
+        layers={cardAnatomyLayers}
+      />
+
+      {/* ============================================================ */}
+      {/* 4. DOCUMENTAÇÃO TÉCNICA (COLAPSÁVEL) */}
+      {/* ============================================================ */}
+      <SectionHeader
+        title="Documentação"
+        titleAccent="Técnica"
+        badge="Referência"
+      />
+
+      {/* Props API */}
+      <CollapsibleSection
+        icon={FileText}
+        title="Props API"
+        titleAccent="& Eventos"
       >
-        <CardContent className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {anatomyLayers.map((layer) => (
+        <div className="space-y-6 pt-4">
+          {/* DssCard Props */}
+          <div>
+            <h4 className="text-sm font-semibold mb-3" style={{ color: 'var(--jtech-heading-secondary)' }}>
+              DssCard Props
+            </h4>
+            <div 
+              className="rounded-lg overflow-hidden border"
+              style={{ borderColor: 'var(--jtech-card-border)' }}
+            >
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Prop</TableHead>
+                    <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Tipo</TableHead>
+                    <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Default</TableHead>
+                    <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Descrição</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {propsData.map((row) => (
+                    <TableRow key={row.prop}>
+                      <TableCell>
+                        <code className="text-xs font-mono" style={{ color: 'var(--dss-jtech-accent)' }}>{row.prop}</code>
+                      </TableCell>
+                      <TableCell>
+                        <code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>{row.type}</code>
+                      </TableCell>
+                      <TableCell>
+                        <code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>{row.default}</code>
+                      </TableCell>
+                      <TableCell style={{ color: 'var(--jtech-text-body)' }}>{row.description}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </div>
+
+          {/* Subcomponents Props */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <h4 className="text-sm font-semibold mb-3 flex items-center gap-2" style={{ color: 'var(--jtech-heading-secondary)' }}>
+                <Layers className="h-4 w-4" style={{ color: '#26a69a' }} />
+                DssCardSection Props
+              </h4>
               <div 
-                key={layer.layer}
-                className="p-4 rounded-lg transition-all hover:scale-105"
-                style={{ 
-                  backgroundColor: 'rgba(0,0,0,0.2)',
-                  borderLeft: `4px solid ${layer.color}`
-                }}
+                className="rounded-lg overflow-hidden border"
+                style={{ borderColor: 'var(--jtech-card-border)' }}
               >
-                <div className="flex items-center gap-2 mb-2">
-                  <div 
-                    className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm"
-                    style={{ backgroundColor: layer.color }}
-                  >
-                    {layer.layer}
-                  </div>
-                  <span className="font-semibold text-sm" style={{ color: 'var(--jtech-heading-secondary)' }}>
-                    {layer.name}
-                  </span>
-                </div>
-                <code className="text-xs block mb-2" style={{ color: layer.color }}>
-                  {layer.file}
-                </code>
-                <p className="text-xs" style={{ color: 'var(--jtech-text-muted)' }}>
-                  {layer.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* API Props Table */}
-      <SectionHeader
-        title="Public"
-        titleAccent="API"
-        badge="Props Reference"
-      />
-
-      <Card 
-        style={{ 
-          backgroundColor: 'var(--jtech-card-bg)', 
-          borderColor: 'var(--jtech-card-border)' 
-        }}
-      >
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg" style={{ color: 'var(--jtech-heading-secondary)' }}>
-            <FileText className="h-5 w-5" style={{ color: 'var(--dss-jtech-accent)' }} />
-            DssCard Props
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Categoria</TableHead>
-                  <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Prop</TableHead>
-                  <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Tipo</TableHead>
-                  <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Default</TableHead>
-                  <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Descrição</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {propsData.map((row) => (
-                  <TableRow key={row.prop}>
-                    <TableCell>
-                      <Badge variant="outline" className="text-xs">{row.category}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <code className="text-xs font-mono" style={{ color: 'var(--dss-jtech-accent)' }}>{row.prop}</code>
-                    </TableCell>
-                    <TableCell>
-                      <code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>{row.type}</code>
-                    </TableCell>
-                    <TableCell>
-                      <code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>{row.default}</code>
-                    </TableCell>
-                    <TableCell style={{ color: 'var(--jtech-text-body)' }}>{row.description}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Subcomponents Props */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card 
-          style={{ 
-            backgroundColor: 'var(--jtech-card-bg)', 
-            borderColor: 'var(--jtech-card-border)' 
-          }}
-        >
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg" style={{ color: 'var(--jtech-heading-secondary)' }}>
-              <Layers className="h-5 w-5" style={{ color: '#26a69a' }} />
-              DssCardSection Props
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Prop</TableHead>
-                  <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Tipo</TableHead>
-                  <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Default</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {sectionPropsData.map((row) => (
-                  <TableRow key={row.prop}>
-                    <TableCell>
-                      <code className="text-xs font-mono" style={{ color: '#26a69a' }}>{row.prop}</code>
-                    </TableCell>
-                    <TableCell>
-                      <code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>{row.type}</code>
-                    </TableCell>
-                    <TableCell>
-                      <code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>{row.default}</code>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-            <p className="text-xs mt-3" style={{ color: 'var(--jtech-text-muted)' }}>
-              {sectionPropsData[0].description}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card 
-          style={{ 
-            backgroundColor: 'var(--jtech-card-bg)', 
-            borderColor: 'var(--jtech-card-border)' 
-          }}
-        >
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg" style={{ color: 'var(--jtech-heading-secondary)' }}>
-              <Layers className="h-5 w-5" style={{ color: '#ff6607' }} />
-              DssCardActions Props
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Prop</TableHead>
-                  <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Tipo</TableHead>
-                  <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Default</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {actionsPropsData.map((row) => (
-                  <TableRow key={row.prop}>
-                    <TableCell>
-                      <code className="text-xs font-mono" style={{ color: '#ff6607' }}>{row.prop}</code>
-                    </TableCell>
-                    <TableCell>
-                      <code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>{row.type}</code>
-                    </TableCell>
-                    <TableCell>
-                      <code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>{row.default}</code>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-            <p className="text-xs mt-3" style={{ color: 'var(--jtech-text-muted)' }}>
-              {actionsPropsData[0].description}
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Tokens Reference */}
-      <SectionHeader
-        title="Tokens"
-        titleAccent="Utilizados"
-        badge={`${tokensUsed.length} tokens`}
-      />
-
-      <DssTabs defaultValue="Surface" className="space-y-4">
-        <DssTabsList>
-          {Object.keys(tokensByCategory).map((category) => (
-            <DssTabsTrigger 
-              key={category}
-              value={category}
-              badge={tokensByCategory[category].length}
-            >
-              {category}
-            </DssTabsTrigger>
-          ))}
-        </DssTabsList>
-
-        {Object.entries(tokensByCategory).map(([category, tokens]) => (
-          <DssTabsContent key={category} value={category} className="space-y-4">
-            <Card 
-              className="transition-all duration-300"
-              style={{ 
-                backgroundColor: 'var(--jtech-card-bg)', 
-                borderColor: 'var(--jtech-card-border)' 
-              }}
-            >
-              <CardHeader className="pb-3">
-                <div className="flex items-center gap-3">
-                  <DssBadgePreview 
-                    label={category}
-                    colorKey="primary"
-                    variant="filled"
-                    size="sm"
-                  />
-                  <span className="text-sm" style={{ color: 'var(--jtech-text-body)' }}>
-                    {tokens.length} tokens disponíveis
-                  </span>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div 
-                  className="p-4 rounded-lg"
-                  style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
-                >
-                  <div 
-                    className="grid grid-cols-[1fr_140px_1fr] gap-4 pb-3 mb-3 text-xs font-semibold"
-                    style={{ 
-                      color: 'var(--jtech-heading-tertiary)',
-                      borderBottom: '1px solid var(--jtech-card-border)'
-                    }}
-                  >
-                    <span>Token</span>
-                    <span>Valor</span>
-                    <span>Uso</span>
-                  </div>
-                  <div className="grid gap-2">
-                    {tokens.map((token) => (
-                      <TokenRow key={token.token} {...token} />
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Prop</TableHead>
+                      <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Tipo</TableHead>
+                      <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Default</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {sectionPropsData.map((row) => (
+                      <TableRow key={row.prop}>
+                        <TableCell>
+                          <code className="text-xs font-mono" style={{ color: '#26a69a' }}>{row.prop}</code>
+                        </TableCell>
+                        <TableCell>
+                          <code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>{row.type}</code>
+                        </TableCell>
+                        <TableCell>
+                          <code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>{row.default}</code>
+                        </TableCell>
+                      </TableRow>
                     ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </DssTabsContent>
-        ))}
-      </DssTabs>
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-sm font-semibold mb-3 flex items-center gap-2" style={{ color: 'var(--jtech-heading-secondary)' }}>
+                <Layers className="h-4 w-4" style={{ color: '#ff6607' }} />
+                DssCardActions Props
+              </h4>
+              <div 
+                className="rounded-lg overflow-hidden border"
+                style={{ borderColor: 'var(--jtech-card-border)' }}
+              >
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Prop</TableHead>
+                      <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Tipo</TableHead>
+                      <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Default</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {actionsPropsData.map((row) => (
+                      <TableRow key={row.prop}>
+                        <TableCell>
+                          <code className="text-xs font-mono" style={{ color: '#ff6607' }}>{row.prop}</code>
+                        </TableCell>
+                        <TableCell>
+                          <code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>{row.type}</code>
+                        </TableCell>
+                        <TableCell>
+                          <code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>{row.default}</code>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </CollapsibleSection>
 
       {/* Acessibilidade */}
-      <SectionHeader
+      <CollapsibleSection
+        icon={Layers}
         title="Acessibilidade"
         titleAccent="WCAG 2.1 AA"
-        badge="A11y"
-      />
-
-      <Card 
-        style={{ 
-          backgroundColor: 'var(--jtech-card-bg)', 
-          borderColor: 'var(--jtech-card-border)' 
-        }}
       >
-        <CardContent className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <h4 className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>
-                Navegação por Teclado
-              </h4>
-              <div className="space-y-2">
-                {[
-                  { key: "Tab", action: "Move focus para o card (se clickable)" },
-                  { key: "Enter/Space", action: "Ativa o card clickable" },
-                  { key: "Escape", action: "Remove focus do card" },
-                ].map((item) => (
-                  <div key={item.key} className="flex items-center gap-3">
-                    <kbd 
-                      className="px-2 py-1 text-xs font-mono rounded"
-                      style={{ 
-                        backgroundColor: 'rgba(255,255,255,0.1)',
-                        border: '1px solid var(--jtech-card-border)'
-                      }}
-                    >
-                      {item.key}
-                    </kbd>
-                    <span className="text-sm" style={{ color: 'var(--jtech-text-body)' }}>{item.action}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h4 className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>
-                Atributos ARIA
-              </h4>
-              <div className="space-y-2">
-                {[
-                  { attr: "role='button'", desc: "Aplicado quando clickable" },
-                  { attr: "tabindex='0'", desc: "Permite focus em cards clickable" },
-                  { attr: "aria-label", desc: "Descrição acessível (quando necessário)" },
-                ].map((item) => (
-                  <div key={item.attr} className="flex items-start gap-3">
-                    <code 
-                      className="px-2 py-1 text-xs font-mono rounded flex-shrink-0"
-                      style={{ 
-                        backgroundColor: 'rgba(31, 134, 222, 0.1)',
-                        color: '#1f86de'
-                      }}
-                    >
-                      {item.attr}
-                    </code>
-                    <span className="text-sm" style={{ color: 'var(--jtech-text-body)' }}>{item.desc}</span>
-                  </div>
-                ))}
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>
+              Navegação por Teclado
+            </h4>
+            <div className="space-y-2">
+              {[
+                { key: "Tab", action: "Move focus para o card (se clickable)" },
+                { key: "Enter/Space", action: "Ativa o card clickable" },
+                { key: "Escape", action: "Remove focus do card" },
+              ].map((item) => (
+                <div key={item.key} className="flex items-center gap-3">
+                  <kbd 
+                    className="px-2 py-1 text-xs font-mono rounded"
+                    style={{ 
+                      backgroundColor: 'rgba(255,255,255,0.1)',
+                      border: '1px solid var(--jtech-card-border)'
+                    }}
+                  >
+                    {item.key}
+                  </kbd>
+                  <span className="text-sm" style={{ color: 'var(--jtech-text-body)' }}>{item.action}</span>
+                </div>
+              ))}
             </div>
           </div>
-        </CardContent>
-      </Card>
+
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>
+              Atributos ARIA
+            </h4>
+            <div className="space-y-2">
+              {[
+                { attr: "role='button'", desc: "Aplicado quando clickable" },
+                { attr: "tabindex='0'", desc: "Permite focus em cards clickable" },
+                { attr: "aria-label", desc: "Descrição acessível (quando necessário)" },
+              ].map((item) => (
+                <div key={item.attr} className="flex items-start gap-3">
+                  <code 
+                    className="px-2 py-1 text-xs font-mono rounded flex-shrink-0"
+                    style={{ 
+                      backgroundColor: 'rgba(31, 134, 222, 0.1)',
+                      color: '#1f86de'
+                    }}
+                  >
+                    {item.attr}
+                  </code>
+                  <span className="text-sm" style={{ color: 'var(--jtech-text-body)' }}>{item.desc}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </CollapsibleSection>
     </div>
   );
 }
