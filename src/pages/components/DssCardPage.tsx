@@ -17,6 +17,7 @@ import {
   Star,
   Sun,
   Moon,
+  Heart,
 } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionHeader } from "@/components/ui/SectionHeader";
