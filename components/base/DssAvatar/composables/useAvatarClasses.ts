@@ -15,14 +15,7 @@
  */
 
 import { computed } from 'vue'
-import type { AvatarProps, AvatarSize } from '../types/avatar.types'
-
-/**
- * Verifica se o size é um tamanho predefinido
- */
-function isPredefinedSize(size: string | null | undefined): size is AvatarSize {
-  return ['xs', 'sm', 'md', 'lg', 'xl'].includes(size as string)
-}
+import type { AvatarProps } from '../types/avatar.types'
 
 /**
  * Composable para classes CSS do avatar

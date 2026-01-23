@@ -17,7 +17,6 @@
 import { computed, type CSSProperties } from 'vue'
 import type { AvatarProps, AvatarSize } from '../types/avatar.types'
 import {
-  AVATAR_SIZE_MAP,
   AVATAR_ICON_SIZE_MAP,
   AVATAR_FONT_SIZE_MAP
 } from '../types/avatar.types'
