@@ -18,7 +18,7 @@ import {
   Sun,
   Moon,
   Heart,
-  Image,
+  Image as ImageIcon,
   Share2,
   Bell,
 } from "lucide-react";
@@ -1843,7 +1843,7 @@ Ele ajuda a estruturar informações, separar seções e criar hierarquia visual
                       style={{ backgroundColor: '#f5f5f5' }}
                     >
                       <DssIconPreview 
-                        icon={<Image style={{ width: "100%", height: "100%" }} />}
+                        icon={<ImageIcon style={{ width: "100%", height: "100%" }} />}
                         size="lg"
                         colorKey={null}
                       />
