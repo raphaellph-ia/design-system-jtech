@@ -18,6 +18,9 @@ import {
   Sun,
   Moon,
   Heart,
+  Image,
+  Share2,
+  Bell,
 } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionHeader } from "@/components/ui/SectionHeader";
