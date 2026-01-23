@@ -2453,6 +2453,137 @@ Ele ajuda a estruturar informações, separar seções e criar hierarquia visual
         </CardContent>
       </Card>
 
+      {/* Subcomponents Props */}
+      <CollapsibleSection icon={Layers} title="Subcomponents" titleAccent="Props">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+          {/* CardHeader Props */}
+          <Card 
+            className="p-4 flex flex-col gap-y-3"
+            style={{ 
+              backgroundColor: 'var(--jtech-card-bg)', 
+              borderColor: 'var(--jtech-card-border)' 
+            }}
+          >
+            <h3 className="text-base font-semibold flex items-center gap-x-2" style={{ color: 'var(--jtech-heading-secondary)' }}>
+              <Code className="w-4 h-4" style={{ color: 'var(--dss-jtech-accent)' }} />
+              CardHeader Props
+            </h3>
+            <Table className="w-full text-left text-sm">
+              <TableHeader>
+                <TableRow>
+                  <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Prop</TableHead>
+                  <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Tipo</TableHead>
+                  <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Default</TableHead>
+                  <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Descrição</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell><code className="text-xs font-mono" style={{ color: 'var(--dss-jtech-accent)' }}>title</code></TableCell>
+                  <TableCell><code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>string</code></TableCell>
+                  <TableCell><code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>""</code></TableCell>
+                  <TableCell style={{ color: 'var(--jtech-text-body)' }}>Título do cabeçalho do card.</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell><code className="text-xs font-mono" style={{ color: 'var(--dss-jtech-accent)' }}>subtitle</code></TableCell>
+                  <TableCell><code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>string</code></TableCell>
+                  <TableCell><code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>""</code></TableCell>
+                  <TableCell style={{ color: 'var(--jtech-text-body)' }}>Subtítulo do cabeçalho do card.</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell><code className="text-xs font-mono" style={{ color: 'var(--dss-jtech-accent)' }}>actions</code></TableCell>
+                  <TableCell><code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>ReactNode</code></TableCell>
+                  <TableCell><code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>null</code></TableCell>
+                  <TableCell style={{ color: 'var(--jtech-text-body)' }}>Slot para ações no cabeçalho.</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </Card>
+
+          {/* CardSection Props */}
+          <Card 
+            className="p-4 flex flex-col gap-y-3"
+            style={{ 
+              backgroundColor: 'var(--jtech-card-bg)', 
+              borderColor: 'var(--jtech-card-border)' 
+            }}
+          >
+            <h3 className="text-base font-semibold flex items-center gap-x-2" style={{ color: 'var(--jtech-heading-secondary)' }}>
+              <Code className="w-4 h-4" style={{ color: 'var(--dss-jtech-accent)' }} />
+              CardSection Props
+            </h3>
+            <Table className="w-full text-left text-sm">
+              <TableHeader>
+                <TableRow>
+                  <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Prop</TableHead>
+                  <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Tipo</TableHead>
+                  <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Default</TableHead>
+                  <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Descrição</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell><code className="text-xs font-mono" style={{ color: 'var(--dss-jtech-accent)' }}>isFirst</code></TableCell>
+                  <TableCell><code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>boolean</code></TableCell>
+                  <TableCell><code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>false</code></TableCell>
+                  <TableCell style={{ color: 'var(--jtech-text-body)' }}>Se é a primeira seção (padding top maior).</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell><code className="text-xs font-mono" style={{ color: 'var(--dss-jtech-accent)' }}>semanticColor</code></TableCell>
+                  <TableCell><code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>string</code></TableCell>
+                  <TableCell><code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>null</code></TableCell>
+                  <TableCell style={{ color: 'var(--jtech-text-body)' }}>Cor semântica da seção.</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell><code className="text-xs font-mono" style={{ color: 'var(--dss-jtech-accent)' }}>divider</code></TableCell>
+                  <TableCell><code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>boolean</code></TableCell>
+                  <TableCell><code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>false</code></TableCell>
+                  <TableCell style={{ color: 'var(--jtech-text-body)' }}>Exibir divisor abaixo da seção.</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </Card>
+
+          {/* CardActions Props */}
+          <Card 
+            className="p-4 flex flex-col gap-y-3 md:col-span-2"
+            style={{ 
+              backgroundColor: 'var(--jtech-card-bg)', 
+              borderColor: 'var(--jtech-card-border)' 
+            }}
+          >
+            <h3 className="text-base font-semibold flex items-center gap-x-2" style={{ color: 'var(--jtech-heading-secondary)' }}>
+              <Code className="w-4 h-4" style={{ color: 'var(--dss-jtech-accent)' }} />
+              CardActions Props
+            </h3>
+            <Table className="w-full text-left text-sm">
+              <TableHeader>
+                <TableRow>
+                  <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Prop</TableHead>
+                  <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Tipo</TableHead>
+                  <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Default</TableHead>
+                  <TableHead style={{ color: 'var(--jtech-heading-tertiary)' }}>Descrição</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell><code className="text-xs font-mono" style={{ color: 'var(--dss-jtech-accent)' }}>align</code></TableCell>
+                  <TableCell><code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>'left' | 'center' | 'right' | 'between' | 'around'</code></TableCell>
+                  <TableCell><code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>'right'</code></TableCell>
+                  <TableCell style={{ color: 'var(--jtech-text-body)' }}>Alinhamento das ações no card.</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell><code className="text-xs font-mono" style={{ color: 'var(--dss-jtech-accent)' }}>vertical</code></TableCell>
+                  <TableCell><code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>boolean</code></TableCell>
+                  <TableCell><code className="text-xs font-mono" style={{ color: 'var(--jtech-text-muted)' }}>false</code></TableCell>
+                  <TableCell style={{ color: 'var(--jtech-text-body)' }}>Empilhar ações verticalmente.</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </Card>
+        </div>
+      </CollapsibleSection>
+
       {/* Acessibilidade */}
       <CollapsibleSection icon={Layers} title="Acessibilidade" titleAccent="WCAG 2.1 AA">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
