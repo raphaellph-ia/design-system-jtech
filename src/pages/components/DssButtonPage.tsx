@@ -387,7 +387,13 @@ const propsData = [
     description: "Barra de progresso (0-100)",
   },
   { category: "Estados", prop: "disabled", type: "Boolean", default: "false", description: "Estado desabilitado" },
-  { category: "Brandabilidade", prop: "brand", type: "'hub' | 'water' | 'waste'", default: "null", description: "Tema de marca Sansys" },
+  {
+    category: "Brandabilidade",
+    prop: "brand",
+    type: "'hub' | 'water' | 'waste'",
+    default: "null",
+    description: "Tema de marca Sansys",
+  },
 ];
 
 // Tokens utilizados pelo DssButton
@@ -1073,31 +1079,6 @@ Ele oferece variações visuais e comportamentais bem definidas para diferentes 
           { label: "Quasar Compatible", variant: "success" },
         ]}
       />
-
-      {/* Quick Stats - Jtech Style */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {[
-          { value: "6", label: "Variantes", color: semanticColors.primary.bg },
-          { value: "8", label: "Cores Semânticas", color: semanticColors.secondary.bg },
-          { value: "3", label: "Brands Sansys", color: brandColors.hub.principal },
-          { value: "5", label: "Tamanhos", color: brandColors.waste.principal },
-        ].map((stat, i) => (
-          <Card 
-            key={i}
-            className="transition-all duration-300 hover:shadow-lg"
-            style={{ 
-              backgroundColor: 'var(--jtech-card-bg)', 
-              borderColor: 'var(--jtech-card-border)' 
-            }}
-          >
-            <CardContent className="p-4 text-center">
-              <div className="text-3xl font-bold" style={{ color: stat.color }}>{stat.value}</div>
-              <div className="text-sm" style={{ color: 'var(--jtech-text-body)' }}>{stat.label}</div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
       {/* Interactive Playground - Jtech Style */}
       <SectionHeader title="Playground" titleAccent="Interativo" badge="Live Preview" />
 
@@ -1258,7 +1239,9 @@ Ele oferece variações visuais e comportamentais bem definidas para diferentes 
 
             {/* Brand */}
             <div className="space-y-2">
-              <label className="text-sm font-semibold" style={{ color: 'var(--jtech-heading-tertiary)' }}>Brand (Sansys)</label>
+              <label className="text-sm font-semibold" style={{ color: "var(--jtech-heading-tertiary)" }}>
+                Brand (Sansys)
+              </label>
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => setSelectedBrand(null)}
