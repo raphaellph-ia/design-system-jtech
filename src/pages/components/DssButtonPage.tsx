@@ -1165,9 +1165,9 @@ Ele oferece variações visuais e comportamentais bem definidas para diferentes 
                     key={v.name}
                     onClick={() => setSelectedVariant(v.name)}
                     className={`px-3 py-1.5 rounded text-xs font-medium transition-all duration-200 ease-out
-                      hover:scale-105 active:scale-95 hover:shadow-md
+                      hover:scale-105 active:scale-95 hover:shadow-md hover:brightness-125
                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dss-jtech-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--jtech-surface-dark)]
-                      ${selectedVariant === v.name ? 'shadow-lg shadow-[var(--dss-jtech-accent)]/25' : ''}`}
+                      ${selectedVariant === v.name ? 'shadow-lg shadow-[var(--dss-jtech-accent)]/25' : 'hover:bg-white/15'}`}
                     style={{
                       backgroundColor:
                         selectedVariant === v.name ? "var(--dss-jtech-accent)" : "rgba(255,255,255,0.05)",
@@ -1195,9 +1195,9 @@ Ele oferece variações visuais e comportamentais bem definidas para diferentes 
                       setSelectedBrand(null);
                     }}
                     className={`px-2 py-1.5 rounded text-xs font-medium transition-all duration-200 ease-out flex items-center gap-1.5
-                      hover:scale-105 active:scale-95 hover:shadow-md
+                      hover:scale-105 active:scale-95 hover:shadow-md hover:brightness-125
                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dss-jtech-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--jtech-surface-dark)]
-                      ${selectedColor === c.name && !selectedBrand ? 'shadow-lg' : ''}`}
+                      ${selectedColor === c.name && !selectedBrand ? 'shadow-lg' : 'hover:bg-white/15'}`}
                     style={{
                       backgroundColor: selectedColor === c.name && !selectedBrand ? c.bg : "rgba(255,255,255,0.05)",
                       color: selectedColor === c.name && !selectedBrand ? "#ffffff" : "var(--jtech-text-body)",
@@ -1226,9 +1226,9 @@ Ele oferece variações visuais e comportamentais bem definidas para diferentes 
                       setSelectedBrand(null);
                     }}
                     className={`px-2 py-1.5 rounded text-xs font-medium transition-all duration-200 ease-out flex items-center gap-1.5
-                      hover:scale-105 active:scale-95 hover:shadow-md
+                      hover:scale-105 active:scale-95 hover:shadow-md hover:brightness-125
                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dss-jtech-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--jtech-surface-dark)]
-                      ${selectedColor === c.name && !selectedBrand ? 'shadow-lg' : ''}`}
+                      ${selectedColor === c.name && !selectedBrand ? 'shadow-lg' : 'hover:bg-white/15'}`}
                     style={{
                       backgroundColor: selectedColor === c.name && !selectedBrand ? c.bg : "rgba(255,255,255,0.05)",
                       color:
@@ -1257,9 +1257,9 @@ Ele oferece variações visuais e comportamentais bem definidas para diferentes 
                 <button
                   onClick={() => setSelectedBrand(null)}
                   className={`px-3 py-1.5 rounded text-xs font-medium transition-all duration-200 ease-out
-                    hover:scale-105 active:scale-95 hover:shadow-md
+                    hover:scale-105 active:scale-95 hover:shadow-md hover:brightness-125
                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dss-jtech-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--jtech-surface-dark)]
-                    ${!selectedBrand ? 'shadow-lg shadow-[var(--dss-jtech-accent)]/25' : ''}`}
+                    ${!selectedBrand ? 'shadow-lg shadow-[var(--dss-jtech-accent)]/25' : 'hover:bg-white/15'}`}
                   style={{
                     backgroundColor: !selectedBrand ? "var(--dss-jtech-accent)" : "rgba(255,255,255,0.05)",
                     color: !selectedBrand ? "#ffffff" : "var(--jtech-text-body)",
@@ -1276,9 +1276,9 @@ Ele oferece variações visuais e comportamentais bem definidas para diferentes 
                       setSelectedColor("primary");
                     }}
                     className={`px-2 py-1.5 rounded text-xs font-medium transition-all duration-200 ease-out flex items-center gap-1.5
-                      hover:scale-105 active:scale-95 hover:shadow-md
+                      hover:scale-105 active:scale-95 hover:shadow-md hover:brightness-125
                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dss-jtech-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--jtech-surface-dark)]
-                      ${selectedBrand === b.name ? 'shadow-lg' : ''}`}
+                      ${selectedBrand === b.name ? 'shadow-lg' : 'hover:bg-white/15'}`}
                     style={{
                       backgroundColor: selectedBrand === b.name ? b.principal : "rgba(255,255,255,0.05)",
                       color: selectedBrand === b.name ? "#ffffff" : "var(--jtech-text-body)",
@@ -1304,9 +1304,9 @@ Ele oferece variações visuais e comportamentais bem definidas para diferentes 
                     key={s.name}
                     onClick={() => setSelectedSize(s.name)}
                     className={`px-3 py-1.5 rounded text-xs font-medium transition-all duration-200 ease-out
-                      hover:scale-105 active:scale-95 hover:shadow-md
+                      hover:scale-105 active:scale-95 hover:shadow-md hover:brightness-125
                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dss-jtech-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--jtech-surface-dark)]
-                      ${selectedSize === s.name ? 'shadow-lg shadow-[var(--dss-jtech-accent)]/25' : ''}`}
+                      ${selectedSize === s.name ? 'shadow-lg shadow-[var(--dss-jtech-accent)]/25' : 'hover:bg-white/15'}`}
                     style={{
                       backgroundColor: selectedSize === s.name ? "var(--dss-jtech-accent)" : "rgba(255,255,255,0.05)",
                       color: selectedSize === s.name ? "#ffffff" : "var(--jtech-text-body)",
@@ -1342,9 +1342,9 @@ Ele oferece variações visuais e comportamentais bem definidas para diferentes 
                     key={item.key}
                     onClick={item.toggle}
                     className={`px-2 py-1.5 rounded text-xs font-medium transition-all duration-200 ease-out
-                      hover:scale-105 active:scale-95 hover:shadow-md
+                      hover:scale-105 active:scale-95 hover:shadow-md hover:brightness-125
                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dss-jtech-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--jtech-surface-dark)]
-                      ${item.active ? 'shadow-lg shadow-[var(--dss-positive)]/25' : ''}`}
+                      ${item.active ? 'shadow-lg shadow-[var(--dss-positive)]/25' : 'hover:bg-white/15'}`}
                     style={{
                       backgroundColor: item.active ? "var(--dss-positive)" : "rgba(255,255,255,0.05)",
                       color: item.active ? "#ffffff" : "var(--jtech-text-body)",
