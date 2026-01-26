@@ -38,6 +38,7 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { AnatomySection } from "@/components/ui/AnatomySection";
 import { CollapsibleSection } from "@/components/ui/CollapsibleSection";
+import { PlaygroundButton } from "@/components/ui/PlaygroundButton";
 
 // ============================================================================
 // TOKENS REAIS DO DSS - Extraídos de index.css e globals.scss
@@ -1161,22 +1162,13 @@ Ele oferece variações visuais e comportamentais bem definidas para diferentes 
               </label>
               <div className="flex flex-wrap gap-2">
                 {variants.map((v) => (
-                  <button
+                  <PlaygroundButton
                     key={v.name}
                     onClick={() => setSelectedVariant(v.name)}
-                    className={`px-3 py-1.5 rounded text-xs font-medium transition-all duration-200 ease-out
-                      hover:scale-105 active:scale-95 hover:shadow-md hover:brightness-125
-                      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dss-jtech-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--jtech-surface-dark)]
-                      ${selectedVariant === v.name ? 'shadow-lg shadow-[var(--dss-jtech-accent)]/25' : 'hover:bg-white/15'}`}
-                    style={{
-                      backgroundColor:
-                        selectedVariant === v.name ? "var(--dss-jtech-accent)" : "rgba(255,255,255,0.05)",
-                      color: selectedVariant === v.name ? "#ffffff" : "var(--jtech-text-body)",
-                      border: `1px solid ${selectedVariant === v.name ? "var(--dss-jtech-accent)" : "var(--jtech-card-border)"}`,
-                    }}
+                    isSelected={selectedVariant === v.name}
                   >
                     {v.label}
-                  </button>
+                  </PlaygroundButton>
                 ))}
               </div>
             </div>
@@ -1188,26 +1180,20 @@ Ele oferece variações visuais e comportamentais bem definidas para diferentes 
               </label>
               <div className="flex flex-wrap gap-2">
                 {Object.values(semanticColors).map((c) => (
-                  <button
+                  <PlaygroundButton
                     key={c.name}
                     onClick={() => {
                       setSelectedColor(c.name);
                       setSelectedBrand(null);
                     }}
-                    className={`px-2 py-1.5 rounded text-xs font-medium transition-all duration-200 ease-out flex items-center gap-1.5
-                      hover:scale-105 active:scale-95 hover:shadow-md hover:brightness-125
-                      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dss-jtech-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--jtech-surface-dark)]
-                      ${selectedColor === c.name && !selectedBrand ? 'shadow-lg' : 'hover:bg-white/15'}`}
-                    style={{
-                      backgroundColor: selectedColor === c.name && !selectedBrand ? c.bg : "rgba(255,255,255,0.05)",
-                      color: selectedColor === c.name && !selectedBrand ? "#ffffff" : "var(--jtech-text-body)",
-                      border: `1px solid ${selectedColor === c.name && !selectedBrand ? c.bg : "var(--jtech-card-border)"}`,
-                      boxShadow: selectedColor === c.name && !selectedBrand ? `0 10px 15px -3px ${c.bg}40` : undefined,
-                    }}
+                    isSelected={selectedColor === c.name && !selectedBrand}
+                    selectedBg={c.bg}
+                    selectedBorder={c.bg}
+                    className="flex items-center gap-1.5"
                   >
-                    <span className="w-2 h-2 rounded-full transition-transform duration-200 group-hover:scale-110" style={{ backgroundColor: c.bg }} />
+                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: c.bg }} />
                     {c.label}
-                  </button>
+                  </PlaygroundButton>
                 ))}
               </div>
             </div>
@@ -1219,31 +1205,21 @@ Ele oferece variações visuais e comportamentais bem definidas para diferentes 
               </label>
               <div className="flex flex-wrap gap-2">
                 {Object.values(feedbackColors).map((c) => (
-                  <button
+                  <PlaygroundButton
                     key={c.name}
                     onClick={() => {
                       setSelectedColor(c.name);
                       setSelectedBrand(null);
                     }}
-                    className={`px-2 py-1.5 rounded text-xs font-medium transition-all duration-200 ease-out flex items-center gap-1.5
-                      hover:scale-105 active:scale-95 hover:shadow-md hover:brightness-125
-                      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dss-jtech-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--jtech-surface-dark)]
-                      ${selectedColor === c.name && !selectedBrand ? 'shadow-lg' : 'hover:bg-white/15'}`}
-                    style={{
-                      backgroundColor: selectedColor === c.name && !selectedBrand ? c.bg : "rgba(255,255,255,0.05)",
-                      color:
-                        selectedColor === c.name && !selectedBrand
-                          ? c.name === "warning"
-                            ? "#1a1a1a"
-                            : "#ffffff"
-                          : "var(--jtech-text-body)",
-                      border: `1px solid ${selectedColor === c.name && !selectedBrand ? c.bg : "var(--jtech-card-border)"}`,
-                      boxShadow: selectedColor === c.name && !selectedBrand ? `0 10px 15px -3px ${c.bg}40` : undefined,
-                    }}
+                    isSelected={selectedColor === c.name && !selectedBrand}
+                    selectedBg={c.bg}
+                    selectedBorder={c.bg}
+                    selectedColor={c.name === "warning" ? "#1a1a1a" : "#ffffff"}
+                    className="flex items-center gap-1.5"
                   >
                     <span className="w-2 h-2 rounded-full" style={{ backgroundColor: c.bg }} />
                     {c.label}
-                  </button>
+                  </PlaygroundButton>
                 ))}
               </div>
             </div>
@@ -1254,41 +1230,27 @@ Ele oferece variações visuais e comportamentais bem definidas para diferentes 
                 Brand (Sansys)
               </label>
               <div className="flex flex-wrap gap-2">
-                <button
+                <PlaygroundButton
                   onClick={() => setSelectedBrand(null)}
-                  className={`px-3 py-1.5 rounded text-xs font-medium transition-all duration-200 ease-out
-                    hover:scale-105 active:scale-95 hover:shadow-md hover:brightness-125
-                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dss-jtech-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--jtech-surface-dark)]
-                    ${!selectedBrand ? 'shadow-lg shadow-[var(--dss-jtech-accent)]/25' : 'hover:bg-white/15'}`}
-                  style={{
-                    backgroundColor: !selectedBrand ? "var(--dss-jtech-accent)" : "rgba(255,255,255,0.05)",
-                    color: !selectedBrand ? "#ffffff" : "var(--jtech-text-body)",
-                    border: `1px solid ${!selectedBrand ? "var(--dss-jtech-accent)" : "var(--jtech-card-border)"}`,
-                  }}
+                  isSelected={!selectedBrand}
                 >
                   Nenhum
-                </button>
+                </PlaygroundButton>
                 {Object.values(brandColors).map((b) => (
-                  <button
+                  <PlaygroundButton
                     key={b.name}
                     onClick={() => {
                       setSelectedBrand(b.name);
                       setSelectedColor("primary");
                     }}
-                    className={`px-2 py-1.5 rounded text-xs font-medium transition-all duration-200 ease-out flex items-center gap-1.5
-                      hover:scale-105 active:scale-95 hover:shadow-md hover:brightness-125
-                      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dss-jtech-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--jtech-surface-dark)]
-                      ${selectedBrand === b.name ? 'shadow-lg' : 'hover:bg-white/15'}`}
-                    style={{
-                      backgroundColor: selectedBrand === b.name ? b.principal : "rgba(255,255,255,0.05)",
-                      color: selectedBrand === b.name ? "#ffffff" : "var(--jtech-text-body)",
-                      border: `1px solid ${selectedBrand === b.name ? b.principal : "var(--jtech-card-border)"}`,
-                      boxShadow: selectedBrand === b.name ? `0 10px 15px -3px ${b.principal}40` : undefined,
-                    }}
+                    isSelected={selectedBrand === b.name}
+                    selectedBg={b.principal}
+                    selectedBorder={b.principal}
+                    className="flex items-center gap-1.5"
                   >
-                    <span className="transition-transform duration-200 hover:scale-110">{b.icon}</span>
+                    <span>{b.icon}</span>
                     {b.label}
-                  </button>
+                  </PlaygroundButton>
                 ))}
               </div>
             </div>
@@ -1300,22 +1262,14 @@ Ele oferece variações visuais e comportamentais bem definidas para diferentes 
               </label>
               <div className="flex flex-wrap gap-2">
                 {sizes.map((s) => (
-                  <button
+                  <PlaygroundButton
                     key={s.name}
                     onClick={() => setSelectedSize(s.name)}
-                    className={`px-3 py-1.5 rounded text-xs font-medium transition-all duration-200 ease-out
-                      hover:scale-105 active:scale-95 hover:shadow-md hover:brightness-125
-                      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dss-jtech-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--jtech-surface-dark)]
-                      ${selectedSize === s.name ? 'shadow-lg shadow-[var(--dss-jtech-accent)]/25' : 'hover:bg-white/15'}`}
-                    style={{
-                      backgroundColor: selectedSize === s.name ? "var(--dss-jtech-accent)" : "rgba(255,255,255,0.05)",
-                      color: selectedSize === s.name ? "#ffffff" : "var(--jtech-text-body)",
-                      border: `1px solid ${selectedSize === s.name ? "var(--dss-jtech-accent)" : "var(--jtech-card-border)"}`,
-                    }}
+                    isSelected={selectedSize === s.name}
                   >
                     {s.label}
                     {s.isDefault && <span className="ml-1 opacity-50">•</span>}
-                  </button>
+                  </PlaygroundButton>
                 ))}
               </div>
             </div>
@@ -1338,24 +1292,16 @@ Ele oferece variações visuais e comportamentais bem definidas para diferentes 
                     toggle: () => setHasIconRight(!hasIconRight),
                   },
                 ].map((item) => (
-                  <button
+                  <PlaygroundButton
                     key={item.key}
                     onClick={item.toggle}
-                    className={`px-2 py-1.5 rounded text-xs font-medium transition-all duration-200 ease-out
-                      hover:scale-105 active:scale-95 hover:shadow-md hover:brightness-125
-                      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dss-jtech-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--jtech-surface-dark)]
-                      ${item.active ? 'shadow-lg shadow-[var(--dss-positive)]/25' : 'hover:bg-white/15'}`}
-                    style={{
-                      backgroundColor: item.active ? "var(--dss-positive)" : "rgba(255,255,255,0.05)",
-                      color: item.active ? "#ffffff" : "var(--jtech-text-body)",
-                      border: `1px solid ${item.active ? "var(--dss-positive)" : "var(--jtech-card-border)"}`,
-                    }}
+                    isSelected={item.active}
+                    selectedBg="var(--dss-positive)"
+                    selectedBorder="var(--dss-positive)"
                   >
-                    <span className={`inline-block transition-transform duration-200 ${item.active ? 'scale-110' : ''}`}>
-                      {item.active && "✓ "}
-                    </span>
+                    {item.active && "✓ "}
                     {item.label}
-                  </button>
+                  </PlaygroundButton>
                 ))}
               </div>
             </div>
