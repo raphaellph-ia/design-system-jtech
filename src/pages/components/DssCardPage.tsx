@@ -501,7 +501,7 @@ export default function DssCardPage() {
         extraBadges={[
           { label: "v2.2.0", variant: "info" },
           { label: "Quasar Compatible", variant: "success" },
-          { label: "TypeScript", variant: "default" },
+          { label: "TypeScript", variant: "info" },
         ]}
       />
 
