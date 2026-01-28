@@ -1845,6 +1845,52 @@ Todos os focus rings foram validados para WCAG 2.1 AA:
 <span class="dss-visually-hidden">Texto para leitores de tela</span>
 ```
 
+### Touch Wrapper (Utility Oficial DSS)
+
+A classe `.dss-touch-wrapper` é uma **utility oficial do DSS** para garantir touch target em elementos compactos não-interativos:
+
+```html
+<!-- Wrapper para garantir touch target em badges/chips -->
+<span class="dss-touch-wrapper">
+  <span class="dss-badge">3</span>
+</span>
+
+<!-- Wrapper interativo (botão) -->
+<button class="dss-touch-wrapper" @click="handleClick">
+  <span class="dss-badge">Novo</span>
+</button>
+```
+
+**Implementação CSS:**
+
+```scss
+/* ✅ PADRÃO OFICIAL DSS - NÃO MODIFICAR */
+.dss-touch-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--dss-touch-target-min);  /* 48px */
+  min-height: var(--dss-touch-target-min); /* 48px */
+
+  /* Reset para uso como botão */
+  &:where(button) {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+}
+```
+
+**Quando usar:**
+
+| Cenário | Usar `.dss-touch-wrapper`? |
+|---------|---------------------------|
+| Badge não-interativo | ❌ Não (sem necessidade de touch target) |
+| Badge clicável | ✅ Sim (via `<button class="dss-touch-wrapper">`) |
+| Chip interativo | ❌ Não (já tem ::before interno) |
+| Ícone clicável pequeno | ✅ Sim |
+
 ---
 
 ## ♿ Acessibilidade
@@ -1862,6 +1908,117 @@ Todos os elementos interativos têm **mínimo 44×44px** (WCAG 2.1 AA):
   <button class="dss-touch-target">Custom button</button>
 </template>
 ```
+
+### Touch Target vs Visual Height (WCAG 2.5.5)
+
+> **⚠️ CONCEITO CRÍTICO**: Altura visual e touch target são conceitos DISTINTOS.
+
+#### Definições
+
+| Conceito | Definição | Requisito WCAG |
+|----------|-----------|----------------|
+| **Altura Visual** | Dimensão renderizada visualmente do componente | Nenhum (estético) |
+| **Touch Target** | Área mínima clicável/tocável para interação | ≥ 44×44px (AA) ou ≥ 48×48px (recomendado) |
+
+#### Por Que Isso Importa
+
+Componentes compactos (chips, badges, tags) frequentemente têm **altura visual menor que 48px** por razões estéticas, mas DEVEM manter **touch target de 48×48px** para acessibilidade.
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│         TOUCH TARGET INVISÍVEL (48×48px)                    │
+│    ┌────────────────────────────────────────────────┐       │
+│    │    ALTURA VISUAL DO CHIP (28px)                │       │
+│    │    ┌──────────────────────────────────┐        │       │
+│    │    │  [✓] JavaScript                  │        │       │
+│    │    └──────────────────────────────────┘        │       │
+│    └────────────────────────────────────────────────┘       │
+└─────────────────────────────────────────────────────────────┘
+```
+
+#### Tokens de Altura Visual para Compact Controls
+
+O DSS fornece tokens GENÉRICOS para altura visual de controles compactos:
+
+| Token | Valor | Consumidores |
+|-------|-------|--------------|
+| `--dss-compact-control-height-xs` | 20px | Badge xs, Chip xs |
+| `--dss-compact-control-height-sm` | 24px | Badge sm, Chip sm |
+| `--dss-compact-control-height-md` | 28px | Badge md, Chip md |
+| `--dss-compact-control-height-lg` | 32px | Badge lg, Chip lg |
+
+> **📖 Referência:** Seção 7.13 do DSS_TOKEN_REFERENCE.md
+
+#### Implementação Obrigatória
+
+**Método 1: Pseudo-elemento ::before**
+
+```scss
+.dss-chip {
+  position: relative;
+  min-height: var(--dss-compact-control-height-md); // 28px visual
+
+  // Touch target expandido (invisível)
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: var(--dss-touch-target-min);  // 48px
+    min-height: var(--dss-touch-target-min); // 48px
+    pointer-events: none; // ⚠️ CRÍTICO - ver nota abaixo
+  }
+}
+```
+
+> **⚠️ NOTA SOBRE `pointer-events: none`**: O pseudo-elemento de touch target NÃO intercepta eventos de clique. Ele existe **apenas** para expandir a área hit-test visualmente aferida por ferramentas de acessibilidade (Lighthouse, axe DevTools, etc.). Remover esta propriedade **quebrará** a interação do componente. Esta é uma decisão arquitetural deliberada, NÃO um bug.
+
+> **📖 CONVENÇÃO `::before` vs `::after`**: Por convenção normativa DSS, `::before` é **RESERVADO exclusivamente** para touch targets. Efeitos visuais (hover, active, selected) devem usar `::after` para evitar conflitos. Consulte [DSS_COMPONENT_ARCHITECTURE.md - Convenção de Pseudo-elementos](../reference/DSS_COMPONENT_ARCHITECTURE.md#convenção-de-pseudo-elementos-normativa).
+
+**Método 2: Padding Expandido**
+
+```scss
+.dss-badge {
+  // Altura visual controlada pelo conteúdo
+  font-size: var(--dss-font-size-xs);
+  line-height: 1;
+
+  // Touch target via padding (total ≥ 48px)
+  padding: var(--dss-spacing-3) var(--dss-spacing-4);
+}
+```
+
+**Método 3: Wrapper Invisível**
+
+```vue
+<template>
+  <!-- Wrapper garante touch target -->
+  <span class="dss-touch-wrapper">
+    <!-- Badge tem altura visual compacta -->
+    <span class="dss-badge">3</span>
+  </span>
+</template>
+
+<style>
+.dss-touch-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--dss-touch-target-min);
+  min-height: var(--dss-touch-target-min);
+}
+</style>
+```
+
+#### Checklist de Conformidade
+
+Para cada componente compacto, verifique:
+
+- [ ] **Token de altura visual**: Usa `--dss-compact-control-height-*`
+- [ ] **Touch target mínimo**: ≥ 48×48px garantido
+- [ ] **Método documentado**: README explica como touch target é garantido
+- [ ] **Teste de acessibilidade**: Touch target verificado via devtools
 
 ### Focus Rings
 
@@ -1889,6 +2046,48 @@ Suporte automático a `prefers-contrast: high`:
   @media (prefers-contrast: high) {
     border-width: 2px !important;
     outline: 3px solid var(--dss-action-primary) !important;
+  }
+}
+```
+
+### Valores de Fallback em Contextos de Acessibilidade
+
+> **⚠️ REGRA NORMATIVA**: Em contextos de acessibilidade (`forced-colors`, `prefers-contrast`), valores absolutos são permitidos como fallback quando tokens CSS são ignorados pelo navegador.
+
+#### Propriedades com Fallback Permitido
+
+| Propriedade | Contexto | Justificativa |
+|-------------|----------|---------------|
+| `border` | `forced-colors: active` | Tokens CSS ignorados; usar system colors |
+| `outline` | `forced-colors: active` | Tokens CSS ignorados; usar system colors |
+| `outline-width/offset` | `prefers-contrast: more` | Valores aumentados para visibilidade |
+| `filter: brightness()` | Estados visuais | Não existe token; opera sobre cor atual |
+| `filter: saturate()` | `prefers-contrast: more` | Aumenta distinção de cores |
+
+#### Regra de Documentação
+
+Quando usar valores absolutos como fallback:
+
+1. **Comentar no código** explicando o contexto
+2. **Listar no README** do componente como "Exceção Documentada"
+3. **NÃO criar tokens** apenas para justificar o valor
+
+```scss
+/* ✅ CORRETO - Fallback documentado */
+@media (forced-colors: active) {
+  /*
+   * ⚠️ CONTEXTO DE ACESSIBILIDADE: forced-colors
+   * Tokens CSS são ignorados. Usar system colors.
+   */
+  .dss-chip {
+    border: 2px solid ButtonText;
+  }
+}
+
+/* ❌ INCORRETO - Criar token desnecessário */
+@media (forced-colors: active) {
+  .dss-chip {
+    border: var(--dss-forced-colors-border); /* Token inútil */
   }
 }
 ```

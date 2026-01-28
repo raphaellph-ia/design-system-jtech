@@ -1,0 +1,368 @@
+/* ==========================================================================
+   DssChip - LAYER 2: COMPOSITION (Base Styles)
+
+   RESPONSABILIDADE: Estilos fundamentais usando APENAS tokens genericos
+
+   REGRAS:
+   - APENAS tokens genericos (--dss-spacing-*, --dss-radius-*, etc.)
+   - Mixins reutilizaveis (@include dss-transition)
+   - Reset e layout base
+   - ZERO valores hardcoded
+   - ZERO logica de variantes
+   ========================================================================== */
+
+/* ==========================================================================
+   CHIP BASE
+   ========================================================================== */
+
+.dss-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--dss-spacing-1);
+
+  /* Typography */
+  font-family: var(--dss-font-family-sans);
+  font-size: var(--dss-font-size-sm);
+  font-weight: var(--dss-font-weight-medium);
+  line-height: var(--dss-line-height-tight);
+  text-decoration: none;
+  white-space: nowrap;
+
+  /* Layout */
+  padding: var(--dss-spacing-1) var(--dss-spacing-3);
+  min-height: var(--dss-compact-control-height-md); /* 28px - altura VISUAL (md = default) */
+  max-width: 100%;
+
+  /* Touch Target WCAG 2.5.5 (48px mínimo) via pseudo-elemento */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: var(--dss-touch-target-min);
+    min-height: var(--dss-touch-target-min);
+    pointer-events: none; /* Não interfere com cliques no chip */
+  }
+
+  /* Borders - default round (pill shape) */
+  border: none;
+  border-radius: var(--dss-radius-full);
+
+  /* Interaction */
+  cursor: default;
+  user-select: none;
+  vertical-align: middle;
+  outline: 0;
+
+  /* Transitions */
+  transition: all var(--dss-duration-200) var(--dss-easing-standard);
+
+  /* Prevent text selection */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ==========================================================================
+   CHIP CONTENT
+   ========================================================================== */
+
+.dss-chip__label {
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dss-chip__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--dss-font-size-md);
+  line-height: 1;
+  flex-shrink: 0;
+
+  /* Material Icons */
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'liga';
+}
+
+/* Icon positioning */
+.dss-chip__icon--left,
+.dss-chip__icon--selected {
+  margin-right: var(--dss-spacing-0_5);
+}
+
+.dss-chip__icon--right {
+  margin-left: var(--dss-spacing-0_5);
+}
+
+/* Selected icon styling */
+.dss-chip__icon--selected {
+  font-size: var(--dss-font-size-sm);
+}
+
+/* Icon-only chips */
+.dss-chip--icon-only {
+  padding: var(--dss-spacing-1);
+  min-width: var(--dss-spacing-8); /* 32px */
+}
+
+/* ==========================================================================
+   REMOVE BUTTON
+   ========================================================================== */
+
+.dss-chip__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: var(--dss-spacing-1);
+  padding: 0;
+  width: var(--dss-spacing-4); /* 16px */
+  height: var(--dss-spacing-4); /* 16px */
+  border: none;
+  border-radius: var(--dss-radius-full);
+  background-color: transparent;
+  cursor: pointer;
+  transition: all var(--dss-duration-150) var(--dss-easing-standard);
+  opacity: var(--dss-opacity-70);
+
+  &:hover {
+    opacity: 1;
+    background-color: currentColor;
+    background-color: color-mix(in srgb, currentColor var(--dss-opacity-hover), transparent);
+  }
+
+  &:focus-visible {
+    outline: var(--dss-border-width-md) solid var(--dss-focus-ring);
+    /*
+     * ⚠️ EXCEÇÃO DOCUMENTADA: outline-offset menor que --dss-focus-ring-offset
+     *
+     * O botão de remover é pequeno (16px). Usar --dss-focus-ring-offset (2px)
+     * criaria um anel de foco muito distante do elemento. Valor de 1px
+     * mantém proximidade visual adequada para elementos compactos.
+     */
+    outline-offset: 1px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: var(--dss-opacity-disabled);
+  }
+}
+
+.dss-chip__icon--remove {
+  font-size: var(--dss-font-size-sm);
+}
+
+/* ==========================================================================
+   CLICKABLE STATE
+   ========================================================================== */
+
+.dss-chip--clickable {
+  cursor: pointer;
+
+  /*
+   * ⚠️ EXCEÇÃO DOCUMENTADA: Valores de brightness
+   *
+   * Racional: filter: brightness() é usado para ajuste visual de estados
+   * interativos sem alterar a cor base do componente. Não existem tokens
+   * DSS equivalentes para brightness porque:
+   *
+   * 1. brightness() opera sobre a cor atual, não é um valor absoluto
+   * 2. Permite que a mesma regra funcione para todas as cores
+   * 3. Evita duplicação de tokens por cor × estado
+   *
+   * Valores padronizados:
+   * - hover: 0.95 (escurecimento sutil de 5%)
+   * - active: 0.90 (escurecimento moderado de 10%)
+   *
+   * Alternativa recusada: Tokens --dss-state-brightness-* exigiriam
+   * autorização explícita e podem não ser necessários globalmente.
+   */
+  &:hover {
+    filter: brightness(0.95);
+  }
+
+  &:active {
+    filter: brightness(0.9);
+  }
+}
+
+/* ==========================================================================
+   DISABLED STATE
+   ========================================================================== */
+
+.dss-chip--disabled {
+  opacity: var(--dss-opacity-disabled);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   SELECTED STATE
+   ========================================================================== */
+
+.dss-chip--selected {
+  /* Visual feedback for selected state */
+  box-shadow: inset 0 0 0 var(--dss-border-width-md) currentColor;
+}
+
+/* ==========================================================================
+   SIZE VARIANTS
+   ========================================================================== */
+
+.dss-chip--xs {
+  padding: var(--dss-spacing-0_5) var(--dss-spacing-2);
+  min-height: var(--dss-compact-control-height-xs); /* 20px - altura VISUAL */
+  font-size: var(--dss-font-size-xs);
+  gap: var(--dss-spacing-0_5);
+
+  .dss-chip__icon {
+    font-size: var(--dss-font-size-sm);
+  }
+
+  .dss-chip__remove {
+    width: var(--dss-spacing-3); /* 12px */
+    height: var(--dss-spacing-3); /* 12px */
+  }
+
+  .dss-chip__icon--remove {
+    font-size: var(--dss-font-size-xs);
+  }
+}
+
+.dss-chip--sm {
+  padding: var(--dss-spacing-0_5) var(--dss-spacing-2_5);
+  min-height: var(--dss-compact-control-height-sm); /* 24px - altura VISUAL */
+  font-size: var(--dss-font-size-xs);
+
+  .dss-chip__icon {
+    font-size: var(--dss-font-size-sm);
+  }
+}
+
+.dss-chip--md {
+  /* Default size - ja definido no .dss-chip */
+}
+
+.dss-chip--lg {
+  padding: var(--dss-spacing-2) var(--dss-spacing-4);
+  min-height: var(--dss-compact-control-height-lg); /* 32px - altura VISUAL */
+  font-size: var(--dss-font-size-md);
+  gap: var(--dss-spacing-2);
+
+  .dss-chip__icon {
+    font-size: var(--dss-font-size-lg);
+  }
+
+  .dss-chip__remove {
+    width: var(--dss-spacing-5); /* 20px */
+    height: var(--dss-spacing-5); /* 20px */
+  }
+
+  .dss-chip__icon--remove {
+    font-size: var(--dss-font-size-md);
+  }
+}
+
+/* Icon-only size adjustments */
+.dss-chip--icon-only.dss-chip--xs {
+  min-width: var(--dss-spacing-6); /* 24px */
+}
+
+.dss-chip--icon-only.dss-chip--sm {
+  min-width: var(--dss-spacing-7); /* 28px */
+}
+
+.dss-chip--icon-only.dss-chip--md {
+  min-width: var(--dss-spacing-8); /* 32px */
+}
+
+.dss-chip--icon-only.dss-chip--lg {
+  min-width: var(--dss-spacing-10); /* 40px */
+}
+
+/* ==========================================================================
+   SHAPE VARIANTS
+   ========================================================================== */
+
+.dss-chip--round {
+  border-radius: var(--dss-radius-full);
+}
+
+.dss-chip--square {
+  border-radius: var(--dss-radius-sm);
+}
+
+/* ==========================================================================
+   DENSE VARIANT
+   ========================================================================== */
+
+.dss-chip--dense {
+  padding: var(--dss-spacing-0_5) var(--dss-spacing-2);
+  min-height: var(--dss-compact-control-height-sm); /* 24px - altura VISUAL */
+  font-size: var(--dss-font-size-xs);
+}
+
+/* ==========================================================================
+   FOCUS STATE (A11y)
+   ========================================================================== */
+
+.dss-chip--clickable:focus-visible {
+  outline: var(--dss-border-width-md) solid var(--dss-focus-ring);
+  outline-offset: var(--dss-spacing-0_5);
+}
+
+/* ==========================================================================
+   RIPPLE EFFECT
+   ========================================================================== */
+
+.dss-chip__ripple {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.dss-chip--clickable:active .dss-chip__ripple::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0;
+  height: 100%;
+  background-color: currentColor;
+  opacity: var(--dss-opacity-active);
+  border-radius: inherit;
+  transform: translateX(-50%);
+  animation: dss-chip-ripple var(--dss-duration-slowest) var(--dss-easing-ease-out);
+}
+
+@keyframes dss-chip-ripple {
+  0% {
+    width: 0;
+    opacity: var(--dss-opacity-active);
+  }
+  50% {
+    width: 100%;
+    opacity: var(--dss-opacity-selected);
+  }
+  100% {
+    width: 100%;
+    opacity: 0;
+  }
+}

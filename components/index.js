@@ -35,6 +35,9 @@ export {
 // Input
 export { DssInput } from './base/DssInput'
 
+// Chip
+export { DssChip } from './base/DssChip'
+
 // ============================================================================
 // IMPORTAÇÕES PARA PLUGIN VUE
 // ============================================================================
@@ -46,6 +49,7 @@ import DssCard from './base/DssCard/1-structure/DssCard.vue'
 import DssCardSection from './base/DssCard/1-structure/DssCardSection.vue'
 import DssCardActions from './base/DssCard/1-structure/DssCardActions.vue'
 import DssInput from './base/DssInput/1-structure/DssInput.vue'
+import DssChip from './base/DssChip/1-structure/DssChip.ts.vue'
 
 // ============================================================================
 // PLUGIN VUE - INSTALAÇÃO GLOBAL
@@ -61,6 +65,7 @@ const DesignSystemSansys = {
     app.component('DssCardSection', DssCardSection)
     app.component('DssCardActions', DssCardActions)
     app.component('DssInput', DssInput)
+    app.component('DssChip', DssChip)
 
     // Opções globais (se fornecidas)
     if (options.brand) {
@@ -81,7 +86,8 @@ const DesignSystemSansys = {
         'DssCard',
         'DssCardSection',
         'DssCardActions',
-        'DssInput'
+        'DssInput',
+        'DssChip'
       ])
       if (options.brand) {
         console.log('🎨 Brand padrão:', options.brand)

@@ -1,0 +1,58 @@
+/* ==========================================================================
+   DssChip - LAYER 3: VARIANTS (Outline)
+
+   RESPONSABILIDADE: Estilos especificos da variante "outline"
+
+   REGRAS:
+   - Usa tokens genericos para estilos
+   - Cores aplicadas via classes utilitarias no Vue (.text-*)
+   - NAO usa valores hardcoded
+   ========================================================================== */
+
+.dss-chip--outline {
+  /* Fundo transparente com borda colorida */
+  background-color: transparent;
+  border: var(--dss-border-width-md) solid currentColor;
+
+  /* Cor do texto - aplicada via classe utilitaria .text-{color} */
+
+  /* Hover effect para variante outline */
+  &.dss-chip--clickable:hover {
+    background-color: currentColor;
+    color: white;
+
+    /* Manter a borda com a cor original */
+    .dss-chip__label,
+    .dss-chip__icon {
+      color: white;
+    }
+  }
+
+  /*
+   * ⚠️ EXCEÇÃO DOCUMENTADA: brightness(0.9) para active state
+   * Valor padrão do sistema. Ver _base.scss para racional.
+   */
+  &.dss-chip--clickable:active {
+    filter: brightness(0.9);
+  }
+
+  /* Selected state para outline */
+  &.dss-chip--selected {
+    background-color: currentColor;
+
+    .dss-chip__label,
+    .dss-chip__icon {
+      color: white;
+    }
+  }
+
+  /* Remove button styling para outline */
+  .dss-chip__remove {
+    color: currentColor;
+
+    &:hover {
+      background-color: currentColor;
+      color: white;
+    }
+  }
+}

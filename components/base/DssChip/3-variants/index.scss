@@ -1,0 +1,14 @@
+/* ==========================================================================
+   DssChip - LAYER 3: VARIANTS (Index)
+
+   RESPONSABILIDADE: Importar todas as variantes visuais
+
+   VARIANTES DISPONIVEIS:
+   - filled: Chip com fundo solido (padrao)
+   - outline: Chip com borda e fundo transparente
+   - flat: Chip sem borda e fundo transparente
+   ========================================================================== */
+
+@use 'filled';
+@use 'outline';
+@use 'flat';

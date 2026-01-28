@@ -31,9 +31,9 @@
   white-space: nowrap;
   text-align: center;
 
-  /* Dimensões */
-  min-width: var(--dss-spacing-3);
-  min-height: var(--dss-spacing-3);
+  /* Dimensões - Altura VISUAL (md = default) */
+  min-width: var(--dss-compact-control-height-sm); /* 24px */
+  min-height: var(--dss-compact-control-height-sm); /* 24px - altura VISUAL */
   padding: var(--dss-spacing-0-5) var(--dss-spacing-1);
 
   /* Forma - Pill shape por padrão */
@@ -45,6 +45,10 @@
   /* Comportamento de overflow */
   overflow: hidden;
   text-overflow: ellipsis;
+
+  /* Touch Target WCAG 2.5.5 (48px mínimo) via padding expandido
+     Para badges pequenos, o touch target é garantido pelo elemento pai
+     ou via wrapper com classe .dss-touch-wrapper */
 }
 
 /* ==========================================================================

@@ -1141,6 +1141,27 @@ Sistema completo de responsividade compatível com Quasar:
 
 ---
 
+## Dimensões Visuais vs Dimensões Interativas
+
+No DSS, componentes interativos possuem duas dimensões distintas:
+
+### Dimensão Visual (Visual Box)
+- Define a aparência percebida do componente
+- Governada por tokens visuais (ex: --dss-chip-height-md)
+- Afeta layout, densidade e ritmo visual
+- Pode ser menor que o alvo interativo
+
+### Dimensão Interativa (Touch / Hit Target)
+- Define a área mínima clicável/toque
+- Governada por tokens de acessibilidade (ex: --dss-touch-target-ideal)
+- Pode ser invisível
+- Nunca deve ser menor que os limites WCAG
+
+⚠️ **Regra DSS**:  
+A dimensão interativa **nunca pode reduzir** a dimensão visual, mas pode expandi-la.
+
+---
+
 ## 📊 Estatísticas do Sistema
 
 ### Linhas de Código por Categoria

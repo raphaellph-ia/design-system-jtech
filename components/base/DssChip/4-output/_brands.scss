@@ -1,0 +1,180 @@
+/* ==========================================================================
+   DssChip - LAYER 4: OUTPUT (Brands)
+
+   RESPONSABILIDADE: Estilos especificos para cada marca (Hub, Water, Waste)
+
+   REGRAS:
+   - Usa tokens de marca (--dss-{brand}-*)
+   - Aplicado via atributo data-brand (contexto ou prop)
+   - NAO sobrescreve logica de variantes
+
+   CENARIOS SUPORTADOS:
+   1. Brand via contexto (ancestral): <div data-brand="hub"><DssChip /></div>
+   2. Brand via prop (mesmo elemento): <DssChip brand="hub" />
+   ========================================================================== */
+
+/* ==========================================================================
+   MIXINS PARA EVITAR DUPLICACAO
+   ========================================================================== */
+
+@mixin chip-brand-filled($brand) {
+  &.dss-chip--primary {
+    background-color: var(--dss-#{$brand}-primary);
+    color: var(--dss-#{$brand}-on-primary);
+  }
+
+  &.dss-chip--secondary {
+    background-color: var(--dss-#{$brand}-secondary);
+    color: var(--dss-#{$brand}-on-secondary);
+  }
+
+  &.dss-chip--accent {
+    background-color: var(--dss-#{$brand}-accent);
+    color: var(--dss-#{$brand}-on-accent);
+  }
+}
+
+@mixin chip-brand-outline($brand) {
+  &.dss-chip--primary {
+    border-color: var(--dss-#{$brand}-primary);
+    color: var(--dss-#{$brand}-primary);
+
+    &.dss-chip--clickable:hover,
+    &.dss-chip--selected {
+      background-color: var(--dss-#{$brand}-primary);
+      color: var(--dss-#{$brand}-on-primary);
+    }
+  }
+
+  &.dss-chip--secondary {
+    border-color: var(--dss-#{$brand}-secondary);
+    color: var(--dss-#{$brand}-secondary);
+
+    &.dss-chip--clickable:hover,
+    &.dss-chip--selected {
+      background-color: var(--dss-#{$brand}-secondary);
+      color: var(--dss-#{$brand}-on-secondary);
+    }
+  }
+
+  &.dss-chip--accent {
+    border-color: var(--dss-#{$brand}-accent);
+    color: var(--dss-#{$brand}-accent);
+
+    &.dss-chip--clickable:hover,
+    &.dss-chip--selected {
+      background-color: var(--dss-#{$brand}-accent);
+      color: var(--dss-#{$brand}-on-accent);
+    }
+  }
+}
+
+@mixin chip-brand-flat($brand) {
+  &.dss-chip--primary {
+    color: var(--dss-#{$brand}-primary);
+  }
+
+  &.dss-chip--secondary {
+    color: var(--dss-#{$brand}-secondary);
+  }
+
+  &.dss-chip--accent {
+    color: var(--dss-#{$brand}-accent);
+  }
+}
+
+/* ==========================================================================
+   HUB BRAND
+   ========================================================================== */
+
+/* Cenario 1: Brand via contexto (ancestral) */
+[data-brand='hub'] {
+  .dss-chip--filled {
+    @include chip-brand-filled(hub);
+  }
+
+  .dss-chip--outline {
+    @include chip-brand-outline(hub);
+  }
+
+  .dss-chip--flat {
+    @include chip-brand-flat(hub);
+  }
+}
+
+/* Cenario 2: Brand via prop (mesmo elemento) */
+.dss-chip--filled[data-brand='hub'] {
+  @include chip-brand-filled(hub);
+}
+
+.dss-chip--outline[data-brand='hub'] {
+  @include chip-brand-outline(hub);
+}
+
+.dss-chip--flat[data-brand='hub'] {
+  @include chip-brand-flat(hub);
+}
+
+/* ==========================================================================
+   WATER BRAND
+   ========================================================================== */
+
+/* Cenario 1: Brand via contexto (ancestral) */
+[data-brand='water'] {
+  .dss-chip--filled {
+    @include chip-brand-filled(water);
+  }
+
+  .dss-chip--outline {
+    @include chip-brand-outline(water);
+  }
+
+  .dss-chip--flat {
+    @include chip-brand-flat(water);
+  }
+}
+
+/* Cenario 2: Brand via prop (mesmo elemento) */
+.dss-chip--filled[data-brand='water'] {
+  @include chip-brand-filled(water);
+}
+
+.dss-chip--outline[data-brand='water'] {
+  @include chip-brand-outline(water);
+}
+
+.dss-chip--flat[data-brand='water'] {
+  @include chip-brand-flat(water);
+}
+
+/* ==========================================================================
+   WASTE BRAND
+   ========================================================================== */
+
+/* Cenario 1: Brand via contexto (ancestral) */
+[data-brand='waste'] {
+  .dss-chip--filled {
+    @include chip-brand-filled(waste);
+  }
+
+  .dss-chip--outline {
+    @include chip-brand-outline(waste);
+  }
+
+  .dss-chip--flat {
+    @include chip-brand-flat(waste);
+  }
+}
+
+/* Cenario 2: Brand via prop (mesmo elemento) */
+.dss-chip--filled[data-brand='waste'] {
+  @include chip-brand-filled(waste);
+}
+
+.dss-chip--outline[data-brand='waste'] {
+  @include chip-brand-outline(waste);
+}
+
+.dss-chip--flat[data-brand='waste'] {
+  @include chip-brand-flat(waste);
+}

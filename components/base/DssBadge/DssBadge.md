@@ -107,15 +107,53 @@ O **DssBadge** consome tokens de **multiplas categorias** do Design System Sansy
 
 | Categoria | Tokens Usados | Onde Encontrar | Aplicacao no DssBadge |
 |-----------|---------------|----------------|------------------------|
+| **Altura Visual** | `--dss-compact-control-height-sm` (24px) | [Secao 7.13 - Compact Controls](../../../docs/reference/DSS_TOKEN_REFERENCE.md#713-compact-controls---alturas-visuais) | **Altura VISUAL do badge (default)** |
 | **Cores Semanticas** | `--dss-feedback-positive`, `--dss-feedback-negative`, `--dss-feedback-warning`, `--dss-feedback-info` | [Secao 2.3 - Cores Semanticas](../../../docs/reference/DSS_TOKEN_REFERENCE.md#23-cores-semânticas-base) | Cores de fundo para estados de feedback |
 | **Cores de Acao** | `--dss-action-primary`, `--dss-action-secondary` | [Secao 2.3](../../../docs/reference/DSS_TOKEN_REFERENCE.md#23-cores-semânticas-base) | Cores de fundo para acoes |
 | **Cores de Texto** | `--dss-text-inverse`, `--dss-text-primary` | [Secao 2.3](../../../docs/reference/DSS_TOKEN_REFERENCE.md#23-cores-semânticas-base) | Texto dentro do badge |
 | **Cores Neutras** | `--dss-gray-50` a `--dss-gray-900` | [Secao 2.1 - Neutral Palette](../../../docs/reference/DSS_TOKEN_REFERENCE.md#21-neutral-palette) | Texto em variantes outline/transparent |
 | **Brands** | `--dss-hub-*`, `--dss-water-*`, `--dss-waste-*` (100-800) | [Secao 2.2 - Brand Palettes](../../../docs/reference/DSS_TOKEN_REFERENCE.md#22-brand-palettes) | Cores por brand |
-| **Espacamento** | `--dss-spacing-0-5`, `--dss-spacing-1`, `--dss-spacing-2-5`, `--dss-spacing-3` | [Secao 1.1 - Escala Base](../../../docs/reference/DSS_TOKEN_REFERENCE.md#11-escala-base) | Padding interno, min-width/height |
+| **Espacamento** | `--dss-spacing-0-5`, `--dss-spacing-1`, `--dss-spacing-2-5`, `--dss-spacing-3` | [Secao 1.1 - Escala Base](../../../docs/reference/DSS_TOKEN_REFERENCE.md#11-escala-base) | Padding interno |
 | **Tipografia** | `--dss-font-family-sans`, `--dss-font-size-xs`, `--dss-font-weight-medium` | [Secao 6 - Tipografia](../../../docs/reference/DSS_TOKEN_REFERENCE.md#6-tipografia) | Fonte, tamanho (12px), peso (500) |
 | **Bordas** | `--dss-border-radius-full`, `--dss-border-radius-lg`, `--dss-border-width-md` | [Secao 8 - Bordas](../../../docs/reference/DSS_TOKEN_REFERENCE.md#8-bordas) | Forma pill, variante outline |
 | **Motion** | `--dss-duration-200`, `--dss-easing-standard` | [Secao 5 - Motion](../../../docs/reference/DSS_TOKEN_REFERENCE.md#5-motionanimation) | Transicoes suaves |
+
+### Altura Visual vs Touch Target
+
+> **⚠️ IMPORTANTE**: A altura visual do badge (24px default) e menor que o touch target minimo WCAG (48px).
+
+#### Regra DSS (NORMATIVA)
+
+> **Badges NÃO são elementos interativos por padrão.**
+>
+> Quando usados como elementos clicáveis, DEVEM ser envolvidos por `.dss-touch-wrapper` ou componente interativo superior (botão, link, etc.).
+>
+> **É PROIBIDO** tentar resolver o touch target internamente no DssBadge. A responsabilidade é do contexto de uso.
+
+#### Implementação Correta
+
+```vue
+<!-- ✅ CORRETO: Badge não-interativo (padrão) -->
+<DssBadge color="positive" label="3" />
+
+<!-- ✅ CORRETO: Badge interativo via wrapper -->
+<button class="dss-touch-wrapper" @click="handleClick">
+  <DssBadge color="positive" label="3" />
+</button>
+
+<!-- ✅ CORRETO: Badge interativo via componente superior -->
+<DssButton>
+  Notificações
+  <DssBadge color="negative" label="5" />
+</DssButton>
+
+<!-- ❌ INCORRETO: Nunca adicionar interatividade diretamente no badge -->
+<DssBadge color="positive" label="3" @click="handleClick" />
+```
+
+📖 **Referencias:**
+- [Touch Target vs Visual Height](../../../docs/guides/DSS_IMPLEMENTATION_GUIDE.md#touch-target-vs-visual-height-wcag-255)
+- [`.dss-touch-wrapper` - Utility Oficial](../../../docs/guides/DSS_IMPLEMENTATION_GUIDE.md#touch-wrapper-utility-oficial-dss)
 
 ### Observacoes Importantes
 

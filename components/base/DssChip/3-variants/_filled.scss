@@ -1,0 +1,41 @@
+/* ==========================================================================
+   DssChip - LAYER 3: VARIANTS (Filled)
+
+   RESPONSABILIDADE: Estilos especificos da variante "filled"
+
+   REGRAS:
+   - Usa tokens genericos para estilos
+   - Cores aplicadas via classes utilitarias no Vue (.bg-*, .text-*)
+   - Brightness values: exceção documentada (ver comentário abaixo)
+   ========================================================================== */
+
+.dss-chip--filled {
+  /* Fundo solido - cor aplicada via classe utilitaria .bg-{color} */
+  /* Texto branco - aplicado via classe utilitaria .text-white */
+
+  /*
+   * ⚠️ EXCEÇÃO DOCUMENTADA: Valores de brightness específicos para filled
+   *
+   * Variante filled usa valores mais agressivos que o padrão porque
+   * fundos sólidos precisam de maior contraste visual para feedback.
+   *
+   * Valores:
+   * - hover: 0.92 (vs 0.95 padrão) - escurecimento 8%
+   * - active: 0.85 (vs 0.90 padrão) - escurecimento 15%
+   *
+   * Estes valores NÃO têm tokens DSS equivalentes.
+   * Ver _base.scss para racional completo.
+   */
+  &.dss-chip--clickable:hover {
+    filter: brightness(0.92);
+  }
+
+  &.dss-chip--clickable:active {
+    filter: brightness(0.85);
+  }
+
+  /* Remove button styling para fundo solido */
+  .dss-chip__remove:hover {
+    background-color: color-mix(in srgb, white var(--dss-opacity-hover), transparent);
+  }
+}

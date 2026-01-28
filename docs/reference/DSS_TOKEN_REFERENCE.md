@@ -108,13 +108,13 @@ Os tokens DSS são **genéricos e reutilizáveis**. Componentes escolhem livreme
 - [7.4 Focus - Cores Neutras (3 tokens)](#74-focus-cores-neutras)
 - [7.5 Focus - Box Shadows (10 tokens)](#75-focus-box-shadows)
 - [7.6 Focus - Variantes com Offset (4 tokens)](#76-focus-variantes-com-offset)
-- [7.7 Touch Targets (10 tokens)](#77-touch-targets)
+- [7.7 Touch Targets (6 tokens)](#77-touch-targets)
 - [7.8 Touch Spacing (5 tokens)](#78-touch-spacing)
 - [7.9 Input Heights (10 tokens)](#79-input-heights)
 - [7.10 Checkboxes e Controles (10 tokens)](#710-checkboxes-e-controles)
 - [7.11 Ícones (10 tokens)](#711-ícones)
 - [7.12 Avatares (5 tokens)](#712-avatares)
-- [7.13 Badges e Chips (10 tokens)](#713-badges-e-chips)
+- [7.13 Compact Controls - Alturas Visuais (4 tokens)](#713-compact-controls---alturas-visuais)
 - [7.14 Breakpoints (9 tokens)](#714-breakpoints)
 - [7.15 Z-Index (10 tokens)](#715-z-index)
 - [7.16 Contraste - Ratios WCAG (5 tokens)](#716-contraste-ratios-wcag)
@@ -141,6 +141,7 @@ Os tokens DSS são **genéricos e reutilizáveis**. Componentes escolhem livreme
 - [10.2 Motion Component-Specific (2 tokens removidos)](#102-motion-component-specific)
 - [10.3 Borders Component-Specific (12 tokens removidos)](#103-borders-component-specific)
 - [10.4 Shadows Component-Specific (5 tokens removidos)](#104-shadows-component-specific)
+- [10.5 Badges e Chips Component-Specific (10 tokens removidos)](#105-badges-e-chips-component-specific)
 
 ---
 
@@ -1086,15 +1087,18 @@ Tokens para garantir conformidade WCAG 2.1 AA (foco, touch targets, contraste).
 
 ## 7.7 Touch Targets
 
-**Total: 5 tokens**
+**Total: 6 tokens**
 
 | Token | Valor | WCAG | Uso |
 |-------|-------|------|-----|
+| `--dss-touch-target-min` | 48px | ✅ **Recomendado** | **Mínimo recomendado para acessibilidade** |
 | `--dss-touch-target-xs` | 32px | ⚠️ Compacto | Componentes compactos (chips, badges) |
 | `--dss-touch-target-sm` | 36px | ⚠️ Denso | Botões secundários densos |
-| `--dss-touch-target-md` | 44px | ✅ **Mínimo WCAG** | Padrão - touch target mínimo |
+| `--dss-touch-target-md` | 44px | ✅ Mínimo WCAG | Padrão - touch target mínimo WCAG 2.1 |
 | `--dss-touch-target-lg` | 52px | ✅ Destacado | Botões destacados |
 | `--dss-touch-target-xl` | 64px | ✅ CTAs | CTAs principais |
+
+> **⚠️ IMPORTANTE**: Use `--dss-touch-target-min` (48px) como padrão para pseudo-elementos de touch target em Compact Controls. Este valor atende WCAG 2.5.5 com margem de segurança.
 
 ## 7.8 Touch Spacing
 
@@ -1171,22 +1175,85 @@ Tokens para garantir conformidade WCAG 2.1 AA (foco, touch targets, contraste).
 | `--dss-avatar-size-lg` | 56px | Avatar grande |
 | `--dss-avatar-size-xl` | 80px | Avatar extra grande |
 
-## 7.13 Badges e Chips
+## 7.13 Compact Controls - Alturas Visuais
 
-**Total: 10 tokens**
+**Total: 4 tokens**
 
-| Token | Valor | Uso |
-|-------|-------|-----|
-| `--dss-badge-size-xs` | 16px | Badge muito pequeno |
-| `--dss-badge-size-sm` | 20px | Badge pequeno |
-| `--dss-badge-size-md` | 24px | **Badge padrão** |
-| `--dss-badge-size-lg` | 28px | Badge grande |
-| `--dss-badge-size-xl` | 32px | Badge extra grande |
-| `--dss-chip-height-xs` | 20px | Chip muito pequeno |
-| `--dss-chip-height-sm` | 24px | Chip pequeno |
-| `--dss-chip-height-md` | 28px | **Chip padrão** |
-| `--dss-chip-height-lg` | 32px | Chip grande |
-| `--dss-chip-height-xl` | 36px | Chip extra grande |
+> **⚠️ IMPORTANTE: Altura Visual vs Touch Target**
+>
+> Os tokens abaixo definem a **altura visual** do componente, NÃO o touch target.
+> O touch target mínimo (48×48px WCAG) é garantido por outros mecanismos:
+> - Padding expandido invisível
+> - Pseudo-elementos `::before`/`::after`
+> - Área de clique estendida via CSS
+>
+> **Consulte:** Seção "Touch Target vs Visual Height" no DSS_IMPLEMENTATION_GUIDE.md
+
+### Definição
+
+| Token | Valor | Consumidores | Descrição |
+|-------|-------|--------------|-----------|
+| `--dss-compact-control-height-xs` | 20px | Badge, Chip (xs) | Altura mínima para controles compactos |
+| `--dss-compact-control-height-sm` | 24px | Badge, Chip (sm) | Altura pequena |
+| `--dss-compact-control-height-md` | 28px | Badge (md), Chip (md) | **Altura padrão** |
+| `--dss-compact-control-height-lg` | 32px | Badge (lg), Chip (lg) | Altura grande |
+
+### Filosofia de Uso
+
+```scss
+// ✅ CORRETO: Componente consome token genérico
+.dss-chip--md {
+  min-height: var(--dss-compact-control-height-md); // 28px visual
+  // Touch target garantido via padding ou pseudo-elemento
+}
+
+.dss-badge--md {
+  min-height: var(--dss-compact-control-height-md); // 28px visual
+}
+
+// ❌ INCORRETO: Não criar tokens específicos de componente
+// --dss-chip-height-md: 28px; // DEPRECADO
+// --dss-badge-size-md: 24px;  // DEPRECADO
+```
+
+### Garantia de Touch Target (WCAG 2.5.5)
+
+Os componentes que usam estes tokens DEVEM garantir touch target mínimo de 48×48px via:
+
+```scss
+// Exemplo de implementação do touch target via pseudo-elemento
+.dss-chip {
+  position: relative;
+  min-height: var(--dss-compact-control-height-md); // 28px visual
+
+  // Touch target expandido (invisível)
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: var(--dss-touch-target-min);  // 48px
+    min-height: var(--dss-touch-target-min); // 48px
+    pointer-events: none; // ⚠️ NÃO REMOVER - ver nota
+  }
+}
+```
+
+> **⚠️ `pointer-events: none` é OBRIGATÓRIO**: O pseudo-elemento existe apenas para ferramentas de acessibilidade aferir a área de toque. Ele NÃO deve interceptar eventos. Isto é decisão arquitetural, não bug.
+
+### Mapeamento de Componentes
+
+| Componente | Size Prop | Token Consumido | Touch Target |
+|------------|-----------|-----------------|--------------|
+| DssBadge | xs | `--dss-compact-control-height-xs` (20px) | Via padding |
+| DssBadge | sm | `--dss-compact-control-height-sm` (24px) | Via padding |
+| DssBadge | md | `--dss-compact-control-height-md` (28px) | Via padding |
+| DssBadge | lg | `--dss-compact-control-height-lg` (32px) | Já atende |
+| DssChip | xs | `--dss-compact-control-height-xs` (20px) | Via ::before |
+| DssChip | sm | `--dss-compact-control-height-sm` (24px) | Via ::before |
+| DssChip | md | `--dss-compact-control-height-md` (28px) | Via ::before |
+| DssChip | lg | `--dss-compact-control-height-lg` (32px) | Já atende |
 
 ## 7.14 Breakpoints
 
@@ -1615,6 +1682,26 @@ Tokens component-specific removidos na refatoração de Janeiro 2025 seguindo a 
 | `--dss-elevation-modal` | `var(--dss-elevation-4)` | DssModal |
 | `--dss-elevation-tooltip` | `var(--dss-elevation-2)` | DssTooltip |
 | `--dss-elevation-toast` | `var(--dss-elevation-3)` | DssToast |
+
+## 10.5 Badges e Chips Component-Specific
+
+**Total: 10 tokens removidos** (Janeiro 2025)
+
+| Token Deprecado | Substituir por | Componente |
+|-----------------|----------------|-----------|
+| `--dss-badge-size-xs` | `var(--dss-compact-control-height-xs)` (20px) | DssBadge |
+| `--dss-badge-size-sm` | `var(--dss-compact-control-height-sm)` (24px) | DssBadge |
+| `--dss-badge-size-md` | `var(--dss-compact-control-height-md)` (28px) | DssBadge |
+| `--dss-badge-size-lg` | `var(--dss-compact-control-height-lg)` (32px) | DssBadge |
+| `--dss-badge-size-xl` | `var(--dss-compact-control-height-lg)` (32px) | DssBadge |
+| `--dss-chip-height-xs` | `var(--dss-compact-control-height-xs)` (20px) | DssChip |
+| `--dss-chip-height-sm` | `var(--dss-compact-control-height-sm)` (24px) | DssChip |
+| `--dss-chip-height-md` | `var(--dss-compact-control-height-md)` (28px) | DssChip |
+| `--dss-chip-height-lg` | `var(--dss-compact-control-height-lg)` (32px) | DssChip |
+| `--dss-chip-height-xl` | `var(--dss-compact-control-height-lg)` (32px) | DssChip |
+
+> **Motivo da Deprecação:** Tokens component-specific violam a filosofia "Tokens = Provedores, Componentes = Consumidores".
+> O novo token `--dss-compact-control-height-*` é genérico e reutilizável por qualquer controle compacto.
 
 ### Benefícios da Refatoração
 

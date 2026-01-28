@@ -50,12 +50,38 @@
   --dss-container-padding: var(--dss-spacing-4);
   --dss-section-spacing: var(--dss-spacing-12);
   --dss-component-spacing: var(--dss-spacing-6);
-  
+
   /* Grid e gap */
   --dss-grid-gap-sm: var(--dss-spacing-2);
   --dss-grid-gap-md: var(--dss-spacing-4);
   --dss-grid-gap-lg: var(--dss-spacing-6);
   --dss-grid-gap-xl: var(--dss-spacing-8);
+
+  /* ===========================================
+     2.1 LAYOUT ESTRUTURAL
+     Tokens para componentes de layout de página
+     =========================================== */
+
+  /* Sidebar */
+  --dss-layout-sidebar-width: 240px;
+  --dss-layout-sidebar-width-mini: 64px;
+  --dss-layout-sidebar-width-wide: 320px;
+
+  /* Header */
+  --dss-layout-header-height: 64px;
+  --dss-layout-header-height-dense: 48px;
+
+  /* Footer */
+  --dss-layout-footer-height: 64px;
+  --dss-layout-footer-padding: var(--dss-spacing-10);
+
+  /* Content */
+  --dss-layout-content-max-width: 720px;      /* Largura máxima para leitura confortável */
+  --dss-layout-content-max-width-wide: 960px; /* Largura expandida para dashboards */
+
+  /* Page margins responsivos (valores base) */
+  --dss-layout-page-margin-x: var(--dss-spacing-4);  /* 16px - ajustado por breakpoint */
+  --dss-layout-page-margin-y: var(--dss-spacing-6);  /* 24px - ajustado por breakpoint */
   
   /* ===========================================
      3. ESPAÇAMENTO GENÉRICO PARA FORMULÁRIOS

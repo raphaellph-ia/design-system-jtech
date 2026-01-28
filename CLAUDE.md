@@ -1,231 +1,280 @@
-# CLAUDE.md - Design System Sansys (DSS)
+# CLAUDE.md — Design System Sansys (DSS)
 
-Este arquivo fornece orientações para agentes de IA (Claude Code) ao trabalhar no projeto DSS.
+Guia oficial para agentes de IA (Claude Code e similares) ao trabalhar no **Design System Sansys (DSS)**.
 
----
-
-## Contexto do Projeto
-
-O **Design System Sansys (DSS)** é um sistema de design corporativo baseado em Vue.js e Quasar Framework. O DSS é uma **camada de tokens e estilos** sobre o Quasar, não uma biblioteca standalone.
-
-### Produtos Suportados
-- **Sansys Hub** (marca laranja)
-- **Sansys Water** (marca azul)
-- **Sansys Waste** (marca verde)
+Este documento é **normativo**. O não cumprimento de qualquer regra aqui descrita invalida o componente criado.
 
 ---
 
-## Comandos de Desenvolvimento
+## 📌 Contexto do Projeto
 
-```bash
-# Instalar dependências
-npm install
+O **Design System Sansys (DSS)** é uma camada corporativa de design e engenharia construída **sobre o Quasar Framework**, e **não** uma biblioteca standalone.
 
-# Desenvolvimento com hot-reload
-npm run dev
+O DSS fornece:
+- Tokens semânticos
+- Brandabilidade
+- Governança visual e técnica
+- Acessibilidade WCAG 2.1 AA
+- Padronização de componentes Vue
 
-# Build para produção
-npm run build
-
-# Verificar tipos TypeScript
-npm run type-check
-
-# Executar testes
-npm run test
-```
+### Produtos suportados
+- **Sansys Hub** (laranja)
+- **Sansys Water** (azul)
+- **Sansys Waste** (verde)
 
 ---
 
-## Implementação de Novos Componentes
+## 📜 Natureza Normativa deste Documento (OBRIGATÓRIO)
 
-### Leitura Obrigatória (nesta ordem)
+Este arquivo (**CLAUDE.md**) é um **documento normativo vinculante** para qualquer agente de IA que produza, modifique ou revise código, documentação ou arquitetura do Design System Sansys (DSS).
 
-Antes de implementar qualquer componente, leia os seguintes arquivos:
+⚠️ **IMPORTANTE**
+- As regras aqui descritas NÃO são sugestões.
+- O agente NÃO deve inferir, resumir ou reinterpretar requisitos.
+- O não cumprimento de qualquer regra aqui descrita é considerado **erro de implementação**.
 
-1. **`docs/PRD_DSS.md`** - Entendimento do produto, contexto e papel estratégico do DSS
-2. **`docs/reference/DSS_ARCHITECTURE.md`** - Arquitetura completa, estrutura de diretórios, sistema de tokens
-3. **`docs/reference/DSS_COMPONENT_ARCHITECTURE.md`** - Tutorial passo a passo, padrões obrigatórios, anti-patterns
-4. **`docs/guides/DSS_IMPLEMENTATION_GUIDE.md`** - Classes utilitárias, integração Quasar, uso de tokens
-5. **`.github/pull_request_template.md`** - Critérios de aprovação de PR (o componente deve atender todos)
-6. **`docs/guides/dss_governanca_e_documentacao_de_componentes_basios_fase_1.md`** - Checklist de documentação, Golden Sample, princípios de documentação
-7. **`docs/guides/dss_governanca_e_documentacao_de_componentes_compostos_fase_2.md`** - Regras para componentes compostos (DSSForm, DSSPageHeader, etc.)
+---
 
-### Componente de Referência (Golden Sample)
+## 🚨 Leitura Obrigatória (ANTES de criar qualquer componente)
 
-Use **`components/base/DssButton/`** como referência. Este é o componente mais completo e exemplifica todos os padrões do DSS.
+A criação de qualquer componente DSS **exige leitura prévia** dos seguintes arquivos, **nesta ordem**:
 
-### Arquitetura de 4 Camadas
+1. `docs/PRD_DSS.md`
+2. `docs/reference/DSS_ARCHITECTURE.md`
+3. `docs/reference/DSS_COMPONENT_ARCHITECTURE.md`
+4. `docs/guides/DSS_IMPLEMENTATION_GUIDE.md`
+5. `docs/guides/dss_governanca_e_documentacao_de_componentes_basios_fase_1.md`
+6. `docs/guides/dss_governanca_e_documentacao_de_componentes_compostos_fase_2.md`
+7. `.github/pull_request_template.md`
 
-Todo componente DSS segue esta estrutura:
+⚠️ **IMPORTANTE**  
+Nunca inferir padrões apenas observando um componente existente.  
+O **DssButton é referência**, não fonte única de verdade.
 
-```
+---
+
+## 🧱 Princípios Fundamentais do DSS (NÃO VIOLAR)
+
+1. **Token First**
+   - ❌ Nenhum valor hardcoded (px, rem, hex, rgb)
+   - ✅ Sempre `var(--dss-*)`
+
+2. **Cores seguem o padrão Quasar**
+   - ❌ Não criar `_colors.scss` por componente
+   - ❌ Não aplicar cores no SCSS
+   - ✅ Classes utilitárias globais (`bg-*`, `text-*`)
+   - ✅ Aplicação via computed properties no Vue
+
+3. **Arquitetura em 4 Camadas (Obrigatória)**
+   - Nenhuma camada pode ser omitida
+   - Camadas com pouco conteúdo continuam existindo
+
+4. **Acessibilidade não é opcional**
+   - WCAG 2.1 AA
+   - Focus visível
+   - Touch target ≥ 48px
+   - Navegação por teclado
+
+5. **Brandabilidade**
+   - Componentes reagem a `[data-brand="hub|water|waste"]`
+   - Tokens de brand com fallback semântico
+
+6. **Tokens Genéricos para Altura (VINCULANTE)**
+   - ❌ NUNCA criar tokens específicos (`--dss-chip-height-*`, `--dss-badge-size-*`)
+   - ✅ SEMPRE usar `--dss-compact-control-height-{xs,sm,md,lg}` para controles compactos
+   - ⚠️ Altura visual ≠ Touch target (documentar separadamente)
+   - 📖 Consulte [DSS_TOKEN_REFERENCE.md - Seção 7.13](#713-compact-controls---alturas-visuais)
+
+7. **Convenção de Pseudo-elementos (VINCULANTE)**
+   - `::before` → **RESERVADO** exclusivamente para touch target (WCAG 2.5.5)
+   - `::after` → Efeitos visuais (hover, active, selected overlays)
+   - ⚠️ NUNCA usar `::before` para efeitos visuais em variantes
+   - 📖 Consulte [DSS_COMPONENT_ARCHITECTURE.md - Convenção de Pseudo-elementos](docs/reference/DSS_COMPONENT_ARCHITECTURE.md#convenção-de-pseudo-elementos-normativa)
+
+8. **Reutilização de Valores Não-Tokenizados (VINCULANTE)**
+   - Valores de `brightness()` DEVEM reutilizar valores da tabela canônica
+   - Valores permitidos: 0.85, 0.90, 0.92, 0.95 (light), 1.10, 1.20 (dark)
+   - ❌ NUNCA criar valores arbitrários (ex.: 0.93, 0.88)
+   - ⚠️ Novos valores exigem justificativa explícita e aprovação
+   - 📖 Consulte [DSS_COMPONENT_ARCHITECTURE.md - Valores Visuais Permitidos](docs/reference/DSS_COMPONENT_ARCHITECTURE.md#valores-visuais-permitidos-como-exceção-não-tokenizados)
+
+---
+
+## 🎯 Escopo Funcional Mínimo (DEFINIÇÃO OFICIAL)
+
+### ⚠️ Regra crítica
+> **Escopo funcional mínimo NÃO significa documentação mínima.**
+
+### Definição correta
+
+**Escopo funcional mínimo** é o menor conjunto de funcionalidades necessárias para que o componente cumpra **seu papel semântico, visual, comportamental e acessível**, com **todas essas responsabilidades explicitamente documentadas**.
+
+### Escopo mínimo DEFINE:
+- O que o componente faz
+- O que ele NÃO faz
+- Quais responsabilidades ele assume
+
+### Escopo mínimo NÃO autoriza:
+- ❌ Documentação superficial
+- ❌ Omissão de estados
+- ❌ Redução de exemplos
+- ❌ Falta de contratos (props, slots, eventos)
+- ❌ “Depois documenta”
+
+📌 **Documentação nunca é considerada funcionalidade excedente.**
+
+---
+
+## 🏛️ Hierarquia de Autoridade do DSS (LEITURA OBRIGATÓRIA)
+
+Os arquivos abaixo constituem o **corpo normativo do Design System Sansys**.
+Todo trabalho DEVE estar em conformidade com eles.
+
+### 🔒 Nível 1 — Normativos Vinculantes (Hard Rules)
+
+Estes arquivos têm precedência máxima.  
+Em caso de conflito, **NUNCA devem ser ignorados ou reinterpretados**.
+
+1. **CLAUDE.md**  
+   → Regras operacionais e comportamentais para agentes de IA
+
+2. **PRD_DSS.md**  
+   → Papel estratégico, governança, critérios de qualidade
+
+3. **DSS_ARCHITECTURE.md**  
+   → Estrutura do sistema, tokens, integração com Quasar
+
+4. **DSS_COMPONENT_ARCHITECTURE.md**  
+   → Arquitetura de 4 camadas, padrões obrigatórios, anti-patterns
+
+---
+
+### 🔐 Nível 2 — Guias Técnicos Normativos (Obrigatórios)
+
+Estes arquivos são **obrigatórios por especialidade**  
+e NÃO podem ser tratados como material opcional.
+
+5. **DSS_TOKEN_REFERENCE.md**  
+   → Catálogo oficial de tokens  
+   ⚠️ Tokens DEVEM ser citados com nome exato
+
+6. **DSS_IMPLEMENTATION_GUIDE.md**  
+   → Como aplicar tokens, classes, estados e acessibilidade
+
+7. **DSS_ARCHITECTURE_GUIDE.md**  
+   → Decisões arquiteturais detalhadas e racional técnico
+
+---
+
+### 📌 Regra de Ouro
+
+Se um comportamento, token, estado ou padrão:
+- Não estiver documentado **explicitamente**
+- Mas estiver implícito em um guia normativo
+
+👉 **O agente DEVE documentá-lo**, não omiti-lo.
+
+
+## 🏗️ Arquitetura Obrigatória (4 Camadas)
+
 components/base/DssNomeComponente/
-├── 1-structure/           # Componente Vue (TypeScript + Composition API)
-│   └── DssNomeComponente.ts.vue
-├── 2-composition/         # Estilos base (APENAS tokens genéricos)
-│   └── _base.scss
-├── 3-variants/            # Variantes visuais (elevated, flat, outline...)
-│   ├── _elevated.scss
-│   ├── _flat.scss
-│   └── index.scss
-├── 4-output/              # Brands e estados finais
-│   ├── _brands.scss       # Hub, Water, Waste
-│   ├── _states.scss       # Dark mode, high contrast
-│   └── index.scss
-├── composables/           # Lógica reutilizável (TypeScript)
-│   └── useNomeComponenteClasses.ts
-├── types/                 # Interfaces TypeScript
-│   └── nomecomponente.types.ts
-├── DssNomeComponente.module.scss  # Orquestrador SCSS
-├── DssNomeComponente.test.js      # Testes unitários
-├── DssNomeComponente.example.vue  # Showcase visual
-├── README.md              # Documentação
-└── index.js               # Export barrel
-```
+├── 1-structure/
+│ └── DssNomeComponente.ts.vue
+├── 2-composition/
+│ └── _base.scss
+├── 3-variants/
+│ ├── _variant.scss
+│ └── index.scss
+├── 4-output/
+│ ├── _states.scss
+│ ├── _brands.scss
+│ └── index.scss
+├── composables/
+├── types/
+├── DssNomeComponente.md
+├── DssNomeComponente.module.scss
+├── DssNomeComponente.example.vue
+├── DssNomeComponente.vue
+├── DSSNOMECOMPONENTE_API.md
+├── README.md
+└── index.js
 
-### Princípios Fundamentais (NÃO VIOLAR)
 
-1. **Token First**: NUNCA use valores hardcoded (px, hex, etc.). Use SEMPRE `var(--dss-*)`.
-2. **Cores via Classes Utilitárias**: NUNCA crie arquivos `_colors.scss`. Cores são aplicadas via computed properties no Vue usando classes `bg-{color}`, `text-{color}`.
-3. **Acessibilidade WCAG 2.1 AA**: Touch targets ≥48px, focus rings 3px, ARIA labels.
-4. **Brandabilidade**: Componentes reagem a `[data-brand="hub|water|waste"]`.
-5. **BEM Naming**: `.dss-componente`, `.dss-componente__elemento`, `.dss-componente--modifier`.
-
-### Anti-Patterns (EVITAR)
-
-**Codigo:**
-- ❌ Criar arquivos de cores por componente
-- ❌ Usar valores hardcoded (16px, #1F86DE, etc.)
-- ❌ Aplicar cores diretamente no SCSS
-- ❌ Ignorar estados (hover, focus, active, disabled, loading)
-- ❌ Esquecer suporte a dark mode e brands
-
-**Documentacao:**
-- ❌ Afirmar "100% compativel com a API do Quasar"
-- ❌ Listar "Props 100% implementadas do QComponente"
-- ❌ Detalhar cores hex por brand (usar referencia ao DSS_TOKEN_REFERENCE)
-- ❌ Listar tokens sem nomes exatos (ex: "cores de feedback" ao inves de `--dss-feedback-positive`)
-
-### Checklist de Implementação
-
-> ⚠️ **IMPORTANTE**: Este checklist reflete os critérios de aprovação de PR definidos em `.github/pull_request_template.md`. O componente só será aprovado se todos os itens estiverem atendidos.
-
-#### Tokens
-- [ ] Todos os valores usam tokens DSS (`var(--dss-*)`)
-- [ ] Tokens novos/alterados estão documentados
-- [ ] Tokens de branding possuem fallback semântico
-- [ ] Não há valores hardcoded
-
-#### Componente
-- [ ] Wrapper explícito de componente Quasar (quando aplicável)
-- [ ] API pública clara e consistente
-- [ ] Cores aplicadas via classes utilitárias no Vue (não no SCSS)
-- [ ] Suporta as 3 brands (hub, water, waste)
-- [ ] Suporta dark mode (`[data-theme="dark"]`)
-- [ ] Estados documentados: hover, focus, active, disabled, loading
-- [ ] Alinhado ao padrão do DssButton (golden sample)
-- [ ] TypeScript 100% tipado (props, emits, slots)
-
-#### Acessibilidade (WCAG 2.1 AA)
-- [ ] Touch targets ≥48px (`@include dss-touch-target('ideal')`)
-- [ ] Focus ring implementado (`@include dss-focus-ring('primary')`)
-- [ ] Estados de foco visíveis
-- [ ] Navegação por teclado validada
-- [ ] ARIA aplicado quando necessário
-
-#### Documentação
-- [ ] README.md com exemplos de uso
-- [ ] Tokens utilizados estão listados **com nomes exatos** (ex: `--dss-feedback-positive`)
-- [ ] Estados centralizados
-- [ ] Anti-patterns documentados
-- [ ] **Linguagem DSS-First** - NUNCA afirmar "100% compativel com Quasar"
-- [ ] **Brandabilidade referencia DSS_TOKEN_REFERENCE** - NAO lista cores por brand
-
-#### Exports e Testes
-- [ ] Testes unitários cobrindo props, eventos, slots, acessibilidade
-- [ ] Export adicionado em `components/index.js` e `components/index.scss`
-
-#### Governança
-- [ ] Alinhado às Diretrizes do DSS (PRD Seção 6)
-- [ ] Alinhado à Governança do DSS (PRD Seção 7)
-- [ ] Não introduz exceções não documentadas
-
-### Fluxo de Trabalho
-
-1. **Pesquisar** - Consultar API do componente Quasar equivalente (se existir)
-2. **Criar estrutura** - Seguir arquitetura de 4 camadas
-3. **Implementar types** - Definir interfaces TypeScript
-4. **Implementar composable** - Lógica de classes e comportamento
-5. **Implementar Vue** - Componente com Composition API
-6. **Implementar SCSS** - Base → Variants → Brands → States
-7. **Testar** - Testes unitários + showcase visual
-8. **Documentar** - README + exemplo de uso
-9. **Exportar** - Registrar no barrel export
+Nenhum diretório pode ser omitido.
 
 ---
 
-## Estrutura do Projeto
+## 📚 Piso Mínimo OBRIGATÓRIO de Documentação (README.md)
 
-```
-DSS/
-├── components/          # Componentes Vue.js
-│   └── base/           # DssButton, DssCard, DssInput, DssBadge, DssAvatar
-├── tokens/             # Design tokens (cores, espaçamento, tipografia)
-│   ├── brand/          # Tokens por marca (hub, water, waste)
-│   └── semantic/       # Tokens semânticos (actions, feedback, surfaces)
-├── themes/             # Integração Quasar e dark mode
-├── utils/              # Mixins e funções SCSS
-├── composables/        # Composables Vue globais
-├── docs/               # Documentação organizada
-│   ├── guides/         # Guias de implementação
-│   ├── reference/      # Referências técnicas
-│   ├── specs/          # Especificações de componentes
-│   ├── audits/         # Auditorias de conformidade
-│   └── archive/        # Histórico (fixes, sprints, reports)
-└── examples/           # Arquivos HTML de teste/playground
-```
+Todo componente DSS, independente do escopo, **DEVE conter**:
 
----
+1. Descrição clara do componente
+   - O que representa
+   - Quando usar
+   - Quando NÃO usar
 
-## Tokens Principais
+2. API completa
+   - Props (com tipos e valores)
+   - Slots (mesmo que seja apenas `default`)
+   - Events (mesmo que seja “nenhum”)
 
-### Spacing
-```scss
-var(--dss-spacing-0)   /* 0px */
-var(--dss-spacing-1)   /* 4px */
-var(--dss-spacing-2)   /* 8px */
-var(--dss-spacing-4)   /* 16px */
-var(--dss-spacing-8)   /* 32px */
-```
+3. Estados documentados
+   - hover
+   - focus
+   - active
+   - disabled
+   - loading (ou justificar ausência)
 
-### Colors (Semânticas)
-```scss
-var(--dss-action-primary)
-var(--dss-action-secondary)
-var(--dss-feedback-positive)
-var(--dss-feedback-negative)
-var(--dss-surface-default)
-```
+4. Tokens utilizados
+   - Lista explícita
+   - Nomes exatos (`--dss-*`)
 
-### Acessibilidade
-```scss
-@include dss-touch-target('ideal');  /* 48x48px */
-@include dss-focus-ring('primary');  /* Focus ring 3px */
-@include dss-transition(all, 'fast'); /* Respeita reduced-motion */
-```
+5. Exemplos
+   - Mínimo: 3
+   - Ideal: 5–7
+   - Com brand e contexto real
+
+📌 Se algo **não existir**, isso deve estar **explicitamente declarado**.
 
 ---
 
-## Dúvidas Frequentes
+## 🚫 Anti-Patterns Críticos
 
-### O DSS substitui o Quasar?
-**Não.** O DSS é uma camada sobre o Quasar. Componentes DSS usam internamente a estrutura do Quasar, aplicando tokens DSS para visual e brandabilidade.
+### Código
+- ❌ Inferir API completa do Quasar
+- ❌ Criar tokens específicos de componente
+- ❌ Aplicar cores no SCSS
+- ❌ Ignorar estados
+- ❌ Pular camadas
+- ❌ Usar `::before` para efeitos visuais (reservado para touch target)
+- ❌ Usar valores de brightness arbitrários (ex.: 0.93, 0.88) — reutilizar tabela canônica
 
-### Posso usar valores hardcoded?
-**Não.** Todos os valores devem usar tokens DSS. Isso garante brandabilidade, dark mode e consistência.
+### Documentação
+- ❌ “100% compatível com a API do Quasar”
+- ❌ “Replica todas as props do QComponent”
+- ❌ Listar cores hex por brand
+- ❌ Linguagem vaga (“cores de feedback”)
 
-### Onde ficam as cores dos componentes?
-**No Vue, não no SCSS.** Cores são aplicadas via computed properties usando classes utilitárias (`bg-primary`, `text-white`).
+---
 
-### Quais são os critérios de aprovação de PR?
-Consulte **`.github/pull_request_template.md`** para ver todos os critérios. O checklist de implementação neste documento reflete esses critérios.
+## ✅ Checklist de Validação Final
+
+O componente só é considerado válido se:
+
+- [ ] Arquitetura em 4 camadas completa
+- [ ] Nenhum valor hardcoded
+- [ ] Cores via classes utilitárias
+- [ ] Estados implementados e documentados
+- [ ] Tokens listados corretamente
+- [ ] README completo
+- [ ] Exemplo funcional
+- [ ] Acessibilidade validada
+
+---
+
+## 📌 Regra Final
+
+> Se houver dúvida entre **simplificar demais** ou **explicitar melhor**,  
+> **SEMPRE escolha explicitar melhor**.
+
+Documentação clara hoje evita refatoração massiva amanhã.

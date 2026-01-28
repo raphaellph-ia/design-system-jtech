@@ -1,0 +1,64 @@
+/* ==========================================================================
+   DssChip - LAYER 3: VARIANTS (Flat)
+
+   RESPONSABILIDADE: Estilos especificos da variante "flat"
+
+   REGRAS:
+   - Usa tokens genericos para estilos
+   - Cores aplicadas via classes utilitarias no Vue (.text-*)
+   - NAO usa valores hardcoded
+   - ::before RESERVADO para touch target (definido em _base.scss)
+   - ::after usado para efeitos visuais (hover, active, selected)
+   ========================================================================== */
+
+.dss-chip--flat {
+  /* Fundo transparente sem borda */
+  background-color: transparent;
+  border: none;
+
+  /* Cor do texto - aplicada via classe utilitaria .text-{color} */
+
+  /* Hover effect para variante flat - adiciona fundo sutil via ::after */
+  &.dss-chip--clickable:hover {
+    /* Usa ::after para efeitos visuais (::before reservado para touch target) */
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: currentColor;
+      opacity: var(--dss-opacity-hover);
+      border-radius: inherit;
+      pointer-events: none;
+      z-index: -1; /* Atrás do conteúdo, acima do touch target */
+    }
+  }
+
+  &.dss-chip--clickable:active {
+    &::after {
+      opacity: var(--dss-opacity-active);
+    }
+  }
+
+  /* Selected state para flat - fundo sutil via ::after */
+  &.dss-chip--selected {
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: currentColor;
+      opacity: var(--dss-opacity-selected);
+      border-radius: inherit;
+      pointer-events: none;
+      z-index: -1; /* Atrás do conteúdo, acima do touch target */
+    }
+  }
+
+  /* Remove button styling para flat */
+  .dss-chip__remove {
+    color: currentColor;
+
+    &:hover {
+      background-color: color-mix(in srgb, currentColor var(--dss-opacity-hover), transparent);
+    }
+  }
+}

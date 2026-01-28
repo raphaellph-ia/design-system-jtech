@@ -960,6 +960,162 @@ Use tokens semânticos de opacidade:
 | **Cores no SCSS** | Arquivo CSS 5-10x maior que necessário | 🔴 Crítico |
 | **Opacidade hardcoded** | Inconsistência de estados entre componentes | 🟡 Médio |
 | **Tokens component-specific** | Escalabilidade ruim (N componentes = N tokens) | 🟡 Médio |
+| **Altura visual como touch target** | Violação WCAG 2.5.5, inacessibilidade móvel | 🔴 Crítico |
+
+### 📏 **DIRETIVA OBRIGATÓRIA: Altura Visual vs Touch Target**
+
+> **⚠️ REGRA VINCULANTE**: Componentes compactos (chips, badges, tags) DEVEM usar tokens genéricos de altura visual, NUNCA tokens específicos de componente.
+
+#### Tokens Deprecados (NÃO USAR)
+
+```scss
+/* ❌ DEPRECADO - Não usar! */
+min-height: var(--dss-chip-height-md);   /* Token específico */
+min-height: var(--dss-badge-size-md);    /* Token específico */
+```
+
+#### Tokens Obrigatórios (SEMPRE USAR)
+
+```scss
+/* ✅ CORRETO - Tokens genéricos de Compact Controls */
+min-height: var(--dss-compact-control-height-xs);  /* 20px */
+min-height: var(--dss-compact-control-height-sm);  /* 24px */
+min-height: var(--dss-compact-control-height-md);  /* 28px */
+min-height: var(--dss-compact-control-height-lg);  /* 32px */
+```
+
+#### Regra de Touch Target
+
+```scss
+/* ✅ OBRIGATÓRIO: Touch target separado da altura visual */
+.dss-chip {
+  /* Altura VISUAL do componente */
+  min-height: var(--dss-compact-control-height-md); /* 28px */
+
+  /* Touch target WCAG 2.5.5 via pseudo-elemento */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: var(--dss-touch-target-min);  /* 48px */
+    min-height: var(--dss-touch-target-min); /* 48px */
+    pointer-events: none; /* ⚠️ OBRIGATÓRIO - não intercepta eventos */
+  }
+}
+```
+
+> **⚠️ `pointer-events: none`**: O pseudo-elemento de touch target NÃO intercepta cliques. Ele serve apenas para ferramentas de acessibilidade medirem a área tocável. Isto é decisão arquitetural deliberada.
+
+**📖 Referência completa:** [DSS_TOKEN_REFERENCE.md - Seção 7.13](./DSS_TOKEN_REFERENCE.md#713-compact-controls---alturas-visuais)
+
+### Convenção de Pseudo-elementos (NORMATIVA)
+
+> **⚠️ REGRA VINCULANTE**: O uso de pseudo-elementos em componentes DSS segue convenção estrita.
+
+| Pseudo-elemento | Uso Reservado | Responsabilidade |
+|-----------------|---------------|------------------|
+| `::before` | **Touch Target** | Expansão da área clicável para WCAG 2.5.5 |
+| `::after` | **Efeitos Visuais** | Overlays de hover, active, selected, focus |
+
+#### Racional Técnico
+
+1. **Separação de Concerns**: Touch target é requisito de acessibilidade, efeitos visuais são estéticos.
+2. **Evitar Conflitos de CSS**: Duas declarações `::before` não podem coexistir.
+3. **z-index Previsível**: `::before` (touch target) em z: auto, `::after` (visual) em z: -1.
+4. **Manutenibilidade**: Camada 2 define touch target, Camada 3 define efeitos.
+
+#### Implementação Correta
+
+```scss
+/* ✅ CORRETO - Camada 2 (Base) */
+.dss-chip {
+  position: relative;
+
+  /* Touch target WCAG 2.5.5 */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: var(--dss-touch-target-min);  /* 48px */
+    min-height: var(--dss-touch-target-min); /* 48px */
+    pointer-events: none; /* ⚠️ OBRIGATÓRIO */
+  }
+}
+
+/* ✅ CORRETO - Camada 3 (Variantes) */
+.dss-chip--flat {
+  &:hover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: currentColor;
+    opacity: var(--dss-opacity-hover);
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: -1; /* Atrás do conteúdo, acima do touch target */
+  }
+}
+```
+
+#### Anti-pattern
+
+```scss
+/* ❌ INCORRETO - Conflito de ::before */
+.dss-chip--flat:hover::before {
+  background-color: currentColor;
+  opacity: var(--dss-opacity-hover);
+  /* SOBRESCREVE o touch target definido em _base.scss! */
+}
+```
+
+> **Consequência**: Se um arquivo de variante usar `::before`, o touch target da Camada 2 será sobrescrito, quebrando acessibilidade WCAG 2.5.5.
+
+### Valores Visuais Permitidos como Exceção (Não-Tokenizados)
+
+> **⚠️ TABELA CANÔNICA**: Esta é a fonte única de verdade para valores visuais sem token DSS equivalente. Novos componentes DEVEM reutilizar valores desta tabela.
+
+#### Brightness (Estados Interativos)
+
+| Valor | Uso | Contexto | Componentes |
+|-------|-----|----------|-------------|
+| `brightness(0.95)` | Hover padrão | Light mode | Todos (base) |
+| `brightness(0.92)` | Hover intensificado | Light mode, fundos sólidos | Filled variants |
+| `brightness(0.90)` | Active padrão | Light mode | Todos (base) |
+| `brightness(0.85)` | Active intensificado | Light mode, fundos sólidos | Filled variants |
+| `brightness(1.10)` | Hover dark mode | Dark mode | Filled variants |
+| `brightness(1.20)` | Active dark mode | Dark mode | Filled variants |
+
+#### Saturate (Acessibilidade)
+
+| Valor | Uso | Contexto | Componentes |
+|-------|-----|----------|-------------|
+| `saturate(1.2)` | Alta saturação | `prefers-contrast: more` | Todos com variante filled |
+
+#### Outline Offset (Elementos Compactos)
+
+| Valor | Uso | Contexto | Componentes |
+|-------|-----|----------|-------------|
+| `1px` | Offset reduzido | Elementos ≤ 20px | Botões de remover, ícones compactos |
+
+> **📖 Referência**: Para adicionar novos valores a esta tabela, abrir issue no repositório com justificativa técnica.
+
+#### Regra de Reutilização
+
+```scss
+/* ✅ CORRETO - Reutilizar valor canônico */
+&.dss-tag--clickable:hover {
+  filter: brightness(0.95); /* Valor da tabela canônica */
+}
+
+/* ❌ INCORRETO - Valor arbitrário */
+&.dss-tag--clickable:hover {
+  filter: brightness(0.93); /* Valor não documentado! */
+}
+```
 
 ---
 

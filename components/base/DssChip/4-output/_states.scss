@@ -1,0 +1,227 @@
+/* ==========================================================================
+   DssChip - LAYER 4: OUTPUT (States)
+
+   RESPONSABILIDADE: Estilos para estados especiais (dark mode, high contrast)
+
+   REGRAS:
+   - Usa media queries para preferencias do usuario
+   - Ajusta contraste e visibilidade
+   - Mantem acessibilidade WCAG 2.1 AA
+   - ::before RESERVADO para touch target, ::after para efeitos visuais
+   ========================================================================== */
+
+/* ==========================================================================
+   DARK MODE
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  /*
+   * ⚠️ EXCEÇÃO DOCUMENTADA: Brightness invertido para dark mode
+   *
+   * Em dark mode, fundos escuros precisam ser CLAREADOS no hover/active,
+   * não escurecidos como em light mode. Valores:
+   * - hover: 1.1 (clareamento 10%)
+   * - active: 1.2 (clareamento 20%)
+   *
+   * Não existem tokens DSS para brightness. Ver _base.scss para racional.
+   */
+  .dss-chip--filled {
+    &.dss-chip--clickable:hover {
+      filter: brightness(1.1);
+    }
+
+    &.dss-chip--clickable:active {
+      filter: brightness(1.2);
+    }
+  }
+
+  .dss-chip--outline {
+    /* Outline em dark mode */
+    &.dss-chip--clickable:hover {
+      /* Fundo mais visivel em dark mode */
+      opacity: 0.95;
+    }
+  }
+
+  .dss-chip--flat {
+    /* Flat em dark mode - ajuste de opacidade via ::after (NC-02 compliant) */
+    &.dss-chip--clickable:hover::after {
+      opacity: var(--dss-opacity-hover);
+    }
+  }
+
+  /* Remove button em dark mode */
+  .dss-chip__remove:hover {
+    background-color: color-mix(in srgb, white var(--dss-opacity-hover), transparent);
+  }
+
+  /* Disabled state em dark mode */
+  .dss-chip--disabled {
+    opacity: var(--dss-opacity-disabled);
+  }
+}
+
+/* ==========================================================================
+   HIGH CONTRAST MODE
+   ========================================================================== */
+
+/*
+ * ⚠️ CONTEXTO DE ACESSIBILIDADE: prefers-contrast: more
+ *
+ * Em high contrast, alguns valores são intencionalmente hardcoded
+ * para garantir visibilidade máxima, sobrepondo tokens padrão.
+ *
+ * Fallbacks documentados:
+ * - outline-width/offset: Valores aumentados para visibilidade
+ * - border: Valores mínimos para garantir contraste
+ * - saturate(1.2): Aumenta saturação para cores mais distintas
+ */
+@media (prefers-contrast: more) {
+  .dss-chip {
+    /* Bordas mais visiveis em high contrast */
+    border-width: var(--dss-border-width-md);
+
+    /* Focus ring mais forte - valores aumentados para acessibilidade */
+    &.dss-chip--clickable:focus-visible {
+      outline-width: var(--dss-border-width-thick);
+      outline-offset: var(--dss-border-width-thick);
+    }
+  }
+
+  .dss-chip--filled {
+    /* Cores mais saturadas - exceção sem token para saturate() */
+    filter: saturate(1.2);
+  }
+
+  .dss-chip--outline {
+    /* Borda mais grossa para visibilidade */
+    border-width: var(--dss-border-width-md);
+  }
+
+  .dss-chip--flat {
+    /* Adiciona borda sutil para visibilidade - fallback de acessibilidade */
+    border: var(--dss-border-width-thin) solid currentColor;
+    opacity: 0.7; /* Substitui border-opacity inválido */
+  }
+
+  /* Remove button mais visivel */
+  .dss-chip__remove {
+    border: var(--dss-border-width-thin) solid currentColor;
+  }
+
+  /* Disabled mais distinto */
+  .dss-chip--disabled {
+    opacity: var(--dss-opacity-50);
+    text-decoration: line-through;
+  }
+
+  /* Selected state mais obvio */
+  .dss-chip--selected {
+    box-shadow: inset 0 0 0 var(--dss-border-width-thick) currentColor;
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .dss-chip {
+    /* Remove transicoes */
+    transition: none;
+  }
+
+  .dss-chip__remove {
+    transition: none;
+  }
+
+  /* Remove animacao de ripple */
+  .dss-chip--clickable:active .dss-chip__ripple::after {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
+   PRINT STYLES
+   ========================================================================== */
+
+@media print {
+  .dss-chip {
+    /* Remove sombras e efeitos para impressao */
+    box-shadow: none;
+    filter: none;
+
+    /* Borda visivel para chips outline e flat */
+    border: var(--dss-border-width-thin) solid currentColor;
+
+    /* Remove ripple */
+    .dss-chip__ripple {
+      display: none;
+    }
+  }
+
+  /* Remove botao de remover na impressao */
+  .dss-chip__remove {
+    display: none;
+  }
+
+  /* Remove states visuais */
+  .dss-chip--clickable {
+    cursor: default;
+  }
+}
+
+/* ==========================================================================
+   FORCED COLORS (Windows High Contrast)
+   ========================================================================== */
+
+/*
+ * ⚠️ CONTEXTO DE ACESSIBILIDADE: forced-colors: active
+ *
+ * Em Windows High Contrast Mode, o navegador IGNORA cores CSS customizadas.
+ * Valores como ButtonText, Highlight, GrayText são keywords do sistema.
+ *
+ * Bordas e outlines usam valores absolutos porque:
+ * 1. Tokens CSS custom properties são ignorados em forced-colors
+ * 2. Valores precisam ser visíveis no tema de alto contraste do usuário
+ *
+ * Referência: https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors
+ */
+@media (forced-colors: active) {
+  .dss-chip {
+    /* Usa cores do sistema - tokens CSS são ignorados neste contexto */
+    border: 2px solid ButtonText;
+    background-color: ButtonFace;
+    color: ButtonText;
+
+    &.dss-chip--clickable:hover {
+      background-color: Highlight;
+      color: HighlightText;
+      border-color: HighlightText;
+    }
+
+    &.dss-chip--clickable:focus-visible {
+      /* Outline com valor absoluto - tokens ignorados em forced-colors */
+      outline: 3px solid Highlight;
+    }
+  }
+
+  .dss-chip--selected {
+    background-color: Highlight;
+    color: HighlightText;
+  }
+
+  .dss-chip--disabled {
+    border-color: GrayText;
+    color: GrayText;
+  }
+
+  .dss-chip__remove {
+    border: 1px solid ButtonText;
+
+    &:hover {
+      background-color: Highlight;
+      color: HighlightText;
+    }
+  }
+}

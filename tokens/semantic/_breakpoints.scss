@@ -1,22 +1,23 @@
 /* ==========================================================================
    DSS - TOKENS DE BREAKPOINTS
-   Sistema de responsividade baseado em Quasar Framework
+   Sistema de responsividade alinhado com Tailwind CSS
+   Atualizado: Janeiro 2025
    ========================================================================== */
 
 :root {
   /* ===========================================
      BREAKPOINTS PRINCIPAIS
-     Baseado em Quasar v2 e Material Design
+     Alinhado com Tailwind CSS + Suporte 4K
      =========================================== */
 
-  /* Extra Small (Mobile Portrait) */
-  --dss-breakpoint-xs: 0px;
-  --dss-breakpoint-xs-min: 0px;
-  --dss-breakpoint-xs-max: 599px;
+  /* Extra Small (Mobile Portrait) - Mínimo suportado: 320px */
+  --dss-breakpoint-xs: 320px;
+  --dss-breakpoint-xs-min: 320px;
+  --dss-breakpoint-xs-max: 639px;
 
-  /* Small (Mobile Landscape / Tablet Portrait) */
-  --dss-breakpoint-sm: 600px;
-  --dss-breakpoint-sm-min: 600px;
+  /* Small (Mobile Landscape / Tablet Portrait) - Tailwind: 640px */
+  --dss-breakpoint-sm: 640px;
+  --dss-breakpoint-sm-min: 640px;
   --dss-breakpoint-sm-max: 1023px;
 
   /* Medium (Tablet Landscape / Desktop Small) */
@@ -29,9 +30,14 @@
   --dss-breakpoint-lg-min: 1440px;
   --dss-breakpoint-lg-max: 1919px;
 
-  /* Extra Large (Large Desktop / 4K) */
+  /* Extra Large (Large Desktop) */
   --dss-breakpoint-xl: 1920px;
   --dss-breakpoint-xl-min: 1920px;
+  --dss-breakpoint-xl-max: 3839px;
+
+  /* 4K (Ultra HD Displays) */
+  --dss-breakpoint-4k: 3840px;
+  --dss-breakpoint-4k-min: 3840px;
 
   /* ===========================================
      BREAKPOINTS DE ZOOM (WCAG 2.1 AA)
@@ -42,29 +48,44 @@
   --dss-breakpoint-zoom-200: calc(var(--dss-breakpoint-md) * 0.5);  /* ~512px */
 
   /* Zoom 300% - Elementos devem se adaptar */
-  --dss-breakpoint-zoom-300: calc(var(--dss-breakpoint-md) * 0.33); /* ~341px */
+  --dss-breakpoint-zoom-300: calc(var(--dss-breakpoint-md) * 0.33); /* ~338px */
 
   /* ===========================================
      CONTAINER MAX-WIDTH
-     Larguras máximas por breakpoint
+     Larguras máximas proporcionais a 4K
+     Limite de legibilidade: 1600px
      =========================================== */
 
-  --dss-container-xs: 100%;
-  --dss-container-sm: 600px;
-  --dss-container-md: 1024px;
-  --dss-container-lg: 1440px;
-  --dss-container-xl: 1920px;
+  --dss-container-xs: 100%;       /* Fluid em mobile */
+  --dss-container-sm: 608px;      /* ~95% de 640px */
+  --dss-container-md: 960px;      /* ~94% de 1024px */
+  --dss-container-lg: 1280px;     /* ~89% de 1440px */
+  --dss-container-xl: 1600px;     /* Limite de legibilidade */
+  --dss-container-4k: 1600px;     /* Mesmo limite para 4K */
 
   /* ===========================================
      GUTTER / SPACING POR BREAKPOINT
      Espaçamento lateral responsivo
      =========================================== */
 
-  --dss-gutter-xs: var(--dss-spacing-4, 16px);  /* 16px */
-  --dss-gutter-sm: var(--dss-spacing-6, 24px);  /* 24px */
-  --dss-gutter-md: var(--dss-spacing-8, 32px);  /* 32px */
-  --dss-gutter-lg: var(--dss-spacing-10, 40px); /* 40px */
-  --dss-gutter-xl: var(--dss-spacing-12, 48px); /* 48px */
+  --dss-gutter-xs: var(--dss-spacing-2, 8px);   /* 8px */
+  --dss-gutter-sm: var(--dss-spacing-4, 16px);  /* 16px */
+  --dss-gutter-md: var(--dss-spacing-6, 24px);  /* 24px */
+  --dss-gutter-lg: var(--dss-spacing-8, 32px);  /* 32px */
+  --dss-gutter-xl: var(--dss-spacing-10, 40px); /* 40px */
+  --dss-gutter-4k: var(--dss-spacing-12, 48px); /* 48px */
+
+  /* ===========================================
+     SISTEMA DE COLUNAS RESPONSIVAS
+     Grid 4/8/12 colunas por breakpoint
+     =========================================== */
+
+  --dss-grid-columns-xs: 4;   /* Mobile: 4 colunas */
+  --dss-grid-columns-sm: 8;   /* Tablet: 8 colunas */
+  --dss-grid-columns-md: 12;  /* Desktop: 12 colunas */
+  --dss-grid-columns-lg: 12;  /* Wide: 12 colunas */
+  --dss-grid-columns-xl: 12;  /* Ultrawide: 12 colunas */
+  --dss-grid-columns-4k: 12;  /* 4K: 12 colunas */
 
   /* ===========================================
      ORIENTAÇÃO
@@ -82,15 +103,15 @@
 
 /**
  * Breakpoint maior ou igual (mobile-first)
- * @param {string} $size - xs, sm, md, lg, xl
+ * @param {string} $size - xs, sm, md, lg, xl, 4k
  */
 @mixin dss-breakpoint-up($size) {
   @if $size == 'xs' {
-    @media (min-width: 0px) {
+    @media (min-width: 320px) {
       @content;
     }
   } @else if $size == 'sm' {
-    @media (min-width: 600px) {
+    @media (min-width: 640px) {
       @content;
     }
   } @else if $size == 'md' {
@@ -105,16 +126,20 @@
     @media (min-width: 1920px) {
       @content;
     }
+  } @else if $size == '4k' {
+    @media (min-width: 3840px) {
+      @content;
+    }
   }
 }
 
 /**
  * Breakpoint menor ou igual (desktop-first)
- * @param {string} $size - xs, sm, md, lg, xl
+ * @param {string} $size - xs, sm, md, lg, xl, 4k
  */
 @mixin dss-breakpoint-down($size) {
   @if $size == 'xs' {
-    @media (max-width: 599px) {
+    @media (max-width: 639px) {
       @content;
     }
   } @else if $size == 'sm' {
@@ -130,7 +155,11 @@
       @content;
     }
   } @else if $size == 'xl' {
-    @media (min-width: 0px) { // Sempre aplica
+    @media (max-width: 3839px) {
+      @content;
+    }
+  } @else if $size == '4k' {
+    @media (min-width: 320px) { // Sempre aplica
       @content;
     }
   }
@@ -138,24 +167,26 @@
 
 /**
  * Breakpoint entre dois tamanhos (range)
- * @param {string} $min - xs, sm, md, lg, xl
- * @param {string} $max - xs, sm, md, lg, xl
+ * @param {string} $min - xs, sm, md, lg, xl, 4k
+ * @param {string} $max - xs, sm, md, lg, xl, 4k
  */
 @mixin dss-breakpoint-between($min, $max) {
-  $min-value: 0px;
+  $min-value: 320px;
   $max-value: 9999px;
 
-  @if $min == 'xs' { $min-value: 0px; }
-  @if $min == 'sm' { $min-value: 600px; }
+  @if $min == 'xs' { $min-value: 320px; }
+  @if $min == 'sm' { $min-value: 640px; }
   @if $min == 'md' { $min-value: 1024px; }
   @if $min == 'lg' { $min-value: 1440px; }
   @if $min == 'xl' { $min-value: 1920px; }
+  @if $min == '4k' { $min-value: 3840px; }
 
-  @if $max == 'xs' { $max-value: 599px; }
+  @if $max == 'xs' { $max-value: 639px; }
   @if $max == 'sm' { $max-value: 1023px; }
   @if $max == 'md' { $max-value: 1439px; }
   @if $max == 'lg' { $max-value: 1919px; }
-  @if $max == 'xl' { $max-value: 9999px; }
+  @if $max == 'xl' { $max-value: 3839px; }
+  @if $max == '4k' { $max-value: 9999px; }
 
   @media (min-width: #{$min-value}) and (max-width: #{$max-value}) {
     @content;
@@ -164,15 +195,15 @@
 
 /**
  * Breakpoint apenas para um tamanho específico
- * @param {string} $size - xs, sm, md, lg, xl
+ * @param {string} $size - xs, sm, md, lg, xl, 4k
  */
 @mixin dss-breakpoint-only($size) {
   @if $size == 'xs' {
-    @media (max-width: 599px) {
+    @media (min-width: 320px) and (max-width: 639px) {
       @content;
     }
   } @else if $size == 'sm' {
-    @media (min-width: 600px) and (max-width: 1023px) {
+    @media (min-width: 640px) and (max-width: 1023px) {
       @content;
     }
   } @else if $size == 'md' {
@@ -184,7 +215,11 @@
       @content;
     }
   } @else if $size == 'xl' {
-    @media (min-width: 1920px) {
+    @media (min-width: 1920px) and (max-width: 3839px) {
+      @content;
+    }
+  } @else if $size == '4k' {
+    @media (min-width: 3840px) {
       @content;
     }
   }
@@ -235,6 +270,21 @@
 }
 
 /* ===========================================
+   TABELA DE REFERÊNCIA RÁPIDA
+   =========================================== */
+
+/*
+| Breakpoint | Min Width | Max Width | Container | Gutter | Colunas |
+|------------|-----------|-----------|-----------|--------|---------|
+| XS         | 320px     | 639px     | 100%      | 8px    | 4       |
+| SM         | 640px     | 1023px    | 608px     | 16px   | 8       |
+| MD         | 1024px    | 1439px    | 960px     | 24px   | 12      |
+| LG         | 1440px    | 1919px    | 1280px    | 32px   | 12      |
+| XL         | 1920px    | 3839px    | 1600px    | 40px   | 12      |
+| 4K         | 3840px    | ∞         | 1600px    | 48px   | 12      |
+*/
+
+/* ===========================================
    EXEMPLOS DE USO
    =========================================== */
 
@@ -253,6 +303,10 @@
 
   @include dss-breakpoint-up('lg') {
     padding: var(--dss-spacing-8);
+  }
+
+  @include dss-breakpoint-up('4k') {
+    padding: var(--dss-spacing-12);
   }
 }
 
