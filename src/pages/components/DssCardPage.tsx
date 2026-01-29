@@ -1,17 +1,12 @@
 import React, { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DssTabs, DssTabsList, DssTabsTrigger, DssTabsContent } from "@/components/ui/dss-tabs";
+import { Badge } from "@/components/ui/badge";
 import {
-  Copy,
-  Check,
   Layers,
   Code,
   FileText,
   LayoutDashboard,
-  Sun,
-  Moon,
   Zap,
   CheckCircle,
   XCircle,
@@ -22,45 +17,24 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { AnatomySection } from "@/components/ui/AnatomySection";
 import { CollapsibleSection } from "@/components/ui/CollapsibleSection";
-import { PlaygroundButton } from "@/components/ui/PlaygroundButton";
 
-// ============================================================================
-// DADOS OBRIGATÓRIOS - CORES SEMÂNTICAS DSS
-// ============================================================================
-const semanticColors = {
-  primary: {
-    name: "primary",
-    label: "Primary",
-    bg: "#1f86de",
-    hover: "#0f5295",
-    light: "#86c0f3",
-    disable: "#b3dcff",
-    deep: "#0a3a6a",
-    tokens: {
-      base: "--dss-action-primary",
-      hover: "--dss-action-primary-hover",
-      light: "--dss-action-primary-light",
-    },
-  },
-  secondary: {
-    name: "secondary",
-    label: "Secondary",
-    bg: "#26a69a",
-    hover: "#1c857e",
-    light: "#6ddbcb",
-    disable: "#b5ece4",
-    deep: "#116761",
-    tokens: {
-      base: "--dss-action-secondary",
-      hover: "--dss-action-secondary-hover",
-    },
-  },
-};
+// Importar sistema de Playground unificado
+import {
+  DssPlayground,
+  VariantSelector,
+  ColorPicker,
+  BrandPicker,
+  ToggleGroup,
+  DSS_SEMANTIC_COLORS,
+  DSS_BRAND_COLORS,
+  type SemanticColor,
+  type FeedbackColor,
+} from "@/components/ui/playground";
 
 // ============================================================================
 // DADOS OBRIGATÓRIOS - CORES DE FEEDBACK DSS
 // ============================================================================
-const feedbackColors = {
+const feedbackColors: Record<string, FeedbackColor> = {
   positive: {
     name: "positive",
     label: "Positive",
@@ -100,48 +74,6 @@ const feedbackColors = {
 };
 
 // ============================================================================
-// DADOS OBRIGATÓRIOS - PALETAS DE MARCA (BRANDABILITY)
-// ============================================================================
-const brandColors = {
-  hub: {
-    name: "hub",
-    label: "Hub",
-    icon: "🟠",
-    principal: "#ef7a11",
-    scale: {
-      50: "#fff9ed", 100: "#fef2d6", 200: "#fde2ab", 300: "#fbcb76",
-      400: "#f8aa3f", 500: "#f5911a", 600: "#ef7a11", 700: "#bf590f",
-      800: "#984614", 900: "#7a3614", 950: "#421d08",
-    },
-    tokens: { principal: "--dss-hub-600", hover: "--dss-hub-700", light: "--dss-hub-300" },
-  },
-  water: {
-    name: "water",
-    label: "Water",
-    icon: "🔵",
-    principal: "#0e88e4",
-    scale: {
-      50: "#f0f7ff", 100: "#e0eefe", 200: "#badefd", 300: "#7dc4fc",
-      400: "#38a6f8", 500: "#0e88e4", 600: "#026cc7", 700: "#0356a1",
-      800: "#074a85", 900: "#0c3e6e", 950: "#082749",
-    },
-    tokens: { principal: "--dss-water-500", hover: "--dss-water-600", light: "--dss-water-300" },
-  },
-  waste: {
-    name: "waste",
-    label: "Waste",
-    icon: "🟢",
-    principal: "#18b173",
-    scale: {
-      50: "#edfcf4", 100: "#d3f8e2", 200: "#abefcb", 300: "#74e1ae",
-      400: "#3ccb8d", 500: "#18b173", 600: "#0b8154", 700: "#0a724e",
-      800: "#0a5b3e", 900: "#0a4a34", 950: "#042a1e",
-    },
-    tokens: { principal: "--dss-waste-500", hover: "--dss-waste-600", light: "--dss-waste-300" },
-  },
-};
-
-// ============================================================================
 // VARIANTES DO DSSCARD
 // ============================================================================
 const variants = [
@@ -149,16 +81,6 @@ const variants = [
   { name: "flat", label: "Flat", desc: "Sem elevação, apenas background", hasElevation: false },
   { name: "bordered", label: "Bordered", desc: "Com borda + elevação", hasElevation: true },
   { name: "outlined", label: "Outlined", desc: "Com borda, sem elevação", hasElevation: false },
-];
-
-// ============================================================================
-// ESTADOS DO CARD
-// ============================================================================
-const states = [
-  { name: "default", label: "Default", active: true },
-  { name: "clickable", label: "Clickable", active: false },
-  { name: "square", label: "Square", active: false },
-  { name: "dark", label: "Dark", active: false },
 ];
 
 // ============================================================================
@@ -182,7 +104,7 @@ const actionsPropsData = [
 ];
 
 // ============================================================================
-// TOKENS UTILIZADOS - ORGANIZADOS POR CATEGORIA (14 CATEGORIAS)
+// TOKENS UTILIZADOS - ORGANIZADOS POR CATEGORIA
 // ============================================================================
 const tokensUsed = [
   // Surface
@@ -305,12 +227,12 @@ function DssCardPreview({
 
   // Determinar cores baseado em brand ou semantic
   const getColors = () => {
-    if (brand && brandColors[brand as keyof typeof brandColors]) {
-      const b = brandColors[brand as keyof typeof brandColors];
+    if (brand && DSS_BRAND_COLORS[brand]) {
+      const b = DSS_BRAND_COLORS[brand];
       return { primary: b.principal, hover: b.scale[700], light: b.scale[300] };
     }
     if (semanticColor) {
-      const allColors = { ...semanticColors, ...feedbackColors };
+      const allColors = { ...DSS_SEMANTIC_COLORS, ...feedbackColors };
       const c = allColors[semanticColor as keyof typeof allColors];
       if (c) return { primary: c.bg, hover: c.hover, light: c.light };
     }
@@ -328,6 +250,7 @@ function DssCardPreview({
       transition: "all 250ms cubic-bezier(0.4,0,0.2,1)",
       cursor: clickable ? "pointer" : "default",
       transform: clickable && isHovered ? "translateY(-2px)" : "translateY(0)",
+      minWidth: "280px",
     };
 
     switch (variant) {
@@ -380,7 +303,7 @@ function DssCardPreview({
 }
 
 // ============================================================================
-// SUBCOMPONENTE: CardSection
+// SUBCOMPONENTES INTERNOS
 // ============================================================================
 function CardSection({ children, horizontal = false }: { children: React.ReactNode; horizontal?: boolean }) {
   return (
@@ -398,9 +321,6 @@ function CardSection({ children, horizontal = false }: { children: React.ReactNo
   );
 }
 
-// ============================================================================
-// SUBCOMPONENTE: CardActions
-// ============================================================================
 function CardActions({
   children,
   align = "right",
@@ -435,16 +355,17 @@ function CardActions({
 // COMPONENTE PRINCIPAL: DssCardPage
 // ============================================================================
 export default function DssCardPage() {
-  // Estados do Playground
+  // Estados do Playground (padrão unificado)
   const [selectedVariant, setSelectedVariant] = useState("elevated");
   const [selectedColor, setSelectedColor] = useState<string | null>("primary");
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
-  const [isClickable, setIsClickable] = useState(false);
-  const [isSquare, setIsSquare] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [booleanStates, setBooleanStates] = useState({
+    clickable: false,
+    square: false,
+  });
 
-  // Exclusividade Brand vs Cor
+  // Exclusividade Brand vs Cor (padrão obrigatório)
   const handleColorChange = (color: string) => {
     setSelectedColor(color);
     setSelectedBrand(null);
@@ -455,13 +376,23 @@ export default function DssCardPage() {
     setSelectedColor(null);
   };
 
-  // Geração de código
+  const toggleBooleanState = (name: string) => {
+    setBooleanStates(prev => ({
+      ...prev,
+      [name]: !prev[name as keyof typeof prev],
+    }));
+  };
+
+  // Geração de código (padrão unificado)
   const generateCode = () => {
     const props: string[] = [];
     if (selectedVariant !== "elevated") props.push(`variant="${selectedVariant}"`);
-    if (selectedBrand) props.push(`brand="${selectedBrand}"`);
-    if (isClickable) props.push("clickable");
-    if (isSquare) props.push("square");
+    if (selectedBrand) {
+      props.push(`brand="${selectedBrand}"`);
+      // NÃO inclui color quando brand está selecionado
+    }
+    if (booleanStates.clickable) props.push("clickable");
+    if (booleanStates.square) props.push("square");
     if (isDarkMode) props.push("dark");
 
     const propsStr = props.length > 0 ? ` ${props.join(" ")}` : "";
@@ -475,17 +406,23 @@ export default function DssCardPage() {
 </DssCard>`;
   };
 
-  const copyCode = () => {
-    navigator.clipboard.writeText(generateCode());
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   // Todas as cores para seleção
   const allColors = [
-    ...Object.values(semanticColors),
+    ...Object.values(DSS_SEMANTIC_COLORS),
     ...Object.values(feedbackColors),
-  ];
+  ] as Array<SemanticColor | FeedbackColor>;
+
+  // Token ativo baseado na seleção
+  const getActiveToken = () => {
+    if (selectedBrand) {
+      return DSS_BRAND_COLORS[selectedBrand]?.tokens.principal;
+    }
+    if (selectedColor) {
+      const color = { ...DSS_SEMANTIC_COLORS, ...feedbackColors }[selectedColor];
+      return color?.tokens.base;
+    }
+    return undefined;
+  };
 
   return (
     <div className="space-y-8 pb-12">
@@ -505,7 +442,7 @@ export default function DssCardPage() {
         ]}
       />
 
-      {/* SEÇÃO 2: PLAYGROUND INTERATIVO */}
+      {/* SEÇÃO 2: PLAYGROUND INTERATIVO (COMPONENTE UNIFICADO) */}
       <SectionHeader
         title="Playground"
         titleAccent="Interativo"
@@ -513,209 +450,95 @@ export default function DssCardPage() {
         icon={Zap}
       />
 
-      <Card
-        style={{
-          backgroundColor: "var(--jtech-card-bg)",
-          borderColor: "var(--jtech-card-border)",
-        }}
-      >
-        <CardContent className="p-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Área de Preview */}
-            <div
-              className="rounded-lg p-8 flex items-center justify-center min-h-[300px] transition-all duration-300"
-              style={{
-                backgroundColor: isDarkMode ? "#1a1a2e" : "#f5f5f5",
-                backgroundImage: isDarkMode
-                  ? "radial-gradient(circle, #2d2d44 1px, transparent 1px)"
-                  : "radial-gradient(circle, #e5e5e5 1px, transparent 1px)",
-                backgroundSize: "20px 20px",
-                border: `1px solid ${isDarkMode ? "#2d2d44" : "#e5e5e5"}`,
-              }}
-            >
-              <DssCardPreview
-                variant={selectedVariant}
-                clickable={isClickable}
-                square={isSquare}
-                dark={isDarkMode}
-                brand={selectedBrand}
-                semanticColor={selectedColor}
+      <DssPlayground
+        title="Configure o Card"
+        description="Selecione as props e veja o resultado em tempo real."
+        isDarkMode={isDarkMode}
+        onDarkModeToggle={() => setIsDarkMode(!isDarkMode)}
+        previewContent={
+          <DssCardPreview
+            variant={selectedVariant}
+            clickable={booleanStates.clickable}
+            square={booleanStates.square}
+            dark={isDarkMode}
+            brand={selectedBrand}
+            semanticColor={selectedColor}
+          >
+            <CardSection>
+              <h3
+                className="font-semibold text-base mb-2"
+                style={{ color: isDarkMode ? "#ffffff" : "#1a1a1a" }}
               >
-                <CardSection>
-                  <h3
-                    className="font-semibold text-base mb-2"
-                    style={{ color: isDarkMode ? "#ffffff" : "#1a1a1a" }}
-                  >
-                    Card Title
-                  </h3>
-                  <p
-                    className="text-sm"
-                    style={{ color: isDarkMode ? "rgba(255,255,255,0.7)" : "#666" }}
-                  >
-                    This is an example card content with the current configuration applied.
-                  </p>
-                </CardSection>
-                <CardActions align="right">
-                  <button
-                    className="px-3 py-1.5 text-xs rounded transition-all"
-                    style={{
-                      backgroundColor: "transparent",
-                      color: isDarkMode ? "#86c0f3" : "#1f86de",
-                    }}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className="px-3 py-1.5 text-xs rounded transition-all"
-                    style={{
-                      backgroundColor: selectedBrand
-                        ? brandColors[selectedBrand as keyof typeof brandColors]?.principal
-                        : selectedColor
-                        ? { ...semanticColors, ...feedbackColors }[selectedColor as keyof typeof semanticColors]?.bg
-                        : "#1f86de",
-                      color: "#ffffff",
-                    }}
-                  >
-                    Confirm
-                  </button>
-                </CardActions>
-              </DssCardPreview>
-            </div>
+                Card Title
+              </h3>
+              <p
+                className="text-sm"
+                style={{ color: isDarkMode ? "rgba(255,255,255,0.7)" : "#666" }}
+              >
+                This is an example card content with the current configuration applied.
+              </p>
+            </CardSection>
+            <CardActions align="right">
+              <button
+                className="px-3 py-1.5 text-xs rounded transition-all"
+                style={{
+                  backgroundColor: "transparent",
+                  color: isDarkMode ? "#86c0f3" : "#1f86de",
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-3 py-1.5 text-xs rounded transition-all"
+                style={{
+                  backgroundColor: selectedBrand
+                    ? DSS_BRAND_COLORS[selectedBrand]?.principal
+                    : selectedColor
+                    ? { ...DSS_SEMANTIC_COLORS, ...feedbackColors }[selectedColor]?.bg
+                    : "#1f86de",
+                  color: "#ffffff",
+                }}
+              >
+                Confirm
+              </button>
+            </CardActions>
+          </DssCardPreview>
+        }
+        controls={
+          <>
+            <VariantSelector
+              variants={variants}
+              selectedVariant={selectedVariant}
+              onSelect={setSelectedVariant}
+            />
 
-            {/* Controles */}
-            <div className="space-y-5">
-              {/* Toggle Light/Dark */}
-              <div className="flex justify-end">
-                <PlaygroundButton
-                  onClick={() => setIsDarkMode(!isDarkMode)}
-                  isSelected={isDarkMode}
-                  selectedColor="var(--dss-jtech-accent)"
-                >
-                  <div className="flex items-center gap-2">
-                    {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-                    <span>{isDarkMode ? "Light" : "Dark"}</span>
-                  </div>
-                </PlaygroundButton>
-              </div>
+            <ColorPicker
+              label="Cor Semântica"
+              colors={allColors}
+              selectedColor={selectedColor}
+              onSelect={handleColorChange}
+            />
 
-              {/* Variantes */}
-              <div>
-                <label className="text-xs font-medium mb-2 block" style={{ color: "var(--jtech-text-muted)" }}>
-                  Variante
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {variants.map((v) => (
-                    <PlaygroundButton
-                      key={v.name}
-                      onClick={() => setSelectedVariant(v.name)}
-                      isSelected={selectedVariant === v.name}
-                      selectedColor="var(--dss-jtech-accent)"
-                    >
-                      {v.label}
-                    </PlaygroundButton>
-                  ))}
-                </div>
-              </div>
+            <BrandPicker
+              brands={DSS_BRAND_COLORS}
+              selectedBrand={selectedBrand}
+              onSelect={handleBrandChange}
+            />
 
-              {/* Cores Semânticas */}
-              <div>
-                <label className="text-xs font-medium mb-2 block" style={{ color: "var(--jtech-text-muted)" }}>
-                  Cor Semântica
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {allColors.map((c) => (
-                    <PlaygroundButton
-                      key={c.name}
-                      onClick={() => handleColorChange(c.name)}
-                      isSelected={selectedColor === c.name}
-                      selectedColor={c.bg}
-                    >
-                      <div className="flex items-center gap-1.5">
-                        <div
-                          className="w-3 h-3 rounded-full"
-                          style={{ backgroundColor: c.bg }}
-                        />
-                        <span>{c.label}</span>
-                      </div>
-                    </PlaygroundButton>
-                  ))}
-                </div>
-              </div>
-
-              {/* Brands */}
-              <div>
-                <label className="text-xs font-medium mb-2 block" style={{ color: "var(--jtech-text-muted)" }}>
-                  Brand
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {Object.values(brandColors).map((b) => (
-                    <PlaygroundButton
-                      key={b.name}
-                      onClick={() => handleBrandChange(b.name)}
-                      isSelected={selectedBrand === b.name}
-                      selectedColor={b.principal}
-                    >
-                      <div className="flex items-center gap-1.5">
-                        <span>{b.icon}</span>
-                        <span>{b.label}</span>
-                      </div>
-                    </PlaygroundButton>
-                  ))}
-                </div>
-              </div>
-
-              {/* Estados */}
-              <div>
-                <label className="text-xs font-medium mb-2 block" style={{ color: "var(--jtech-text-muted)" }}>
-                  Estados
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  <PlaygroundButton
-                    onClick={() => setIsClickable(!isClickable)}
-                    isSelected={isClickable}
-                    selectedColor="var(--dss-jtech-accent)"
-                  >
-                    Clickable
-                  </PlaygroundButton>
-                  <PlaygroundButton
-                    onClick={() => setIsSquare(!isSquare)}
-                    isSelected={isSquare}
-                    selectedColor="var(--dss-jtech-accent)"
-                  >
-                    Square
-                  </PlaygroundButton>
-                </div>
-              </div>
-
-              {/* Code Preview */}
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <label className="text-xs font-medium" style={{ color: "var(--jtech-text-muted)" }}>
-                    Código
-                  </label>
-                  <button
-                    onClick={copyCode}
-                    className="flex items-center gap-1 text-xs px-2 py-1 rounded transition-all hover:bg-white/10"
-                    style={{ color: "var(--dss-jtech-accent)" }}
-                  >
-                    {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                    {copied ? "Copiado!" : "Copiar"}
-                  </button>
-                </div>
-                <pre
-                  className="p-3 rounded-lg text-xs overflow-x-auto"
-                  style={{
-                    backgroundColor: "rgba(0,0,0,0.3)",
-                    color: "var(--dss-jtech-accent-light)",
-                  }}
-                >
-                  <code>{generateCode()}</code>
-                </pre>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+            <ToggleGroup
+              label="Estados"
+              options={[
+                { name: "clickable", label: "Clickable" },
+                { name: "square", label: "Square" },
+              ]}
+              values={booleanStates}
+              onToggle={toggleBooleanState}
+            />
+          </>
+        }
+        codePreview={generateCode()}
+        activeToken={getActiveToken()}
+      />
 
       {/* SEÇÃO 3: ANATOMIA 4 CAMADAS */}
       <SectionHeader
