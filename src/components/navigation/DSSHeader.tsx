@@ -1,13 +1,33 @@
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Search, Command } from "lucide-react";
+import { Search, Sun, Moon } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 export function DSSHeader() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [isLogoHovered, setIsLogoHovered] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  useEffect(() => {
+    // Load saved theme or detect system preference
+    const saved = localStorage.getItem('dss-theme') as 'light' | 'dark' | null;
+    if (saved) {
+      setTheme(saved);
+      document.documentElement.setAttribute('data-theme', saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      setTheme('dark');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('dss-theme', newTheme);
+  };
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   return (
@@ -177,6 +197,36 @@ export function DSSHeader() {
           </div>
         </div>
         
+        {/* Theme Toggle */}
+        <button
+          onClick={toggleTheme}
+          className={cn(
+            "flex items-center justify-center h-9 w-9 rounded-lg",
+            "transition-all duration-200 ease-out",
+            "hover:scale-105 active:scale-95"
+          )}
+          style={{ 
+            backgroundColor: 'rgba(255, 255, 255, 0.08)',
+            color: 'var(--dss-header-muted)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.12)';
+            e.currentTarget.style.borderColor = 'rgba(196, 30, 58, 0.3)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.08)';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
+          }}
+          title={theme === 'dark' ? 'Mudar para Light Mode' : 'Mudar para Dark Mode'}
+        >
+          {theme === 'dark' ? (
+            <Sun className="h-4 w-4" />
+          ) : (
+            <Moon className="h-4 w-4" />
+          )}
+        </button>
+
         {/* Version badge with hover effect */}
         <span 
           className={cn(
