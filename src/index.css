@@ -357,7 +357,8 @@
     --dss-opacity-backdrop: var(--dss-opacity-75);
 
     /* ===========================================
-       TAILWIND MAPPINGS - Tema ESCURO Jtech
+       TAILWIND MAPPINGS - Tema ESCURO Jtech (DEFAULT)
+       O :root define o tema DARK como padrão
        =========================================== */
 
     /* Background & Foreground - DARK Theme */
@@ -460,6 +461,128 @@
     /* DSS Code blocks */
     --dss-code-bg: 0 0% 10%;
     --dss-code-border: 0 0% 18%;
+  }
+
+  /* ===========================================
+     LIGHT MODE - TEMA CLARO
+     Quando data-theme="light" é aplicado ao <html>
+     =========================================== */
+  [data-theme="light"] {
+    /* Background & Foreground - LIGHT Theme */
+    --background: 0 0% 96%;
+    --foreground: 0 0% 15%;
+
+    /* Cards & Popovers */
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 15%;
+
+    /* Primary - Jtech Vermelho */
+    --primary: 348 75% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary - DSS Water Blue */
+    --secondary: 205 75% 49%;
+    --secondary-foreground: 0 0% 100%;
+
+    /* Muted */
+    --muted: 0 0% 92%;
+    --muted-foreground: 0 0% 45%;
+
+    /* Accent - Jtech Vermelho Light */
+    --accent: 0 0% 94%;
+    --accent-foreground: 348 75% 45%;
+
+    /* Destructive - DSS Negative */
+    --destructive: 352 79% 47%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Borders & Inputs */
+    --border: 0 0% 85%;
+    --input: 0 0% 90%;
+    --ring: 348 75% 45%;
+    
+    /* =========================================
+       JTECH UI STYLE - Sidebar & Header (LIGHT)
+       ========================================= */
+    
+    /* Header - Mantém PRETO (contraste) */
+    --dss-header-bg: #0A0A0A;
+    --dss-header-text: #ffffff;
+    --dss-header-muted: rgba(255, 255, 255, 0.6);
+    --dss-header-border: rgba(255, 255, 255, 0.08);
+    
+    /* Sidebar - Claro */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 0 0% 20%;
+    --sidebar-primary: 348 75% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 94%;
+    --sidebar-accent-foreground: 0 0% 20%;
+    --sidebar-border: 0 0% 88%;
+    --sidebar-ring: 348 75% 45%;
+    --sidebar-muted: 0 0% 50%;
+    
+    /* Page background - Cinza claro */
+    --dss-page-bg: #F5F5F5;
+    --dss-page-bg-alt: #EBEBEB;
+
+    /* =========================================
+       JTECH UI TYPOGRAPHY - LIGHT MODE
+       Cores invertidas para fundo claro
+       ========================================= */
+    
+    /* Títulos - Escala de cinza escura */
+    --jtech-heading-primary: #1A1A1A;
+    --jtech-heading-secondary: #2D2D2D;
+    --jtech-heading-tertiary: #525252;
+    
+    /* Subtítulos e texto - Cinza médio/escuro */
+    --jtech-text-body: #4A4A4A;
+    --jtech-text-muted: #737373;
+    --jtech-text-subtle: #9A9A9A;
+    
+    /* Badges e labels - Light mode */
+    --jtech-badge-bg: rgba(196, 30, 58, 0.08);
+    --jtech-badge-text: #C41E3A;
+    --jtech-badge-border: rgba(196, 30, 58, 0.25);
+    
+    /* Cards e containers - Light mode */
+    --jtech-card-bg: rgba(0, 0, 0, 0.02);
+    --jtech-card-border: rgba(0, 0, 0, 0.08);
+    --jtech-card-hover-border: rgba(196, 30, 58, 0.4);
+
+    /* DSS Code blocks - Light mode */
+    --dss-code-bg: 0 0% 96%;
+    --dss-code-border: 0 0% 88%;
+    
+    /* =========================================
+       DSS SURFACES & TEXT - LIGHT MODE
+       ========================================= */
+    
+    /* Surfaces */
+    --dss-surface-default: var(--dss-gray-50);
+    --dss-surface-subtle: var(--dss-gray-100);
+    --dss-surface-muted: var(--dss-gray-200);
+    --dss-surface-hover: rgba(0, 0, 0, 0.04);
+    --dss-surface-active: rgba(0, 0, 0, 0.08);
+    --dss-surface-selected: rgba(31, 134, 222, 0.12);
+    --dss-surface-disabled: var(--dss-gray-200);
+
+    /* Text */
+    --dss-text-body: var(--dss-dark);
+    --dss-text-subtle: var(--dss-dark-light);
+    --dss-text-muted: var(--dss-dark-disable);
+    --dss-text-inverse: var(--dss-gray-50);
+    --dss-text-disabled: var(--dss-gray-400);
+
+    /* Shadows - Mais suaves para light mode */
+    --dss-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --dss-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.10);
+    --dss-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.12);
+    --dss-shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+    --dss-shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.20);
   }
 
   /* ===========================================
