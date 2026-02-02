@@ -643,7 +643,7 @@
     --ring: 205 75% 55%;
 
     /* Dark mode - Header & Sidebar */
-    --dss-header-bg: #031633;
+    --dss-header-bg: #0e0e0e;
     --dss-header-text: #ffffff;
     --dss-header-muted: rgba(255, 255, 255, 0.6);
     --dss-header-border: rgba(255, 255, 255, 0.08);
