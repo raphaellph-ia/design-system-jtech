@@ -648,7 +648,7 @@
     --dss-header-muted: rgba(255, 255, 255, 0.6);
     --dss-header-border: rgba(255, 255, 255, 0.08);
     
-    --sidebar-background: 215 28% 12%;
+    --sidebar-background: 0 0% 9%;
     --sidebar-foreground: 0 0% 90%;
     --sidebar-primary: 205 75% 60%;
     --sidebar-primary-foreground: 0 0% 10%;
