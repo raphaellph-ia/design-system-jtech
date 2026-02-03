@@ -501,7 +501,7 @@ export default function DssInputPage() {
   const tokenCategories = [...new Set(tokensUsed.map((t) => t.category))];
 
   return (
-    <div className="space-y-8 pb-12">
+    <div className="p-6 space-y-8 pb-12">
       {/* SEÇÃO 1: BADGES + TÍTULO */}
       <PageHeader
         icon={FileText}
