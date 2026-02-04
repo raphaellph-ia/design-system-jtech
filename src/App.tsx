@@ -15,6 +15,7 @@ import DssButtonPage from "./pages/components/DssButtonPage";
 import DssBadgePage from "./pages/components/DssBadgePage";
 import DssCardPage from "./pages/components/DssCardPage";
 import DssInputPage from "./pages/components/DssInputPage";
+import DssAvatarPage from "./pages/components/DssAvatarPage";
 import ComponentPlaceholder from "./pages/components/ComponentPlaceholder";
 import ArchitecturePage from "./pages/governance/ArchitecturePage";
 import ClassificationPage from "./pages/governance/ClassificationPage";
@@ -50,6 +51,7 @@ const App = () => (
             <Route path="/tokens/bordas" element={<BordersPage />} />
             
             {/* Componentes */}
+            <Route path="/componentes/dss-avatar" element={<DssAvatarPage />} />
             <Route path="/componentes/dss-badge" element={<DssBadgePage />} />
             <Route path="/componentes/dss-button" element={<DssButtonPage />} />
             <Route path="/componentes/dss-card" element={<DssCardPage />} />
