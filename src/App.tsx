@@ -12,6 +12,7 @@ import SpacingPage from "./pages/tokens/SpacingPage";
 import ShadowsPage from "./pages/tokens/ShadowsPage";
 import BordersPage from "./pages/tokens/BordersPage";
 import DssButtonPage from "./pages/components/DssButtonPage";
+import DssBadgePage from "./pages/components/DssBadgePage";
 import DssCardPage from "./pages/components/DssCardPage";
 import DssInputPage from "./pages/components/DssInputPage";
 import ComponentPlaceholder from "./pages/components/ComponentPlaceholder";
@@ -49,6 +50,7 @@ const App = () => (
             <Route path="/tokens/bordas" element={<BordersPage />} />
             
             {/* Componentes */}
+            <Route path="/componentes/dss-badge" element={<DssBadgePage />} />
             <Route path="/componentes/dss-button" element={<DssButtonPage />} />
             <Route path="/componentes/dss-card" element={<DssCardPage />} />
             <Route path="/componentes/dss-input" element={<DssInputPage />} />
