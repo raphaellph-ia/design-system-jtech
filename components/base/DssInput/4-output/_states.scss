@@ -63,12 +63,15 @@
   /* Este é um fallback para navegadores sem :focus-within */
 }
 
-/* Keyboard focus indicator (não mouse) */
-.dss-input:focus-within:not(:active) {
-  .dss-input__field {
-    outline: var(--dss-border-width-md) solid var(--dss-focus-ring);
-    outline-offset: var(--dss-spacing-1);
-  }
+/* Keyboard focus indicator via :focus-visible */
+.dss-input__native:focus-visible ~ .dss-input__control,
+.dss-input__native:focus-visible {
+  /* Focus handled per-variant via box-shadow */
+}
+
+.dss-input:has(:focus-visible) .dss-input__field {
+  outline: var(--dss-border-width-md) solid var(--dss-focus-ring);
+  outline-offset: var(--dss-spacing-1);
 }
 
 /* ==========================================================================
@@ -111,12 +114,45 @@
     &--filled .dss-input__field,
     &--standout .dss-input__field {
       background: none !important;
-      border: 1px solid #000 !important;
+      border: var(--dss-border-width-thin) solid var(--dss-text-primary) !important;
     }
 
     /* Remove clear button */
     .dss-input__clear {
       display: none;
     }
+  }
+}
+
+/* ==========================================================================
+   FORCED COLORS (Windows High Contrast)
+   ========================================================================== */
+
+@media (forced-colors: active) {
+  .dss-input__field {
+    border: var(--dss-border-width-md) solid ButtonText;
+  }
+
+  .dss-input--focused .dss-input__field {
+    border-color: Highlight;
+    outline: var(--dss-border-width-md) solid Highlight;
+  }
+
+  .dss-input--error .dss-input__field {
+    border-color: LinkText;
+  }
+
+  .dss-input--disabled .dss-input__field {
+    border-color: GrayText;
+    color: GrayText;
+  }
+
+  .dss-input__native {
+    color: FieldText;
+    background-color: Field;
+  }
+
+  .dss-input__label {
+    color: FieldText;
   }
 }

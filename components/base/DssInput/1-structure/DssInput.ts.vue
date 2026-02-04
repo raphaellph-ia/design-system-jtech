@@ -112,8 +112,8 @@
  * DssInput - Design System Sansys Input Component
  * ==========================================================================
  *
- * Componente de input moderno com TypeScript + Composition API
- * 100% compatível com Quasar q-input API
+ * Componente de input do Design System Sansys (DSS)
+ * TypeScript + Composition API. Subset controlado da API do Quasar q-input.
  *
  * @see https://quasar.dev/vue-components/input
  *

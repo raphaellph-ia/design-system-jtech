@@ -48,6 +48,11 @@
     box-shadow: 0 0 0 var(--dss-border-width-md) var(--dss-error-600);
   }
 
+  /* Active state */
+  &:not(.dss-input--disabled):not(.dss-input--readonly):active .dss-input__field {
+    background-color: var(--dss-gray-600);
+  }
+
   /* Disabled state */
   &.dss-input--disabled .dss-input__field {
     background-color: var(--dss-gray-900);

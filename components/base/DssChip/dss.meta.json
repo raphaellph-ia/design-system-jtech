@@ -1,0 +1,11 @@
+{
+  "component": "DssChip",
+  "dssVersion": "2.2",
+  "status": "approved",
+  "seal": "DSS v2.2",
+  "auditMode": "Final",
+  "auditDate": "2026-01-27",
+  "goldenComponent": "DssChip",
+  "category": "Compact Control interativo",
+  "hasReservations": false
+}

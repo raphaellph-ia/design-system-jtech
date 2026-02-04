@@ -13,6 +13,7 @@ Indice oficial de componentes com Selo de Conformidade DSS.
 | DssChip | Compact Control interativo | v2.2 | 27/01/2026 | Aprovado | Golden Component oficial |
 | DssBadge | Compact Control nao interativo | v2.2 | 27/01/2026 | Aprovado | Golden Component oficial; touch target delegado ao contexto (R-02) |
 | DssCheckbox | Compact Control interativo | v2.2 | 01/02/2026 | Aprovado | 3 ressalvas nao-bloqueantes (R-01, R-02, R-03) |
+| DssAvatar | Basico (Visual/Identity) | v2.2 | 02/02/2026 | Aprovado | 2 ressalvas nao-bloqueantes (R-01, R-02); 6 excecoes documentadas |
 
 ---
 

@@ -21,13 +21,18 @@
   /* Focus state - apenas underline */
   &.dss-input--focused .dss-input__field {
     border-bottom-color: var(--dss-action-primary);
-    box-shadow: 0 1px 0 0 var(--dss-action-primary);
+    box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-action-primary);
+  }
+
+  /* Active state */
+  &:not(.dss-input--disabled):not(.dss-input--readonly):active .dss-input__field {
+    border-bottom-color: var(--dss-gray-500);
   }
 
   /* Error state */
   &.dss-input--error .dss-input__field {
     border-bottom-color: var(--dss-error-600);
-    box-shadow: 0 1px 0 0 var(--dss-error-600);
+    box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-error-600);
   }
 
   /* Disabled state */

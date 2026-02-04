@@ -4,14 +4,13 @@
 
    Filosofia DSS: Arquitetura em 4 Camadas
 
-   LAYER 1: Structure (DssInput.vue)
-   LAYER 2: Composition (Base styles e mixins)
+   LAYER 1: Structure (DssInput.ts.vue)
+   LAYER 2: Composition (Base styles com tokens DSS)
    LAYER 3: Variants (filled, outlined, standout, borderless)
-   LAYER 4: Output (states, brands, orchestration)
+   LAYER 4: Output (states, brands, forced-colors)
 
    Este arquivo importa TODAS as camadas e gera o CSS final.
-
-   Total estimado: ~400 linhas (vs ~1000+ em monolitico)
+   Media queries de acessibilidade estao em 4-output/_states.scss.
    ========================================================================== */
 /* Layer 2: Composition */
 /* ==========================================================================
@@ -20,8 +19,8 @@
    RESPONSABILIDADE: Estilos fundamentais usando APENAS tokens genéricos
 
    REGRAS:
-   ✅ APENAS tokens genéricos (--dss-spacing-*, --dss-radius-*, etc.)
-   ✅ Mixins reutilizáveis (@include dss-transition)
+   ✅ APENAS tokens genéricos (--dss-spacing-*, --dss-radius-*, --dss-duration-*, etc.)
+   ✅ Tokens de motion para transições (--dss-duration-*, --dss-easing-*)
    ✅ Reset e layout base
    ❌ ZERO valores hardcoded
    ❌ ZERO lógica de variantes
@@ -45,14 +44,14 @@
   display: flex;
   align-items: center;
   width: 100%;
-  min-height: var(--dss-spacing-14); /* 56px touch target */
+  min-height: var(--dss-input-height-md); /* 44px - ✅ WCAG 2.1 AA */
   gap: var(--dss-spacing-2);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--dss-duration-300) var(--dss-easing-standard);
 }
 
 /* Dense variant reduces height */
 .dss-input--dense .dss-input__field {
-  min-height: var(--dss-spacing-10); /* 40px */
+  min-height: var(--dss-input-height-sm); /* 36px - Denso */
 }
 
 /* ==========================================================================
@@ -82,7 +81,7 @@
   font-size: var(--dss-font-size-md);
   color: var(--dss-text-secondary);
   pointer-events: none;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--dss-duration-200) var(--dss-easing-standard);
   transform-origin: left top;
 }
 
@@ -184,7 +183,7 @@
   line-height: 1;
   cursor: pointer;
   border-radius: var(--dss-radius-full);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--dss-duration-200) var(--dss-easing-standard);
 }
 .dss-input__clear:hover {
   background-color: var(--dss-gray-100);
@@ -219,7 +218,7 @@
    DISABLED STATE
    ========================================================================== */
 .dss-input--disabled {
-  opacity: 0.6;
+  opacity: var(--dss-opacity-disabled);
   cursor: not-allowed;
 }
 .dss-input--disabled .dss-input__field {
@@ -240,7 +239,7 @@
   border: var(--dss-border-width-md) solid var(--dss-gray-300);
   border-top-color: var(--dss-action-primary);
   border-radius: var(--dss-radius-full);
-  animation: dss-input-spin 0.6s linear infinite;
+  animation: dss-input-spin var(--dss-duration-500) linear infinite;
 }
 
 @keyframes dss-input-spin {
@@ -276,14 +275,20 @@
 .dss-input--filled.dss-input--focused .dss-input__field {
   background-color: var(--dss-gray-200); /* Darker to show clear distinction */
   border-bottom-color: var(--dss-action-primary);
-  box-shadow: 0 1px 0 0 var(--dss-action-primary);
+  box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-action-primary);
+}
+.dss-input--filled {
+  /* Active state */
+}
+.dss-input--filled:not(.dss-input--disabled):not(.dss-input--readonly):active .dss-input__field {
+  background-color: var(--dss-gray-300);
 }
 .dss-input--filled {
   /* Error state */
 }
 .dss-input--filled.dss-input--error .dss-input__field {
   border-bottom-color: var(--dss-error-600);
-  box-shadow: 0 1px 0 0 var(--dss-error-600);
+  box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-error-600);
 }
 .dss-input--filled {
   /* Disabled state */
@@ -327,7 +332,13 @@
 .dss-input--outlined.dss-input--focused .dss-input__field {
   border-color: var(--dss-action-primary);
   border-width: var(--dss-border-width-md);
-  box-shadow: 0 0 0 1px var(--dss-action-primary);
+  box-shadow: 0 0 0 var(--dss-border-width-thin) var(--dss-action-primary);
+}
+.dss-input--outlined {
+  /* Active state */
+}
+.dss-input--outlined:not(.dss-input--disabled):not(.dss-input--readonly):active .dss-input__field {
+  border-color: var(--dss-gray-700);
 }
 .dss-input--outlined {
   /* Error state */
@@ -335,7 +346,7 @@
 .dss-input--outlined.dss-input--error .dss-input__field {
   border-color: var(--dss-error-600);
   border-width: var(--dss-border-width-md);
-  box-shadow: 0 0 0 1px var(--dss-error-600);
+  box-shadow: 0 0 0 var(--dss-border-width-thin) var(--dss-error-600);
 }
 .dss-input--outlined {
   /* Disabled state */
@@ -416,6 +427,12 @@
   box-shadow: 0 0 0 var(--dss-border-width-md) var(--dss-error-600);
 }
 .dss-input--standout {
+  /* Active state */
+}
+.dss-input--standout:not(.dss-input--disabled):not(.dss-input--readonly):active .dss-input__field {
+  background-color: var(--dss-gray-600);
+}
+.dss-input--standout {
   /* Disabled state */
 }
 .dss-input--standout.dss-input--disabled .dss-input__field {
@@ -456,14 +473,20 @@
 }
 .dss-input--borderless.dss-input--focused .dss-input__field {
   border-bottom-color: var(--dss-action-primary);
-  box-shadow: 0 1px 0 0 var(--dss-action-primary);
+  box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-action-primary);
+}
+.dss-input--borderless {
+  /* Active state */
+}
+.dss-input--borderless:not(.dss-input--disabled):not(.dss-input--readonly):active .dss-input__field {
+  border-bottom-color: var(--dss-gray-500);
 }
 .dss-input--borderless {
   /* Error state */
 }
 .dss-input--borderless.dss-input--error .dss-input__field {
   border-bottom-color: var(--dss-error-600);
-  box-shadow: 0 1px 0 0 var(--dss-error-600);
+  box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-error-600);
 }
 .dss-input--borderless {
   /* Disabled state */
@@ -556,8 +579,13 @@
   /* Este é um fallback para navegadores sem :focus-within */
 }
 
-/* Keyboard focus indicator (não mouse) */
-.dss-input:focus-within:not(:active) .dss-input__field {
+/* Keyboard focus indicator via :focus-visible */
+.dss-input__native:focus-visible ~ .dss-input__control,
+.dss-input__native:focus-visible {
+  /* Focus handled per-variant via box-shadow */
+}
+
+.dss-input:has(:focus-visible) .dss-input__field {
   outline: var(--dss-border-width-md) solid var(--dss-focus-ring);
   outline-offset: var(--dss-spacing-1);
 }
@@ -596,13 +624,39 @@
   }
   .dss-input--filled .dss-input__field, .dss-input--standout .dss-input__field {
     background: none !important;
-    border: 1px solid #000 !important;
+    border: var(--dss-border-width-thin) solid var(--dss-text-primary) !important;
   }
   .dss-input {
     /* Remove clear button */
   }
   .dss-input .dss-input__clear {
     display: none;
+  }
+}
+/* ==========================================================================
+   FORCED COLORS (Windows High Contrast)
+   ========================================================================== */
+@media (forced-colors: active) {
+  .dss-input__field {
+    border: var(--dss-border-width-md) solid ButtonText;
+  }
+  .dss-input--focused .dss-input__field {
+    border-color: Highlight;
+    outline: var(--dss-border-width-md) solid Highlight;
+  }
+  .dss-input--error .dss-input__field {
+    border-color: LinkText;
+  }
+  .dss-input--disabled .dss-input__field {
+    border-color: GrayText;
+    color: GrayText;
+  }
+  .dss-input__native {
+    color: FieldText;
+    background-color: Field;
+  }
+  .dss-input__label {
+    color: FieldText;
   }
 }
 /* ==========================================================================
@@ -621,12 +675,12 @@
 [data-brand=hub].dss-input--filled.dss-input--focused .dss-input__field,
 .dss-input--brand-hub.dss-input--filled.dss-input--focused .dss-input__field {
   border-bottom-color: var(--dss-hub-600);
-  box-shadow: 0 1px 0 0 var(--dss-hub-600);
+  box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-hub-600);
 }
 [data-brand=hub].dss-input--outlined.dss-input--focused .dss-input__field,
 .dss-input--brand-hub.dss-input--outlined.dss-input--focused .dss-input__field {
   border-color: var(--dss-hub-600);
-  box-shadow: 0 0 0 1px var(--dss-hub-600);
+  box-shadow: 0 0 0 var(--dss-border-width-thin) var(--dss-hub-600);
 }
 [data-brand=hub].dss-input--standout.dss-input--focused .dss-input__field,
 .dss-input--brand-hub.dss-input--standout.dss-input--focused .dss-input__field {
@@ -635,7 +689,7 @@
 [data-brand=hub].dss-input--borderless.dss-input--focused .dss-input__field,
 .dss-input--brand-hub.dss-input--borderless.dss-input--focused .dss-input__field {
   border-bottom-color: var(--dss-hub-600);
-  box-shadow: 0 1px 0 0 var(--dss-hub-600);
+  box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-hub-600);
 }
 [data-brand=hub],
 .dss-input--brand-hub {
@@ -660,12 +714,12 @@
 [data-brand=water].dss-input--filled.dss-input--focused .dss-input__field,
 .dss-input--brand-water.dss-input--filled.dss-input--focused .dss-input__field {
   border-bottom-color: var(--dss-water-500);
-  box-shadow: 0 1px 0 0 var(--dss-water-500);
+  box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-water-500);
 }
 [data-brand=water].dss-input--outlined.dss-input--focused .dss-input__field,
 .dss-input--brand-water.dss-input--outlined.dss-input--focused .dss-input__field {
   border-color: var(--dss-water-500);
-  box-shadow: 0 0 0 1px var(--dss-water-500);
+  box-shadow: 0 0 0 var(--dss-border-width-thin) var(--dss-water-500);
 }
 [data-brand=water].dss-input--standout.dss-input--focused .dss-input__field,
 .dss-input--brand-water.dss-input--standout.dss-input--focused .dss-input__field {
@@ -674,7 +728,7 @@
 [data-brand=water].dss-input--borderless.dss-input--focused .dss-input__field,
 .dss-input--brand-water.dss-input--borderless.dss-input--focused .dss-input__field {
   border-bottom-color: var(--dss-water-500);
-  box-shadow: 0 1px 0 0 var(--dss-water-500);
+  box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-water-500);
 }
 [data-brand=water],
 .dss-input--brand-water {
@@ -691,12 +745,12 @@
 [data-brand=waste].dss-input--filled.dss-input--focused .dss-input__field,
 .dss-input--brand-waste.dss-input--filled.dss-input--focused .dss-input__field {
   border-bottom-color: var(--dss-waste-600);
-  box-shadow: 0 1px 0 0 var(--dss-waste-600);
+  box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-waste-600);
 }
 [data-brand=waste].dss-input--outlined.dss-input--focused .dss-input__field,
 .dss-input--brand-waste.dss-input--outlined.dss-input--focused .dss-input__field {
   border-color: var(--dss-waste-600);
-  box-shadow: 0 0 0 1px var(--dss-waste-600);
+  box-shadow: 0 0 0 var(--dss-border-width-thin) var(--dss-waste-600);
 }
 [data-brand=waste].dss-input--standout.dss-input--focused .dss-input__field,
 .dss-input--brand-waste.dss-input--standout.dss-input--focused .dss-input__field {
@@ -705,7 +759,7 @@
 [data-brand=waste].dss-input--borderless.dss-input--focused .dss-input__field,
 .dss-input--brand-waste.dss-input--borderless.dss-input--focused .dss-input__field {
   border-bottom-color: var(--dss-waste-600);
-  box-shadow: 0 1px 0 0 var(--dss-waste-600);
+  box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-waste-600);
 }
 [data-brand=waste],
 .dss-input--brand-waste {
@@ -734,24 +788,7 @@
 /* Waste brand hint color */
 [data-brand=waste] .dss-input__hint,
 .dss-input--brand-waste .dss-input__hint {
-  color: var(--dss-waste-700);
+  color: var(--dss-waste-800);
 }
 
 /* Error sempre usa --dss-error-600 independente de brand */
-/* ==========================================================================
-   ACCESSIBILITY ENHANCEMENTS
-   ========================================================================== */
-/* High contrast mode */
-@media (prefers-contrast: high) {
-  .dss-input__field {
-    border-width: var(--dss-border-width-md) !important;
-  }
-}
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .dss-input,
-  .dss-input * {
-    transition: none !important;
-    animation: none !important;
-  }
-}

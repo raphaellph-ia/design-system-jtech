@@ -2,9 +2,10 @@
 
 **Design System Sansys - Componente de Input Universal**
 
-> **Golden Sample de Documentação DSS**
-> Este documento segue o Template 13.1 oficial para documentação de componentes do Design System Sansys.
-> Estrutura obrigatória: 13 seções padronizadas com tokens rastreáveis, anti-patterns e governança.
+> **Documentação DSS - Template 13.1**
+> Este documento segue o Template 13.1 oficial para documentacao de componentes do Design System Sansys.
+> Estrutura: 13 secoes padronizadas com tokens rastreaveis, anti-patterns e governanca.
+> **Status**: Componente pre-normativo em processo de conformidade DSS v2.2.
 
 ---
 
@@ -21,7 +22,7 @@ Wrapper DSS baseado no QInput, com API pública governada pelo DSS. Componente d
 
 ### Características Principais
 
-- **Acessibilidade WCAG 2.1 AA completa** - Touch targets 56px, focus rings, navegação por teclado, ARIA completo, IDs únicos automáticos
+- **Acessibilidade WCAG 2.1 AA completa** - Touch target 44px (--dss-input-height-md), focus rings, navegacao por teclado, ARIA completo, IDs unicos automaticos
 - **Brandabilidade multi-marca** - Suporte automático a Hub, Water, Waste
 - **4 variantes visuais** - Outlined, Filled, Standout, Borderless com estados de hover documentados
 - **Estados interativos robustos** - Loading com spinner, disabled, readonly, error, focus
@@ -142,18 +143,19 @@ O **DssInput** consome tokens de **múltiplas categorias** do Design System Sans
 | **Cores de Texto** | `--dss-text-primary`, `--dss-text-secondary`, `--dss-text-hint`, `--dss-text-disabled`, `--dss-text-inverse` | [Seção 2.3](../../../docs/reference/DSS_TOKEN_REFERENCE.md#23-cores-semânticas-base) | Label, placeholder, hint, input text |
 | **Cores Neutras** | `--dss-gray-50` a `--dss-gray-900` | [Seção 2.1 - Neutral Palette](../../../docs/reference/DSS_TOKEN_REFERENCE.md#21-neutral-palette) | Backgrounds (filled, standout), borders |
 | **Brands** | `--dss-hub-*`, `--dss-water-*`, `--dss-waste-*` (100-800) | [Seção 2.2 - Brand Palettes](../../../docs/reference/DSS_TOKEN_REFERENCE.md#22-brand-palettes) | Focus ring por brand, borders |
-| **Espaçamento** | `--dss-spacing-1` a `--dss-spacing-14` | [Seção 1.1 - Escala Base](../../../docs/reference/DSS_TOKEN_REFERENCE.md#11-escala-base) | Padding interno, gaps, min-height (56px = spacing-14) |
+| **Espaçamento** | `--dss-spacing-1` a `--dss-spacing-6` | [Secao 1.1 - Escala Base](../../../docs/reference/DSS_TOKEN_REFERENCE.md#11-escala-base) | Padding interno, gaps |
+| **Alturas** | `--dss-input-height-md` (44px), `--dss-input-height-sm` (36px) | [Secao 7.9 - Input Heights](../../../docs/reference/DSS_TOKEN_REFERENCE.md#79-input-heights) | Min-height do field |
 | **Tipografia** | `--dss-font-family-sans`, `--dss-font-size-sm`, `--dss-font-size-md`, `--dss-font-size-xl`, `--dss-line-height-normal` | [Seção 6 - Tipografia](../../../docs/reference/DSS_TOKEN_REFERENCE.md#6-tipografia) | Label (sm), input text (md), error/hint (sm) |
 | **Bordas** | `--dss-border-width-thin`, `--dss-border-width-md`, `--dss-border-width-thick`, `--dss-radius-md`, `--dss-radius-full` | [Seção 8 - Bordas](../../../docs/reference/DSS_TOKEN_REFERENCE.md#8-bordas) | Border do field, radius, clear button |
 | **Acessibilidade** | `--dss-focus-ring`, `--dss-focus-primary` | [Seção 7.1 - Focus](../../../docs/reference/DSS_TOKEN_REFERENCE.md#71-focus-configurações-base) | Focus ring (WCAG 2.4.7) |
-| **Motion** | `--dss-transition-normal`, `--dss-transition-fast` | [Seção 5 - Motion](../../../docs/reference/DSS_TOKEN_REFERENCE.md#5-motionanimation) | Transições de focus, hover, label float |
-| **Opacidade** | `--dss-opacity-disabled` (0.6) | [Seção 2.4 - Opacidade](../../../docs/reference/DSS_TOKEN_REFERENCE.md#24-opacidade) | Estado disabled |
+| **Motion** | `--dss-duration-200`, `--dss-duration-300`, `--dss-duration-500`, `--dss-easing-standard` | [Secao 5 - Motion](../../../docs/reference/DSS_TOKEN_REFERENCE.md#5-motionanimation) | Transicoes de focus, hover, label float, spinner |
+| **Opacidade** | `--dss-opacity-disabled` (0.4) | [Secao 2.4 - Opacidade](../../../docs/reference/DSS_TOKEN_REFERENCE.md#24-opacidade) | Estado disabled |
 
 ### Observações Importantes
 
 - **Tokens Protegidos**: Tokens de acessibilidade (`--dss-focus-*`) **NÃO devem** ser sobrescritos fora do DSS
 - **Brandabilidade**: Quando `brand` ou `data-brand` é aplicado, cores de focus mudam automaticamente
-- **Touch Target**: Min-height de 56px (`--dss-spacing-14`) garante WCAG 2.5.5 AAA
+- **Touch Target**: Min-height de 44px (`--dss-input-height-md`) garante WCAG 2.1 AA (2.5.5)
 - **Fallback**: Na ausência de `brand`, o sistema usa `--dss-action-primary` para focus
 
 ### Links Rápidos
@@ -514,7 +516,7 @@ Aplica brand via atributo no elemento pai.
 | **2.1.1 Teclado** | A | Totalmente navegável por teclado |
 | **2.4.6 Headings and Labels** | AA | Labels descritivos e únicos |
 | **2.4.7 Foco Visível** | AA | Focus ring de 3px com contraste adequado |
-| **2.5.5 Tamanho do Alvo** | AAA | Touch target de 56px (48px mínimo) |
+| **2.5.5 Tamanho do Alvo** | AA | Touch target de 44px via `--dss-input-height-md` (44px minimo WCAG AA) |
 | **3.3.1 Identificação de Erro** | A | Erros identificados com `role="alert"` |
 | **3.3.2 Labels ou Instruções** | A | Labels, placeholders e hints disponíveis |
 | **4.1.2 Nome, Função, Valor** | A | ARIA completo (label, invalid, busy, etc.) |
@@ -1203,7 +1205,7 @@ Use este checklist ao implementar ou revisar o DssInput:
 - [x] aria-invalid para erros
 - [x] aria-busy para loading
 - [x] role="alert" em error messages
-- [x] Touch target 56px (WCAG AAA)
+- [x] Touch target 44px via --dss-input-height-md (WCAG AA)
 - [x] Focus ring visível
 
 ### Brandabilidade

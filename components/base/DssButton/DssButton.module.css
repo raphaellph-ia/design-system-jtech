@@ -1,20 +1,5 @@
 @charset "UTF-8";
 /* ==========================================================================
-   DssButton - MAIN MODULE (Orquestrador Final)
-
-   Filosofia DSS: Arquitetura em 4 Camadas
-
-   LAYER 1: Structure (DssButton.vue)
-   LAYER 2: Composition (Base styles e mixins)
-   LAYER 3: Variants (elevated, flat, outline, unelevated, push, glossy)
-   LAYER 4: Output (colors, brands, states)
-
-   Este arquivo importa TODAS as camadas e gera o CSS final.
-
-   ⚠️ REFATORAÇÃO: Migrado de monolitico (1008 linhas) para 4 camadas
-   ========================================================================== */
-/* Layer 2: Composition */
-/* ==========================================================================
    DssButton - LAYER 2: COMPOSITION (Base Styles)
 
    RESPONSABILIDADE: Estilos fundamentais usando APENAS tokens genéricos
@@ -38,15 +23,18 @@
   /* Typography */
   font-family: var(--dss-font-family-sans);
   font-size: var(--dss-font-size-md);
-  font-weight: 500;
+  font-weight: var(--dss-font-weight-medium);
   line-height: var(--dss-line-height-tight);
   text-transform: uppercase;
-  letter-spacing: 0.0892857143em; /* Quasar default */
+  /* EXCEÇÃO DOCUMENTADA: letter-spacing reproduz o valor exato do Quasar Framework
+     (0.0892857143em ≈ 1.25px em 14px). Não existe token DSS equivalente.
+     Justificativa: Fidelidade visual ao Quasar q-btn. Ref: DSS_COMPONENT_ARCHITECTURE.md */
+  letter-spacing: 0.0892857143em;
   text-decoration: none;
   white-space: nowrap;
   /* Layout */
   padding: var(--dss-spacing-2) var(--dss-spacing-4);
-  min-height: var(--dss-spacing-9); /* 36px */
+  min-height: var(--dss-touch-target-md); /* 44px - ✅ WCAG 2.1 AA */
   min-width: var(--dss-spacing-16); /* 64px */
   /* Borders */
   border: none;
@@ -56,8 +44,8 @@
   user-select: none;
   vertical-align: middle;
   outline: 0;
-  /* Transitions */
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Transitions (Issue #1.5 - Jan 2026) */
+  transition: all var(--dss-duration-200) var(--dss-easing-standard);
   /* Prevent text selection */
   -webkit-tap-highlight-color: transparent;
 }
@@ -80,15 +68,34 @@
   align-items: center;
   font-size: var(--dss-font-size-lg);
   line-height: 1;
+  /* Material Icons */
+  font-family: "Material Icons";
+  font-weight: normal;
+  font-style: normal;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "liga";
+}
+
+/* Icon positioning - Ordem natural do DOM (como Quasar) */
+/* Espaçamento automático via gap do .dss-button (flexbox) */
+.dss-button__icon--left {
+  /* Ícone à esquerda - renderizado primeiro no template */
 }
 
 .dss-button__icon--right {
-  order: 2;
+  /* Ícone à direita - renderizado por último no template */
 }
 
 /* Icon-only buttons */
 .dss-button--icon-only {
-  min-width: var(--dss-spacing-9);
+  min-width: var(--dss-touch-target-md); /* 44px - ✅ WCAG 2.1 AA */
   padding: var(--dss-spacing-2);
 }
 
@@ -111,7 +118,7 @@
   border-right-color: transparent;
   border-radius: var(--dss-radius-full);
   animation: dss-button-spin 0.6s linear infinite;
-  opacity: 0.6;
+  opacity: var(--dss-opacity-60);
 }
 
 @keyframes dss-button-spin {
@@ -131,7 +138,7 @@
    DISABLED STATE
    ========================================================================== */
 .dss-button--disabled {
-  opacity: 0.6;
+  opacity: var(--dss-opacity-disabled);
   cursor: not-allowed;
   pointer-events: none;
 }
@@ -141,7 +148,7 @@
    ========================================================================== */
 .dss-button--xs {
   padding: var(--dss-spacing-1) var(--dss-spacing-2);
-  min-height: var(--dss-spacing-6); /* 24px */
+  min-height: var(--dss-touch-target-xs); /* 32px - Compacto */
   min-width: var(--dss-spacing-12); /* 48px */
   font-size: var(--dss-font-size-xs);
 }
@@ -150,8 +157,11 @@
 }
 
 .dss-button--sm {
+  /* EXCEÇÃO DOCUMENTADA: calc(token + 2px) compensa alinhamento visual entre
+     tamanhos sm e md. Sem token intermediário disponível.
+     Justificativa: Progressão visual suave. Ref: DSS_COMPONENT_ARCHITECTURE.md */
   padding: calc(var(--dss-spacing-1) + 2px) var(--dss-spacing-3);
-  min-height: var(--dss-spacing-8); /* 32px */
+  min-height: var(--dss-touch-target-sm); /* 36px - Denso */
   min-width: var(--dss-spacing-14); /* 56px */
   font-size: var(--dss-font-size-sm);
 }
@@ -165,7 +175,7 @@
 
 .dss-button--lg {
   padding: var(--dss-spacing-3) var(--dss-spacing-5);
-  min-height: var(--dss-spacing-11); /* 44px */
+  min-height: var(--dss-touch-target-lg); /* 52px - Destacado */
   min-width: var(--dss-spacing-20); /* 80px */
   font-size: var(--dss-font-size-lg);
 }
@@ -175,7 +185,7 @@
 
 .dss-button--xl {
   padding: var(--dss-spacing-4) var(--dss-spacing-6);
-  min-height: var(--dss-spacing-14); /* 56px */
+  min-height: var(--dss-touch-target-xl); /* 64px - Extra Grande */
   min-width: var(--dss-spacing-24); /* 96px */
   font-size: var(--dss-font-size-xl);
 }
@@ -185,23 +195,23 @@
 
 /* Icon-only size adjustments */
 .dss-button--icon-only.dss-button--xs {
-  min-width: var(--dss-spacing-6);
+  min-width: var(--dss-touch-target-xs); /* 32px */
 }
 
 .dss-button--icon-only.dss-button--sm {
-  min-width: var(--dss-spacing-8);
+  min-width: var(--dss-touch-target-sm); /* 36px */
 }
 
 .dss-button--icon-only.dss-button--md {
-  min-width: var(--dss-spacing-9);
+  min-width: var(--dss-touch-target-md); /* 44px */
 }
 
 .dss-button--icon-only.dss-button--lg {
-  min-width: var(--dss-spacing-11);
+  min-width: var(--dss-touch-target-lg); /* 52px */
 }
 
 .dss-button--icon-only.dss-button--xl {
-  min-width: var(--dss-spacing-14);
+  min-width: var(--dss-touch-target-xl); /* 64px */
 }
 
 /* ==========================================================================
@@ -220,7 +230,7 @@
    ========================================================================== */
 .dss-button--dense {
   padding: var(--dss-spacing-1) var(--dss-spacing-3);
-  min-height: var(--dss-spacing-8);
+  min-height: var(--dss-touch-target-sm); /* 36px - Denso */
   font-size: var(--dss-font-size-sm);
 }
 
@@ -232,7 +242,125 @@
   outline-offset: var(--dss-spacing-1);
 }
 
-/* Layer 3: Variants */
+/* ==========================================================================
+   PROGRESS BAR (percentage mode - compatível com Quasar)
+   ========================================================================== */
+.dss-button__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--dss-spacing-1); /* 4px via token (Issue #1.4 - Jan 2026) */
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.dss-button__progress-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: currentColor;
+  opacity: var(--dss-opacity-30);
+  transition: transform var(--dss-duration-300) var(--dss-easing-standard); /* Issue #1.5 - Jan 2026 */
+}
+
+.dss-button__progress--dark .dss-button__progress-indicator {
+  opacity: var(--dss-opacity-60);
+}
+
+/* ==========================================================================
+   RIPPLE EFFECT (compatível com Quasar)
+   ========================================================================== */
+.dss-button__ripple {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.dss-button:active .dss-button__ripple::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0;
+  height: 100%;
+  background-color: currentColor;
+  opacity: var(--dss-opacity-active);
+  border-radius: inherit;
+  transform: translateX(-50%);
+  animation: dss-ripple-horizontal var(--dss-duration-slowest) var(--dss-easing-ease-out);
+}
+
+@keyframes dss-ripple-horizontal {
+  0% {
+    width: 0;
+    opacity: var(--dss-opacity-active);
+  }
+  50% {
+    width: 100%;
+    opacity: var(--dss-opacity-selected);
+  }
+  100% {
+    width: 100%;
+    opacity: 0;
+  }
+}
+/* ==========================================================================
+   LAYOUT MODIFIERS (compatível com Quasar)
+   ========================================================================== */
+/* Align */
+.dss-button--align-left {
+  justify-content: flex-start;
+}
+
+.dss-button--align-right {
+  justify-content: flex-end;
+}
+
+.dss-button--align-between {
+  justify-content: space-between;
+}
+
+.dss-button--align-around {
+  justify-content: space-around;
+}
+
+.dss-button--align-evenly {
+  justify-content: space-evenly;
+}
+
+/* Stack - layout vertical */
+.dss-button--stack {
+  flex-direction: column;
+}
+.dss-button--stack .dss-button__icon {
+  margin: 0 0 var(--dss-spacing-1) 0;
+}
+.dss-button--stack .dss-button__icon--left,
+.dss-button--stack .dss-button__icon--right {
+  margin: 0;
+}
+
+/* Stretch - expande para preencher */
+.dss-button--stretch {
+  width: 100%;
+  max-width: none;
+}
+
+/* No wrap - previne quebra de texto */
+.dss-button--no-wrap {
+  white-space: nowrap;
+}
+.dss-button--no-wrap .dss-button__label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* ==========================================================================
    DssButton - LAYER 3: VARIANTS (Orchestrator)
 
@@ -248,6 +376,9 @@
    - Box-shadow para elevação
    - Hover aumenta elevação
    ========================================================================== */
+/* EXCEÇÃO DOCUMENTADA: box-shadow usa rgba hardcoded (Quasar elevation system).
+   Não existem tokens DSS para shadow multi-stop. Valores reproduzem Material Design
+   elevation levels (rest=2, hover=4, active=1). Ref: DSS_COMPONENT_ARCHITECTURE.md */
 .dss-button--elevated {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
 }
@@ -264,19 +395,18 @@
    RESPONSABILIDADE: Botão plano sem elevação
 
    CARACTERÍSTICAS:
-   - Background sólido
+   - Background transparente (seguindo padrão Quasar)
    - Sem box-shadow
-   - Hover escurece background
+   - Hover adiciona background light + text hover
+   - Cores gerenciadas por classes utilitárias (utils/_colors-hover.scss)
    ========================================================================== */
 .dss-button--flat {
+  background-color: transparent;
   box-shadow: none;
-}
-.dss-button--flat:hover:not(.dss-button--disabled):not(.dss-button--loading) {
-  /* Hover escurece 10% via filter */
-  filter: brightness(0.9);
-}
-.dss-button--flat:active:not(.dss-button--disabled):not(.dss-button--loading) {
-  filter: brightness(0.85);
+  /* Hover e active gerenciados por:
+     - utils/_colors-hover.scss (cores semânticas)
+     - components/base/DssButton/4-output/_brands.scss (brands)
+  */
 }
 
 /* ==========================================================================
@@ -297,10 +427,13 @@
   box-shadow: none;
 }
 .dss-button--outline:hover:not(.dss-button--disabled):not(.dss-button--loading) {
-  /* Hover preenche com cor semi-transparente */
+  /* EXCEÇÃO DOCUMENTADA: rgba overlay reproduz Quasar outline hover (4% black).
+     Não existe token DSS para overlay de interação. Ref: DSS_COMPONENT_ARCHITECTURE.md */
   background-color: rgba(0, 0, 0, 0.04);
 }
 .dss-button--outline:active:not(.dss-button--disabled):not(.dss-button--loading) {
+  /* EXCEÇÃO DOCUMENTADA: rgba overlay reproduz Quasar outline active (8% black).
+     Ref: DSS_COMPONENT_ARCHITECTURE.md */
   background-color: rgba(0, 0, 0, 0.08);
 }
 
@@ -334,6 +467,10 @@
    - Border-bottom mais escura (efeito 3D)
    - Click "afunda" o botão
    ========================================================================== */
+/* EXCEÇÃO DOCUMENTADA: box-shadow rgba e transform px reproduzem efeito 3D do Quasar push.
+   Não existem tokens DSS para shadow 3D ou deslocamento sub-pixel.
+   transform: translateY(-1px/2px) são valores de efeito visual, não spacing.
+   Ref: DSS_COMPONENT_ARCHITECTURE.md */
 .dss-button--push {
   box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
   transform: translateY(0);
@@ -353,171 +490,34 @@
    RESPONSABILIDADE: Botão com efeito brilhante/glossy
 
    CARACTERÍSTICAS:
-   - Background com gradiente
+   - Background com gradiente (usa token --dss-gradient-glossy)
    - Efeito de brilho sutil
-   - Hover intensifica gradiente
+   - Hover intensifica sombra
+   - Active inverte gradiente (usa token --dss-gradient-glossy-active)
    ========================================================================== */
+/* EXCEÇÃO DOCUMENTADA: box-shadow rgba reproduz elevação glossy do Quasar.
+   Não existem tokens DSS para shadow multi-stop glossy.
+   Ref: DSS_COMPONENT_ARCHITECTURE.md */
 .dss-button--glossy {
-  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.12) 51%, rgba(0, 0, 0, 0.04) 100%);
+  background-image: var(--dss-gradient-glossy);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 .dss-button--glossy:hover:not(.dss-button--disabled):not(.dss-button--loading) {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 .dss-button--glossy:active:not(.dss-button--disabled):not(.dss-button--loading) {
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.04) 100%);
+  background-image: var(--dss-gradient-glossy-active);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
-/* Layer 4: Output */
 /* ==========================================================================
    DssButton - LAYER 4: OUTPUT (Orchestrator)
 
-   Importa colors, brands e states
-   ========================================================================== */
-/* ==========================================================================
-   DssButton - LAYER 4: OUTPUT - Colors
+   Importa brands e states
 
-   RESPONSABILIDADE: Cores dos botões (primary, secondary, etc.)
-
-   REGRAS:
-   ✅ Usa APENAS tokens semânticos de cor
-   ✅ Define background-color e color para cada tipo
-   ❌ ZERO valores hardcoded
+   NOTA: Cores agora são aplicadas via classes utilitárias (.bg-*, .text-*)
+   definidas em utils/_colors.scss (padrão Quasar Framework)
    ========================================================================== */
-/* ==========================================================================
-   PRIMARY
-   ========================================================================== */
-.dss-button--primary {
-  background-color: var(--dss-primary);
-  color: white;
-}
-.dss-button--primary.dss-button--outline {
-  background-color: transparent;
-  border-width: var(--dss-border-width-thin);
-  border-style: solid;
-  border-color: currentColor;
-  box-shadow: none;
-  color: var(--dss-primary);
-}
-.dss-button--primary:not(.dss-button--outline):not(.dss-button--disabled):not(.dss-button--loading):hover {
-  background-color: var(--dss-primary-hover);
-}
-
-/* ==========================================================================
-   SECONDARY
-   ========================================================================== */
-.dss-button--secondary {
-  background-color: var(--dss-secondary);
-  color: white;
-}
-.dss-button--secondary.dss-button--outline {
-  background-color: transparent;
-  border-width: var(--dss-border-width-thin);
-  border-style: solid;
-  border-color: currentColor;
-  box-shadow: none;
-  color: var(--dss-secondary);
-}
-.dss-button--secondary:not(.dss-button--outline):not(.dss-button--disabled):not(.dss-button--loading):hover {
-  background-color: var(--dss-secondary-hover);
-}
-
-/* ==========================================================================
-   ACCENT
-   ========================================================================== */
-.dss-button--accent {
-  background-color: var(--dss-accent);
-  color: white;
-}
-.dss-button--accent.dss-button--outline {
-  background-color: transparent;
-  border-width: var(--dss-border-width-thin);
-  border-style: solid;
-  border-color: currentColor;
-  box-shadow: none;
-  color: var(--dss-accent);
-}
-.dss-button--accent:not(.dss-button--outline):not(.dss-button--disabled):not(.dss-button--loading):hover {
-  background-color: var(--dss-accent-hover);
-}
-
-/* ==========================================================================
-   POSITIVE (Success/Green)
-   ========================================================================== */
-.dss-button--positive {
-  background-color: var(--dss-waste-600); /* Usando waste-600 como positive */
-  color: white;
-}
-.dss-button--positive.dss-button--outline {
-  background-color: transparent;
-  border-width: var(--dss-border-width-thin);
-  border-style: solid;
-  border-color: currentColor;
-  box-shadow: none;
-  color: var(--dss-waste-600);
-}
-.dss-button--positive:not(.dss-button--outline):not(.dss-button--disabled):not(.dss-button--loading):hover {
-  background-color: var(--dss-waste-700);
-}
-
-/* ==========================================================================
-   NEGATIVE (Error/Red)
-   ========================================================================== */
-.dss-button--negative {
-  background-color: #dc2626; /* Red-600 */
-  color: white;
-}
-.dss-button--negative.dss-button--outline {
-  background-color: transparent;
-  border-width: var(--dss-border-width-thin);
-  border-style: solid;
-  border-color: currentColor;
-  box-shadow: none;
-  color: #dc2626;
-}
-.dss-button--negative:not(.dss-button--outline):not(.dss-button--disabled):not(.dss-button--loading):hover {
-  background-color: #b91c1c; /* Red-700 */
-}
-
-/* ==========================================================================
-   WARNING (Orange/Yellow)
-   ========================================================================== */
-.dss-button--warning {
-  background-color: var(--dss-tertiary);
-  color: white;
-}
-.dss-button--warning.dss-button--outline {
-  background-color: transparent;
-  border-width: var(--dss-border-width-thin);
-  border-style: solid;
-  border-color: currentColor;
-  box-shadow: none;
-  color: var(--dss-tertiary);
-}
-.dss-button--warning:not(.dss-button--outline):not(.dss-button--disabled):not(.dss-button--loading):hover {
-  background-color: var(--dss-tertiary-hover);
-}
-
-/* ==========================================================================
-   INFO (Blue)
-   ========================================================================== */
-.dss-button--info {
-  background-color: var(--dss-water-500);
-  color: white;
-}
-.dss-button--info.dss-button--outline {
-  background-color: transparent;
-  border-width: var(--dss-border-width-thin);
-  border-style: solid;
-  border-color: currentColor;
-  box-shadow: none;
-  color: var(--dss-water-500);
-}
-.dss-button--info:not(.dss-button--outline):not(.dss-button--disabled):not(.dss-button--loading):hover {
-  background-color: var(--dss-water-600);
-}
-
 /* ==========================================================================
    DssButton - LAYER 4: OUTPUT - Brands
 
@@ -533,7 +533,12 @@
 [data-brand=hub].dss-button,
 .dss-button--brand-hub.dss-button {
   background-color: var(--dss-hub-600);
-  color: white;
+  color: var(--dss-gray-50);
+}
+[data-brand=hub].dss-button.dss-button--flat,
+.dss-button--brand-hub.dss-button.dss-button--flat {
+  background-color: transparent;
+  color: var(--dss-hub-600);
 }
 [data-brand=hub].dss-button.dss-button--outline,
 .dss-button--brand-hub.dss-button.dss-button--outline {
@@ -548,9 +553,15 @@
 .dss-button--brand-hub.dss-button:hover:not(.dss-button--disabled):not(.dss-button--loading) {
   background-color: var(--dss-hub-700);
 }
+[data-brand=hub].dss-button:hover:not(.dss-button--disabled):not(.dss-button--loading).dss-button--flat,
+.dss-button--brand-hub.dss-button:hover:not(.dss-button--disabled):not(.dss-button--loading).dss-button--flat {
+  background-color: var(--dss-hub-100);
+  color: var(--dss-hub-800);
+}
 [data-brand=hub].dss-button:hover:not(.dss-button--disabled):not(.dss-button--loading).dss-button--outline,
 .dss-button--brand-hub.dss-button:hover:not(.dss-button--disabled):not(.dss-button--loading).dss-button--outline {
-  background-color: rgba(var(--dss-hub-primary-rgb, 239, 122, 17), 0.1);
+  background-color: var(--dss-hub-100);
+  color: var(--dss-hub-800);
 }
 
 /* ==========================================================================
@@ -559,7 +570,12 @@
 [data-brand=water].dss-button,
 .dss-button--brand-water.dss-button {
   background-color: var(--dss-water-500);
-  color: white;
+  color: var(--dss-gray-50);
+}
+[data-brand=water].dss-button.dss-button--flat,
+.dss-button--brand-water.dss-button.dss-button--flat {
+  background-color: transparent;
+  color: var(--dss-water-500);
 }
 [data-brand=water].dss-button.dss-button--outline,
 .dss-button--brand-water.dss-button.dss-button--outline {
@@ -574,9 +590,15 @@
 .dss-button--brand-water.dss-button:hover:not(.dss-button--disabled):not(.dss-button--loading) {
   background-color: var(--dss-water-600);
 }
+[data-brand=water].dss-button:hover:not(.dss-button--disabled):not(.dss-button--loading).dss-button--flat,
+.dss-button--brand-water.dss-button:hover:not(.dss-button--disabled):not(.dss-button--loading).dss-button--flat {
+  background-color: var(--dss-water-100);
+  color: var(--dss-water-800);
+}
 [data-brand=water].dss-button:hover:not(.dss-button--disabled):not(.dss-button--loading).dss-button--outline,
 .dss-button--brand-water.dss-button:hover:not(.dss-button--disabled):not(.dss-button--loading).dss-button--outline {
-  background-color: rgba(var(--dss-water-primary-rgb, 14, 136, 228), 0.1);
+  background-color: var(--dss-water-100);
+  color: var(--dss-water-800);
 }
 
 /* ==========================================================================
@@ -585,7 +607,12 @@
 [data-brand=waste].dss-button,
 .dss-button--brand-waste.dss-button {
   background-color: var(--dss-waste-600);
-  color: white;
+  color: var(--dss-gray-50);
+}
+[data-brand=waste].dss-button.dss-button--flat,
+.dss-button--brand-waste.dss-button.dss-button--flat {
+  background-color: transparent;
+  color: var(--dss-waste-600);
 }
 [data-brand=waste].dss-button.dss-button--outline,
 .dss-button--brand-waste.dss-button.dss-button--outline {
@@ -598,11 +625,17 @@
 }
 [data-brand=waste].dss-button:hover:not(.dss-button--disabled):not(.dss-button--loading),
 .dss-button--brand-waste.dss-button:hover:not(.dss-button--disabled):not(.dss-button--loading) {
-  background-color: var(--dss-waste-700);
+  background-color: var(--dss-waste-800);
+}
+[data-brand=waste].dss-button:hover:not(.dss-button--disabled):not(.dss-button--loading).dss-button--flat,
+.dss-button--brand-waste.dss-button:hover:not(.dss-button--disabled):not(.dss-button--loading).dss-button--flat {
+  background-color: var(--dss-waste-100);
+  color: var(--dss-waste-800);
 }
 [data-brand=waste].dss-button:hover:not(.dss-button--disabled):not(.dss-button--loading).dss-button--outline,
 .dss-button--brand-waste.dss-button:hover:not(.dss-button--disabled):not(.dss-button--loading).dss-button--outline {
-  background-color: rgba(var(--dss-waste-primary-rgb, 11, 129, 84), 0.1);
+  background-color: var(--dss-waste-100);
+  color: var(--dss-waste-800);
 }
 
 /* ==========================================================================
@@ -631,14 +664,36 @@
 /* ==========================================================================
    HIGH CONTRAST MODE
    ========================================================================== */
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .dss-button {
     border: var(--dss-border-width-md) solid currentColor !important;
-    font-weight: 600;
+    font-weight: var(--dss-font-weight-bold);
   }
   .dss-button:focus-visible {
     outline-width: var(--dss-border-width-thick);
     outline-offset: var(--dss-spacing-2);
+  }
+}
+/* ==========================================================================
+   FORCED COLORS MODE (Windows High Contrast)
+   ========================================================================== */
+@media (forced-colors: active) {
+  .dss-button {
+    border: 2px solid ButtonText;
+    background-color: ButtonFace;
+    color: ButtonText;
+  }
+  .dss-button--disabled {
+    border-color: GrayText;
+    color: GrayText;
+  }
+  .dss-button:focus-visible {
+    outline: 3px solid Highlight;
+    outline-offset: var(--dss-spacing-0_5);
+  }
+  .dss-button--loading .dss-button__spinner {
+    border-color: ButtonText;
+    border-right-color: transparent;
   }
 }
 /* ==========================================================================
@@ -666,22 +721,8 @@
   }
 }
 /* ==========================================================================
-   ACCESSIBILITY ENHANCEMENTS
-   ========================================================================== */
-/* High contrast mode */
-@media (prefers-contrast: high) {
-  .dss-button {
-    border-width: var(--dss-border-width-md) !important;
-    font-weight: 600;
-  }
-}
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .dss-button,
-  .dss-button * {
-    transition: none !important;
-    animation: none !important;
-  }
-}
+   DssButton - MODULE ORCHESTRATOR
 
-/*# sourceMappingURL=DssButton.module.css.map */
+   Responsabilidade: Importar e orquestrar as 3 camadas SCSS.
+   Estados de acessibilidade são gerenciados em 4-output/_states.scss.
+   ========================================================================== */

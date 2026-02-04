@@ -45,7 +45,7 @@
 
 ### 📋 Padrão Seguido
 
-- **Golden Sample**: DssButton como referência
+- **Referencia estrutural**: DssButton como referencia de padrao
 - **Template**: 13.1 (13 seções obrigatórias)
 - **Idioma**: Português (pt-BR)
 - **Formato**: Markdown com tabelas e exemplos de código
@@ -111,4 +111,4 @@
 - [DssInput.md](./DssInput.md) - Documentação principal (Template 13.1)
 - [DSSINPUT_API.md](./DSSINPUT_API.md) - Referência técnica completa
 - [README.md](./README.md) - Índice de navegação
-- [DssButton (Golden Sample)](../DssButton/DssButton.md) - Componente de referência
+- [DssButton](../DssButton/DssButton.md) - Componente de referencia estrutural

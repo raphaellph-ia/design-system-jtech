@@ -15,7 +15,7 @@
 | **[DOCUMENTATION_CHANGELOG.md](./DOCUMENTATION_CHANGELOG.md)** | **Histórico** | Rastreamento de mudanças na documentação |
 | **README.md** ← você está aqui | **Onboarding** | Primeiro contato, visão geral rápida, início rápido |
 
-> **Golden Sample**: Esta documentação segue o padrão estabelecido pelo [DssButton](../DssButton/DssButton.md).
+> **Referencia**: Esta documentacao segue o padrao estrutural do [DssButton](../DssButton/DssButton.md). DssInput e um componente pre-normativo em conformidade com DSS v2.2.
 
 ### Governança
 
@@ -64,12 +64,12 @@ DssInput/
 
 ## TypeScript + Composition API
 
-O DssInput foi migrado para TypeScript + Composition API, seguindo o padrão do DssButton (Golden Sample).
+O DssInput foi migrado para TypeScript + Composition API, seguindo o padrao estrutural do DssButton.
 
 ### Características
 
 - **`<script setup lang="ts">`** - Composition API moderna
-- **100% tipado** - Props, emits, slots e expose
+- **Totalmente tipado** - Props, emits, slots e expose
 - **Composables** - Lógica separada e reutilizável
 - **WCAG 2.1 AA** - Acessibilidade completa
 
@@ -152,15 +152,15 @@ interface InputProps {
 - Layout base (flexbox, positioning)
 - ZERO valores hardcoded
 - Usa tokens: `var(--dss-spacing-*)`, `var(--dss-radius-*)`
-- Mixins: `@include dss-transition()`
+- Tokens de motion: `var(--dss-duration-*)`, `var(--dss-easing-*)`
 
 **Exemplo:**
 ```scss
 .dss-input__field {
-  min-height: var(--dss-spacing-14); // 56px touch target
+  min-height: var(--dss-input-height-md); /* 44px - WCAG 2.1 AA */
   padding: var(--dss-spacing-4);
   border-radius: var(--dss-radius-md);
-  @include dss-transition(all, 'normal');
+  transition: all var(--dss-duration-300) var(--dss-easing-standard);
 }
 
 .dss-input__native {
@@ -451,8 +451,9 @@ O DssInput implementa acessibilidade completa:
 - Enter para submit (em forms)
 
 ### Touch Targets
-- Mínimo 48px de altura (WCAG AA)
-- Área de clique adequada
+- Min-height 44px via `--dss-input-height-md` (WCAG 2.1 AA)
+- Dense: 36px via `--dss-input-height-sm`
+- Area de clique adequada
 
 ---
 

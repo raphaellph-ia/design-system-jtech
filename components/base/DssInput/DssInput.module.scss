@@ -3,14 +3,13 @@
 
    Filosofia DSS: Arquitetura em 4 Camadas
 
-   LAYER 1: Structure (DssInput.vue)
-   LAYER 2: Composition (Base styles e mixins)
+   LAYER 1: Structure (DssInput.ts.vue)
+   LAYER 2: Composition (Base styles com tokens DSS)
    LAYER 3: Variants (filled, outlined, standout, borderless)
-   LAYER 4: Output (states, brands, orchestration)
+   LAYER 4: Output (states, brands, forced-colors)
 
    Este arquivo importa TODAS as camadas e gera o CSS final.
-
-   Total estimado: ~400 linhas (vs ~1000+ em monolitico)
+   Media queries de acessibilidade estao em 4-output/_states.scss.
    ========================================================================== */
 
 /* Layer 2: Composition */
@@ -21,23 +20,3 @@
 
 /* Layer 4: Output */
 @use './4-output' as output;
-
-/* ==========================================================================
-   ACCESSIBILITY ENHANCEMENTS
-   ========================================================================== */
-
-/* High contrast mode */
-@media (prefers-contrast: high) {
-  .dss-input__field {
-    border-width: var(--dss-border-width-md) !important;
-  }
-}
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .dss-input,
-  .dss-input * {
-    transition: none !important;
-    animation: none !important;
-  }
-}

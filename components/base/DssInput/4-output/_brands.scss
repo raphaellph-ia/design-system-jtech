@@ -17,12 +17,12 @@
 .dss-input--brand-hub {
   &.dss-input--filled.dss-input--focused .dss-input__field {
     border-bottom-color: var(--dss-hub-600);
-    box-shadow: 0 1px 0 0 var(--dss-hub-600);
+    box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-hub-600);
   }
 
   &.dss-input--outlined.dss-input--focused .dss-input__field {
     border-color: var(--dss-hub-600);
-    box-shadow: 0 0 0 1px var(--dss-hub-600);
+    box-shadow: 0 0 0 var(--dss-border-width-thin) var(--dss-hub-600);
   }
 
   &.dss-input--standout.dss-input--focused .dss-input__field {
@@ -31,7 +31,7 @@
 
   &.dss-input--borderless.dss-input--focused .dss-input__field {
     border-bottom-color: var(--dss-hub-600);
-    box-shadow: 0 1px 0 0 var(--dss-hub-600);
+    box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-hub-600);
   }
 
   /* Label color on focus */
@@ -53,12 +53,12 @@
 .dss-input--brand-water {
   &.dss-input--filled.dss-input--focused .dss-input__field {
     border-bottom-color: var(--dss-water-500);
-    box-shadow: 0 1px 0 0 var(--dss-water-500);
+    box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-water-500);
   }
 
   &.dss-input--outlined.dss-input--focused .dss-input__field {
     border-color: var(--dss-water-500);
-    box-shadow: 0 0 0 1px var(--dss-water-500);
+    box-shadow: 0 0 0 var(--dss-border-width-thin) var(--dss-water-500);
   }
 
   &.dss-input--standout.dss-input--focused .dss-input__field {
@@ -67,7 +67,7 @@
 
   &.dss-input--borderless.dss-input--focused .dss-input__field {
     border-bottom-color: var(--dss-water-500);
-    box-shadow: 0 1px 0 0 var(--dss-water-500);
+    box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-water-500);
   }
 
   /* Label color on focus */
@@ -84,12 +84,12 @@
 .dss-input--brand-waste {
   &.dss-input--filled.dss-input--focused .dss-input__field {
     border-bottom-color: var(--dss-waste-600);
-    box-shadow: 0 1px 0 0 var(--dss-waste-600);
+    box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-waste-600);
   }
 
   &.dss-input--outlined.dss-input--focused .dss-input__field {
     border-color: var(--dss-waste-600);
-    box-shadow: 0 0 0 1px var(--dss-waste-600);
+    box-shadow: 0 0 0 var(--dss-border-width-thin) var(--dss-waste-600);
   }
 
   &.dss-input--standout.dss-input--focused .dss-input__field {
@@ -98,7 +98,7 @@
 
   &.dss-input--borderless.dss-input--focused .dss-input__field {
     border-bottom-color: var(--dss-waste-600);
-    box-shadow: 0 1px 0 0 var(--dss-waste-600);
+    box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-waste-600);
   }
 
   /* Label color on focus */

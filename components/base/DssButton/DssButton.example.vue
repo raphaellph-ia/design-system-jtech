@@ -40,10 +40,12 @@
     <section class="example-section">
       <h2>Variantes Visuais</h2>
       <div class="button-row">
-        <DssButton variant="filled" color="primary">Filled</DssButton>
-        <DssButton variant="outlined" color="primary">Outlined</DssButton>
+        <DssButton variant="elevated" color="primary">Elevated</DssButton>
         <DssButton variant="flat" color="primary">Flat</DssButton>
+        <DssButton variant="outline" color="primary">Outline</DssButton>
         <DssButton variant="unelevated" color="primary">Unelevated</DssButton>
+        <DssButton variant="push" color="primary">Push</DssButton>
+        <DssButton variant="glossy" color="primary">Glossy</DssButton>
       </div>
     </section>
 
@@ -88,21 +90,21 @@
       <h3>Hub (Laranja)</h3>
       <div class="button-row" data-brand="hub">
         <DssButton color="primary">Hub Primary</DssButton>
-        <DssButton variant="outlined" color="primary">Hub Outlined</DssButton>
+        <DssButton variant="outline" color="primary">Hub Outline</DssButton>
         <DssButton variant="flat" color="primary">Hub Flat</DssButton>
       </div>
 
       <h3>Water (Azul)</h3>
       <div class="button-row" data-brand="water">
         <DssButton color="primary">Water Primary</DssButton>
-        <DssButton variant="outlined" color="primary">Water Outlined</DssButton>
+        <DssButton variant="outline" color="primary">Water Outline</DssButton>
         <DssButton variant="flat" color="primary">Water Flat</DssButton>
       </div>
 
       <h3>Waste (Verde)</h3>
       <div class="button-row" data-brand="waste">
         <DssButton color="primary">Waste Primary</DssButton>
-        <DssButton variant="outlined" color="primary">Waste Outlined</DssButton>
+        <DssButton variant="outline" color="primary">Waste Outline</DssButton>
         <DssButton variant="flat" color="primary">Waste Flat</DssButton>
       </div>
     </section>
@@ -116,7 +118,7 @@
         <input type="text" placeholder="E-mail" class="example-input">
         <input type="password" placeholder="Senha" class="example-input">
         <div class="button-row">
-          <DssButton variant="outlined" color="primary">Cancelar</DssButton>
+          <DssButton variant="outline" color="primary">Cancelar</DssButton>
           <DssButton color="primary" type="submit">Entrar</DssButton>
         </div>
       </div>
@@ -164,7 +166,7 @@
           <li>✅ Navegação completa por teclado (Tab, Enter, Space)</li>
           <li>✅ ARIA labels para botões com ícone apenas</li>
           <li>✅ Estados loading com aria-busy</li>
-          <li>✅ Suporte a prefers-contrast: high</li>
+          <li>✅ Suporte a prefers-contrast: more</li>
           <li>✅ Suporte a prefers-reduced-motion: reduce</li>
           <li>✅ Contraste de cores WCAG 2.1 AA (&ge; 4.5:1)</li>
         </ul>

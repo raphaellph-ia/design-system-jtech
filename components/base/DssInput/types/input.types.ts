@@ -4,7 +4,7 @@
  * ==========================================================================
  *
  * Tipos e interfaces para o componente DssInput
- * Compatível 100% com Quasar q-input API
+ * Subset controlado da API do Quasar q-input, governado pelo DSS v2.2
  *
  * @see https://quasar.dev/vue-components/input
  * @version 2.3.0

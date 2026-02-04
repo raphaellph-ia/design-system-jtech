@@ -1,5 +1,10 @@
 # DssChip
 
+Status: ✅ Selo DSS v2.2
+Auditoria Final: 27/01/2026
+Golden Component: DssChip (self — referencia normativa)
+Classificação: Compact Control interativo
+
 Wrapper DSS baseado no QChip, com API pública governada pelo Design System Sansys.
 
 > O DSS curou deliberadamente esta API para garantir consistência visual e brandabilidade corporativa.
