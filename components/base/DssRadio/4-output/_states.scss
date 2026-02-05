@@ -1,0 +1,176 @@
+// ==========================================================================
+// DssRadio — Layer 4: Output / States
+// Design System Sansys v2.2
+//
+// Media queries de acessibilidade:
+//   - Dark mode (prefers-color-scheme: dark)
+//   - Reduced motion (prefers-reduced-motion: reduce)
+//   - High contrast (prefers-contrast: more)
+//   - Forced colors (forced-colors: active)
+//   - Print
+//
+// Golden Component de referencia: DssCheckbox (4-output/_states.scss)
+// ==========================================================================
+
+// --------------------------------------------------------------------------
+// Dark mode
+// --------------------------------------------------------------------------
+@media (prefers-color-scheme: dark) {
+  .dss-radio {
+    color: var(--dss-text-primary-dark, var(--dss-gray-200));
+  }
+
+  .dss-radio__label {
+    color: var(--dss-text-primary-dark, var(--dss-gray-200));
+  }
+
+  .dss-radio__control {
+    border-color: var(--dss-gray-400);
+  }
+
+  // Hover em dark mode: brightness invertido
+  // EXCECAO DOCUMENTADA: brightness(1.10) — valor canonico DSS para hover dark mode
+  .dss-radio:not(.dss-radio--disabled):hover {
+    .dss-radio__control--checked {
+      filter: brightness(1.10);
+    }
+  }
+
+  // Active em dark mode: brightness invertido
+  // EXCECAO DOCUMENTADA: brightness(1.20) — valor canonico DSS para active dark mode
+  .dss-radio:not(.dss-radio--disabled):active {
+    .dss-radio__control--checked {
+      filter: brightness(1.20);
+    }
+  }
+
+  .dss-radio--error {
+    .dss-radio__control {
+      border-color: var(--dss-error-400);
+      color: var(--dss-error-400);
+    }
+
+    .dss-radio__label {
+      color: var(--dss-error-400);
+    }
+
+    .dss-radio__error {
+      color: var(--dss-error-400);
+    }
+  }
+}
+
+// --------------------------------------------------------------------------
+// Reduced motion (WCAG 2.3.3)
+// --------------------------------------------------------------------------
+@media (prefers-reduced-motion: reduce) {
+  .dss-radio {
+    transition: none !important;
+  }
+
+  .dss-radio__control {
+    transition: none !important;
+  }
+
+  .dss-radio__dot {
+    transition: none !important;
+  }
+}
+
+// --------------------------------------------------------------------------
+// High contrast (prefers-contrast: more)
+// --------------------------------------------------------------------------
+@media (prefers-contrast: more) {
+  .dss-radio__control {
+    border-width: var(--dss-border-width-thick);
+  }
+
+  .dss-radio__control--focused {
+    outline-width: var(--dss-border-width-thick);
+    outline-offset: var(--dss-border-width-thick);
+  }
+
+  // EXCECAO DOCUMENTADA: saturate(1.2) — valor canonico DSS para high contrast
+  .dss-radio__control--checked {
+    filter: saturate(1.2);
+  }
+
+  .dss-radio--disabled {
+    opacity: var(--dss-opacity-50);
+
+    .dss-radio__label {
+      text-decoration: line-through;
+    }
+  }
+}
+
+// --------------------------------------------------------------------------
+// Forced colors (Windows High Contrast)
+// EXCECAO DOCUMENTADA: tokens ignorados em forced-colors, usar system keywords
+// --------------------------------------------------------------------------
+@media (forced-colors: active) {
+  .dss-radio__control {
+    border: 2px solid ButtonText; // EXCECAO: forced-colors ignora tokens
+    background-color: ButtonFace;
+    forced-color-adjust: none;
+  }
+
+  .dss-radio__control--checked {
+    background-color: Highlight;
+    border-color: Highlight;
+  }
+
+  .dss-radio__dot {
+    background-color: HighlightText;
+  }
+
+  .dss-radio__control--focused {
+    outline-color: Highlight;
+    outline-width: 3px; // EXCECAO: forced-colors ignora tokens
+  }
+
+  .dss-radio--disabled {
+    .dss-radio__control {
+      border-color: GrayText;
+      background-color: ButtonFace;
+    }
+
+    .dss-radio__dot {
+      background-color: GrayText;
+    }
+
+    .dss-radio__label {
+      color: GrayText;
+    }
+  }
+
+  .dss-radio--error {
+    .dss-radio__control {
+      border-color: LinkText;
+    }
+  }
+}
+
+// --------------------------------------------------------------------------
+// Print
+// --------------------------------------------------------------------------
+@media print {
+  .dss-radio {
+    filter: none;
+  }
+
+  .dss-radio__control {
+    border: var(--dss-border-width-md) solid currentColor;
+    filter: none;
+    background-color: transparent;
+  }
+
+  .dss-radio__dot {
+    background-color: currentColor;
+  }
+
+  // Remover touch target em print
+  .dss-radio::before {
+    display: none;
+  }
+}

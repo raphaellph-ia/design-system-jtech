@@ -1,0 +1,15 @@
+{
+  "component": "DssRadio",
+  "dssVersion": "2.2",
+  "status": "draft",
+  "seal": null,
+  "auditMode": "pending",
+  "auditDate": null,
+  "goldenComponent": "DssCheckbox",
+  "goldenComponentSecondary": "DssChip",
+  "category": "Compact Control interativo",
+  "phase": "Fase 1",
+  "classification": "Form / Selection",
+  "hasReservations": false,
+  "createdDate": "2026-02-04"
+}

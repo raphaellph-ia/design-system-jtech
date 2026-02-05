@@ -1,0 +1,87 @@
+// ==========================================================================
+// DssRadio — Layer 4: Output / Brands
+// Design System Sansys v2.2
+//
+// Cores de marca Sansys: Hub (laranja), Water (azul), Waste (verde).
+// Aplicadas via [data-brand] no contexto ou diretamente no componente.
+//
+// Golden Component de referencia: DssCheckbox (4-output/_brands.scss)
+// ==========================================================================
+
+// --------------------------------------------------------------------------
+// Mixin: cores de brand para radio
+// Evita duplicacao para 3 brands x N cores
+// --------------------------------------------------------------------------
+@mixin radio-brand-colors($brand) {
+  // --- Primary ---
+  &.dss-radio--primary {
+    .dss-radio__control--checked {
+      border-color: var(--dss-#{$brand}-600);
+      color: var(--dss-#{$brand}-600);
+    }
+
+    .dss-radio__dot {
+      background-color: var(--dss-#{$brand}-600);
+    }
+  }
+
+  // --- Secondary ---
+  &.dss-radio--secondary {
+    .dss-radio__control--checked {
+      border-color: var(--dss-#{$brand}-700);
+      color: var(--dss-#{$brand}-700);
+    }
+
+    .dss-radio__dot {
+      background-color: var(--dss-#{$brand}-700);
+    }
+  }
+
+  // --- Accent ---
+  &.dss-radio--accent {
+    .dss-radio__control--checked {
+      border-color: var(--dss-#{$brand}-500);
+      color: var(--dss-#{$brand}-500);
+    }
+
+    .dss-radio__dot {
+      background-color: var(--dss-#{$brand}-500);
+    }
+  }
+}
+
+// --------------------------------------------------------------------------
+// Aplicacao: via contexto [data-brand] no wrapper
+// --------------------------------------------------------------------------
+[data-brand='hub'] {
+  .dss-radio {
+    @include radio-brand-colors(hub);
+  }
+}
+
+[data-brand='water'] {
+  .dss-radio {
+    @include radio-brand-colors(water);
+  }
+}
+
+[data-brand='waste'] {
+  .dss-radio {
+    @include radio-brand-colors(waste);
+  }
+}
+
+// --------------------------------------------------------------------------
+// Aplicacao: via data-brand diretamente no componente
+// --------------------------------------------------------------------------
+.dss-radio[data-brand='hub'] {
+  @include radio-brand-colors(hub);
+}
+
+.dss-radio[data-brand='water'] {
+  @include radio-brand-colors(water);
+}
+
+.dss-radio[data-brand='waste'] {
+  @include radio-brand-colors(waste);
+}

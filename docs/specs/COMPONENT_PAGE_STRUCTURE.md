@@ -1,818 +1,172 @@
-# Estrutura Padrão para Páginas de Componentes DSS
+## 📚 Referências Normativas ⭐ OBRIGATÓRIO
 
-**Versão 2.2 — Fevereiro 2026**
+Esta seção estabelece **as fontes normativas oficiais** que a IA DEVE consultar, correlacionar e respeitar ao editar, atualizar ou validar uma página de componente DSS. Nenhuma decisão estrutural, semântica ou técnica pode ser tomada fora do escopo destas referências.
 
-Este documento define a hierarquia oficial de informações para todas as páginas de documentação de componentes no Design System Sansys.
+### 1. Hierarquia de Autoridade
 
-> **Natureza normativa.** Este template é vinculante para todas as páginas de componentes publicadas no repositório Lovable. Seções marcadas com ⭐ OBRIGATÓRIO não podem ser omitidas. Seções marcadas como (Opcional) podem ser omitidas com justificativa.
+A IA DEVE respeitar rigorosamente a seguinte ordem de precedência:
+
+1. **Selos de Conformidade DSS** (fonte máxima de verdade)
+2. **Documentos Normativos DSS v2.2**
+3. **COMPONENT_PAGE_STRUCTURE.md** (estrutura obrigatória)
+4. **PLAYGROUND_STANDARD.md** (padrões de interatividade)
+5. **Arquivo do componente (`Dss[Component]Page.tsx`)**
+6. **Tokens Oficiais DSS**
+
+Em caso de conflito, **a fonte de nível mais alto SEMPRE prevalece**.
 
 ---
 
-## 📋 Hierarquia de Seções
+### 2. Selos de Conformidade DSS
 
-Todas as páginas de componentes DEVEM seguir esta estrutura na ordem especificada:
+Antes de QUALQUER edição no template da página do componente, a IA DEVE:
 
-### 1. Badges de Metadados
+1. Verificar se existe selo de conformidade para o componente.
+2. Ler integralmente o conteúdo do selo.
+3. Extrair regras, exceções, obrigações e decisões já aprovadas.
+4. Aplicar essas decisões de forma vinculante na página.
 
-- Versão do componente (ex: `v2.3.0`)
-- Compatibilidade (ex: `Quasar Compatible`)
-- Status (ex: `Beta`, `Deprecated`, `Selo DSS v2.2`)
-- Referências relevantes
+#### 📁 Local Canônico dos Selos
 
-#### Golden Component Badge
-
-Quando o componente possui **Selo de Conformidade DSS v2.2**, o badge DEVE declarar:
+Os selos de conformidade estão armazenados obrigatoriamente no caminho:
 
 ```
-Status: Selo DSS v2.2
+DSS/docs/compliance/seals/<NomeDoComponente>/<NOME_DO_COMPONENTE>_SELO_v2.2.md
 ```
 
-Se o componente é um **Golden Component** (referência normativa para sua categoria), o badge DEVE declarar:
+Exemplo:
 
 ```
-Status: Golden Component (normativo)
-```
-
-> **Referência:** Consultar `docs/governance/DSS_GOLDEN_COMPONENTS.md` para lista oficial de Golden Components.
-> Apenas componentes listados nesse documento podem usar o badge "Golden Component".
-> A ausência do badge Golden Component NÃO impede a publicação — apenas indica que o componente não é referência normativa para sua categoria.
-
-### 2. Título do Componente
-
-- Usar componente `PageHeader`
-- Ícone representativo do componente
-- Nome do componente com destaque (ex: "Componente **DssButton**")
-
-### 3. Descrição Básica
-
-- Descreva o papel funcional do componente na interface, começando por "o que ele representa" ou "para que ele é usado"
-- Use linguagem orientada a UX e produto, ajudando o leitor a entender quando e por que usar o componente
-- Evite explicações sobre governança, implementação interna ou compatibilidade com frameworks
-- Não repita conceitos transversais do DSS (tokens, brandability, acessibilidade), a menos que sejam essenciais para entender o uso do componente.
-- Máximo de 4 a 5 linhas, com foco em clareza, fluidez e leitura rápida
-
-### 4. Quick Stats (Opcional)
-
-- Grid de 4 cards com estatísticas rápidas
-- Variantes, Cores, Brands, Tamanhos, etc.
-- Cores visuais para cada stat
-
-### 5. Quando Usar / Quando NÃO Usar ⭐ OBRIGATÓRIO
-
-Esta seção DEVE estar presente em toda página de componente. Seu objetivo é orientar decisões de produto — quando selecionar este componente e quando optar por outro.
-
-#### Formato obrigatório
-
-```markdown
-#### ✅ Quando Usar
-
-- Caso de uso 1 (orientado a produto/UX)
-- Caso de uso 2
-- Caso de uso 3
-
-#### ❌ Quando NÃO Usar
-
-| Cenário | Alternativa Recomendada |
-|---------|------------------------|
-| Textos longos / multiline | `DssTextarea` |
-| Seleção entre opções predefinidas | `DssSelect` |
-| Valores booleanos | `DssCheckbox` ou `DssToggle` |
+DSS/docs/compliance/seals/DssButton/DSSBUTTON_SELO_v2.2.md
 ```
 
 #### Regras
 
-- Mínimo de 3 itens em "Quando Usar"
-- Mínimo de 3 itens em "Quando NÃO Usar"
-- "Quando NÃO Usar" DEVE indicar a alternativa recomendada
-- Foco em decisão de produto, não em detalhes técnicos
+* Se o selo EXISTIR → ele é **fonte normativa obrigatória**
 
-### 6. Playground Interativo
+* Se o selo NÃO existir → declarar explicitamente na página:
 
-- Card único contendo:
-  - Preview visual do componente
-  - Controles interativos (variante, cor, tamanho, estados)
-  - Código de exemplo atualizado em tempo real
-  - **Toggle Light/Dark Mode** para testar em ambos os temas
-- Usar seção `SectionHeader` com título "Playground **Interativo**"
+  > "Este componente ainda não possui Selo de Conformidade DSS v2.2."
 
-### 7. Estados Interativos ⭐ OBRIGATÓRIO
+* A IA **NÃO pode inferir** conformidade sem selo explícito
 
-Esta seção DEVE apresentar uma **tabela única padronizada** com todos os estados visuais e interativos do componente. A tabela DEVE cobrir no mínimo os estados listados abaixo.
+* A IA **NÃO pode criar, alterar ou suavizar regras** definidas no selo
 
-#### Formato obrigatório
+---
 
-```markdown
-| Estado | Aparência | Interação | Tokens / Regras CSS | Notas |
-|--------|-----------|-----------|---------------------|-------|
-| **Default** | Descrição visual | Comportamento | Tokens aplicados | — |
-| **Hover** | Descrição visual | Comportamento | Tokens aplicados | — |
-| **Focus** | Descrição visual | Comportamento | Tokens aplicados | WCAG 2.4.7 |
-| **Active / Pressed** | Descrição visual | Comportamento | Tokens aplicados | — |
-| **Disabled** | Descrição visual | Não interativo | Tokens aplicados | `aria-disabled` |
-| **Loading** | Descrição visual | Não interativo | Tokens aplicados | `aria-busy` (se aplicável) |
+### 3. Documentos Normativos DSS
+
+A IA DEVE consultar e respeitar integralmente:
+
+* `docs/reference/DSS_COMPONENT_ARCHITECTURE.md`
+* `docs/reference/DSS_TOKEN_REFERENCE.md`
+* `docs/governance/DSS_GOLDEN_COMPONENTS.md`
+* `docs/guides/DSS_IMPLEMENTATION_GUIDE.md`
+
+Esses documentos definem:
+
+* Uso permitido de pseudo‑elementos
+* Tabela canônica de `brightness()`
+* Classificação de componentes
+* Regras de estados interativos
+* Governança de tokens
+
+---
+
+### 4. Estrutura da Página do Componente
+
+A IA DEVE seguir **sem exceções** a estrutura definida em:
+
 ```
-
-#### Regras
-
-- Os estados **Default**, **Hover**, **Focus**, **Active** e **Disabled** são OBRIGATÓRIOS
-- **Loading** é obrigatório se o componente suportar a prop `loading`; caso contrário, declarar "Não aplicável" explicitamente
-- Cada estado DEVE listar os tokens CSS aplicados (ex: `--dss-opacity-disabled`, `--dss-action-primary`)
-- Se o componente possui variantes, os estados DEVEM ser documentados para cada variante ou declarar que se aplicam uniformemente
-- A coluna "Notas" DEVE indicar critérios WCAG aplicáveis (ex: WCAG 2.4.7 para focus)
-
-### 8. Galeria de Variantes (Opcional)
-
-- Tabs organizados por categoria (Variantes, Cores, Brands, Tamanhos, Estados)
-- Demonstração visual de cada opção
-- Usar componente `DssTabs`
-
-### 9. Anatomia 4 Camadas ⭐ OBRIGATÓRIO
-
-- Usar componente `AnatomySection`
-- Cards clicáveis para cada camada:
-  1. **Structure** - Template, Props, Lógica
-  2. **Composition** - Layout, Tipografia, Reset
-  3. **Variants** - Variações visuais (sem cores)
-  4. **Output** - Cores, Brands, Estados
-- Ao clicar, expandir painel com:
-  - Descrição completa
-  - Arquivos relacionados
-  - Responsabilidades
-  - Tokens utilizados
-  - Exemplo de código
-
-### 10. Documentação Técnica (Colapsável)
-
-- Usar componente `CollapsibleSection`
-- Seções OBRIGATÓRIAS:
-  - **Props API** - Tabela com todas as props, agrupadas por categoria
-  - **Eventos** - Tabela com todos os eventos emitidos, payload e descrição
-  - **Slots** - Tabela com todos os slots disponíveis e seu propósito
-  - **Tokens DSS Utilizados** - Tabs por categoria de tokens
-  - **Acessibilidade WCAG** - Conformidade e implementação (ver formato abaixo)
-
-> **Regra:** Se o componente não emite eventos, declarar explicitamente: "Este componente não emite eventos customizados."
-> Se o componente não possui slots, declarar explicitamente: "Este componente não possui slots."
-> Omissão silenciosa é proibida.
-
-#### 10.1 Eventos — formato obrigatório
-
-```markdown
-| Evento | Payload | Quando Emitido | Descrição |
-|--------|---------|----------------|-----------|
-| `update:modelValue` | `string` | Ao alterar valor | Evento v-model |
-| `focus` | `FocusEvent` | Ao receber foco | — |
-```
-
-#### 10.2 Slots — formato obrigatório
-
-```markdown
-| Slot | Descrição | Uso Recomendado |
-|------|-----------|-----------------|
-| `default` | Conteúdo principal | Texto ou ícones |
-| `prepend` | Conteúdo à esquerda | Ícones de contexto |
-```
-
-#### 10.3 Acessibilidade WCAG — formato obrigatório
-
-A seção de acessibilidade DEVE conter no mínimo:
-
-**A. Tabela de conformidade WCAG**
-
-```markdown
-| Critério WCAG | Nível | Aplicação no Componente | Status |
-|---------------|-------|-------------------------|--------|
-| 2.5.5 Target Size | AA | Touch target mínimo 44px | ✅ |
-| 2.4.7 Focus Visible | AA | Focus ring visível com token `--dss-focus-ring` | ✅ |
-| 1.4.3 Contrast (Minimum) | AA | Contraste texto/fundo ≥ 4.5:1 | ✅ |
-| 1.3.1 Info and Relationships | A | Labels, ARIA, estrutura semântica | ✅ |
-| 4.1.2 Name, Role, Value | A | ARIA attributes completos | ✅ |
-```
-
-> Incluir todos os critérios WCAG aplicáveis ao componente. A tabela acima é o mínimo obrigatório.
-
-**B. Touch Target vs Altura Visual**
-
-A página DEVE documentar explicitamente a relação entre altura visual e touch target:
-
-```markdown
-#### Touch Target vs Altura Visual
-
-| Propriedade | Valor | Token |
-|-------------|-------|-------|
-| **Altura visual** | Xpx | `--dss-*` |
-| **Touch target (área clicável)** | ≥ 44px | `--dss-*` |
-| **Implementação** | `min-height` ou `::before` | — |
+COMPONENT_PAGE_STRUCTURE.md
 ```
 
 Regras:
-- A altura visual PODE ser menor que 44px (ex: Chip, Badge)
-- O touch target DEVE ser ≥ 44px para componentes interativos (WCAG 2.5.5)
-- Se altura visual = touch target, declarar explicitamente
-- Se altura visual < touch target, documentar o mecanismo de expansão (`::before`, wrapper interno, etc.)
-- Componentes NÃO interativos (Visual / Identity) NÃO são obrigados a implementar touch target; declarar explicitamente essa decisão
 
-**C. Media queries de acessibilidade**
-
-Documentar suporte a:
-- `prefers-reduced-motion: reduce`
-- `prefers-contrast: high`
-- `forced-colors: active` (Windows High Contrast)
-
-### 11. Anti-patterns ⭐ OBRIGATÓRIO
-
-Esta seção DEVE listar usos incorretos comuns e confusões com outros componentes. O objetivo é prevenir erros recorrentes.
-
-#### Formato obrigatório
-
-```markdown
-#### Usos Incorretos
-
-##### 1. Título do Anti-pattern
-
-**Problema:** Descrição do uso incorreto.
-
-<!-- Exemplo INCORRETO -->
-<!-- Exemplo CORRETO -->
-
-**Por quê:** Justificativa técnica ou de UX.
+* Seções ⭐ OBRIGATÓRIAS nunca podem ser omitidas
+* Seções opcionais só podem ser removidas com justificativa explícita
+* A ordem das seções é vinculante
 
 ---
 
-#### Combinações Não Permitidas
+## 🤖 Modo de Operação da IA ⭐ OBRIGATÓRIO
 
-| Combinação | Por quê | Alternativa |
-|------------|---------|-------------|
-| `disabled` + `loading` | Estados conflitantes | Use apenas `loading` |
-```
-
-#### Regras
-
-- Mínimo de 3 anti-patterns documentados
-- Cada anti-pattern DEVE ter exemplo incorreto E correto
-- Incluir tabela de "Combinações Não Permitidas" quando o componente possuir props de estado
-- Linguagem direta e prática
-
-### 12. Vinculantes DSS v2.2 ⭐ OBRIGATÓRIO
-
-Esta seção DEVE estar presente em toda página de componente e declara conformidade com as regras normativas DSS v2.2.
-
-#### 12.1 Pseudo-elementos
-
-Toda página DEVE declarar explicitamente o uso de pseudo-elementos no componente:
-
-```markdown
-#### Uso de Pseudo-elementos
-
-| Pseudo-elemento | Uso neste componente | Finalidade |
-|-----------------|----------------------|------------|
-| `::before` | ✅ Utilizado / ❌ Não utilizado | Touch target (WCAG 2.5.5) |
-| `::after` | ✅ Utilizado / ❌ Não utilizado | Efeitos visuais (hover, overlay) |
-```
-
-Convenção oficial DSS (CLAUDE.md, vinculante):
-- `::before` → **RESERVADO** exclusivamente para touch target (WCAG 2.5.5)
-- `::after` → Efeitos visuais (hover, active, selected overlays)
-
-> ❌ Uso conflituoso (ex: `::before` para efeitos visuais) é **erro bloqueante**.
-> ⚠️ Uso não documentado é **gap de auditoria**.
-
-#### 12.2 Tabela Canônica de `brightness()`
-
-Se o componente utiliza `filter: brightness()` para estados visuais, a página DEVE referenciar a tabela canônica abaixo. Valores fora desta tabela são PROIBIDOS sem aprovação explícita.
-
-| Valor | Uso | Contexto | Aplicação |
-|-------|-----|----------|-----------|
-| `brightness(0.95)` | Hover padrão | Light mode | Todos (base) |
-| `brightness(0.92)` | Hover intensificado | Light mode, fundos sólidos | Filled variants |
-| `brightness(0.90)` | Active padrão | Light mode | Todos (base) |
-| `brightness(0.85)` | Active intensificado | Light mode, fundos sólidos | Filled variants |
-| `brightness(1.10)` | Hover dark mode | Dark mode | Filled variants |
-| `brightness(1.20)` | Active dark mode | Dark mode | Filled variants |
-
-> **Fonte:** `docs/reference/DSS_COMPONENT_ARCHITECTURE.md` — Valores Visuais Permitidos.
-> ❌ Valores arbitrários (ex: 0.93, 0.88, 1.05) são PROIBIDOS.
-> Novos valores exigem justificativa e aprovação da equipe DSS.
-
-Se o componente **não utiliza** `filter: brightness()`, declarar explicitamente:
-
-```markdown
-Este componente não utiliza `filter: brightness()`. Estados visuais são implementados via tokens de cor.
-```
-
-#### 12.3 Classificação do Componente
-
-Toda página DEVE declarar a classificação do componente conforme DSS v2.2:
-
-| Classificação | Descrição | Exemplo |
-|---------------|-----------|---------|
-| **Action Control (interativo)** | Recebe interação direta do usuário | DssButton, DssInput, DssCheckbox |
-| **Compact Control** | Controle interativo de dimensões reduzidas | DssChip, DssBadge (interativo) |
-| **Visual / Identity (não interativo)** | Exibe informação sem interação direta | DssBadge (estático), DssDivider |
-
-A classificação determina:
-- Se touch target é obrigatório (Action Control e Compact Control: sim; Visual/Identity: não)
-- Quais tokens de altura usar (`--dss-compact-control-height-*` para Compact Controls)
-- Quais estados são mandatórios
+Esta seção define **como a IA deve pensar, decidir e agir** ao editar ou amadurecer uma página de componente DSS.
 
 ---
 
-## 🎨 Estruturas de Dados Obrigatórias
+### 1. Princípio Fundamental
 
-Cada página de componente DEVE definir as seguintes estruturas de dados no início do arquivo:
-
-### Cores Semânticas
-
-```typescript
-const semanticColors = {
-  primary: {
-    name: "primary",
-    label: "Primary",
-    bg: "#1f86de",           // Cor base
-    hover: "#0f5295",        // Cor de hover (+2 níveis)
-    light: "#86c0f3",        // Cor clara (flat/outline bg hover)
-    disable: "#b3dcff",      // Cor desabilitado
-    deep: "#0a3a6a",         // Cor profunda (pressed)
-    focus: "#006AC5",        // Focus ring
-    tokens: {
-      base: "--dss-primary",
-      hover: "--dss-primary-hover",
-      light: "--dss-primary-light",
-      disable: "--dss-primary-disable",
-      deep: "--dss-primary-deep",
-    },
-  },
-  secondary: { /* ... */ },
-  tertiary: { /* ... */ },
-  accent: { /* ... */ },
-  dark: { /* ... */ },
-};
-```
-
-### Cores de Feedback
-
-```typescript
-const feedbackColors = {
-  positive: {
-    name: "positive",
-    label: "Positive",
-    icon: CheckCircle,        // Ícone representativo
-    bg: "#4dd228",
-    hover: "#27910D",
-    light: "#b9f2a4",
-    disable: "#dbf8d1",
-    deep: "#246714",
-    tokens: {
-      base: "--dss-positive",
-      hover: "--dss-positive-hover",
-    },
-  },
-  negative: { /* ... */ },
-  warning: { /* ... */ },
-  info: { /* ... */ },
-};
-```
-
-### Paletas de Marca (Brandability)
-
-```typescript
-const brandColors = {
-  hub: {
-    name: "hub",
-    label: "Hub",
-    icon: "🟠",
-    principal: "#ef7a11",     // Cor principal (600)
-    scale: {
-      50: "#fff9ed",
-      100: "#fef2d6",
-      200: "#fde2ab",
-      300: "#fbcb76",         // Light (flat/outline hover bg)
-      400: "#f8aa3f",
-      500: "#f5911a",
-      600: "#ef7a11",         // Principal
-      700: "#bf590f",         // Hover
-      800: "#984614",         // Deep/Pressed
-      900: "#7a3614",
-      950: "#421d08",
-    },
-    tokens: {
-      principal: "--dss-hub-600",
-      hover: "--dss-hub-700",
-      light: "--dss-hub-300",
-      disable: "--dss-hub-200",
-    },
-  },
-  water: { /* ... */ },
-  waste: { /* ... */ },
-};
-```
-
-### Variantes do Componente
-
-```typescript
-const variants = [
-  {
-    name: "elevated",      // Valor da prop
-    label: "Elevated",     // Label de exibição
-    desc: "Botão com elevação/shadow (padrão)",
-    hasElevation: true     // Metadado para lógica
-  },
-  { name: "flat", label: "Flat", desc: "Background transparente, apenas texto", hasElevation: false },
-  { name: "outline", label: "Outline", desc: "Background transparente com borda", hasElevation: false },
-  // ... demais variantes
-];
-```
-
-### Tamanhos (Touch Targets WCAG)
-
-```typescript
-const sizes = [
-  {
-    name: "xs",
-    label: "XS",
-    height: "32px",
-    padding: "4px 8px",
-    fontSize: "12px",
-    minWidth: "48px",
-    token: "--dss-touch-target-xs",
-  },
-  {
-    name: "md",
-    label: "MD",
-    height: "44px",            // Mínimo WCAG 2.1 AA
-    padding: "8px 16px",
-    fontSize: "14px",
-    minWidth: "64px",
-    token: "--dss-touch-target-md",
-    isDefault: true,           // Marcar tamanho padrão
-  },
-  // ... demais tamanhos
-];
-```
-
-### Props API
-
-```typescript
-const propsData = [
-  {
-    category: "Conteúdo",      // Agrupamento
-    prop: "label",             // Nome da prop
-    type: "String",            // Tipo TypeScript
-    default: "''",             // Valor padrão
-    description: "Texto do botão"
-  },
-  { category: "Variantes", prop: "variant", type: "'elevated' | 'flat' | 'outline'", default: "'elevated'", description: "Estilo visual" },
-  { category: "Estados", prop: "loading", type: "Boolean", default: "false", description: "Exibe spinner" },
-  { category: "Brandabilidade", prop: "brand", type: "'hub' | 'water' | 'waste'", default: "null", description: "Tema de marca" },
-  // ... demais props agrupadas por categoria
-];
-```
-
-### Eventos
-
-```typescript
-const eventsData = [
-  {
-    event: "update:modelValue",
-    payload: "string",
-    description: "Emitido quando o valor muda (v-model)",
-  },
-  {
-    event: "click",
-    payload: "MouseEvent",
-    description: "Emitido ao clicar no componente",
-  },
-  // ... demais eventos
-  // Se não houver eventos: declarar array vazio com comentário
-  // const eventsData = []; // Este componente não emite eventos customizados
-];
-```
-
-### Slots
-
-```typescript
-const slotsData = [
-  {
-    slot: "default",
-    description: "Conteúdo principal do componente",
-    usage: "Texto, ícones ou conteúdo customizado",
-  },
-  {
-    slot: "prepend",
-    description: "Conteúdo antes do conteúdo principal",
-    usage: "Ícones de contexto",
-  },
-  // ... demais slots
-  // Se não houver slots: declarar array vazio com comentário
-  // const slotsData = []; // Este componente não possui slots
-];
-```
-
-### Tokens Utilizados
-
-```typescript
-const tokensUsed = [
-  // Organizados por categoria funcional
-  { category: "Action", token: "--dss-action-primary", value: "#1f86de", usage: "Background primary button" },
-  { category: "Feedback", token: "--dss-feedback-success", value: "#4dd228", usage: "Positive/Success button" },
-  { category: "Brand Hub", token: "--dss-hub-600", value: "#ef7a11", usage: "Hub principal (button bg)" },
-  { category: "Sizing", token: "--dss-touch-target-md", value: "44px", usage: "Altura mínima WCAG 2.1 AA" },
-  { category: "Spacing", token: "--dss-spacing-4", value: "16px", usage: "Padding horizontal (md)" },
-  { category: "Border Radius", token: "--dss-radius-md", value: "8px", usage: "Radius médio" },
-  { category: "Elevation", token: "--dss-elevation-1", value: "0 1px 3px rgba(0,0,0,0.25)", usage: "Sombra elevated" },
-  { category: "Typography", token: "--dss-font-size-md", value: "14px", usage: "Texto medium" },
-  { category: "Text", token: "--dss-text-inverse", value: "#ffffff", usage: "Texto sobre bg escuro" },
-  { category: "Motion", token: "--dss-duration-fast", value: "150ms", usage: "Transição rápida (hover)" },
-  { category: "Opacity", token: "--dss-opacity-disabled", value: "0.4", usage: "Estado desabilitado" },
-  { category: "States", token: "--dss-state-active-scale", value: "0.98", usage: "Scale no pressed" },
-  { category: "Gray Scale", token: "--dss-gray-400", value: "#d4d4d4", usage: "Borda médio" },
-  // ... demais tokens organizados
-];
-```
-
-**Categorias Padrão de Tokens:**
-1. Action (cores de ação)
-2. Feedback (success, error, warning, info)
-3. Brand Hub / Brand Water / Brand Waste
-4. Sizing (touch targets)
-5. Spacing (gaps, paddings)
-6. Border Radius
-7. Elevation (shadows)
-8. Borders
-9. Typography
-10. Text (cores de texto)
-11. Motion (transitions)
-12. Opacity
-13. States
-14. Gray Scale
-
----
-
-## 🎮 Componente Preview Interativo
-
-Cada componente DEVE ter um componente interno `Dss[Component]Preview` com as seguintes características:
-
-### Interface do Preview
-
-```typescript
-interface DssButtonPreviewProps {
-  label?: string;
-  variant?: string;
-  colorKey?: string;        // Cor semântica selecionada
-  size?: string;
-  disabled?: boolean;
-  loading?: boolean;
-  round?: boolean;
-  icon?: React.ReactNode;
-  iconRight?: React.ReactNode;
-  brand?: string;           // Brand selecionado (exclusivo com colorKey)
-  showToken?: boolean;      // Mostrar nome do token abaixo
-}
-```
-
-### Lógica de Hover por Variante
-
-```typescript
-// Estado de hover interno
-const [isHovered, setIsHovered] = useState(false);
-
-// Estilos baseados na variante
-const getVariantStyles = (): React.CSSProperties => {
-  switch (variant) {
-    case "flat":
-    case "outline":
-      // Hover: background usa COR LIGHT, texto usa COR HOVER
-      return {
-        backgroundColor: isHovered ? colors.light : "transparent",
-        color: isHovered ? colors.hover : colors.bg,
-        border: variant === "outline" ? `1px solid ${isHovered ? colors.hover : colors.bg}` : "none",
-      };
-
-    case "elevated":
-    case "unelevated":
-      // Hover: background usa COR HOVER
-      return {
-        backgroundColor: isHovered ? colors.hover : colors.bg,
-        color: colors.textColor,
-      };
-
-    case "push":
-      // Hover: efeito 3D com translate
-      return {
-        backgroundColor: isHovered ? colors.hover : colors.bg,
-        boxShadow: isHovered ? `0 2px 0 ${colors.deep}` : `0 4px 0 ${colors.hover}`,
-        transform: isHovered ? "translateY(0px)" : "translateY(-2px)",
-      };
-  }
-};
-```
-
-### Exclusividade Brand vs Cor Semântica
-
-```typescript
-// No playground, quando brand é selecionado:
-const handleBrandChange = (newBrand: string | null) => {
-  setBrand(newBrand);
-  if (newBrand) {
-    setColor(null);  // Reset cor semântica
-  }
-};
-
-const handleColorChange = (newColor: string) => {
-  setColor(newColor);
-  setBrand(null);    // Reset brand
-};
-
-// Na geração do código de exemplo:
-const generateCode = () => {
-  const props = [];
-  if (brand) {
-    props.push(`brand="${brand}"`);
-    // NÃO incluir color quando brand está definido
-  } else if (color && color !== "primary") {
-    props.push(`color="${color}"`);
-  }
-  // ...
-};
-```
-
----
-
-## 🌓 Toggle Light/Dark Mode no Playground
-
-O playground DEVE suportar alternância de tema para visualização do componente:
-
-```typescript
-const [isDarkMode, setIsDarkMode] = useState(false);
-
-// Preview wrapper com tema dinâmico
-<div
-  style={{
-    backgroundColor: isDarkMode ? '#1a1a2e' : '#ffffff',
-    backgroundImage: isDarkMode
-      ? 'radial-gradient(circle, #2d2d44 1px, transparent 1px)'
-      : 'radial-gradient(circle, #e5e5e5 1px, transparent 1px)',
-    backgroundSize: '20px 20px',
-  }}
+> **A IA NÃO cria um novo template.**
 >
-  {/* Componente preview */}
-</div>
-
-// Toggle button
-<Button
-  variant="outline"
-  size="sm"
-  onClick={() => setIsDarkMode(!isDarkMode)}
->
-  {isDarkMode ? <Sun /> : <Moon />}
-  {isDarkMode ? "Light" : "Dark"}
-</Button>
-```
+> A IA **refina, amadurece e corrige** o template existente até atingir conformidade total com o DSS.
 
 ---
 
-## 🧩 Componentes Reutilizáveis
+### 2. Fluxo Operacional Obrigatório
 
-### PageHeader
+A IA DEVE seguir o fluxo abaixo, sempre nesta ordem:
 
-```tsx
-<PageHeader
-  icon={Box}
-  badge="Selo DSS v2.2"
-  badgeVariant="accent"
-  title="Componente"
-  titleAccent="DssButton"
-  subtitle="Descrição do componente..."
-  subtitleHighlights={["tokens DSS", "brandability"]}
-  extraBadges={[
-    { label: "v2.1.0", variant: "info" },
-    { label: "Quasar Compatible", variant: "success" },
-  ]}
-/>
-```
+1. **Identificação do Componente**
 
-### SectionHeader
+   * Nome do componente
+   * Classificação (Action / Compact / Visual)
 
-```tsx
-<SectionHeader
-  title="Playground"
-  titleAccent="Interativo"
-  badge="Configurador"
-/>
-```
+2. **Leitura do Selo (se existir)**
 
-### AnatomySection
+   * Extrair decisões já aprovadas
+   * Identificar exceções documentadas
 
-```tsx
-<AnatomySection
-  componentName="DssButton"
-  layers={{
-    structure: { files: [...], description: "...", responsibilities: [...], tokens: [...], codeExample: "..." },
-    composition: { ... },
-    variants: { ... },
-    output: { ... }
-  }}
-/>
-```
+3. **Auditoria da Página Atual**
 
-### CollapsibleSection
+   * Comparar com `COMPONENT_PAGE_STRUCTURE.md`
+   * Identificar gaps, omissões ou inconsistências
 
-```tsx
-<CollapsibleSection
-  icon={FileText}
-  title="Props API"
-  titleAccent="& Eventos"
->
-  {/* Conteúdo colapsável */}
-</CollapsibleSection>
-```
+4. **Correção Estrutural**
+
+   * Criar seções faltantes
+   * Reorganizar seções fora de ordem
+   * Renomear seções conforme padrão oficial
+
+5. **Refinamento de Conteúdo**
+
+   * Tornar descrições mais orientadas a UX/produto
+   * Eliminar redundâncias
+   * Garantir linguagem normativa onde exigido
+
+6. **Validação Final**
+
+   * Checklist de conformidade DSS v2.2
+   * Declarações explícitas (eventos ausentes, slots ausentes, etc.)
 
 ---
 
-## 📁 Estrutura de Dados para Anatomia
+### 3. Regras de Decisão
 
-```typescript
-interface LayerContent {
-  files: string[];           // Arquivos da camada
-  description: string;       // Descrição conceitual
-  responsibilities: string[]; // Lista de responsabilidades
-  tokens?: string[];         // Tokens utilizados
-  codeExample?: string;      // Exemplo de código
-}
+A IA:
 
-interface AnatomyData {
-  structure: LayerContent;
-  composition: LayerContent;
-  variants: LayerContent;
-  output: LayerContent;
-}
-```
+* ❌ NÃO deve inferir comportamentos não documentados
+* ❌ NÃO deve suavizar regras normativas
+* ❌ NÃO deve introduzir padrões novos sem referência DSS
+* ✅ DEVE declarar explicitamente quando algo **não se aplica**
+* ✅ DEVE preferir correção incremental ao invés de reescrita total
 
 ---
 
-## ✅ Checklist de Validação
+### 4. Linguagem e Tom
 
-Antes de publicar uma página de componente, verifique:
-
-### Estrutura
-- [ ] Badges de metadados presentes (incluindo Golden Component se aplicável)
-- [ ] PageHeader com ícone e descrição
-- [ ] Quick Stats com métricas relevantes (opcional)
-- [ ] **Quando Usar / Quando NÃO Usar preenchido** (obrigatório)
-- [ ] Playground funcional com todos os controles
-- [ ] Toggle Light/Dark no playground
-- [ ] **Estados Interativos documentados em tabela única** (obrigatório)
-- [ ] Galeria de variantes em tabs (opcional)
-- [ ] Anatomia 4 Camadas com dados completos
-- [ ] Documentação técnica em CollapsibleSection
-- [ ] **Anti-patterns documentados** (obrigatório, mínimo 3)
-- [ ] **Vinculantes DSS v2.2 declarados** (obrigatório)
-
-### Dados
-- [ ] `semanticColors` com tokens completos
-- [ ] `feedbackColors` com ícones e tokens
-- [ ] `brandColors` com escala completa (50-950)
-- [ ] `variants` com metadados
-- [ ] `sizes` com touch targets WCAG
-- [ ] `propsData` categorizado
-- [ ] **`eventsData` declarado** (mesmo que vazio)
-- [ ] **`slotsData` declarado** (mesmo que vazio)
-- [ ] `tokensUsed` organizado por categoria (14 categorias)
-- [ ] `anatomyData` para as 4 camadas
-
-### Interatividade
-- [ ] Componente `Dss[Component]Preview` criado
-- [ ] Hover states implementados por variante
-- [ ] Exclusividade Brand/Cor funcionando
-- [ ] Código de exemplo atualiza em tempo real
-
-### Conteúdo
-- [ ] Props API documentada em tabela
-- [ ] **Eventos documentados em tabela** (ou declaração de ausência)
-- [ ] **Slots documentados em tabela** (ou declaração de ausência)
-- [ ] Tokens organizados por categoria
-- [ ] Seção de acessibilidade preenchida com **tabela WCAG**
-- [ ] **Touch Target vs Altura Visual documentado**
-- [ ] **Pseudo-elementos declarados** (uso ou não-uso)
-- [ ] **Tabela de brightness() referenciada** (se aplicável)
-- [ ] **Classificação do componente declarada** (Action Control / Compact Control / Visual)
+* Seções normativas → linguagem **assertiva e vinculante**
+* Seções de UX → linguagem clara e orientada a produto
+* Anti‑patterns → linguagem direta e preventiva
 
 ---
 
-## 📚 Referências
+### 5. Resultado Esperado
 
-- **Golden Components:** `docs/governance/DSS_GOLDEN_COMPONENTS.md`
-- **Tokens oficiais:** `docs/reference/DSS_TOKEN_REFERENCE.md`
-- **Arquitetura de componentes:** `docs/reference/DSS_COMPONENT_ARCHITECTURE.md`
-- **Guia de implementação:** `docs/guides/DSS_IMPLEMENTATION_GUIDE.md`
-- **Componente modelo:** `src/pages/components/DssButtonPage.tsx`
-- **AnatomySection:** `src/components/ui/AnatomySection.tsx`
-- **CollapsibleSection:** `src/components/ui/CollapsibleSection.tsx`
-- **PageHeader:** `src/components/ui/PageHeader.tsx`
-- **SectionHeader:** `src/components/ui/SectionHeader.tsx`
+Ao final da atuação da IA:
 
----
+* A página do componente deve ser **auditável**
+* Nenhuma decisão deve depender de inferência implícita
+* Toda conformidade DSS deve estar **explicitamente declarada**
 
-**Mantido por:** Equipe Design System Sansys
-**Atualizado em:** Fevereiro 2026
-**Versão:** 2.2.0
+> Uma página DSS correta é aquela que pode ser validada sem contexto oral ou histórico externo.

@@ -1,0 +1,20 @@
+// ==========================================================================
+// DssRadio — Orchestrador SCSS
+// Design System Sansys v2.2
+//
+// Importa as 4 camadas na ordem correta:
+//   1. Base (tokens, layout, altura visual)
+//   2. Variants (vazio na Fase 1)
+//   3. Output (brands + states)
+//
+// Nenhuma regra CSS deve existir neste arquivo.
+// ==========================================================================
+
+/* Layer 2: Composition — tokens genericos */
+@use './2-composition/base' as composition;
+
+/* Layer 3: Variants — vazio na Fase 1 */
+@use './3-variants' as variants;
+
+/* Layer 4: Output — brands + states */
+@use './4-output' as output;

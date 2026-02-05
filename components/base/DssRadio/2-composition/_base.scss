@@ -1,0 +1,237 @@
+// ==========================================================================
+// DssRadio — Layer 2: Composition
+// Design System Sansys v2.2
+//
+// Tokens genericos (sem tokens especificos de componente).
+// Touch target via ::before (WCAG 2.5.5).
+// Transicoes via tokens de motion.
+//
+// Golden Component de referencia: DssCheckbox (2-composition/_base.scss)
+// ==========================================================================
+
+// --------------------------------------------------------------------------
+// Elemento raiz (.dss-radio)
+// --------------------------------------------------------------------------
+.dss-radio {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--dss-spacing-2); // 8px
+  min-height: var(--dss-compact-control-height-md); // 28px
+  font-family: var(--dss-font-family-sans);
+  font-size: var(--dss-font-size-sm); // 14px
+  line-height: var(--dss-line-height-normal);
+  color: var(--dss-text-primary);
+  cursor: pointer;
+  user-select: none;
+  transition: opacity var(--dss-duration-200) var(--dss-easing-standard);
+
+  // -----------------------------------------------------------------------
+  // Touch target via ::before (WCAG 2.5.5 — reservado)
+  // Garante area clicavel minima de 48px
+  // -----------------------------------------------------------------------
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: var(--dss-touch-target-min); // 48px
+    min-height: var(--dss-touch-target-min); // 48px
+    pointer-events: none; // Deixa cliques passarem para o input
+  }
+}
+
+// --------------------------------------------------------------------------
+// Label posicionado a esquerda
+// --------------------------------------------------------------------------
+.dss-radio--left-label {
+  flex-direction: row-reverse;
+}
+
+// --------------------------------------------------------------------------
+// Input nativo (visualmente oculto, acessivel)
+// Tecnica sr-only: oculta visualmente mas mantem acessivel para
+// screen readers e navegacao por teclado
+// --------------------------------------------------------------------------
+.dss-radio__native {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// --------------------------------------------------------------------------
+// Controle visual (circulo externo do radio)
+// --------------------------------------------------------------------------
+.dss-radio__control {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--dss-spacing-5); // 20px
+  height: var(--dss-spacing-5); // 20px
+  border: var(--dss-border-width-md) solid currentColor;
+  border-radius: 50%; // Circular (diferencia de DssCheckbox)
+  background-color: transparent;
+  color: inherit;
+  transition: all var(--dss-duration-200) var(--dss-easing-standard);
+}
+
+// --------------------------------------------------------------------------
+// Indicador de selecao (circulo interno preenchido)
+// Elemento real (nao pseudo-elemento), seguindo padrao DssCheckbox
+// --------------------------------------------------------------------------
+.dss-radio__dot {
+  display: block;
+  width: var(--dss-spacing-2_5); // 10px
+  height: var(--dss-spacing-2_5); // 10px
+  border-radius: 50%;
+  background-color: currentColor;
+  transition: transform var(--dss-duration-200) var(--dss-easing-standard);
+}
+
+// --------------------------------------------------------------------------
+// Label
+// --------------------------------------------------------------------------
+.dss-radio__label {
+  font-family: var(--dss-font-family-sans);
+  font-size: inherit;
+  line-height: var(--dss-line-height-normal);
+  color: var(--dss-text-primary);
+  cursor: pointer;
+}
+
+// --------------------------------------------------------------------------
+// Mensagem de erro
+// --------------------------------------------------------------------------
+.dss-radio__error {
+  display: block;
+  width: 100%;
+  margin-top: var(--dss-spacing-1); // 4px
+  font-family: var(--dss-font-family-sans);
+  font-size: var(--dss-font-size-xs); // 12px
+  line-height: var(--dss-line-height-normal);
+  color: var(--dss-error-600);
+}
+
+// ==========================================================================
+// TAMANHOS (via tokens --dss-compact-control-height-*)
+// ==========================================================================
+
+// --- XS ---
+.dss-radio--xs {
+  gap: var(--dss-spacing-1); // 4px
+  min-height: var(--dss-compact-control-height-xs); // 20px
+  font-size: var(--dss-font-size-xs); // 12px
+
+  .dss-radio__control {
+    width: var(--dss-spacing-4); // 16px
+    height: var(--dss-spacing-4); // 16px
+  }
+
+  .dss-radio__dot {
+    width: var(--dss-spacing-2); // 8px
+    height: var(--dss-spacing-2); // 8px
+  }
+}
+
+// --- SM ---
+.dss-radio--sm {
+  gap: var(--dss-spacing-1_5); // 6px
+  min-height: var(--dss-compact-control-height-sm); // 24px
+  font-size: var(--dss-font-size-xs); // 12px
+
+  .dss-radio__control {
+    width: var(--dss-spacing-5); // 20px
+    height: var(--dss-spacing-5); // 20px
+  }
+
+  .dss-radio__dot {
+    width: var(--dss-spacing-2); // 8px
+    height: var(--dss-spacing-2); // 8px
+  }
+}
+
+// --- MD (padrao) ---
+// Valores ja definidos nos seletores base
+
+// --- LG ---
+.dss-radio--lg {
+  gap: var(--dss-spacing-3); // 12px
+  min-height: var(--dss-compact-control-height-lg); // 32px
+  font-size: var(--dss-font-size-md); // 16px
+
+  .dss-radio__control {
+    width: var(--dss-spacing-6); // 24px
+    height: var(--dss-spacing-6); // 24px
+  }
+
+  .dss-radio__dot {
+    width: var(--dss-spacing-3); // 12px
+    height: var(--dss-spacing-3); // 12px
+  }
+}
+
+// ==========================================================================
+// ESTADOS INTERATIVOS
+// ==========================================================================
+
+// --- Hover ---
+// EXCECAO DOCUMENTADA: brightness(0.95) — valor canonico DSS para hover light mode
+.dss-radio:not(.dss-radio--disabled):hover .dss-radio__control {
+  filter: brightness(0.95);
+}
+
+// --- Active ---
+// EXCECAO DOCUMENTADA: brightness(0.90) — valor canonico DSS para active light mode
+.dss-radio:not(.dss-radio--disabled):active .dss-radio__control {
+  filter: brightness(0.90);
+}
+
+// --- Focus (via classe aplicada pelo composable) ---
+.dss-radio__control--focused {
+  outline: var(--dss-border-width-md) solid var(--dss-focus-ring);
+  outline-offset: var(--dss-spacing-0_5); // 2px
+}
+
+// --- Checked ---
+.dss-radio__control--checked {
+  border-color: currentColor;
+}
+
+// --- Disabled ---
+.dss-radio--disabled {
+  opacity: var(--dss-opacity-disabled); // 0.4
+  cursor: not-allowed;
+  pointer-events: none;
+
+  .dss-radio__label {
+    cursor: not-allowed;
+  }
+}
+
+// --- Error ---
+.dss-radio--error {
+  .dss-radio__control {
+    border-color: var(--dss-error-600);
+    color: var(--dss-error-600);
+  }
+
+  .dss-radio__label {
+    color: var(--dss-error-600);
+  }
+}
+
+// --- Dense (sem touch target expandido) ---
+.dss-radio--dense {
+  &::before {
+    display: none;
+  }
+}
