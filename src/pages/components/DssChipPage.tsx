@@ -499,7 +499,7 @@
                <li>• Chips sem label ou aria-label (icon-only)</li>
                <li>• Usar chips como botões de navegação</li>
                <li>• Misturar brand e color na mesma interface</li>
-               <li>• Chips com texto muito longo (>30 caracteres)</li>
+              <li>• Chips com texto muito longo (&gt;30 caracteres)</li>
              </ul>
            </div>
            <div>
