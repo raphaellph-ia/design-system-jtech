@@ -1,0 +1,228 @@
+/* ==========================================================================
+   DssToggle - LAYER 4: OUTPUT (States)
+
+   RESPONSABILIDADE: Estilos para estados especiais (dark mode, high contrast)
+
+   REGRAS:
+   - Usa media queries para preferencias do usuario
+   - Ajusta contraste e visibilidade
+   - Mantem acessibilidade WCAG 2.1 AA
+   - ::before NO ROOT reservado para touch target
+   - Track e thumb sao elementos <span>, nunca pseudo-elementos
+
+   GOLDEN COMPONENT: DssCheckbox._states.scss
+   ========================================================================== */
+
+/* ==========================================================================
+   DARK MODE
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  /*
+   * EXCECAO DOCUMENTADA: Brightness invertido para dark mode
+   *
+   * Em dark mode, fundos escuros precisam ser CLAREADOS no hover/active,
+   * nao escurecidos como em light mode.
+   *
+   * Valor: brightness(1.10) - canonico DSS
+   * Referencia: CLAUDE.md Principio #8
+   */
+  .dss-toggle:not(.dss-toggle--disabled):hover {
+    .dss-toggle__track--checked {
+      filter: brightness(1.1);
+    }
+  }
+
+  /*
+   * Active state em dark mode: brightness(1.20)
+   * Clareamento de 20% durante interacao ativa.
+   * Valor canonico DSS. Precedente: DssCheckbox._states.scss
+   */
+  .dss-toggle:not(.dss-toggle--disabled):active {
+    .dss-toggle__track--checked {
+      filter: brightness(1.2);
+    }
+  }
+
+  /* Disabled state em dark mode */
+  .dss-toggle--disabled {
+    opacity: var(--dss-opacity-disabled);
+  }
+
+  /* Error state em dark mode */
+  .dss-toggle--error {
+    .dss-toggle__track {
+      border-color: var(--dss-error-400);
+      color: var(--dss-error-400);
+    }
+
+    .dss-toggle__label {
+      color: var(--dss-error-400);
+    }
+
+    .dss-toggle__error {
+      color: var(--dss-error-400);
+    }
+  }
+}
+
+/* ==========================================================================
+   HIGH CONTRAST MODE
+   ========================================================================== */
+
+/*
+ * CONTEXTO DE ACESSIBILIDADE: prefers-contrast: more
+ *
+ * Em high contrast, bordas e outlines sao aumentados para
+ * garantir visibilidade maxima.
+ *
+ * Excecao: saturate(1.2) - valor canonico DSS
+ * Referencia: CLAUDE.md Principio #8
+ */
+@media (prefers-contrast: more) {
+  .dss-toggle__track {
+    /* Bordas mais visiveis em high contrast */
+    border-width: var(--dss-border-width-thick);
+  }
+
+  /* Focus ring mais forte */
+  .dss-toggle__track--focused {
+    outline-width: var(--dss-border-width-thick);
+    outline-offset: var(--dss-border-width-thick);
+  }
+
+  /* Cores mais saturadas quando checked */
+  .dss-toggle__track--checked {
+    filter: saturate(1.2);
+  }
+
+  /* Disabled mais distinto */
+  .dss-toggle--disabled {
+    opacity: var(--dss-opacity-50);
+
+    .dss-toggle__label {
+      text-decoration: line-through;
+    }
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .dss-toggle {
+    transition: none;
+  }
+
+  .dss-toggle__track {
+    transition: none;
+  }
+
+  .dss-toggle__thumb {
+    transition: none;
+  }
+}
+
+/* ==========================================================================
+   PRINT STYLES
+   ========================================================================== */
+
+@media print {
+  .dss-toggle {
+    /* Remove efeitos para impressao */
+    filter: none;
+
+    /* Remove touch target na impressao */
+    &::before {
+      display: none;
+    }
+  }
+
+  .dss-toggle__track {
+    /* Borda visivel para impressao */
+    border: var(--dss-border-width-md) solid currentColor;
+    filter: none;
+    background-color: transparent;
+  }
+
+  /* Thumb visivel na impressao */
+  .dss-toggle__thumb {
+    background-color: currentColor;
+  }
+}
+
+/* ==========================================================================
+   FORCED COLORS (Windows High Contrast)
+   ========================================================================== */
+
+/*
+ * CONTEXTO DE ACESSIBILIDADE: forced-colors: active
+ *
+ * Em Windows High Contrast Mode, o navegador IGNORA cores CSS customizadas.
+ * Valores como ButtonText, Highlight, GrayText sao keywords do sistema.
+ *
+ * Bordas e outlines usam valores absolutos porque:
+ * 1. Tokens CSS custom properties sao ignorados em forced-colors
+ * 2. Valores precisam ser visiveis no tema de alto contraste do usuario
+ *
+ * EXCECAO DOCUMENTADA: 2px, 3px
+ * Tokens CSS sao ignorados em forced-colors mode.
+ * Referencia: DSS_COMPONENT_ARCHITECTURE.md
+ * Precedente: DssCheckbox._states.scss
+ */
+@media (forced-colors: active) {
+  .dss-toggle__track {
+    /* Usa cores do sistema - tokens CSS sao ignorados */
+    border: 2px solid ButtonText;
+    background-color: ButtonFace;
+    forced-color-adjust: none;
+  }
+
+  /* Thumb em forced colors */
+  .dss-toggle__thumb {
+    background-color: ButtonText;
+  }
+
+  /* Checked state em forced colors */
+  .dss-toggle__track--checked {
+    background-color: Highlight;
+    border-color: Highlight;
+
+    .dss-toggle__thumb {
+      background-color: HighlightText;
+    }
+  }
+
+  /* Hover em forced colors */
+  .dss-toggle:not(.dss-toggle--disabled):hover .dss-toggle__track {
+    border-color: Highlight;
+  }
+
+  /* Focus em forced colors */
+  .dss-toggle__track--focused {
+    outline: 3px solid Highlight;
+  }
+
+  /* Disabled em forced colors */
+  .dss-toggle--disabled .dss-toggle__track {
+    border-color: GrayText;
+
+    .dss-toggle__thumb {
+      background-color: GrayText;
+    }
+  }
+
+  .dss-toggle--disabled .dss-toggle__label {
+    color: GrayText;
+  }
+
+  /* Error em forced colors */
+  .dss-toggle--error .dss-toggle__track {
+    border-color: LinkText;
+
+    .dss-toggle__thumb {
+      background-color: LinkText;
+    }
+  }
+}

@@ -1,15 +1,16 @@
 {
   "component": "DssRadio",
   "dssVersion": "2.2",
-  "status": "draft",
-  "seal": null,
-  "auditMode": "pending",
-  "auditDate": null,
+  "status": "approved",
+  "seal": "DSS/docs/Compliance/seals/DssRadio/DSSRADIO_SELO_v2.2.md",
+  "auditMode": "completed",
+  "auditDate": "2026-02-05",
   "goldenComponent": "DssCheckbox",
   "goldenComponentSecondary": "DssChip",
   "category": "Compact Control interativo",
   "phase": "Fase 1",
   "classification": "Form / Selection",
   "hasReservations": false,
-  "createdDate": "2026-02-04"
+  "createdDate": "2026-02-04",
+  "sealDate": "2026-02-05"
 }

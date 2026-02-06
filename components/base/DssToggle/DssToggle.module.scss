@@ -1,0 +1,33 @@
+/* ==========================================================================
+   DssToggle - MODULE ORCHESTRATOR
+
+   RESPONSABILIDADE: Orquestrar a importacao de todas as camadas do componente
+
+   ARQUITETURA DE 4 CAMADAS:
+   1. Structure   - Componente Vue (nao importado aqui)
+   2. Composition - Estilos base usando tokens genericos
+   3. Variants    - Sem variantes na Fase 1 (arquivo existe por obrigatoriedade)
+   4. Output      - Brands (Hub, Water, Waste) e states (dark mode, high contrast)
+
+   ORDEM DE IMPORTACAO:
+   A ordem e critica para garantir a cascata correta de estilos.
+   Estilos mais especificos devem vir depois para sobrescrever os gerais.
+   ========================================================================== */
+
+/* ==========================================================================
+   LAYER 2: COMPOSITION
+   Estilos fundamentais usando apenas tokens genericos
+   ========================================================================== */
+@use '2-composition/base' as composition;
+
+/* ==========================================================================
+   LAYER 3: VARIANTS
+   Sem variantes visuais na Fase 1 (arquivo obrigatorio da arquitetura)
+   ========================================================================== */
+@use '3-variants' as variants;
+
+/* ==========================================================================
+   LAYER 4: OUTPUT
+   Brands e estados finais (dark mode, high contrast, reduced motion)
+   ========================================================================== */
+@use '4-output' as output;

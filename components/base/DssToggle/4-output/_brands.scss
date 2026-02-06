@@ -1,0 +1,110 @@
+/* ==========================================================================
+   DssToggle - LAYER 4: OUTPUT (Brands)
+
+   RESPONSABILIDADE: Estilos especificos para cada marca (Hub, Water, Waste)
+
+   REGRAS:
+   - Usa tokens de marca (--dss-{brand}-*)
+   - Aplicado via atributo data-brand (contexto ou prop)
+   - NAO sobrescreve logica de estados
+   - Cores aplicadas APENAS ao .dss-toggle__track quando checked
+
+   CENARIOS SUPORTADOS:
+   1. Brand via contexto (ancestral): <div data-brand="hub"><DssToggle /></div>
+   2. Brand via prop (mesmo elemento): <DssToggle brand="hub" />
+
+   GOLDEN COMPONENT: DssCheckbox - mesmo padrao de brand mixins
+   ========================================================================== */
+
+/* ==========================================================================
+   MIXINS PARA EVITAR DUPLICACAO
+   ========================================================================== */
+
+@mixin toggle-brand-colors($brand) {
+  /* Primary */
+  &.dss-toggle--primary {
+    .dss-toggle__track--checked {
+      background-color: var(--dss-#{$brand}-primary);
+      border-color: var(--dss-#{$brand}-primary);
+      color: var(--dss-#{$brand}-on-primary);
+
+      .dss-toggle__thumb {
+        background-color: var(--dss-#{$brand}-on-primary);
+      }
+    }
+  }
+
+  /* Secondary */
+  &.dss-toggle--secondary {
+    .dss-toggle__track--checked {
+      background-color: var(--dss-#{$brand}-secondary);
+      border-color: var(--dss-#{$brand}-secondary);
+      color: var(--dss-#{$brand}-on-secondary);
+
+      .dss-toggle__thumb {
+        background-color: var(--dss-#{$brand}-on-secondary);
+      }
+    }
+  }
+
+  /* Accent */
+  &.dss-toggle--accent {
+    .dss-toggle__track--checked {
+      background-color: var(--dss-#{$brand}-accent);
+      border-color: var(--dss-#{$brand}-accent);
+      color: var(--dss-#{$brand}-on-accent);
+
+      .dss-toggle__thumb {
+        background-color: var(--dss-#{$brand}-on-accent);
+      }
+    }
+  }
+}
+
+/* ==========================================================================
+   HUB BRAND
+   ========================================================================== */
+
+/* Cenario 1: Brand via contexto (ancestral) */
+[data-brand='hub'] {
+  .dss-toggle {
+    @include toggle-brand-colors(hub);
+  }
+}
+
+/* Cenario 2: Brand via prop (mesmo elemento) */
+.dss-toggle[data-brand='hub'] {
+  @include toggle-brand-colors(hub);
+}
+
+/* ==========================================================================
+   WATER BRAND
+   ========================================================================== */
+
+/* Cenario 1: Brand via contexto (ancestral) */
+[data-brand='water'] {
+  .dss-toggle {
+    @include toggle-brand-colors(water);
+  }
+}
+
+/* Cenario 2: Brand via prop (mesmo elemento) */
+.dss-toggle[data-brand='water'] {
+  @include toggle-brand-colors(water);
+}
+
+/* ==========================================================================
+   WASTE BRAND
+   ========================================================================== */
+
+/* Cenario 1: Brand via contexto (ancestral) */
+[data-brand='waste'] {
+  .dss-toggle {
+    @include toggle-brand-colors(waste);
+  }
+}
+
+/* Cenario 2: Brand via prop (mesmo elemento) */
+.dss-toggle[data-brand='waste'] {
+  @include toggle-brand-colors(waste);
+}

@@ -25,7 +25,7 @@ Este componente implementa um **subset controlado da API do Quasar q-radio**. Na
 | `checked-icon` / `unchecked-icon` | Sim | Nao | Indicador visual padronizado (circulo preenchido) |
 | `QOptionGroup` integration | Sim | Nao | Agrupamento via prop `name` (nativo HTML) |
 | `dark` prop | Sim | Nao | Dark mode via `prefers-color-scheme` (automatico) |
-| `dense` | Sim | Sim (sem touch target expandido) | Conformidade WCAG contextual |
+| `dense` | Sim | Sim (reduz gap, altura e fonte; remove touch target expandido) | Conformidade WCAG contextual |
 | Cores inline | Sim | Nao | Cores via classes utilitarias ou sistema de brands |
 
 ---
@@ -104,7 +104,7 @@ DssRadio/
 | `color` | `RadioColor` | `'primary'` | Cor semantica do indicador |
 | `size` | `RadioSize` | `'md'` | Tamanho do controle |
 | `disable` | `boolean` | `false` | Estado desabilitado |
-| `dense` | `boolean` | `false` | Modo compacto (sem touch target expandido) |
+| `dense` | `boolean` | `false` | Modo compacto: reduz gap, altura e tamanho da fonte, e remove touch target expandido |
 | `error` | `boolean` | `false` | Estado de erro |
 | `errorMessage` | `string` | `undefined` | Mensagem de erro |
 | `brand` | `RadioBrand \| null` | `null` | Brand Sansys |
@@ -202,9 +202,9 @@ O indicador de selecao (circulo preenchido) e implementado como elemento real `<
 | **Cor** | `--dss-error-400` | Erro em dark mode |
 | **Cor** | `--dss-gray-200` | Texto em dark mode |
 | **Cor** | `--dss-gray-400` | Borda em dark mode |
-| **Brand** | `--dss-hub-{500,600,700}` | Cores Hub |
-| **Brand** | `--dss-water-{500,600,700}` | Cores Water |
-| **Brand** | `--dss-waste-{500,600,700}` | Cores Waste |
+| **Brand** | `--dss-hub-{primary,secondary,accent}` | Cores Hub |
+| **Brand** | `--dss-water-{primary,secondary,accent}` | Cores Water |
+| **Brand** | `--dss-waste-{primary,secondary,accent}` | Cores Waste |
 
 ---
 

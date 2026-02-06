@@ -1,0 +1,803 @@
+@charset "UTF-8";
+/* ==========================================================================
+   DssToggle - MODULE ORCHESTRATOR
+
+   RESPONSABILIDADE: Orquestrar a importacao de todas as camadas do componente
+
+   ARQUITETURA DE 4 CAMADAS:
+   1. Structure   - Componente Vue (nao importado aqui)
+   2. Composition - Estilos base usando tokens genericos
+   3. Variants    - Sem variantes na Fase 1 (arquivo existe por obrigatoriedade)
+   4. Output      - Brands (Hub, Water, Waste) e states (dark mode, high contrast)
+
+   ORDEM DE IMPORTACAO:
+   A ordem e critica para garantir a cascata correta de estilos.
+   Estilos mais especificos devem vir depois para sobrescrever os gerais.
+   ========================================================================== */
+/* ==========================================================================
+   LAYER 2: COMPOSITION
+   Estilos fundamentais usando apenas tokens genericos
+   ========================================================================== */
+/* ==========================================================================
+   DssToggle - LAYER 2: COMPOSITION (Base Styles)
+
+   RESPONSABILIDADE: Estilos fundamentais usando APENAS tokens genericos
+
+   REGRAS:
+   - APENAS tokens genericos (--dss-spacing-*, --dss-radius-*, etc.)
+   - ZERO tokens especificos de componente (--dss-toggle-*)
+   - ZERO valores hardcoded (exceto excecoes documentadas)
+   - ZERO logica de variantes
+   - ::before NO ROOT = touch target (WCAG 2.5.5)
+   - Track e thumb sao elementos <span>, decorativos (aria-hidden)
+
+   GOLDEN COMPONENT: DssCheckbox (Compact Control interativo)
+
+   DIFERENCA DO CHECKBOX:
+   - Toggle usa track (retangular arredondado) + thumb (circulo deslizante)
+   - Toggle nao tem icones de estado (check/dash)
+   - Toggle usa role="switch" no input nativo
+   ========================================================================== */
+/* ==========================================================================
+   TOGGLE ROOT (<label>)
+   ========================================================================== */
+.dss-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--dss-spacing-2); /* 8px */
+  /* Altura visual via token generico de compact control */
+  min-height: var(--dss-compact-control-height-md); /* 28px */
+  /* Typography */
+  font-family: var(--dss-font-family-sans);
+  font-size: var(--dss-font-size-sm);
+  line-height: var(--dss-line-height-normal);
+  /* Interaction */
+  cursor: pointer;
+  user-select: none;
+  vertical-align: middle;
+  /* Transitions */
+  transition: opacity var(--dss-duration-200) var(--dss-easing-standard);
+  /* Prevent tap highlight on mobile */
+  -webkit-tap-highlight-color: transparent;
+  /* Touch Target WCAG 2.5.5 via ::before no ROOT
+   *
+   * O touch target e implementado como pseudo-elemento invisivel
+   * centralizado no root <label>, garantindo area minima de 48px.
+   * pointer-events: none e OBRIGATORIO para nao interferir nos cliques.
+   */
+}
+.dss-toggle::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: var(--dss-touch-target-min); /* 48px */
+  min-height: var(--dss-touch-target-min); /* 48px */
+  pointer-events: none; /* OBRIGATORIO - cliques chegam ao input */
+}
+
+/* ==========================================================================
+   HIDDEN NATIVE INPUT (sr-only)
+   ========================================================================== */
+/*
+ * Input nativo visualmente oculto mas acessivel a screen readers.
+ * Controla: foco, teclado, aria-checked, role="switch".
+ * Tabindex e SOMENTE neste elemento, NUNCA no <label>.
+ */
+.dss-toggle__native {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ==========================================================================
+   VISUAL TOGGLE TRACK (trilho)
+   ========================================================================== */
+/*
+ * Track (trilho) do toggle - elemento decorativo (aria-hidden="true").
+ * Dimensoes:
+ * - Largura: --dss-spacing-9 (36px) — proporcao 1.8:1 com thumb
+ * - Altura: --dss-spacing-5 (20px) — mesma altura do control do checkbox
+ *
+ * EXCECAO DOCUMENTADA: border-radius: 9999px
+ * Pill shape (totalmente arredondado) e inerente ao componente toggle.
+ * Nao existe token DSS para pill/full-round radius.
+ * Precedente: Quasar QToggle usa border-radius arredondado completo.
+ */
+.dss-toggle__track {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  /* Dimensoes */
+  width: var(--dss-spacing-9); /* 36px */
+  height: var(--dss-spacing-5); /* 20px */
+  /* Forma pill */
+  border-radius: 9999px; /* EXCECAO: pill shape, nao tokenizavel */
+  /* Bordas */
+  border: var(--dss-border-width-md) solid currentColor;
+  /* Fundo - unchecked state */
+  background-color: transparent;
+  color: inherit;
+  /* Transitions */
+  transition: all var(--dss-duration-200) var(--dss-easing-standard);
+}
+
+/* ==========================================================================
+   TOGGLE THUMB (botao deslizante)
+   ========================================================================== */
+/*
+ * Thumb (botao deslizante) do toggle.
+ * Circulo que se move da esquerda para a direita ao ativar.
+ *
+ * EXCECAO DOCUMENTADA: border-radius: 50%
+ * Forma circular inerente ao componente.
+ * Nao existe token DSS para circle radius.
+ * Precedente: DssRadio._base.scss usa border-radius: 50%.
+ */
+.dss-toggle__thumb {
+  position: absolute;
+  /* Dimensoes do thumb - proporcional ao track */
+  width: var(--dss-spacing-4); /* 16px */
+  height: var(--dss-spacing-4); /* 16px */
+  /* Forma circular */
+  border-radius: 50%; /* EXCECAO: forma circular, nao tokenizavel */
+  /* Fundo */
+  background-color: currentColor;
+  /* Posicao inicial - lado esquerdo (unchecked) */
+  left: var(--dss-spacing-0_5); /* 2px offset from edge */
+  /* Transitions */
+  transition: left var(--dss-duration-200) var(--dss-easing-standard);
+}
+
+/* ==========================================================================
+   CHECKED STATE
+   ========================================================================== */
+.dss-toggle__track--checked {
+  border-color: currentColor;
+  /* Fundo aplicado via classes utilitarias (.bg-{color}) ou _brands.scss */
+}
+.dss-toggle__track--checked .dss-toggle__thumb {
+  /* Move thumb para a direita */
+  left: calc(100% - var(--dss-spacing-4) - var(--dss-spacing-0_5)); /* 36 - 16 - 2 = 18px */
+}
+
+/* ==========================================================================
+   LABEL
+   ========================================================================== */
+.dss-toggle__label {
+  display: inline-flex;
+  align-items: center;
+  line-height: var(--dss-line-height-normal);
+}
+
+/* ==========================================================================
+   LEFT LABEL
+   ========================================================================== */
+.dss-toggle--left-label {
+  flex-direction: row-reverse;
+}
+
+.dss-toggle__label--left {
+  /* Nenhum estilo adicional necessario - flex-direction cuida da ordem */
+}
+
+/* ==========================================================================
+   ERROR STATE
+   ========================================================================== */
+/*
+ * Error state seguindo o padrao do DssRadio.
+ * Aplica cor de erro ao track e label.
+ */
+.dss-toggle--error .dss-toggle__track {
+  border-color: var(--dss-error-600);
+  color: var(--dss-error-600);
+}
+.dss-toggle--error .dss-toggle__label {
+  color: var(--dss-error-600);
+}
+
+.dss-toggle__error {
+  display: block;
+  font-size: var(--dss-font-size-xs);
+  color: var(--dss-error-600);
+  margin-top: var(--dss-spacing-0_5);
+}
+
+/* ==========================================================================
+   SIZE VARIANTS
+   ========================================================================== */
+.dss-toggle--xs {
+  gap: var(--dss-spacing-1); /* 4px */
+  min-height: var(--dss-compact-control-height-xs); /* 20px */
+  font-size: var(--dss-font-size-xs);
+}
+.dss-toggle--xs .dss-toggle__track {
+  width: var(--dss-spacing-7); /* 28px */
+  height: var(--dss-spacing-4); /* 16px */
+}
+.dss-toggle--xs .dss-toggle__thumb {
+  width: var(--dss-spacing-3); /* 12px */
+  height: var(--dss-spacing-3); /* 12px */
+}
+.dss-toggle--xs .dss-toggle__track--checked .dss-toggle__thumb {
+  left: calc(100% - var(--dss-spacing-3) - var(--dss-spacing-0_5));
+}
+
+.dss-toggle--sm {
+  gap: var(--dss-spacing-1_5); /* 6px */
+  min-height: var(--dss-compact-control-height-sm); /* 24px */
+  font-size: var(--dss-font-size-xs);
+}
+.dss-toggle--sm .dss-toggle__track {
+  width: var(--dss-spacing-8); /* 32px */
+  height: var(--dss-spacing-5); /* 20px */
+}
+.dss-toggle--sm .dss-toggle__thumb {
+  width: var(--dss-spacing-4); /* 16px */
+  height: var(--dss-spacing-4); /* 16px */
+}
+.dss-toggle--sm .dss-toggle__track--checked .dss-toggle__thumb {
+  left: calc(100% - var(--dss-spacing-4) - var(--dss-spacing-0_5));
+}
+
+.dss-toggle--md {
+  /* Default size - ja definido no .dss-toggle base */
+}
+
+.dss-toggle--lg {
+  gap: var(--dss-spacing-3); /* 12px */
+  min-height: var(--dss-compact-control-height-lg); /* 32px */
+  font-size: var(--dss-font-size-md);
+}
+.dss-toggle--lg .dss-toggle__track {
+  width: var(--dss-spacing-11); /* 44px */
+  height: var(--dss-spacing-6); /* 24px */
+}
+.dss-toggle--lg .dss-toggle__thumb {
+  width: var(--dss-spacing-5); /* 20px */
+  height: var(--dss-spacing-5); /* 20px */
+}
+.dss-toggle--lg .dss-toggle__track--checked .dss-toggle__thumb {
+  left: calc(100% - var(--dss-spacing-5) - var(--dss-spacing-0_5));
+}
+
+/* ==========================================================================
+   DENSE VARIANT
+   ========================================================================== */
+/*
+ * Dense mode: reduz densidade visual E remove touch target.
+ * Seguindo DssCheckbox golden: reduz gap, min-height, font-size.
+ * Seguindo DssRadio: remove touch target via ::before { display: none }.
+ */
+.dss-toggle--dense {
+  gap: var(--dss-spacing-1); /* 4px */
+  min-height: var(--dss-compact-control-height-sm); /* 24px */
+  font-size: var(--dss-font-size-xs);
+  /* Remove touch target em dense mode */
+}
+.dss-toggle--dense::before {
+  display: none;
+}
+
+/* ==========================================================================
+   HOVER STATE
+   ========================================================================== */
+/*
+ * EXCECAO DOCUMENTADA: brightness(0.95)
+ *
+ * Valor canonico DSS para hover de controles interativos.
+ * filter: brightness() ajusta a cor sem alterar a base do componente.
+ * Nao existem tokens DSS para brightness.
+ *
+ * Referencia: CLAUDE.md Principio #8
+ * Valores canonicos: 0.85, 0.90, 0.92, 0.95 (light), 1.10, 1.20 (dark)
+ */
+.dss-toggle:not(.dss-toggle--disabled):hover .dss-toggle__track {
+  filter: brightness(0.95);
+}
+
+/*
+ * EXCECAO DOCUMENTADA: brightness(0.90)
+ *
+ * Valor canonico DSS para active state de controles interativos.
+ * Escurecimento moderado de 10% durante interacao ativa (mousedown).
+ *
+ * Referencia: CLAUDE.md Principio #8
+ * Precedente: DssCheckbox._base.scss :active
+ * Valores canonicos: 0.85, 0.90, 0.92, 0.95 (light), 1.10, 1.20 (dark)
+ */
+.dss-toggle:not(.dss-toggle--disabled):active .dss-toggle__track {
+  filter: brightness(0.9);
+}
+
+/* ==========================================================================
+   FOCUS STATE (A11y)
+   ========================================================================== */
+/*
+ * Focus ring aplicado ao track (.dss-toggle__track)
+ * quando o input nativo esta focado via :focus-visible.
+ * O tabindex existe SOMENTE no <input>, NUNCA no <label>.
+ */
+.dss-toggle__track--focused {
+  outline: var(--dss-border-width-md) solid var(--dss-focus-ring);
+  outline-offset: var(--dss-spacing-0_5); /* 2px */
+}
+
+/* ==========================================================================
+   DISABLED STATE
+   ========================================================================== */
+.dss-toggle--disabled {
+  opacity: var(--dss-opacity-disabled);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   LAYER 3: VARIANTS
+   Sem variantes visuais na Fase 1 (arquivo obrigatorio da arquitetura)
+   ========================================================================== */
+/* ==========================================================================
+   DssToggle - LAYER 3: VARIANTS (Index)
+
+   RESPONSABILIDADE: Importar todas as variantes visuais
+
+   NOTA: DssToggle NAO possui variantes visuais (filled, outline, flat)
+   no mesmo sentido que DssChip ou DssButton. O toggle tem um unico
+   estilo visual com estados (off/on).
+
+   Este arquivo existe para manter a ARQUITETURA OBRIGATORIA DE 4 CAMADAS
+   do Design System Sansys. Nenhuma camada pode ser omitida.
+
+   Decisao arquitetural: Fase 1 - Compact Control atomico sem variantes
+   visuais. Variantes futuras (se necessarias) devem ser propostas via RFC.
+   ========================================================================== */
+/* Nenhuma variante para importar */
+/* ==========================================================================
+   LAYER 4: OUTPUT
+   Brands e estados finais (dark mode, high contrast, reduced motion)
+   ========================================================================== */
+/* ==========================================================================
+   DssToggle - LAYER 4: OUTPUT (Index)
+
+   RESPONSABILIDADE: Importar todos os estilos de output
+
+   ORDEM DE IMPORTACAO:
+   1. brands - Estilos especificos de marca (Hub, Water, Waste)
+   2. states - Estados especiais (dark mode, high contrast, reduced motion)
+   ========================================================================== */
+/* ==========================================================================
+   DssToggle - LAYER 4: OUTPUT (Brands)
+
+   RESPONSABILIDADE: Estilos especificos para cada marca (Hub, Water, Waste)
+
+   REGRAS:
+   - Usa tokens de marca (--dss-{brand}-*)
+   - Aplicado via atributo data-brand (contexto ou prop)
+   - NAO sobrescreve logica de estados
+   - Cores aplicadas APENAS ao .dss-toggle__track quando checked
+
+   CENARIOS SUPORTADOS:
+   1. Brand via contexto (ancestral): <div data-brand="hub"><DssToggle /></div>
+   2. Brand via prop (mesmo elemento): <DssToggle brand="hub" />
+
+   GOLDEN COMPONENT: DssCheckbox - mesmo padrao de brand mixins
+   ========================================================================== */
+/* ==========================================================================
+   MIXINS PARA EVITAR DUPLICACAO
+   ========================================================================== */
+/* ==========================================================================
+   HUB BRAND
+   ========================================================================== */
+/* Cenario 1: Brand via contexto (ancestral) */
+[data-brand=hub] .dss-toggle {
+  /* Primary */
+}
+[data-brand=hub] .dss-toggle.dss-toggle--primary .dss-toggle__track--checked {
+  background-color: var(--dss-hub-primary);
+  border-color: var(--dss-hub-primary);
+  color: var(--dss-hub-on-primary);
+}
+[data-brand=hub] .dss-toggle.dss-toggle--primary .dss-toggle__track--checked .dss-toggle__thumb {
+  background-color: var(--dss-hub-on-primary);
+}
+[data-brand=hub] .dss-toggle {
+  /* Secondary */
+}
+[data-brand=hub] .dss-toggle.dss-toggle--secondary .dss-toggle__track--checked {
+  background-color: var(--dss-hub-secondary);
+  border-color: var(--dss-hub-secondary);
+  color: var(--dss-hub-on-secondary);
+}
+[data-brand=hub] .dss-toggle.dss-toggle--secondary .dss-toggle__track--checked .dss-toggle__thumb {
+  background-color: var(--dss-hub-on-secondary);
+}
+[data-brand=hub] .dss-toggle {
+  /* Accent */
+}
+[data-brand=hub] .dss-toggle.dss-toggle--accent .dss-toggle__track--checked {
+  background-color: var(--dss-hub-accent);
+  border-color: var(--dss-hub-accent);
+  color: var(--dss-hub-on-accent);
+}
+[data-brand=hub] .dss-toggle.dss-toggle--accent .dss-toggle__track--checked .dss-toggle__thumb {
+  background-color: var(--dss-hub-on-accent);
+}
+
+/* Cenario 2: Brand via prop (mesmo elemento) */
+.dss-toggle[data-brand=hub] {
+  /* Primary */
+}
+.dss-toggle[data-brand=hub].dss-toggle--primary .dss-toggle__track--checked {
+  background-color: var(--dss-hub-primary);
+  border-color: var(--dss-hub-primary);
+  color: var(--dss-hub-on-primary);
+}
+.dss-toggle[data-brand=hub].dss-toggle--primary .dss-toggle__track--checked .dss-toggle__thumb {
+  background-color: var(--dss-hub-on-primary);
+}
+.dss-toggle[data-brand=hub] {
+  /* Secondary */
+}
+.dss-toggle[data-brand=hub].dss-toggle--secondary .dss-toggle__track--checked {
+  background-color: var(--dss-hub-secondary);
+  border-color: var(--dss-hub-secondary);
+  color: var(--dss-hub-on-secondary);
+}
+.dss-toggle[data-brand=hub].dss-toggle--secondary .dss-toggle__track--checked .dss-toggle__thumb {
+  background-color: var(--dss-hub-on-secondary);
+}
+.dss-toggle[data-brand=hub] {
+  /* Accent */
+}
+.dss-toggle[data-brand=hub].dss-toggle--accent .dss-toggle__track--checked {
+  background-color: var(--dss-hub-accent);
+  border-color: var(--dss-hub-accent);
+  color: var(--dss-hub-on-accent);
+}
+.dss-toggle[data-brand=hub].dss-toggle--accent .dss-toggle__track--checked .dss-toggle__thumb {
+  background-color: var(--dss-hub-on-accent);
+}
+
+/* ==========================================================================
+   WATER BRAND
+   ========================================================================== */
+/* Cenario 1: Brand via contexto (ancestral) */
+[data-brand=water] .dss-toggle {
+  /* Primary */
+}
+[data-brand=water] .dss-toggle.dss-toggle--primary .dss-toggle__track--checked {
+  background-color: var(--dss-water-primary);
+  border-color: var(--dss-water-primary);
+  color: var(--dss-water-on-primary);
+}
+[data-brand=water] .dss-toggle.dss-toggle--primary .dss-toggle__track--checked .dss-toggle__thumb {
+  background-color: var(--dss-water-on-primary);
+}
+[data-brand=water] .dss-toggle {
+  /* Secondary */
+}
+[data-brand=water] .dss-toggle.dss-toggle--secondary .dss-toggle__track--checked {
+  background-color: var(--dss-water-secondary);
+  border-color: var(--dss-water-secondary);
+  color: var(--dss-water-on-secondary);
+}
+[data-brand=water] .dss-toggle.dss-toggle--secondary .dss-toggle__track--checked .dss-toggle__thumb {
+  background-color: var(--dss-water-on-secondary);
+}
+[data-brand=water] .dss-toggle {
+  /* Accent */
+}
+[data-brand=water] .dss-toggle.dss-toggle--accent .dss-toggle__track--checked {
+  background-color: var(--dss-water-accent);
+  border-color: var(--dss-water-accent);
+  color: var(--dss-water-on-accent);
+}
+[data-brand=water] .dss-toggle.dss-toggle--accent .dss-toggle__track--checked .dss-toggle__thumb {
+  background-color: var(--dss-water-on-accent);
+}
+
+/* Cenario 2: Brand via prop (mesmo elemento) */
+.dss-toggle[data-brand=water] {
+  /* Primary */
+}
+.dss-toggle[data-brand=water].dss-toggle--primary .dss-toggle__track--checked {
+  background-color: var(--dss-water-primary);
+  border-color: var(--dss-water-primary);
+  color: var(--dss-water-on-primary);
+}
+.dss-toggle[data-brand=water].dss-toggle--primary .dss-toggle__track--checked .dss-toggle__thumb {
+  background-color: var(--dss-water-on-primary);
+}
+.dss-toggle[data-brand=water] {
+  /* Secondary */
+}
+.dss-toggle[data-brand=water].dss-toggle--secondary .dss-toggle__track--checked {
+  background-color: var(--dss-water-secondary);
+  border-color: var(--dss-water-secondary);
+  color: var(--dss-water-on-secondary);
+}
+.dss-toggle[data-brand=water].dss-toggle--secondary .dss-toggle__track--checked .dss-toggle__thumb {
+  background-color: var(--dss-water-on-secondary);
+}
+.dss-toggle[data-brand=water] {
+  /* Accent */
+}
+.dss-toggle[data-brand=water].dss-toggle--accent .dss-toggle__track--checked {
+  background-color: var(--dss-water-accent);
+  border-color: var(--dss-water-accent);
+  color: var(--dss-water-on-accent);
+}
+.dss-toggle[data-brand=water].dss-toggle--accent .dss-toggle__track--checked .dss-toggle__thumb {
+  background-color: var(--dss-water-on-accent);
+}
+
+/* ==========================================================================
+   WASTE BRAND
+   ========================================================================== */
+/* Cenario 1: Brand via contexto (ancestral) */
+[data-brand=waste] .dss-toggle {
+  /* Primary */
+}
+[data-brand=waste] .dss-toggle.dss-toggle--primary .dss-toggle__track--checked {
+  background-color: var(--dss-waste-primary);
+  border-color: var(--dss-waste-primary);
+  color: var(--dss-waste-on-primary);
+}
+[data-brand=waste] .dss-toggle.dss-toggle--primary .dss-toggle__track--checked .dss-toggle__thumb {
+  background-color: var(--dss-waste-on-primary);
+}
+[data-brand=waste] .dss-toggle {
+  /* Secondary */
+}
+[data-brand=waste] .dss-toggle.dss-toggle--secondary .dss-toggle__track--checked {
+  background-color: var(--dss-waste-secondary);
+  border-color: var(--dss-waste-secondary);
+  color: var(--dss-waste-on-secondary);
+}
+[data-brand=waste] .dss-toggle.dss-toggle--secondary .dss-toggle__track--checked .dss-toggle__thumb {
+  background-color: var(--dss-waste-on-secondary);
+}
+[data-brand=waste] .dss-toggle {
+  /* Accent */
+}
+[data-brand=waste] .dss-toggle.dss-toggle--accent .dss-toggle__track--checked {
+  background-color: var(--dss-waste-accent);
+  border-color: var(--dss-waste-accent);
+  color: var(--dss-waste-on-accent);
+}
+[data-brand=waste] .dss-toggle.dss-toggle--accent .dss-toggle__track--checked .dss-toggle__thumb {
+  background-color: var(--dss-waste-on-accent);
+}
+
+/* Cenario 2: Brand via prop (mesmo elemento) */
+.dss-toggle[data-brand=waste] {
+  /* Primary */
+}
+.dss-toggle[data-brand=waste].dss-toggle--primary .dss-toggle__track--checked {
+  background-color: var(--dss-waste-primary);
+  border-color: var(--dss-waste-primary);
+  color: var(--dss-waste-on-primary);
+}
+.dss-toggle[data-brand=waste].dss-toggle--primary .dss-toggle__track--checked .dss-toggle__thumb {
+  background-color: var(--dss-waste-on-primary);
+}
+.dss-toggle[data-brand=waste] {
+  /* Secondary */
+}
+.dss-toggle[data-brand=waste].dss-toggle--secondary .dss-toggle__track--checked {
+  background-color: var(--dss-waste-secondary);
+  border-color: var(--dss-waste-secondary);
+  color: var(--dss-waste-on-secondary);
+}
+.dss-toggle[data-brand=waste].dss-toggle--secondary .dss-toggle__track--checked .dss-toggle__thumb {
+  background-color: var(--dss-waste-on-secondary);
+}
+.dss-toggle[data-brand=waste] {
+  /* Accent */
+}
+.dss-toggle[data-brand=waste].dss-toggle--accent .dss-toggle__track--checked {
+  background-color: var(--dss-waste-accent);
+  border-color: var(--dss-waste-accent);
+  color: var(--dss-waste-on-accent);
+}
+.dss-toggle[data-brand=waste].dss-toggle--accent .dss-toggle__track--checked .dss-toggle__thumb {
+  background-color: var(--dss-waste-on-accent);
+}
+
+/* ==========================================================================
+   DssToggle - LAYER 4: OUTPUT (States)
+
+   RESPONSABILIDADE: Estilos para estados especiais (dark mode, high contrast)
+
+   REGRAS:
+   - Usa media queries para preferencias do usuario
+   - Ajusta contraste e visibilidade
+   - Mantem acessibilidade WCAG 2.1 AA
+   - ::before NO ROOT reservado para touch target
+   - Track e thumb sao elementos <span>, nunca pseudo-elementos
+
+   GOLDEN COMPONENT: DssCheckbox._states.scss
+   ========================================================================== */
+/* ==========================================================================
+   DARK MODE
+   ========================================================================== */
+@media (prefers-color-scheme: dark) {
+  /*
+   * EXCECAO DOCUMENTADA: Brightness invertido para dark mode
+   *
+   * Em dark mode, fundos escuros precisam ser CLAREADOS no hover/active,
+   * nao escurecidos como em light mode.
+   *
+   * Valor: brightness(1.10) - canonico DSS
+   * Referencia: CLAUDE.md Principio #8
+   */
+  .dss-toggle:not(.dss-toggle--disabled):hover .dss-toggle__track--checked {
+    filter: brightness(1.1);
+  }
+  /*
+   * Active state em dark mode: brightness(1.20)
+   * Clareamento de 20% durante interacao ativa.
+   * Valor canonico DSS. Precedente: DssCheckbox._states.scss
+   */
+  .dss-toggle:not(.dss-toggle--disabled):active .dss-toggle__track--checked {
+    filter: brightness(1.2);
+  }
+  /* Disabled state em dark mode */
+  .dss-toggle--disabled {
+    opacity: var(--dss-opacity-disabled);
+  }
+  /* Error state em dark mode */
+  .dss-toggle--error .dss-toggle__track {
+    border-color: var(--dss-error-400);
+    color: var(--dss-error-400);
+  }
+  .dss-toggle--error .dss-toggle__label {
+    color: var(--dss-error-400);
+  }
+  .dss-toggle--error .dss-toggle__error {
+    color: var(--dss-error-400);
+  }
+}
+/* ==========================================================================
+   HIGH CONTRAST MODE
+   ========================================================================== */
+/*
+ * CONTEXTO DE ACESSIBILIDADE: prefers-contrast: more
+ *
+ * Em high contrast, bordas e outlines sao aumentados para
+ * garantir visibilidade maxima.
+ *
+ * Excecao: saturate(1.2) - valor canonico DSS
+ * Referencia: CLAUDE.md Principio #8
+ */
+@media (prefers-contrast: more) {
+  .dss-toggle__track {
+    /* Bordas mais visiveis em high contrast */
+    border-width: var(--dss-border-width-thick);
+  }
+  /* Focus ring mais forte */
+  .dss-toggle__track--focused {
+    outline-width: var(--dss-border-width-thick);
+    outline-offset: var(--dss-border-width-thick);
+  }
+  /* Cores mais saturadas quando checked */
+  .dss-toggle__track--checked {
+    filter: saturate(1.2);
+  }
+  /* Disabled mais distinto */
+  .dss-toggle--disabled {
+    opacity: var(--dss-opacity-50);
+  }
+  .dss-toggle--disabled .dss-toggle__label {
+    text-decoration: line-through;
+  }
+}
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .dss-toggle {
+    transition: none;
+  }
+  .dss-toggle__track {
+    transition: none;
+  }
+  .dss-toggle__thumb {
+    transition: none;
+  }
+}
+/* ==========================================================================
+   PRINT STYLES
+   ========================================================================== */
+@media print {
+  .dss-toggle {
+    /* Remove efeitos para impressao */
+    filter: none;
+    /* Remove touch target na impressao */
+  }
+  .dss-toggle::before {
+    display: none;
+  }
+  .dss-toggle__track {
+    /* Borda visivel para impressao */
+    border: var(--dss-border-width-md) solid currentColor;
+    filter: none;
+    background-color: transparent;
+  }
+  /* Thumb visivel na impressao */
+  .dss-toggle__thumb {
+    background-color: currentColor;
+  }
+}
+/* ==========================================================================
+   FORCED COLORS (Windows High Contrast)
+   ========================================================================== */
+/*
+ * CONTEXTO DE ACESSIBILIDADE: forced-colors: active
+ *
+ * Em Windows High Contrast Mode, o navegador IGNORA cores CSS customizadas.
+ * Valores como ButtonText, Highlight, GrayText sao keywords do sistema.
+ *
+ * Bordas e outlines usam valores absolutos porque:
+ * 1. Tokens CSS custom properties sao ignorados em forced-colors
+ * 2. Valores precisam ser visiveis no tema de alto contraste do usuario
+ *
+ * EXCECAO DOCUMENTADA: 2px, 3px
+ * Tokens CSS sao ignorados em forced-colors mode.
+ * Referencia: DSS_COMPONENT_ARCHITECTURE.md
+ * Precedente: DssCheckbox._states.scss
+ */
+@media (forced-colors: active) {
+  .dss-toggle__track {
+    /* Usa cores do sistema - tokens CSS sao ignorados */
+    border: 2px solid ButtonText;
+    background-color: ButtonFace;
+    forced-color-adjust: none;
+  }
+  /* Thumb em forced colors */
+  .dss-toggle__thumb {
+    background-color: ButtonText;
+  }
+  /* Checked state em forced colors */
+  .dss-toggle__track--checked {
+    background-color: Highlight;
+    border-color: Highlight;
+  }
+  .dss-toggle__track--checked .dss-toggle__thumb {
+    background-color: HighlightText;
+  }
+  /* Hover em forced colors */
+  .dss-toggle:not(.dss-toggle--disabled):hover .dss-toggle__track {
+    border-color: Highlight;
+  }
+  /* Focus em forced colors */
+  .dss-toggle__track--focused {
+    outline: 3px solid Highlight;
+  }
+  /* Disabled em forced colors */
+  .dss-toggle--disabled .dss-toggle__track {
+    border-color: GrayText;
+  }
+  .dss-toggle--disabled .dss-toggle__track .dss-toggle__thumb {
+    background-color: GrayText;
+  }
+  .dss-toggle--disabled .dss-toggle__label {
+    color: GrayText;
+  }
+  /* Error em forced colors */
+  .dss-toggle--error .dss-toggle__track {
+    border-color: LinkText;
+  }
+  .dss-toggle--error .dss-toggle__track .dss-toggle__thumb {
+    background-color: LinkText;
+  }
+}

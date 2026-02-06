@@ -1,0 +1,17 @@
+/* ==========================================================================
+   DssToggle - LAYER 3: VARIANTS (Index)
+
+   RESPONSABILIDADE: Importar todas as variantes visuais
+
+   NOTA: DssToggle NAO possui variantes visuais (filled, outline, flat)
+   no mesmo sentido que DssChip ou DssButton. O toggle tem um unico
+   estilo visual com estados (off/on).
+
+   Este arquivo existe para manter a ARQUITETURA OBRIGATORIA DE 4 CAMADAS
+   do Design System Sansys. Nenhuma camada pode ser omitida.
+
+   Decisao arquitetural: Fase 1 - Compact Control atomico sem variantes
+   visuais. Variantes futuras (se necessarias) devem ser propostas via RFC.
+   ========================================================================== */
+
+/* Nenhuma variante para importar */

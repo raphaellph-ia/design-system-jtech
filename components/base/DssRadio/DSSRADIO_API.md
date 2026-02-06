@@ -45,7 +45,7 @@ import DssRadio from '@dss/components/base/DssRadio/DssRadio.vue'
 | Prop | Tipo | Default | Descricao |
 |------|------|---------|-----------|
 | `disable` | `boolean` | `false` | Desabilita interacao. Aplica `opacity: 0.4`, `cursor: not-allowed`, `aria-disabled="true"`, `tabindex="-1"`. |
-| `dense` | `boolean` | `false` | Modo compacto. Remove touch target expandido (`::before { display: none }`). |
+| `dense` | `boolean` | `false` | Modo compacto: reduz gap, altura e tamanho da fonte, e remove touch target expandido (`::before { display: none }`). |
 | `error` | `boolean` | `false` | Estado de erro. Aplica borda vermelha e `aria-invalid="true"`. |
 | `errorMessage` | `string` | `undefined` | Mensagem de erro. Requer `error=true`. Renderiza `<span role="alert">` vinculado via `aria-describedby`. |
 

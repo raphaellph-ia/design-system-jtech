@@ -60,7 +60,7 @@ export interface RadioProps {
   /** Estado desabilitado */
   disable?: boolean
 
-  /** Modo compacto (sem touch target expandido) */
+  /** Modo compacto: reduz gap, altura e tamanho da fonte, e remove touch target expandido */
   dense?: boolean
 
   /** Estado de erro (validacao de formulario) */

@@ -1,0 +1,12 @@
+/* ==========================================================================
+   DssToggle - LAYER 4: OUTPUT (Index)
+
+   RESPONSABILIDADE: Importar todos os estilos de output
+
+   ORDEM DE IMPORTACAO:
+   1. brands - Estilos especificos de marca (Hub, Water, Waste)
+   2. states - Estados especiais (dark mode, high contrast, reduced motion)
+   ========================================================================== */
+
+@use 'brands';
+@use 'states';

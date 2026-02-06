@@ -104,7 +104,7 @@ const selected = ref('a')
 | `md` | 28px | 20px | `--dss-compact-control-height-md` |
 | `lg` | 32px | 24px | `--dss-compact-control-height-lg` |
 
-Touch target: 48px via `::before` (WCAG 2.5.5). Modo `dense` desativa touch target expandido.
+Touch target: 48px via `::before` (WCAG 2.5.5). Modo `dense` reduz gap, altura e tamanho da fonte, e remove touch target expandido.
 
 ---
 
@@ -261,7 +261,7 @@ Brands disponveis: `hub` (laranja), `water` (azul), `waste` (verde).
 | Opacidade | `--dss-opacity-disabled` | Disabled (0.4) |
 | Focus | `--dss-focus-ring` | Cor do outline |
 | Cor | `--dss-text-primary`, `--dss-error-{400,600}`, `--dss-gray-{200,400}` | Texto, erro, dark mode |
-| Brand | `--dss-{hub,water,waste}-{500,600,700}` | Cores de marca |
+| Brand | `--dss-{hub,water,waste}-{primary,secondary,accent}` | Cores de marca |
 
 ---
 

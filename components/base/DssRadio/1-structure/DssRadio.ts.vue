@@ -21,6 +21,14 @@ import type { RadioProps, RadioEmits } from '../types/radio.types'
 import { useRadioClasses } from '../composables/useRadioClasses'
 
 // ---------------------------------------------------------------------------
+// Component Options
+// ---------------------------------------------------------------------------
+defineOptions({
+  name: 'DssRadio',
+  inheritAttrs: false,
+})
+
+// ---------------------------------------------------------------------------
 // Props
 // ---------------------------------------------------------------------------
 const props = withDefaults(defineProps<RadioProps>(), {
@@ -133,6 +141,7 @@ defineExpose({
   <label
     :class="radioClasses"
     :data-brand="brand || undefined"
+    v-bind="$attrs"
   >
     <!-- LABEL ESQUERDO (quando leftLabel === true) -->
     <span
@@ -163,7 +172,7 @@ defineExpose({
     />
 
     <!-- CONTROLE VISUAL (circulo do radio) -->
-    <span :class="[controlClasses, controlColorClasses]">
+    <span :class="[controlClasses, controlColorClasses]" aria-hidden="true">
       <!-- INDICADOR DE SELECAO (circulo preenchido) -->
       <span
         v-if="isChecked"

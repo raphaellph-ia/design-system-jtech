@@ -13,6 +13,7 @@
   cursor: pointer;
   user-select: none;
   transition: opacity var(--dss-duration-200) var(--dss-easing-standard);
+  -webkit-tap-highlight-color: transparent;
 }
 .dss-radio::before {
   content: "";
@@ -159,6 +160,11 @@
   color: var(--dss-error-600);
 }
 
+.dss-radio--dense {
+  gap: var(--dss-spacing-1);
+  min-height: var(--dss-compact-control-height-sm);
+  font-size: var(--dss-font-size-xs);
+}
 .dss-radio--dense::before {
   display: none;
 }
@@ -166,135 +172,135 @@
 /* Layer 3: Variants — vazio na Fase 1 */
 /* Layer 4: Output — brands + states */
 [data-brand=hub] .dss-radio.dss-radio--primary .dss-radio__control--checked {
-  border-color: var(--dss-hub-600);
-  color: var(--dss-hub-600);
+  border-color: var(--dss-hub-primary);
+  color: var(--dss-hub-primary);
 }
 [data-brand=hub] .dss-radio.dss-radio--primary .dss-radio__dot {
-  background-color: var(--dss-hub-600);
+  background-color: var(--dss-hub-primary);
 }
 [data-brand=hub] .dss-radio.dss-radio--secondary .dss-radio__control--checked {
-  border-color: var(--dss-hub-700);
-  color: var(--dss-hub-700);
+  border-color: var(--dss-hub-secondary);
+  color: var(--dss-hub-secondary);
 }
 [data-brand=hub] .dss-radio.dss-radio--secondary .dss-radio__dot {
-  background-color: var(--dss-hub-700);
+  background-color: var(--dss-hub-secondary);
 }
 [data-brand=hub] .dss-radio.dss-radio--accent .dss-radio__control--checked {
-  border-color: var(--dss-hub-500);
-  color: var(--dss-hub-500);
+  border-color: var(--dss-hub-accent);
+  color: var(--dss-hub-accent);
 }
 [data-brand=hub] .dss-radio.dss-radio--accent .dss-radio__dot {
-  background-color: var(--dss-hub-500);
+  background-color: var(--dss-hub-accent);
 }
 
 [data-brand=water] .dss-radio.dss-radio--primary .dss-radio__control--checked {
-  border-color: var(--dss-water-600);
-  color: var(--dss-water-600);
+  border-color: var(--dss-water-primary);
+  color: var(--dss-water-primary);
 }
 [data-brand=water] .dss-radio.dss-radio--primary .dss-radio__dot {
-  background-color: var(--dss-water-600);
+  background-color: var(--dss-water-primary);
 }
 [data-brand=water] .dss-radio.dss-radio--secondary .dss-radio__control--checked {
-  border-color: var(--dss-water-700);
-  color: var(--dss-water-700);
+  border-color: var(--dss-water-secondary);
+  color: var(--dss-water-secondary);
 }
 [data-brand=water] .dss-radio.dss-radio--secondary .dss-radio__dot {
-  background-color: var(--dss-water-700);
+  background-color: var(--dss-water-secondary);
 }
 [data-brand=water] .dss-radio.dss-radio--accent .dss-radio__control--checked {
-  border-color: var(--dss-water-500);
-  color: var(--dss-water-500);
+  border-color: var(--dss-water-accent);
+  color: var(--dss-water-accent);
 }
 [data-brand=water] .dss-radio.dss-radio--accent .dss-radio__dot {
-  background-color: var(--dss-water-500);
+  background-color: var(--dss-water-accent);
 }
 
 [data-brand=waste] .dss-radio.dss-radio--primary .dss-radio__control--checked {
-  border-color: var(--dss-waste-600);
-  color: var(--dss-waste-600);
+  border-color: var(--dss-waste-primary);
+  color: var(--dss-waste-primary);
 }
 [data-brand=waste] .dss-radio.dss-radio--primary .dss-radio__dot {
-  background-color: var(--dss-waste-600);
+  background-color: var(--dss-waste-primary);
 }
 [data-brand=waste] .dss-radio.dss-radio--secondary .dss-radio__control--checked {
-  border-color: var(--dss-waste-700);
-  color: var(--dss-waste-700);
+  border-color: var(--dss-waste-secondary);
+  color: var(--dss-waste-secondary);
 }
 [data-brand=waste] .dss-radio.dss-radio--secondary .dss-radio__dot {
-  background-color: var(--dss-waste-700);
+  background-color: var(--dss-waste-secondary);
 }
 [data-brand=waste] .dss-radio.dss-radio--accent .dss-radio__control--checked {
-  border-color: var(--dss-waste-500);
-  color: var(--dss-waste-500);
+  border-color: var(--dss-waste-accent);
+  color: var(--dss-waste-accent);
 }
 [data-brand=waste] .dss-radio.dss-radio--accent .dss-radio__dot {
-  background-color: var(--dss-waste-500);
+  background-color: var(--dss-waste-accent);
 }
 
 .dss-radio[data-brand=hub].dss-radio--primary .dss-radio__control--checked {
-  border-color: var(--dss-hub-600);
-  color: var(--dss-hub-600);
+  border-color: var(--dss-hub-primary);
+  color: var(--dss-hub-primary);
 }
 .dss-radio[data-brand=hub].dss-radio--primary .dss-radio__dot {
-  background-color: var(--dss-hub-600);
+  background-color: var(--dss-hub-primary);
 }
 .dss-radio[data-brand=hub].dss-radio--secondary .dss-radio__control--checked {
-  border-color: var(--dss-hub-700);
-  color: var(--dss-hub-700);
+  border-color: var(--dss-hub-secondary);
+  color: var(--dss-hub-secondary);
 }
 .dss-radio[data-brand=hub].dss-radio--secondary .dss-radio__dot {
-  background-color: var(--dss-hub-700);
+  background-color: var(--dss-hub-secondary);
 }
 .dss-radio[data-brand=hub].dss-radio--accent .dss-radio__control--checked {
-  border-color: var(--dss-hub-500);
-  color: var(--dss-hub-500);
+  border-color: var(--dss-hub-accent);
+  color: var(--dss-hub-accent);
 }
 .dss-radio[data-brand=hub].dss-radio--accent .dss-radio__dot {
-  background-color: var(--dss-hub-500);
+  background-color: var(--dss-hub-accent);
 }
 
 .dss-radio[data-brand=water].dss-radio--primary .dss-radio__control--checked {
-  border-color: var(--dss-water-600);
-  color: var(--dss-water-600);
+  border-color: var(--dss-water-primary);
+  color: var(--dss-water-primary);
 }
 .dss-radio[data-brand=water].dss-radio--primary .dss-radio__dot {
-  background-color: var(--dss-water-600);
+  background-color: var(--dss-water-primary);
 }
 .dss-radio[data-brand=water].dss-radio--secondary .dss-radio__control--checked {
-  border-color: var(--dss-water-700);
-  color: var(--dss-water-700);
+  border-color: var(--dss-water-secondary);
+  color: var(--dss-water-secondary);
 }
 .dss-radio[data-brand=water].dss-radio--secondary .dss-radio__dot {
-  background-color: var(--dss-water-700);
+  background-color: var(--dss-water-secondary);
 }
 .dss-radio[data-brand=water].dss-radio--accent .dss-radio__control--checked {
-  border-color: var(--dss-water-500);
-  color: var(--dss-water-500);
+  border-color: var(--dss-water-accent);
+  color: var(--dss-water-accent);
 }
 .dss-radio[data-brand=water].dss-radio--accent .dss-radio__dot {
-  background-color: var(--dss-water-500);
+  background-color: var(--dss-water-accent);
 }
 
 .dss-radio[data-brand=waste].dss-radio--primary .dss-radio__control--checked {
-  border-color: var(--dss-waste-600);
-  color: var(--dss-waste-600);
+  border-color: var(--dss-waste-primary);
+  color: var(--dss-waste-primary);
 }
 .dss-radio[data-brand=waste].dss-radio--primary .dss-radio__dot {
-  background-color: var(--dss-waste-600);
+  background-color: var(--dss-waste-primary);
 }
 .dss-radio[data-brand=waste].dss-radio--secondary .dss-radio__control--checked {
-  border-color: var(--dss-waste-700);
-  color: var(--dss-waste-700);
+  border-color: var(--dss-waste-secondary);
+  color: var(--dss-waste-secondary);
 }
 .dss-radio[data-brand=waste].dss-radio--secondary .dss-radio__dot {
-  background-color: var(--dss-waste-700);
+  background-color: var(--dss-waste-secondary);
 }
 .dss-radio[data-brand=waste].dss-radio--accent .dss-radio__control--checked {
-  border-color: var(--dss-waste-500);
-  color: var(--dss-waste-500);
+  border-color: var(--dss-waste-accent);
+  color: var(--dss-waste-accent);
 }
 .dss-radio[data-brand=waste].dss-radio--accent .dss-radio__dot {
-  background-color: var(--dss-waste-500);
+  background-color: var(--dss-waste-accent);
 }
 
 @media (prefers-color-scheme: dark) {

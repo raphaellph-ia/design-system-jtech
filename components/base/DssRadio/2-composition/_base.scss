@@ -26,6 +26,9 @@
   user-select: none;
   transition: opacity var(--dss-duration-200) var(--dss-easing-standard);
 
+  // Prevenir highlight nativo em dispositivos moveis
+  -webkit-tap-highlight-color: transparent;
+
   // -----------------------------------------------------------------------
   // Touch target via ::before (WCAG 2.5.5 — reservado)
   // Garante area clicavel minima de 48px
@@ -229,8 +232,12 @@
   }
 }
 
-// --- Dense (sem touch target expandido) ---
+// --- Dense (reducao de densidade visual + sem touch target expandido) ---
 .dss-radio--dense {
+  gap: var(--dss-spacing-1); // 4px
+  min-height: var(--dss-compact-control-height-sm); // 24px
+  font-size: var(--dss-font-size-xs); // 12px
+
   &::before {
     display: none;
   }

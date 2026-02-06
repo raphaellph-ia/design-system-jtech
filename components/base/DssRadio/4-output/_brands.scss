@@ -16,36 +16,36 @@
   // --- Primary ---
   &.dss-radio--primary {
     .dss-radio__control--checked {
-      border-color: var(--dss-#{$brand}-600);
-      color: var(--dss-#{$brand}-600);
+      border-color: var(--dss-#{$brand}-primary);
+      color: var(--dss-#{$brand}-primary);
     }
 
     .dss-radio__dot {
-      background-color: var(--dss-#{$brand}-600);
+      background-color: var(--dss-#{$brand}-primary);
     }
   }
 
   // --- Secondary ---
   &.dss-radio--secondary {
     .dss-radio__control--checked {
-      border-color: var(--dss-#{$brand}-700);
-      color: var(--dss-#{$brand}-700);
+      border-color: var(--dss-#{$brand}-secondary);
+      color: var(--dss-#{$brand}-secondary);
     }
 
     .dss-radio__dot {
-      background-color: var(--dss-#{$brand}-700);
+      background-color: var(--dss-#{$brand}-secondary);
     }
   }
 
   // --- Accent ---
   &.dss-radio--accent {
     .dss-radio__control--checked {
-      border-color: var(--dss-#{$brand}-500);
-      color: var(--dss-#{$brand}-500);
+      border-color: var(--dss-#{$brand}-accent);
+      color: var(--dss-#{$brand}-accent);
     }
 
     .dss-radio__dot {
-      background-color: var(--dss-#{$brand}-500);
+      background-color: var(--dss-#{$brand}-accent);
     }
   }
 }
