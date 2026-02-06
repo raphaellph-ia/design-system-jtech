@@ -531,161 +531,151 @@
              <DssChipPreview {...state} variant="flat" isDarkMode={isDarkMode} />
            </div>
          }
-         controls={
-           <div className="space-y-5">
-             {/* Variante e Tamanho */}
-             <ControlSection title="Aparência">
-               <ControlGrid columns={2}>
-                 <VariantSelector
-                   value={state.variant}
-                   onChange={(v) => handleChange("variant", v)}
-                   variants={["filled", "outline", "flat"]}
-                 />
-                 <SizeSelector
-                   value={state.size}
-                   onChange={(s) => handleChange("size", s)}
-                   sizes={["xs", "sm", "md", "lg"]}
-                 />
-               </ControlGrid>
-             </ControlSection>
- 
-             {/* Forma */}
-             <ControlSection title="Forma">
-               <ToggleGroup
-                 options={[
-                   { value: "round", label: "Round (Pill)" },
-                   { value: "square", label: "Square" },
-                 ]}
-                 value={state.shape}
-                 onChange={(v) => handleChange("shape", v as ChipShape)}
-               />
-             </ControlSection>
- 
-             {/* Cores */}
-             <ControlSection title="Cor Semântica">
-               <ColorPicker
-                 colors={DSS_SEMANTIC_COLORS}
-                 value={state.color}
-                 onChange={(c) => handleChange("color", c)}
-               />
-             </ControlSection>
- 
-             <ControlSection title="Brand (sobrescreve cor)">
-               <BrandPicker
-                 brands={DSS_BRAND_COLORS}
-                 value={state.brand}
-                 onChange={(b) => handleChange("brand", b)}
-               />
-             </ControlSection>
- 
-             {/* Estados */}
-             <ControlSection title="Estados">
-               <ControlGrid columns={3}>
-                 <ToggleGroup
-                   options={[{ value: "selected", label: "Selected" }]}
-                   value={state.selected ? "selected" : ""}
-                   onChange={() => handleChange("selected", !state.selected)}
-                 />
-                 <ToggleGroup
-                   options={[{ value: "clickable", label: "Clickable" }]}
-                   value={state.clickable ? "clickable" : ""}
-                   onChange={() => handleChange("clickable", !state.clickable)}
-                 />
-                 <ToggleGroup
-                   options={[{ value: "removable", label: "Removable" }]}
-                   value={state.removable ? "removable" : ""}
-                   onChange={() => handleChange("removable", !state.removable)}
-                 />
-               </ControlGrid>
-               <ControlGrid columns={2} className="mt-3">
-                 <ToggleGroup
-                   options={[{ value: "disabled", label: "Disabled" }]}
-                   value={state.disabled ? "disabled" : ""}
-                   onChange={() => handleChange("disabled", !state.disabled)}
-                 />
-                 <ToggleGroup
-                   options={[{ value: "dense", label: "Dense" }]}
-                   value={state.dense ? "dense" : ""}
-                   onChange={() => handleChange("dense", !state.dense)}
-                 />
-               </ControlGrid>
-             </ControlSection>
- 
-             {/* Ícones */}
-             <ControlSection title="Ícones">
-               <ControlGrid columns={2}>
-                 <ToggleGroup
-                   options={[{ value: "iconLeft", label: "Ícone Esquerda" }]}
-                   value={state.hasIconLeft ? "iconLeft" : ""}
-                   onChange={() => handleChange("hasIconLeft", !state.hasIconLeft)}
-                 />
-                 <ToggleGroup
-                   options={[{ value: "iconRight", label: "Ícone Direita" }]}
-                   value={state.hasIconRight ? "iconRight" : ""}
-                   onChange={() => handleChange("hasIconRight", !state.hasIconRight)}
-                 />
-               </ControlGrid>
-             </ControlSection>
-           </div>
-         }
+        controls={
+          <div className="space-y-5">
+            <ControlGrid columns={2}>
+              {/* Variante */}
+              <VariantSelector
+                label="Variante"
+                variants={[
+                  { name: "filled", label: "Filled" },
+                  { name: "outline", label: "Outline" },
+                  { name: "flat", label: "Flat" },
+                ]}
+                selectedVariant={state.variant}
+                onSelect={(v) => handleChange("variant", v as Variant)}
+              />
+              {/* Tamanho */}
+              <SizeSelector
+                label="Tamanho"
+                sizes={[
+                  { name: "xs", label: "XS" },
+                  { name: "sm", label: "SM" },
+                  { name: "md", label: "MD", isDefault: true },
+                  { name: "lg", label: "LG" },
+                ]}
+                selectedSize={state.size}
+                onSelect={(s) => handleChange("size", s as Size)}
+              />
+            </ControlGrid>
+
+            {/* Forma */}
+            <ToggleGroup
+              label="Forma"
+              options={[
+                { name: "round", label: "Round (Pill)" },
+                { name: "square", label: "Square" },
+              ]}
+              values={{ round: state.shape === "round", square: state.shape === "square" }}
+              onToggle={(v) => handleChange("shape", v as ChipShape)}
+            />
+
+            {/* Cores */}
+            <ColorPicker
+              label="Cor Semântica"
+              colors={Object.values(DSS_SEMANTIC_COLORS)}
+              selectedColor={state.color}
+              onSelect={(c) => handleChange("color", c as SemanticColor)}
+              disabled={!!state.brand}
+            />
+
+            <BrandPicker
+              label="Brand (sobrescreve cor)"
+              brands={DSS_BRAND_COLORS}
+              selectedBrand={state.brand}
+              onSelect={(b) => handleChange("brand", b as BrandColor | null)}
+            />
+
+            {/* Estados */}
+            <ToggleGroup
+              label="Estados"
+              options={[
+                { name: "selected", label: "Selected" },
+                { name: "clickable", label: "Clickable" },
+                { name: "removable", label: "Removable" },
+                { name: "disabled", label: "Disabled" },
+                { name: "dense", label: "Dense" },
+              ]}
+              values={{
+                selected: state.selected,
+                clickable: state.clickable,
+                removable: state.removable,
+                disabled: state.disabled,
+                dense: state.dense,
+              }}
+              onToggle={(name) => handleChange(name as keyof DssChipState, !state[name as keyof DssChipState])}
+            />
+
+            {/* Ícones */}
+            <ToggleGroup
+              label="Ícones"
+              options={[
+                { name: "hasIconLeft", label: "Ícone Esquerda" },
+                { name: "hasIconRight", label: "Ícone Direita" },
+              ]}
+              values={{
+                hasIconLeft: state.hasIconLeft,
+                hasIconRight: state.hasIconRight,
+              }}
+              onToggle={(name) => handleChange(name as keyof DssChipState, !state[name as keyof DssChipState])}
+            />
+          </div>
+        }
        />
  
        {/* ================================================================
            SEÇÃO 7: ANATOMIA DE 4 CAMADAS
            ================================================================ */}
-       <AnatomySection
-         componentName="DssChip"
-         layers={[
-           {
-             name: "Structure",
-             path: "1-structure/",
-             description: "Template Vue + TypeScript + Props API",
-             details: [
-               "DssChip.ts.vue - Componente principal com Composition API",
-               "21 props documentadas (label, icon, variant, color, size, etc.)",
-               "3 eventos (@click, @remove, @update:selected)",
-               "4 slots (default, icon, icon-right, icon-remove)",
-               "ARIA completo: role='option', aria-selected, aria-disabled",
-             ],
-           },
-           {
-             name: "Composition",
-             path: "2-composition/",
-             description: "Estilos base + touch target + focus ring",
-             details: [
-               "Base styles com tokens DSS (spacing, typography, motion)",
-               "Touch target 48px via ::before (WCAG 2.5.5)",
-               "Focus ring tokenizado via ::after",
-               "Layout flexbox com gap responsivo",
-               "Suporte a prefers-reduced-motion",
-             ],
-           },
-           {
-             name: "Variants",
-             path: "3-variants/",
-             description: "Filled, Outline, Flat com estados",
-             details: [
-               "_filled.scss - Background sólido + texto contrastante",
-               "_outline.scss - Borda colorida + hover invertido",
-               "_flat.scss - Background transparente + hover sutil",
-               "Brightness canônicos: 0.85, 0.90, 0.92, 0.95 (light)",
-               "Dark mode: 1.10, 1.20 (invertidos)",
-             ],
-           },
-           {
-             name: "Output",
-             path: "4-output/",
-             description: "Brands + Dark Mode + High Contrast",
-             details: [
-               "brands.scss - Hub (laranja), Water (azul), Waste (verde)",
-               "states.scss - Dark mode, high contrast, forced colors",
-               "Suporte a prefers-contrast: more",
-               "Compatível com Windows High Contrast Mode",
-               "5 media queries de acessibilidade",
-             ],
-           },
-         ]}
-       />
+      <AnatomySection
+        componentName="DssChip"
+        layers={{
+          structure: {
+            files: ["DssChip.ts.vue", "types/chip.types.ts"],
+            description: "Template Vue + TypeScript + Props API com Composition API",
+            responsibilities: [
+              "21 props documentadas (label, icon, variant, color, size, etc.)",
+              "3 eventos (@click, @remove, @update:selected)",
+              "4 slots (default, icon, icon-right, icon-remove)",
+              "ARIA completo: role='option', aria-selected, aria-disabled",
+            ],
+            tokens: ["--dss-chip-height", "--dss-chip-padding", "--dss-chip-font-size"],
+          },
+          composition: {
+            files: ["_base.scss", "_layout.scss", "_focus.scss"],
+            description: "Estilos base + touch target + focus ring",
+            responsibilities: [
+              "Base styles com tokens DSS (spacing, typography, motion)",
+              "Touch target 48px via ::before (WCAG 2.5.5)",
+              "Focus ring tokenizado via ::after",
+              "Layout flexbox com gap responsivo",
+              "Suporte a prefers-reduced-motion",
+            ],
+            tokens: ["--dss-spacing-*", "--dss-font-*", "--dss-duration-*"],
+          },
+          variants: {
+            files: ["_filled.scss", "_outline.scss", "_flat.scss"],
+            description: "Filled, Outline, Flat com estados",
+            responsibilities: [
+              "_filled.scss - Background sólido + texto contrastante",
+              "_outline.scss - Borda colorida + hover invertido",
+              "_flat.scss - Background transparente + hover sutil",
+              "Brightness canônicos: 0.85, 0.90, 0.92, 0.95 (light)",
+              "Dark mode: 1.10, 1.20 (invertidos)",
+            ],
+          },
+          output: {
+            files: ["_brands.scss", "_states.scss"],
+            description: "Brands + Dark Mode + High Contrast",
+            responsibilities: [
+              "brands.scss - Hub (laranja), Water (azul), Waste (verde)",
+              "states.scss - Dark mode, high contrast, forced colors",
+              "Suporte a prefers-contrast: more",
+              "Compatível com Windows High Contrast Mode",
+              "5 media queries de acessibilidade",
+            ],
+          },
+        }}
+      />
  
        {/* ================================================================
            SEÇÃO 8: DOCUMENTAÇÃO TÉCNICA COLAPSÁVEL
