@@ -16,6 +16,7 @@ import DssBadgePage from "./pages/components/DssBadgePage";
 import DssCardPage from "./pages/components/DssCardPage";
 import DssInputPage from "./pages/components/DssInputPage";
 import DssAvatarPage from "./pages/components/DssAvatarPage";
+ import DssChipPage from "./pages/components/DssChipPage";
 import ComponentPlaceholder from "./pages/components/ComponentPlaceholder";
 import ArchitecturePage from "./pages/governance/ArchitecturePage";
 import ClassificationPage from "./pages/governance/ClassificationPage";
@@ -55,6 +56,7 @@ const App = () => (
             <Route path="/componentes/dss-badge" element={<DssBadgePage />} />
             <Route path="/componentes/dss-button" element={<DssButtonPage />} />
             <Route path="/componentes/dss-card" element={<DssCardPage />} />
+             <Route path="/componentes/dss-chip" element={<DssChipPage />} />
             <Route path="/componentes/dss-input" element={<DssInputPage />} />
             <Route path="/componentes/:componentId" element={<ComponentPlaceholder />} />
             
