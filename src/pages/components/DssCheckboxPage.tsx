@@ -513,66 +513,71 @@ export default function DssCheckboxPage() {
         }
         codePreview={generateCheckboxCode(state)}
         controls={
-          <>
+          <ControlGrid columns={2}>
             {/* Tamanho */}
-            <ControlSection title="Tamanho">
-              <SizeSelector
-                value={state.size}
-                onChange={(size) => handleChange("size", size)}
-              />
-            </ControlSection>
+            <SizeSelector
+              label="Tamanho"
+              sizes={[
+                { name: "xs", label: "XS" },
+                { name: "sm", label: "SM" },
+                { name: "md", label: "MD", isDefault: true },
+                { name: "lg", label: "LG" },
+              ]}
+              selectedSize={state.size}
+              onSelect={(size) => handleChange("size", size as Size)}
+            />
 
             {/* Cor Semântica */}
-            <ControlSection title="Cor Semântica">
-              <ControlGrid columns={4}>
-                <ColorPicker
-                  colors={DSS_SEMANTIC_COLORS}
-                  value={state.color}
-                  onChange={(color) => handleChange("color", color)}
-                />
-              </ControlGrid>
-            </ControlSection>
+            <ColorPicker
+              label="Cor Semântica"
+              colors={Object.values(DSS_SEMANTIC_COLORS)}
+              selectedColor={state.color?.name || state.color}
+              onSelect={(color) => handleChange("color", color as SemanticColor)}
+              disabled={!!state.brand}
+            />
 
             {/* Brand */}
-            <ControlSection title="Brand (exclusivo com cor)">
-              <BrandPicker
-                value={state.brand}
-                onChange={(brand) => handleChange("brand", brand)}
-              />
-            </ControlSection>
+            <BrandPicker
+              label="Brand (exclusivo com cor)"
+              brands={DSS_BRAND_COLORS}
+              selectedBrand={state.brand?.name || state.brand}
+              onSelect={(brand) => handleChange("brand", brand as BrandColor | null)}
+            />
 
             {/* Estados */}
-            <ControlSection title="Estados">
-              <ControlGrid columns={2}>
-                <ToggleGroup
-                  options={[
-                    { value: "checked", label: "Checked" },
-                    { value: "indeterminate", label: "Indeterminate" },
-                    { value: "disabled", label: "Disabled" },
-                    { value: "dense", label: "Dense" },
-                    { value: "leftLabel", label: "Left Label" },
-                  ]}
-                  value={[
-                    state.checked && "checked",
-                    state.indeterminate && "indeterminate",
-                    state.disabled && "disabled",
-                    state.dense && "dense",
-                    state.leftLabel && "leftLabel",
-                  ].filter(Boolean) as string[]}
-                  onChange={(values) => {
-                    handleChange("checked", values.includes("checked"));
-                    handleChange("indeterminate", values.includes("indeterminate"));
-                    handleChange("disabled", values.includes("disabled"));
-                    handleChange("dense", values.includes("dense"));
-                    handleChange("leftLabel", values.includes("leftLabel"));
-                  }}
-                  multiSelect
-                />
-              </ControlGrid>
-            </ControlSection>
+            <ToggleGroup
+              label="Estados"
+              options={[
+                { name: "checked", label: "Checked" },
+                { name: "indeterminate", label: "Indeterminate" },
+                { name: "disabled", label: "Disabled" },
+                { name: "dense", label: "Dense" },
+                { name: "leftLabel", label: "Left Label" },
+              ]}
+              values={{
+                checked: state.checked,
+                indeterminate: state.indeterminate,
+                disabled: state.disabled,
+                dense: state.dense,
+                leftLabel: state.leftLabel,
+              }}
+              onToggle={(name) => {
+                if (name === "checked") {
+                  handleChange("checked", !state.checked);
+                } else if (name === "indeterminate") {
+                  handleChange("indeterminate", !state.indeterminate);
+                } else if (name === "disabled") {
+                  handleChange("disabled", !state.disabled);
+                } else if (name === "dense") {
+                  handleChange("dense", !state.dense);
+                } else if (name === "leftLabel") {
+                  handleChange("leftLabel", !state.leftLabel);
+                }
+              }}
+            />
 
             {/* Label */}
-            <ControlSection title="Label">
+            <ControlSection label="Label">
               <input
                 type="text"
                 value={state.label}
@@ -586,7 +591,7 @@ export default function DssCheckboxPage() {
                 placeholder="Digite o label..."
               />
             </ControlSection>
-          </>
+          </ControlGrid>
         }
       />
 
@@ -594,50 +599,52 @@ export default function DssCheckboxPage() {
           SEÇÃO 7: ANATOMIA DE 4 CAMADAS
           ================================================================ */}
       <AnatomySection
-        title="Anatomia do DssCheckbox"
-        description="Arquitetura de 4 camadas conforme padrão DSS v2.2"
-        layers={[
-          {
-            name: "1-structure",
-            title: "Structure",
+        componentName="DssCheckbox"
+        layers={{
+          structure: {
+            files: ["_1-structure.scss"],
             description: "Tokens de sizing, border-radius, touch target",
-            details: [
-              "Usa --dss-compact-control-height-{xs,sm,md,lg}",
-              "Touch target >= 48px via ::before no root",
+            responsibilities: [
+              "Define dimensões base via tokens",
+              "Touch target >= 48px via ::before",
               "Border-radius via --dss-radius-sm",
             ],
+            tokens: [
+              "--dss-compact-control-height-xs",
+              "--dss-compact-control-height-sm",
+              "--dss-compact-control-height-md",
+              "--dss-compact-control-height-lg",
+              "--dss-radius-sm",
+            ],
           },
-          {
-            name: "2-composition",
-            title: "Composition",
+          composition: {
+            files: ["_2-composition.scss"],
             description: "Slots para label e posicionamento",
-            details: [
+            responsibilities: [
               "Slot default para label customizado",
-              "Prop leftLabel para posição do label",
+              "Prop leftLabel para posição",
               "Prop dense para espaçamento compacto",
             ],
           },
-          {
-            name: "3-variants",
-            title: "Variants",
+          variants: {
+            files: ["_3-variants.scss"],
             description: "Estados visuais do checkbox",
-            details: [
+            responsibilities: [
               "Estados: unchecked, checked, indeterminate",
               "7 exceções documentadas (EXC-01 a EXC-07)",
               "Fase 1: sem variantes visuais adicionais",
             ],
           },
-          {
-            name: "4-output",
-            title: "Output",
+          output: {
+            files: ["DssCheckbox.module.scss", "index.ts"],
             description: "Orchestrator final que compõe todas as camadas",
-            details: [
-              "DssCheckbox.module.scss importa Layers 2, 3, 4 em ordem",
+            responsibilities: [
+              "Importa Layers 2, 3, 4 em ordem",
               "Barrel exports em index.ts",
               "Re-export wrapper para Vue SFC",
             ],
           },
-        ]}
+        }}
       />
 
       {/* ================================================================
