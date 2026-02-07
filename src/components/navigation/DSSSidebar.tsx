@@ -67,6 +67,7 @@ const navigation = {
       { title: "DssBadge", url: "/componentes/dss-badge", icon: Badge, status: "stable" },
       { title: "DssChip", url: "/componentes/dss-chip", icon: Tag, status: "golden" },
       { title: "DssCheckbox", url: "/componentes/dss-checkbox", icon: CheckSquareIcon, status: "stable" },
+      { title: "DssToggle", url: "/componentes/dss-toggle", icon: Circle, status: "stable" },
       { title: "DssAvatar", url: "/componentes/dss-avatar", icon: User, status: "stable" },
     ],
   },
