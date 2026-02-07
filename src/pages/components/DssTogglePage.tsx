@@ -550,14 +550,13 @@ export default function DssTogglePage() {
             </ControlSection>
 
             {/* Cores Semânticas */}
-            <ControlSection title="Cor Semântica">
-              <ColorPicker
-                label="Cor"
-                colors={DSS_SEMANTIC_COLORS}
-                selectedColor={state.color}
-                onSelect={(color) => handleChange("color", color)}
-              />
-            </ControlSection>
+            <ColorPicker
+              label="Cor Semântica"
+              colors={Object.values(DSS_SEMANTIC_COLORS)}
+              selectedColor={state.color}
+              onSelect={(color) => handleChange("color", color)}
+              disabled={!!state.brand}
+            />
 
             {/* Brands */}
             <ControlSection title="Brand">
