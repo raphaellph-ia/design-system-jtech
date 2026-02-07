@@ -15,7 +15,6 @@ import React, { useState } from "react";
 import {
   DssPlayground,
   ControlSection,
-  ControlGrid,
   SizeSelector,
   ToggleGroup,
   ColorPicker,
@@ -534,22 +533,18 @@ export default function DssTogglePage() {
         codePreview={generateToggleCode(state)}
         controls={
           <div className="space-y-5">
-            {/* Tamanho */}
-            <ControlSection title="Tamanho">
-              <SizeSelector
-                label="Tamanho"
-                sizes={[
-                  { value: "xs", label: "XS" },
-                  { value: "sm", label: "SM" },
-                  { value: "md", label: "MD" },
-                  { value: "lg", label: "LG" },
-                ]}
-                selectedSize={state.size}
-                onSelect={(size) => handleChange("size", size as Size)}
-              />
-            </ControlSection>
+            <SizeSelector
+              label="Tamanho"
+              sizes={[
+                { name: "xs", label: "XS" },
+                { name: "sm", label: "SM" },
+                { name: "md", label: "MD", isDefault: true },
+                { name: "lg", label: "LG" },
+              ]}
+              selectedSize={state.size}
+              onSelect={(size) => handleChange("size", size as Size)}
+            />
 
-            {/* Cores Semânticas */}
             <ColorPicker
               label="Cor Semântica"
               colors={Object.values(DSS_SEMANTIC_COLORS)}
@@ -558,90 +553,52 @@ export default function DssTogglePage() {
               disabled={!!state.brand}
             />
 
-            {/* Brands */}
-            <ControlSection title="Brand">
-              <BrandPicker
-                label="Marca"
-                brands={DSS_BRAND_COLORS}
-                selectedBrand={state.brand}
-                onSelect={(brand) => handleChange("brand", brand)}
-              />
-            </ControlSection>
+            <BrandPicker
+              label="Brand (Sansys)"
+              brands={DSS_BRAND_COLORS}
+              selectedBrand={state.brand}
+              onSelect={(brand) => handleChange("brand", brand)}
+            />
 
-            {/* Estados */}
-            <ControlSection title="Estados">
-              <ControlGrid columns={2}>
-                <ToggleGroup
-                  label="Checked"
-                  options={[
-                    { value: "false", label: "Off" },
-                    { value: "true", label: "On" },
-                  ]}
-                  selectedValue={state.checked ? "true" : "false"}
-                  onSelect={(v) => handleChange("checked", v === "true")}
-                />
-                <ToggleGroup
-                  label="Disabled"
-                  options={[
-                    { value: "false", label: "Não" },
-                    { value: "true", label: "Sim" },
-                  ]}
-                  selectedValue={state.disabled ? "true" : "false"}
-                  onSelect={(v) => handleChange("disabled", v === "true")}
-                />
-                <ToggleGroup
-                  label="Error"
-                  options={[
-                    { value: "false", label: "Não" },
-                    { value: "true", label: "Sim" },
-                  ]}
-                  selectedValue={state.error ? "true" : "false"}
-                  onSelect={(v) => handleChange("error", v === "true")}
-                />
-                <ToggleGroup
-                  label="Dense"
-                  options={[
-                    { value: "false", label: "Não" },
-                    { value: "true", label: "Sim" },
-                  ]}
-                  selectedValue={state.dense ? "true" : "false"}
-                  onSelect={(v) => handleChange("dense", v === "true")}
-                />
-              </ControlGrid>
-            </ControlSection>
+            <ToggleGroup
+              label="Estados"
+              options={[
+                { name: "checked", label: "Checked" },
+                { name: "disabled", label: "Disabled" },
+                { name: "error", label: "Error" },
+                { name: "dense", label: "Dense" },
+                { name: "leftLabel", label: "Label à esquerda" },
+              ]}
+              values={{
+                checked: state.checked,
+                disabled: state.disabled,
+                error: state.error,
+                dense: state.dense,
+                leftLabel: state.leftLabel,
+              }}
+              onToggle={(name) => {
+                if (name === "checked") handleChange("checked", !state.checked);
+                if (name === "disabled") handleChange("disabled", !state.disabled);
+                if (name === "error") handleChange("error", !state.error);
+                if (name === "dense") handleChange("dense", !state.dense);
+                if (name === "leftLabel") handleChange("leftLabel", !state.leftLabel);
+              }}
+            />
 
-            {/* Label */}
-            <ControlSection title="Label">
-              <ControlGrid columns={2}>
-                <ToggleGroup
-                  label="Posição"
-                  options={[
-                    { value: "right", label: "Direita" },
-                    { value: "left", label: "Esquerda" },
-                  ]}
-                  selectedValue={state.leftLabel ? "left" : "right"}
-                  onSelect={(v) => handleChange("leftLabel", v === "left")}
+            <ControlSection label="Texto do label">
+              <div className="w-full">
+                <input
+                  type="text"
+                  value={state.label}
+                  onChange={(e) => handleChange("label", e.target.value)}
+                  className="w-full px-3 py-1.5 text-sm rounded border"
+                  style={{
+                    backgroundColor: "var(--jtech-card-bg)",
+                    borderColor: "var(--jtech-card-border)",
+                    color: "var(--jtech-text-body)",
+                  }}
                 />
-                <div>
-                  <label 
-                    className="text-xs font-medium mb-1 block"
-                    style={{ color: "var(--jtech-text-body)" }}
-                  >
-                    Texto do Label
-                  </label>
-                  <input
-                    type="text"
-                    value={state.label}
-                    onChange={(e) => handleChange("label", e.target.value)}
-                    className="w-full px-3 py-1.5 text-sm rounded border"
-                    style={{
-                      backgroundColor: "var(--jtech-card-bg)",
-                      borderColor: "var(--jtech-card-border)",
-                      color: "var(--jtech-text-body)",
-                    }}
-                  />
-                </div>
-              </ControlGrid>
+              </div>
             </ControlSection>
           </div>
         }
@@ -654,43 +611,48 @@ export default function DssTogglePage() {
         componentName="DssToggle"
         layers={{
           structure: {
-            description: "Template base do toggle com input nativo, track e thumb. Define a estrutura semântica com role='switch' e acessibilidade.",
-            details: [
-              "Input nativo oculto para form submission",
-              "Track (trilha) com estados visuais",
-              "Thumb (botão deslizante) com transição",
-              "Label com posicionamento flexível",
-              "Touch target de 48px para mobile",
+            files: ["components/base/DssToggle/1-structure/DssToggle.ts.vue"],
+            description:
+              "Template base do toggle com input nativo, track e thumb. Define a estrutura semântica com role='switch' e acessibilidade.",
+            responsibilities: [
+              "Input nativo oculto para acessibilidade e submit de formulários",
+              "Track (trilha) e thumb (knob) com estrutura BEM",
+              "Label via prop ou slot, com suporte a leftLabel",
+              "ARIA: role='switch', aria-checked, aria-describedby para erro",
             ],
+            codeExample: `<DssToggle v-model="enabled" label="Ativar notificações" />`,
           },
           composition: {
-            description: "Composables que gerenciam estados e classes CSS do toggle.",
-            details: [
-              "useToggleClasses: gerencia classes BEM",
-              "trackColorClasses: aplica cores do tema/brand",
-              "isChecked: computed de estado ativo",
-              "isFocused: controle de focus ring",
-              "computedTabindex: gestão de navegação",
+            files: ["components/base/DssToggle/composables/useToggleClasses.ts"],
+            description:
+              "Composables e computeds que gerenciam estados, classes e acessibilidade.",
+            responsibilities: [
+              "useToggleClasses: classes do root + cor do track",
+              "isChecked: suporta boolean e array mode",
+              "computedTabindex: foco consistente e previsível",
+              "errorDescribedBy: ligação entre input e mensagem de erro",
             ],
           },
           variants: {
-            description: "SCSS com variáveis CSS e modificadores BEM para cada variante.",
-            details: [
+            files: ["components/base/DssToggle/DssToggle.vue"],
+            description:
+              "Variações visuais por tamanho, cor/brand e estados (checked/disabled/error/dense).",
+            responsibilities: [
               "Tamanhos: xs, sm, md, lg",
-              "Cores: primary, secondary, positive, negative, warning, info",
-              "Brands: hub, water, waste",
-              "Estados: checked, disabled, error, dense",
-              "Posição do label: left-label",
+              "Cores semânticas no track quando checked (sem brand)",
+              "Brand via data-brand + classe dss-toggle--{color}",
+              "Estados: checked, disabled, error, dense, left-label",
             ],
           },
           output: {
-            description: "Componente final exportado com tipagem TypeScript completa.",
-            details: [
-              "Props tipadas via ToggleProps interface",
-              "Eventos: update:modelValue",
+            files: ["components/base/DssToggle/DssToggle.vue"],
+            description:
+              "Componente final exportado com tipagem TypeScript e API pública (focus/blur).",
+            responsibilities: [
+              "Props tipadas via ToggleProps + defaults",
+              "Emits: update:modelValue",
               "Expose: focus(), blur()",
               "Slots: default (label customizado)",
-              "Suporte a v-model e array mode",
             ],
           },
         }}
