@@ -18,6 +18,7 @@ import DssInputPage from "./pages/components/DssInputPage";
 import DssAvatarPage from "./pages/components/DssAvatarPage";
 import DssChipPage from "./pages/components/DssChipPage";
 import DssCheckboxPage from "./pages/components/DssCheckboxPage";
+import DssTogglePage from "./pages/components/DssTogglePage";
 import ComponentPlaceholder from "./pages/components/ComponentPlaceholder";
 import ArchitecturePage from "./pages/governance/ArchitecturePage";
 import ClassificationPage from "./pages/governance/ClassificationPage";
@@ -59,6 +60,7 @@ const App = () => (
             <Route path="/componentes/dss-card" element={<DssCardPage />} />
              <Route path="/componentes/dss-chip" element={<DssChipPage />} />
             <Route path="/componentes/dss-checkbox" element={<DssCheckboxPage />} />
+            <Route path="/componentes/dss-toggle" element={<DssTogglePage />} />
             <Route path="/componentes/dss-input" element={<DssInputPage />} />
             <Route path="/componentes/:componentId" element={<ComponentPlaceholder />} />
             
