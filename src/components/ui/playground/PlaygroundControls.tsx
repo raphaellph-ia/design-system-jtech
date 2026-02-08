@@ -195,44 +195,39 @@ export function FeedbackColorPicker({
 // ==========================================================================
 // BRAND PICKER - Seletor de marcas (Hub, Water, Waste)
 // ==========================================================================
+// PLAYGROUND_STANDARD v3.1: Botão "Nenhum" é PROIBIDO
+// showNone está mantido apenas para retrocompatibilidade mas default é false
 
 interface BrandPickerProps {
   brands: Record<string, BrandColor>;
   selectedBrand: string | null;
   onSelect: (brand: string | null) => void;
   label?: string;
-  /** Mostra opção "Nenhum" para limpar seleção */
+  /** @deprecated PROIBIDO pelo PLAYGROUND_STANDARD v3.1 - NÃO usar */
   showNone?: boolean;
+  /** Desativa a seleção quando color está ativo */
+  disabled?: boolean;
 }
 
 export function BrandPicker({ 
   brands, 
   selectedBrand, 
   onSelect,
-  label = "Brand (Sansys)",
-  showNone = true,
+  label = "Brand",
+  showNone = false, // PADRÃO: false (v3.1)
+  disabled = false,
 }: BrandPickerProps) {
   return (
     <ControlSection label={label}>
-      {showNone && (
-        <PlaygroundButton
-          onClick={() => onSelect(null)}
-          isSelected={!selectedBrand}
-          selectedBg="var(--dss-jtech-accent)"
-          selectedColor="#ffffff"
-        >
-          Nenhum
-        </PlaygroundButton>
-      )}
       {Object.values(brands).map((b) => (
         <PlaygroundButton
           key={b.name}
-          onClick={() => onSelect(b.name)}
-          isSelected={selectedBrand === b.name}
+          onClick={() => !disabled && onSelect(b.name)}
+          isSelected={selectedBrand === b.name && !disabled}
           selectedBg={b.principal}
           selectedColor="#ffffff"
           selectedBorder={b.principal}
-          className="flex items-center gap-1.5"
+          className={`flex items-center gap-1.5 ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
         >
           <span>{b.icon}</span>
           {b.label}
@@ -387,21 +382,25 @@ export function IconSelector({
 // ==========================================================================
 // CONTROL GRID - Layout responsivo para múltiplos controles
 // ==========================================================================
+// PLAYGROUND_STANDARD v3.1: Mínimo 4 colunas em telas largas, grid horizontal
 
 interface ControlGridProps {
   children: React.ReactNode;
-  columns?: 1 | 2 | 3;
+  /** Número de colunas (2-6). Default: 4 conforme PLAYGROUND_STANDARD v3.1 */
+  columns?: 2 | 3 | 4 | 5 | 6;
 }
 
-export function ControlGrid({ children, columns = 3 }: ControlGridProps) {
+export function ControlGrid({ children, columns = 4 }: ControlGridProps) {
   const colsClass = {
-    1: "grid-cols-1",
-    2: "grid-cols-1 md:grid-cols-2",
-    3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+    2: "grid-cols-1 sm:grid-cols-2",
+    3: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
+    4: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
+    5: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5",
+    6: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6",
   };
 
   return (
-    <div className={`grid ${colsClass[columns]} gap-6`}>
+    <div className={`grid ${colsClass[columns]} gap-4`}>
       {children}
     </div>
   );

@@ -30,6 +30,14 @@ import { PlaygroundPreviewArea } from "./PlaygroundPreviewArea";
 import { PlaygroundCodePreview } from "./PlaygroundCodePreview";
 import { ThemeToggle } from "./PlaygroundControls";
 
+/**
+ * PLAYGROUND_STANDARD v3.1 Props
+ * 
+ * PROIBIDO (v3.1):
+ * - activeToken/tokenValue: Metadados de debug abaixo do código
+ * - showHeader: Header é sempre mostrado no layout canonical
+ * - layout !== "canonical": Layouts alternativos são proibidos
+ */
 interface DssPlaygroundProps {
   /** Título do playground */
   title?: string;
@@ -41,9 +49,9 @@ interface DssPlaygroundProps {
   controls: React.ReactNode;
   /** Código gerado */
   codePreview: string;
-  /** Token ativo (opcional) */
+  /** @deprecated PROIBIDO pelo v3.1 - Token debug não é permitido */
   activeToken?: string;
-  /** Valor do token ativo (opcional) */
+  /** @deprecated PROIBIDO pelo v3.1 - Token debug não é permitido */
   tokenValue?: string;
   /** Modo escuro ativo */
   isDarkMode: boolean;
@@ -53,9 +61,8 @@ interface DssPlaygroundProps {
   previewMinHeight?: string;
   /**
    * Layout do playground:
-   * - "canonical": Padrão PLAYGROUND_STANDARD v3 (controles topo, preview+code lado a lado abaixo)
-   * - "horizontal": Layout legacy (preview à esquerda, controles+code à direita)
-   * - "vertical": Layout empilhado
+   * - "canonical": ÚNICO layout válido (PLAYGROUND_STANDARD v3.1)
+   * @deprecated Outros layouts são proibidos pelo v3.1
    */
   layout?: "canonical" | "horizontal" | "vertical";
   /** Mostrar header do card */
@@ -72,8 +79,9 @@ export function DssPlayground({
   previewContent,
   controls,
   codePreview,
-  activeToken,
-  tokenValue,
+  // PROIBIDO pelo v3.1 - ignoramos activeToken e tokenValue
+  activeToken: _activeToken,
+  tokenValue: _tokenValue,
   isDarkMode,
   onDarkModeToggle,
   previewMinHeight = "360px",
@@ -82,13 +90,13 @@ export function DssPlayground({
   className = "",
   previewRatio = 0.7,
 }: DssPlaygroundProps) {
-  // Layout canônico: controles topo, preview+code lado a lado abaixo
+  // PLAYGROUND_STANDARD v3.1: Apenas layout canônico é válido
   const isCanonical = layout === "canonical";
   const isHorizontal = layout === "horizontal";
 
-  // Calcular grid template para layout canonical
-  const previewCols = Math.round(previewRatio * 12);
-  const codeCols = 12 - previewCols;
+  // Calcular proporções para grid flexbox
+  const previewWidth = `${Math.round(previewRatio * 100)}%`;
+  const codeWidth = `${Math.round((1 - previewRatio) * 100)}%`;
 
   return (
     <Card
@@ -120,19 +128,20 @@ export function DssPlayground({
       <CardContent className="p-6">
         {isCanonical ? (
           /* ========================================
-           * LAYOUT CANÔNICO (PLAYGROUND_STANDARD v3)
+           * LAYOUT CANÔNICO (PLAYGROUND_STANDARD v3.1)
            * ========================================
            * Estrutura:
            * ┌──────────────────────────────────────┐
-           * │ CONTROLS ZONE (topo)                 │
+           * │ CONTROLS ZONE (topo, grid horizontal)│
            * └──────────────────────────────────────┘
            * ┌────────────────────────┬─────────────┐
-           * │     PREVIEW AREA       │  CODE AREA  │
+           * │     PREVIEW PANEL      │  CODE PANEL │
+           * │   (título obrigatório) │  (título)   │
            * │    (widthRatio 0.7)    │ (ratio 0.3) │
            * └────────────────────────┴─────────────┘
            */
           <div className="space-y-6">
-            {/* CONTROLS ZONE - Topo */}
+            {/* CONTROLS ZONE - Topo (grid horizontal obrigatório) */}
             <div className="space-y-4">
               {!showHeader && (
                 <ThemeToggle isDarkMode={isDarkMode} onToggle={onDarkModeToggle} />
@@ -140,27 +149,25 @@ export function DssPlayground({
               {controls}
             </div>
 
-            {/* CONTENT ZONE - Preview + Code lado a lado */}
-            <div 
-              className="grid gap-6"
-              style={{
-                gridTemplateColumns: `repeat(${previewCols}, 1fr) repeat(${codeCols}, 1fr)`,
-              }}
-            >
-              {/* Preview Area - Maior */}
-              <div style={{ gridColumn: `span ${previewCols}` }}>
-                <PlaygroundPreviewArea isDarkMode={isDarkMode} minHeight={previewMinHeight}>
+            {/* CONTENT ZONE - Preview + Code lado a lado, alinhados pelo topo */}
+            <div className="flex gap-6 items-start">
+              {/* Preview Panel - Maior, com título obrigatório */}
+              <div style={{ width: previewWidth, minWidth: 0 }}>
+                <PlaygroundPreviewArea 
+                  isDarkMode={isDarkMode} 
+                  minHeight={previewMinHeight}
+                  title="Preview"
+                >
                   {previewContent}
                 </PlaygroundPreviewArea>
               </div>
 
-              {/* Code Area - Menor */}
-              <div style={{ gridColumn: `span ${codeCols}` }} className="flex flex-col">
+              {/* Code Panel - Menor, com título obrigatório */}
+              <div style={{ width: codeWidth, minWidth: 0 }} className="flex flex-col">
                 <PlaygroundCodePreview
                   code={codePreview}
-                  activeToken={activeToken}
-                  tokenValue={tokenValue}
-                  maxHeight="240px"
+                  label="Código"
+                  maxHeight="320px"
                 />
               </div>
             </div>
@@ -168,6 +175,7 @@ export function DssPlayground({
         ) : (
           /* ========================================
            * LAYOUT LEGACY (horizontal/vertical)
+           * @deprecated PROIBIDO pelo PLAYGROUND_STANDARD v3.1
            * ======================================== */
           <div
             className={`gap-6 ${
@@ -187,8 +195,6 @@ export function DssPlayground({
               {controls}
               <PlaygroundCodePreview
                 code={codePreview}
-                activeToken={activeToken}
-                tokenValue={tokenValue}
               />
             </div>
           </div>
