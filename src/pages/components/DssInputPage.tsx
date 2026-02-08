@@ -460,17 +460,6 @@ export default function DssInputPage() {
     return code;
   };
 
-  // Token ativo baseado na seleção
-  const getActiveToken = () => {
-    if (selectedBrand) {
-      return DSS_BRAND_COLORS[selectedBrand]?.tokens.principal;
-    }
-    if (selectedColor) {
-      return DSS_SEMANTIC_COLORS[selectedColor]?.tokens.base;
-    }
-    return undefined;
-  };
-
   // Get prefix icon
   const getPrefixIcon = () => {
     switch (selectedType) {
@@ -517,14 +506,16 @@ export default function DssInputPage() {
         ]}
       />
 
-      {/* SEÇÃO 2: PLAYGROUND INTERATIVO (COMPONENTE UNIFICADO) */}
+      {/* SEÇÃO 2: PLAYGROUND INTERATIVO - PLAYGROUND_STANDARD v3.1 */}
       <SectionHeader title="Playground" titleAccent="Interativo" badge="Live Preview" />
 
       <DssPlayground
+        layout="canonical"
         title="Configure o Input"
         description="Selecione as props e veja o resultado em tempo real."
         isDarkMode={isDarkMode}
         onDarkModeToggle={() => setIsDarkMode(!isDarkMode)}
+        previewRatio={0.65}
         previewContent={
           <DssInputPreview
             variant={selectedVariant}
@@ -546,41 +537,19 @@ export default function DssInputPage() {
           />
         }
         controls={
-          <ControlGrid columns={3}>
+          <ControlGrid columns={4}>
+            {/* Linha 1: Variant, Type, Color, Brand */}
             <VariantSelector
               variants={variants}
               selectedVariant={selectedVariant}
               onSelect={setSelectedVariant}
             />
-            <div className="space-y-2">
-              <label
-                className="text-sm font-semibold block"
-                style={{ color: "var(--jtech-heading-tertiary)" }}
-              >
-                Type
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {inputTypes.map((t) => (
-                  <button
-                    key={t.name}
-                    onClick={() => setSelectedType(t.name)}
-                    className={`px-3 py-1.5 rounded text-xs font-medium transition-all duration-200 flex items-center gap-1.5 ${
-                      selectedType === t.name
-                        ? "text-white"
-                        : "hover:bg-white/10"
-                    }`}
-                    style={{
-                      backgroundColor: selectedType === t.name ? "var(--dss-jtech-accent)" : "rgba(255,255,255,0.05)",
-                      border: `1px solid ${selectedType === t.name ? "var(--dss-jtech-accent)" : "var(--jtech-card-border)"}`,
-                      color: selectedType === t.name ? "#ffffff" : "var(--jtech-text-body)",
-                    }}
-                  >
-                    <t.icon size={12} />
-                    {t.label}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <VariantSelector
+              label="Type"
+              variants={inputTypes.map(t => ({ name: t.name, label: t.label }))}
+              selectedVariant={selectedType}
+              onSelect={setSelectedType}
+            />
             <ColorPicker
               label="Color"
               colors={Object.values(DSS_SEMANTIC_COLORS)}
@@ -592,7 +561,9 @@ export default function DssInputPage() {
               brands={DSS_BRAND_COLORS}
               selectedBrand={selectedBrand}
               onSelect={handleBrandChange}
+              disabled={!!selectedColor}
             />
+            {/* Linha 2: Estados e Extras */}
             <ToggleGroup
               label="Estados"
               options={stateOptions}
@@ -608,7 +579,6 @@ export default function DssInputPage() {
           </ControlGrid>
         }
         codePreview={generateCode()}
-        activeToken={getActiveToken()}
       />
 
       {/* Anatomia 4 Camadas */}
