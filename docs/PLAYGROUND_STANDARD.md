@@ -131,6 +131,22 @@ interface PlaygroundConfig {
 ```
 ┌──────────────────────────────────────────────┐
 │ CONTROLS ZONE (topo, fixa)                   │
+│ Grid horizontal obrigatório (mín. 4 cols)   │
+└──────────────────────────────────────────────┘
+
+┌───────────────────────────────┬──────────────┐n│                               │              │
+│        PREVIEW PANEL          │  CODE PANEL  │
+│   (área prioritária maior)    │              │
+│   com título obrigatório      │  com título  │
+│                               │              │
+└───────────────────────────────┴──────────────┘
+```
+
+### Contrato Declarativo
+
+```
+┌──────────────────────────────────────────────┐
+│ CONTROLS ZONE (topo, fixa)                   │
 └──────────────────────────────────────────────┘
 
 ┌───────────────────────────────┬──────────────┐
@@ -149,8 +165,11 @@ layout: {
 
   controls: {
     position: "top",
+    layout: "grid",
+    minColumns: 4,
+    maxColumns: 6,
     wrap: true,
-    maxColumns: 4
+    avoidVerticalStack: true
   },
 
   content: {
@@ -174,9 +193,29 @@ layout: {
 ## 🤖 AI Layout Rules (MANDATORY)
 
 * AI MUST render controls **only at the top**
+
+* AI MUST render controls in a **horizontal grid layout**
+
+* AI MUST ensure a minimum of **4 selectors per row** when space allows
+
+* AI MUST NOT stack selectors vertically when horizontal space exists
+
+* AI MUST render Preview and Code as **semantic panels**
+
+* AI MUST render a **title/header** for Preview Panel and Code Panel
+
+* AI MUST align Preview Panel and Code Panel by top edge
+
+* AI MUST NOT decide layout variations
+
+* AI MUST render controls **only at the top**
+
 * AI MUST NOT render controls on left or right
+
 * AI MUST render Preview and Code **side by side below controls**
+
 * Preview MUST be visually larger than Code
+
 * AI MUST NOT decide layout variations
 
 ---
@@ -206,6 +245,7 @@ sectionOrder: [
 * `color` e `brand` são **mutuamente exclusivos**
 * **NÃO EXISTE** botão "nenhum"
 * ausência de seleção é implícita
+* estados nulos **não são representados por UI**
 
 ### Contrato
 
@@ -219,7 +259,8 @@ brand: {
   type: "brand",
   exclusiveWith: "color",
   ui: {
-    showNoneOption: false
+    showNoneOption: false,
+    forbidNoneOption: true
   }
 }
 ```
@@ -276,12 +317,15 @@ O componente **NUNCA pode desaparecer**.
 
 O código é **produção real**.
 
+⚠️ Elementos de debug ou metadados auxiliares são **explicitamente proibidos**.
+
 ```ts
 codeGeneration: {
   mode: "production",
   omitDefaults: true,
   validateAgainstTypes: true,
-  sourceOfTruth: "component-api"
+  sourceOfTruth: "component-api",
+  forbidTokenMetadataUI: true
 }
 ```
 
@@ -296,10 +340,32 @@ codeGeneration: {
 
 ## ❌ Itens Proibidos
 
-* Botão "nenhum"
-* Token debug abaixo do código
+* Botão "nenhum" (em qualquer seletor)
+
+* Qualquer UI representando estado nulo
+
+* Token debug, token label ou metadata abaixo do código
+
+* Layout empilhado de seletores quando houver espaço horizontal
+
+* Preview sem título
+
+* Código sem título
+
 * Layout alternativo
+
 * Preview invisível
+
+* Estado inválido silencioso
+
+* Botão "nenhum"
+
+* Token debug abaixo do código
+
+* Layout alternativo
+
+* Preview invisível
+
 * Estado inválido silencioso
 
 ---
