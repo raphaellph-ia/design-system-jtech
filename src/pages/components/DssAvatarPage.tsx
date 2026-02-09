@@ -9,19 +9,18 @@ import {
   XCircle,
   AlertTriangle,
   Info,
-  Crown,
-  Droplet,
-  Leaf,
+  BookOpen,
+  Shield,
 } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { AnatomySection } from "@/components/ui/AnatomySection";
 import { CollapsibleSection } from "@/components/ui/CollapsibleSection";
 
-// Importar sistema de Playground UNIFICADO
 import {
   DssPlayground,
   ControlGrid,
+  VariantSelector,
   ColorPicker,
   BrandPicker,
   SizeSelector,
@@ -29,37 +28,32 @@ import {
   DSS_SEMANTIC_COLORS,
   DSS_BRAND_COLORS,
 } from "@/components/ui/playground";
-import { PlaygroundButton } from "@/components/ui/PlaygroundButton";
 
 // ============================================================================
-// DADOS ESPECÍFICOS DO DSSAVATAR
+// DADOS DO COMPONENTE
 // ============================================================================
 
-// Cores de Status
-const statusColors = {
-  online: { label: "Online", color: "#4dd228", token: "--dss-positive" },
-  away: { label: "Away", color: "#fabd14", token: "--dss-warning" },
-  busy: { label: "Busy", color: "#d8182e", token: "--dss-negative" },
-  offline: { label: "Offline", color: "#9ca3af", token: "--dss-neutral-400" },
-};
-
-// Tamanhos do Avatar baseados no DssAvatar.md
-const sizes = [
-  { name: "xs", label: "XS", dimension: "32px", fontSize: "12px", iconSize: "16px", token: "32px (fixo)", usage: "Listas compactas, comentários" },
-  { name: "sm", label: "SM", dimension: "40px", fontSize: "14px", iconSize: "20px", token: "40px (fixo)", usage: "Listas, menus" },
-  { name: "md", label: "MD", dimension: "48px", fontSize: "16px", iconSize: "24px", token: "--dss-touch-target-min", isDefault: true, usage: "Padrão, cards" },
-  { name: "lg", label: "LG", dimension: "64px", fontSize: "18px", iconSize: "32px", token: "--dss-touch-target-xl", usage: "Perfis, destaque" },
-  { name: "xl", label: "XL", dimension: "80px", fontSize: "20px", iconSize: "48px", token: "80px (fixo)", usage: "Páginas de perfil, hero" },
+const statusOptions = [
+  { name: "online", label: "Online", color: "#4dd228" },
+  { name: "away", label: "Away", color: "#fabd14" },
+  { name: "busy", label: "Busy", color: "#d8182e" },
+  { name: "offline", label: "Offline", color: "#9ca3af" },
 ];
 
-// Formas do Avatar
 const shapes = [
   { name: "circular", label: "Circular", desc: "Padrão, para pessoas/usuários" },
   { name: "rounded", label: "Rounded", desc: "Bordas arredondadas (8px), empresas" },
   { name: "square", label: "Square", desc: "Sem border-radius, logos" },
 ];
 
-// Props API do DssAvatar
+const sizes = [
+  { name: "xs", label: "XS", dimension: "32px", fontSize: "12px", iconSize: "16px" },
+  { name: "sm", label: "SM", dimension: "40px", fontSize: "14px", iconSize: "20px" },
+  { name: "md", label: "MD", dimension: "48px", fontSize: "16px", iconSize: "24px", isDefault: true },
+  { name: "lg", label: "LG", dimension: "64px", fontSize: "18px", iconSize: "32px" },
+  { name: "xl", label: "XL", dimension: "80px", fontSize: "20px", iconSize: "48px" },
+];
+
 const propsData = [
   { category: "Tamanho", prop: "size", type: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | string", default: "'md'", description: "Tamanho do avatar (predefinido ou CSS unit)" },
   { category: "Tamanho", prop: "fontSize", type: "String", default: "null", description: "Tamanho da fonte customizado" },
@@ -74,35 +68,6 @@ const propsData = [
   { category: "Acessibilidade", prop: "alt", type: "String", default: "undefined", description: "Alt text para imagens no slot" },
 ];
 
-// Tokens utilizados pelo DssAvatar
-const tokensUsed = [
-  // Cores Semânticas
-  { category: "Cores Semânticas", token: "--dss-positive", value: "#4dd228", usage: "Status online" },
-  { category: "Cores Semânticas", token: "--dss-warning", value: "#fabd14", usage: "Status away" },
-  { category: "Cores Semânticas", token: "--dss-negative", value: "#d8182e", usage: "Status busy" },
-  { category: "Cores Semânticas", token: "--dss-neutral-400", value: "#9ca3af", usage: "Status offline" },
-  // Brand
-  { category: "Brand Hub", token: "--dss-hub-600", value: "#ef7a11", usage: "Borda Hub" },
-  { category: "Brand Water", token: "--dss-water-600", value: "#026cc7", usage: "Borda Water" },
-  { category: "Brand Waste", token: "--dss-waste-600", value: "#0b8154", usage: "Borda Waste" },
-  // Dimensões
-  { category: "Dimensões", token: "--dss-touch-target-min", value: "48px", usage: "Tamanho md" },
-  { category: "Dimensões", token: "--dss-touch-target-xl", value: "64px", usage: "Tamanho lg" },
-  // Tipografia
-  { category: "Tipografia", token: "--dss-font-family-sans", value: "system-ui, sans-serif", usage: "Fonte padrão" },
-  { category: "Tipografia", token: "--dss-font-size-md", value: "16px", usage: "Texto size md" },
-  { category: "Tipografia", token: "--dss-font-weight-medium", value: "500", usage: "Peso do texto" },
-  // Bordas
-  { category: "Bordas", token: "--dss-radius-full", value: "9999px", usage: "Forma circular" },
-  { category: "Bordas", token: "--dss-radius-md", value: "8px", usage: "Forma rounded" },
-  { category: "Bordas", token: "--dss-border-width-md", value: "2px", usage: "Borda de brand" },
-  // Acessibilidade
-  { category: "Acessibilidade", token: "--dss-focus-ring", value: "0 0 0 2px var(--dss-action-primary)", usage: "Focus ring" },
-  // Motion
-  { category: "Motion", token: "--dss-transition-base", value: "150ms ease-in-out", usage: "Transições hover/focus" },
-];
-
-// Anatomia 4 Camadas DSS
 const anatomyData = {
   structure: {
     files: ["DssAvatar.ts.vue"],
@@ -194,7 +159,7 @@ const anatomyData = {
 };
 
 // ============================================================================
-// COMPONENTE DE PREVIEW DO AVATAR
+// PREVIEW DO AVATAR
 // ============================================================================
 
 interface DssAvatarPreviewProps {
@@ -218,115 +183,83 @@ function DssAvatarPreview({
 }: DssAvatarPreviewProps) {
   const [isHovered, setIsHovered] = useState(false);
 
-  // Obter cores do DSS
   const getColors = () => {
     if (brand && DSS_BRAND_COLORS[brand]) {
-      const b = DSS_BRAND_COLORS[brand];
       return {
         bg: "#e5e5e5",
-        borderColor: b.principal,
+        borderColor: DSS_BRAND_COLORS[brand].principal,
         textColor: "#454545",
       };
     }
-
     if (DSS_SEMANTIC_COLORS[colorKey]) {
-      const s = DSS_SEMANTIC_COLORS[colorKey];
       return {
-        bg: s.bg,
+        bg: DSS_SEMANTIC_COLORS[colorKey].bg,
         borderColor: "transparent",
         textColor: "#ffffff",
       };
     }
-
-    return {
-      bg: "#e5e5e5",
-      borderColor: "transparent",
-      textColor: "#454545",
-    };
+    return { bg: "#e5e5e5", borderColor: "transparent", textColor: "#454545" };
   };
 
-  const getSizeStyles = () => {
-    const sizeData = sizes.find((s) => s.name === size) || sizes[2];
-    return {
-      width: sizeData.dimension,
-      height: sizeData.dimension,
-      fontSize: sizeData.fontSize,
-      iconSize: sizeData.iconSize,
-    };
-  };
+  const sizeData = sizes.find((s) => s.name === size) || sizes[2];
+  const colors = getColors();
 
   const getBorderRadius = () => {
-    switch (shape) {
-      case "square":
-        return "0";
-      case "rounded":
-        return "8px";
-      default:
-        return "50%";
-    }
+    if (shape === "square") return "0";
+    if (shape === "rounded") return "8px";
+    return "50%";
   };
 
-  const colors = getColors();
-  const sizeStyles = getSizeStyles();
-
-  const getStatusColor = () => {
-    if (!status) return null;
-    return statusColors[status as keyof typeof statusColors]?.color || null;
-  };
-
-  const getStatusSize = () => {
-    const baseSize = parseInt(sizeStyles.width);
-    return Math.max(8, baseSize * 0.25);
-  };
-
-  const avatarStyle: React.CSSProperties = {
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: sizeStyles.width,
-    height: sizeStyles.height,
-    borderRadius: getBorderRadius(),
-    backgroundColor: colors.bg,
-    color: colors.textColor,
-    fontSize: sizeStyles.fontSize,
-    fontWeight: 500,
-    fontFamily: "system-ui, -apple-system, sans-serif",
-    border: brand ? `2px solid ${colors.borderColor}` : "none",
-    position: "relative",
-    overflow: "visible",
-    cursor: "pointer",
-    transition: "all 0.15s ease-in-out",
-    transform: isHovered ? "scale(1.05)" : "scale(1)",
-    boxShadow: isHovered ? "0 4px 12px rgba(0,0,0,0.15)" : "none",
-  };
-
-  const statusIndicatorStyle: React.CSSProperties = status
-    ? {
-        position: "absolute",
-        bottom: "0",
-        right: "0",
-        width: `${getStatusSize()}px`,
-        height: `${getStatusSize()}px`,
-        borderRadius: "50%",
-        backgroundColor: getStatusColor() || undefined,
-        border: "2px solid white",
-      }
-    : {};
+  const statusColor = status ? statusOptions.find((s) => s.name === status)?.color : null;
+  const statusSize = Math.max(8, parseInt(sizeData.dimension) * 0.25);
 
   return (
     <div
-      style={avatarStyle}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: sizeData.dimension,
+        height: sizeData.dimension,
+        borderRadius: getBorderRadius(),
+        backgroundColor: colors.bg,
+        color: colors.textColor,
+        fontSize: sizeData.fontSize,
+        fontWeight: 500,
+        fontFamily: "system-ui, -apple-system, sans-serif",
+        border: brand ? `2px solid ${colors.borderColor}` : "none",
+        position: "relative",
+        overflow: "visible",
+        cursor: "pointer",
+        transition: "all 0.15s ease-in-out",
+        transform: isHovered ? "scale(1.05)" : "scale(1)",
+        boxShadow: isHovered ? "0 4px 12px rgba(0,0,0,0.15)" : "none",
+      }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       role="img"
       aria-label={`Avatar ${content}`}
     >
       {showIcon ? (
-        <User style={{ width: sizeStyles.iconSize, height: sizeStyles.iconSize }} />
+        <User style={{ width: sizeData.iconSize, height: sizeData.iconSize }} />
       ) : (
         <span>{content}</span>
       )}
-      {status && <span style={statusIndicatorStyle} aria-label={`Status: ${status}`} />}
+      {status && statusColor && (
+        <span
+          style={{
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+            width: `${statusSize}px`,
+            height: `${statusSize}px`,
+            borderRadius: "50%",
+            backgroundColor: statusColor,
+            border: "2px solid white",
+          }}
+          aria-label={`Status: ${status}`}
+        />
+      )}
     </div>
   );
 }
@@ -336,103 +269,85 @@ function DssAvatarPreview({
 // ============================================================================
 
 export default function DssAvatarPage() {
-  // Estados do Playground
   const [selectedColor, setSelectedColor] = useState<string | null>("primary");
   const [selectedSize, setSelectedSize] = useState("md");
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [selectedShape, setSelectedShape] = useState("circular");
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const [booleanStates, setBooleanStates] = useState({
-    showIcon: false,
-  });
+  const [booleanStates, setBooleanStates] = useState({ showIcon: false });
 
-  // Exclusividade Brand vs Color
+  // Exclusividade Color × Brand (v3.1)
   const handleColorChange = (color: string) => {
     setSelectedColor(color);
     setSelectedBrand(null);
   };
 
   const handleBrandChange = (brand: string | null) => {
-    setSelectedBrand(brand);
-    if (brand) setSelectedColor(null);
+    if (brand) {
+      setSelectedBrand(brand);
+      setSelectedColor(null);
+    }
   };
 
   const toggleBooleanState = (name: string) => {
-    setBooleanStates((prev) => ({
-      ...prev,
-      [name]: !prev[name as keyof typeof prev],
-    }));
+    setBooleanStates((prev) => ({ ...prev, [name]: !prev[name as keyof typeof prev] }));
   };
 
-  // Cor efetiva
-  const effectiveColor = selectedBrand ? null : selectedColor || "primary";
+  const effectiveColor = selectedBrand ? "primary" : selectedColor || "primary";
 
-  // Geração de código
   const generateCode = () => {
     const props: string[] = [];
-    
     if (selectedBrand) {
       props.push(`brand="${selectedBrand}"`);
     } else if (selectedColor && selectedColor !== "primary") {
       props.push(`color="${selectedColor}"`);
     }
-    
     if (selectedSize !== "md") props.push(`size="${selectedSize}"`);
     if (selectedShape === "square") props.push("square");
     if (selectedShape === "rounded") props.push("rounded");
     if (selectedStatus) props.push(`status="${selectedStatus}"`);
     if (booleanStates.showIcon) props.push('icon="person"');
 
-    const propsStr = props.length > 0 ? `\n  ${props.join("\n  ")}\n` : "";
-    const content = booleanStates.showIcon ? "" : ">JD</DssAvatar>";
-    const closing = booleanStates.showIcon ? "/>" : "";
-
-    return `<DssAvatar${propsStr}${closing}${content}`;
+    const propsStr = props.length > 0 ? `\n  ${props.join("\n  ")}` : "";
+    if (booleanStates.showIcon) {
+      return `<DssAvatar${propsStr}\n/>`;
+    }
+    return `<DssAvatar${propsStr}\n>JD</DssAvatar>`;
   };
 
-  // Token ativo baseado na seleção
-  const getActiveToken = () => {
-    if (selectedBrand) {
-      return DSS_BRAND_COLORS[selectedBrand]?.tokens.principal;
-    }
-    if (selectedStatus) {
-      return statusColors[selectedStatus as keyof typeof statusColors]?.token;
-    }
-    if (selectedColor) {
-      return DSS_SEMANTIC_COLORS[selectedColor]?.tokens.base;
-    }
-    return undefined;
-  };
-
-  // Opções de toggle
-  const toggleOptions = [{ name: "showIcon", label: "Usar Ícone" }];
+  const statusVariants = statusOptions.map((s) => ({
+    name: s.name,
+    label: s.label,
+    desc: s.label,
+  }));
 
   return (
     <div className="p-6 space-y-8 pb-12">
-      {/* SEÇÃO 1: BADGES + TÍTULO */}
+      {/* ================================================================
+       * SEÇÃO 1: BADGES + TÍTULO (COMPONENT_PAGE_STRUCTURE §1, §2)
+       * ================================================================ */}
       <PageHeader
         icon={User}
         badge="Golden Component"
         badgeVariant="accent"
         title="Componente"
         titleAccent="DssAvatar"
-        subtitle="DssAvatar é o componente para representação visual de usuários, entidades ou placeholders. Suporta brandabilidade multi-marca, status indicators e conformidade WCAG 2.1 AA."
-        subtitleHighlights={["tokens DSS", "brandability", "WCAG 2.1 AA", "status indicators"]}
+        subtitle="DssAvatar é o componente de representação visual de identidade, utilizado para exibir usuários, entidades ou placeholders em contextos como perfis, listas e menus. Ele se integra ao sistema de brandabilidade multi-marca e suporta indicadores de status em tempo real, sendo composto junto a componentes como DssCard, DssList e DssMenu."
+        subtitleHighlights={["brandabilidade multi-marca", "indicadores de status", "WCAG 2.1 AA"]}
         extraBadges={[
           { label: "v2.2", variant: "info" },
           { label: "DSS Selo Aprovado", variant: "success" },
         ]}
       />
 
-      {/* SEÇÃO 2: QUANDO USAR / NÃO USAR */}
+      {/* ================================================================
+       * SEÇÃO 2: QUANDO USAR / QUANDO NÃO USAR (§3)
+       * ================================================================ */}
       <div className="grid md:grid-cols-2 gap-6">
         <div
           className="p-5 rounded-lg border"
-          style={{
-            backgroundColor: "rgba(77, 210, 40, 0.1)",
-            borderColor: "var(--dss-positive)",
-          }}
+          style={{ backgroundColor: "rgba(77, 210, 40, 0.1)", borderColor: "var(--dss-positive)" }}
         >
           <h4 className="font-medium mb-3 flex items-center gap-2" style={{ color: "var(--dss-positive)" }}>
             <CheckCircle className="h-5 w-5" />
@@ -440,12 +355,12 @@ export default function DssAvatarPage() {
           </h4>
           <ul className="space-y-2 text-sm" style={{ color: "var(--jtech-text-body)" }}>
             {[
-              "Perfis de usuário (foto ou iniciais)",
-              "Listas de contatos e comentários",
-              "Cards de perfil e menus de usuário",
+              "Perfis de usuário com foto, iniciais ou ícone placeholder",
+              "Listas de contatos, comentários e menções",
+              "Cards de perfil, menus de usuário e headers",
               "Grupos de usuários (avatares empilhados)",
-              "Representação de entidades/empresas",
-              "Placeholders quando sem foto",
+              "Representação visual de entidades ou empresas",
+              "Indicação de presença/status em tempo real",
             ].map((item, i) => (
               <li key={i} className="flex items-start gap-2">
                 <Check className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: "var(--dss-positive)" }} />
@@ -457,44 +372,56 @@ export default function DssAvatarPage() {
 
         <div
           className="p-5 rounded-lg border"
-          style={{
-            backgroundColor: "rgba(216, 24, 46, 0.1)",
-            borderColor: "var(--dss-negative)",
-          }}
+          style={{ backgroundColor: "rgba(216, 24, 46, 0.1)", borderColor: "var(--dss-negative)" }}
         >
           <h4 className="font-medium mb-3 flex items-center gap-2" style={{ color: "var(--dss-negative)" }}>
             <XCircle className="h-5 w-5" />
             Quando NÃO Usar
           </h4>
-          <ul className="space-y-2 text-sm" style={{ color: "var(--jtech-text-body)" }}>
-            {[
-              "Imagens de conteúdo → use <img> ou DssImage",
-              "Ícones de ação → use DssIcon ou DssButton",
-              "Thumbnails de galeria → use componentes de galeria",
-              "Badges standalone → use DssBadge",
-              "Botões circulares → use DssButton round",
-            ].map((item, i) => (
-              <li key={i} className="flex items-start gap-2">
-                <XCircle className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: "var(--dss-negative)" }} />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
+          <Table>
+            <TableHeader>
+              <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Cenário</TableHead>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Alternativa</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {[
+                { scenario: "Imagens de conteúdo ou galeria", alt: "DssImage" },
+                { scenario: "Ícones de ação isolados", alt: "DssIcon ou DssButton" },
+                { scenario: "Thumbnails de galeria", alt: "Componentes de galeria" },
+                { scenario: "Badges standalone", alt: "DssBadge" },
+                { scenario: "Botões circulares", alt: "DssButton round" },
+              ].map((row, i) => (
+                <TableRow key={i} style={{ borderColor: "var(--jtech-card-border)" }}>
+                  <TableCell style={{ color: "var(--jtech-text-body)" }}>{row.scenario}</TableCell>
+                  <TableCell className="font-mono text-xs" style={{ color: "var(--dss-jtech-accent)" }}>
+                    {row.alt}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
       </div>
 
-      {/* SEÇÃO 3: PLAYGROUND INTERATIVO */}
+      {/* ================================================================
+       * SEÇÃO 3: PLAYGROUND INTERATIVO (§4, PLAYGROUND_STANDARD v3.1)
+       * ================================================================ */}
       <SectionHeader title="Playground" titleAccent="Interativo" badge="Live Preview" />
 
       <DssPlayground
         title="Configure o Avatar"
         description="Selecione as props e veja o resultado em tempo real com tokens DSS reais."
+        layout="canonical"
         isDarkMode={isDarkMode}
         onDarkModeToggle={() => setIsDarkMode(!isDarkMode)}
+        previewMinHeight="320px"
+        previewRatio={0.65}
         previewContent={
           <DssAvatarPreview
             content="JD"
-            colorKey={effectiveColor || "primary"}
+            colorKey={effectiveColor}
             size={selectedSize}
             shape={selectedShape}
             status={selectedStatus}
@@ -503,25 +430,19 @@ export default function DssAvatarPage() {
           />
         }
         controls={
-          <ControlGrid columns={3}>
-            {/* Seletor de Forma */}
-            <div className="space-y-2">
-              <label className="text-xs font-medium uppercase tracking-wider" style={{ color: "var(--jtech-text-muted)" }}>
-                Forma
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {shapes.map((shape) => (
-                  <PlaygroundButton
-                    key={shape.name}
-                    isActive={selectedShape === shape.name}
-                    onClick={() => setSelectedShape(shape.name)}
-                    title={shape.desc}
-                  >
-                    {shape.label}
-                  </PlaygroundButton>
-                ))}
-              </div>
-            </div>
+          <ControlGrid columns={4}>
+            <VariantSelector
+              label="Forma"
+              variants={shapes}
+              selectedVariant={selectedShape}
+              onSelect={setSelectedShape}
+            />
+
+            <SizeSelector
+              sizes={sizes}
+              selectedSize={selectedSize}
+              onSelect={setSelectedSize}
+            />
 
             <ColorPicker
               label="Color"
@@ -535,62 +456,77 @@ export default function DssAvatarPage() {
               brands={DSS_BRAND_COLORS}
               selectedBrand={selectedBrand}
               onSelect={handleBrandChange}
+              disabled={!!selectedColor}
             />
 
-            <SizeSelector
-              sizes={sizes}
-              selectedSize={selectedSize}
-              onSelect={setSelectedSize}
+            <VariantSelector
+              label="Status"
+              variants={statusVariants}
+              selectedVariant={selectedStatus || ""}
+              onSelect={(s) => setSelectedStatus(selectedStatus === s ? null : s)}
             />
-
-            {/* Seletor de Status */}
-            <div className="space-y-2">
-              <label className="text-xs font-medium uppercase tracking-wider" style={{ color: "var(--jtech-text-muted)" }}>
-                Status
-              </label>
-              <div className="flex flex-wrap gap-2">
-                <PlaygroundButton
-                  isActive={selectedStatus === null}
-                  onClick={() => setSelectedStatus(null)}
-                >
-                  None
-                </PlaygroundButton>
-                {Object.entries(statusColors).map(([key, value]) => (
-                  <PlaygroundButton
-                    key={key}
-                    isActive={selectedStatus === key}
-                    onClick={() => setSelectedStatus(key)}
-                    style={{
-                      borderColor: selectedStatus === key ? value.color : undefined,
-                    }}
-                  >
-                    <span
-                      className="w-2 h-2 rounded-full mr-1.5"
-                      style={{ backgroundColor: value.color }}
-                    />
-                    {value.label}
-                  </PlaygroundButton>
-                ))}
-              </div>
-            </div>
 
             <ToggleGroup
               label="Opções"
-              options={toggleOptions}
+              options={[{ name: "showIcon", label: "Usar Ícone" }]}
               values={booleanStates}
               onToggle={toggleBooleanState}
             />
           </ControlGrid>
         }
         codePreview={generateCode()}
-        activeToken={getActiveToken()}
       />
 
-      {/* SEÇÃO 4: ANATOMIA 4 CAMADAS */}
+      {/* ================================================================
+       * SEÇÃO 4: ESTADOS INTERATIVOS (§5)
+       * ================================================================ */}
+      <SectionHeader title="Estados" titleAccent="Interativos" badge="Comportamento" />
+
+      <div
+        className="rounded-xl border overflow-hidden"
+        style={{ backgroundColor: "var(--jtech-card-bg)", borderColor: "var(--jtech-card-border)" }}
+      >
+        <Table>
+          <TableHeader>
+            <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
+              <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Estado</TableHead>
+              <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Visual</TableHead>
+              <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Interação</TableHead>
+              <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Tokens Aplicados</TableHead>
+              <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Acessibilidade</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {[
+              { state: "Default", visual: "Aparência padrão com iniciais/ícone", interaction: "Pronto para interação", tokens: "--dss-action-primary", a11y: "—" },
+              { state: "Hover", visual: "Scale 1.05, box-shadow sutil", interaction: "Pointer over", tokens: "--dss-transition-base", a11y: "—" },
+              { state: "Focus", visual: "Focus ring 2px visível", interaction: "Navegação por teclado", tokens: "--dss-focus-ring", a11y: "WCAG 2.4.7" },
+              { state: "Active", visual: "Scale reduzido", interaction: "Clique / toque", tokens: "--dss-transition-base", a11y: "—" },
+              { state: "Disabled", visual: "Opacidade reduzida (0.4)", interaction: "Não interativo", tokens: "--dss-opacity-disabled", a11y: "aria-disabled" },
+            ].map((row, i) => (
+              <TableRow key={i} style={{ borderColor: "var(--jtech-card-border)" }}>
+                <TableCell className="font-medium" style={{ color: "var(--jtech-heading-tertiary)" }}>{row.state}</TableCell>
+                <TableCell style={{ color: "var(--jtech-text-body)" }}>{row.visual}</TableCell>
+                <TableCell style={{ color: "var(--jtech-text-body)" }}>{row.interaction}</TableCell>
+                <TableCell className="font-mono text-xs" style={{ color: "var(--dss-jtech-accent)" }}>{row.tokens}</TableCell>
+                <TableCell className="font-mono text-xs" style={{ color: "var(--jtech-text-body)" }}>{row.a11y}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* ================================================================
+       * SEÇÃO 5: ANATOMIA 4 CAMADAS (§6)
+       * ================================================================ */}
       <SectionHeader title="Anatomia" titleAccent="4 Camadas" badge="Arquitetura DSS" />
       <AnatomySection componentName="DssAvatar" layers={anatomyData} />
 
-      {/* SEÇÃO 5: DOCUMENTAÇÃO TÉCNICA COLAPSÁVEL */}
+      {/* ================================================================
+       * SEÇÕES TÉCNICAS COLAPSÁVEIS INDEPENDENTES (§7)
+       * ================================================================ */}
+
+      {/* 7.1 Props API & Eventos */}
       <CollapsibleSection icon={FileText} title="Props API" titleAccent="& Eventos">
         <div className="space-y-6 pt-4">
           <Table>
@@ -607,26 +543,17 @@ export default function DssAvatarPage() {
               {propsData.map((p, idx) => (
                 <TableRow key={idx} style={{ borderColor: "var(--jtech-card-border)" }}>
                   <TableCell style={{ color: "var(--jtech-text-muted)" }}>{p.category}</TableCell>
-                  <TableCell className="font-mono font-medium" style={{ color: "var(--dss-jtech-accent)" }}>
-                    {p.prop}
-                  </TableCell>
-                  <TableCell className="font-mono text-xs" style={{ color: "var(--jtech-text-body)" }}>
-                    {p.type}
-                  </TableCell>
-                  <TableCell className="font-mono text-xs" style={{ color: "var(--jtech-text-muted)" }}>
-                    {p.default}
-                  </TableCell>
+                  <TableCell className="font-mono font-medium" style={{ color: "var(--dss-jtech-accent)" }}>{p.prop}</TableCell>
+                  <TableCell className="font-mono text-xs" style={{ color: "var(--jtech-text-body)" }}>{p.type}</TableCell>
+                  <TableCell className="font-mono text-xs" style={{ color: "var(--jtech-text-muted)" }}>{p.default}</TableCell>
                   <TableCell style={{ color: "var(--jtech-text-body)" }}>{p.description}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
 
-          {/* Eventos */}
           <div className="pt-4">
-            <h4 className="font-medium mb-3" style={{ color: "var(--jtech-heading-tertiary)" }}>
-              Eventos
-            </h4>
+            <h4 className="font-medium mb-3" style={{ color: "var(--jtech-heading-tertiary)" }}>Eventos</h4>
             <Table>
               <TableHeader>
                 <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
@@ -637,44 +564,9 @@ export default function DssAvatarPage() {
               </TableHeader>
               <TableBody>
                 <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
-                  <TableCell className="font-mono font-medium" style={{ color: "var(--dss-jtech-accent)" }}>
-                    click
-                  </TableCell>
-                  <TableCell className="font-mono text-xs" style={{ color: "var(--jtech-text-body)" }}>
-                    MouseEvent
-                  </TableCell>
-                  <TableCell style={{ color: "var(--jtech-text-body)" }}>
-                    Emitido quando o avatar é clicado
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </div>
-
-          {/* Slots */}
-          <div className="pt-4">
-            <h4 className="font-medium mb-3" style={{ color: "var(--jtech-heading-tertiary)" }}>
-              Slots
-            </h4>
-            <Table>
-              <TableHeader>
-                <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
-                  <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Slot</TableHead>
-                  <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Descrição</TableHead>
-                  <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Uso Recomendado</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
-                  <TableCell className="font-mono font-medium" style={{ color: "var(--dss-jtech-accent)" }}>
-                    default
-                  </TableCell>
-                  <TableCell style={{ color: "var(--jtech-text-body)" }}>
-                    Conteúdo principal do avatar
-                  </TableCell>
-                  <TableCell style={{ color: "var(--jtech-text-body)" }}>
-                    Iniciais, imagens, elementos customizados
-                  </TableCell>
+                  <TableCell className="font-mono font-medium" style={{ color: "var(--dss-jtech-accent)" }}>click</TableCell>
+                  <TableCell className="font-mono text-xs" style={{ color: "var(--jtech-text-body)" }}>MouseEvent</TableCell>
+                  <TableCell style={{ color: "var(--jtech-text-body)" }}>Emitido quando o avatar é clicado</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -682,37 +574,55 @@ export default function DssAvatarPage() {
         </div>
       </CollapsibleSection>
 
-      {/* Tokens Utilizados */}
-      <CollapsibleSection icon={Code} title="Tokens" titleAccent="Utilizados">
+      {/* 7.2 Slots */}
+      <CollapsibleSection icon={Code} title="Slots">
         <div className="pt-4">
           <Table>
             <TableHeader>
               <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
-                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Categoria</TableHead>
-                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Token</TableHead>
-                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Valor</TableHead>
-                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Uso</TableHead>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Slot</TableHead>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Descrição</TableHead>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Uso Recomendado</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {tokensUsed.map((t, idx) => (
-                <TableRow key={idx} style={{ borderColor: "var(--jtech-card-border)" }}>
-                  <TableCell style={{ color: "var(--jtech-text-muted)" }}>{t.category}</TableCell>
-                  <TableCell className="font-mono font-medium" style={{ color: "var(--dss-jtech-accent)" }}>
-                    {t.token}
-                  </TableCell>
-                  <TableCell className="font-mono text-xs" style={{ color: "var(--jtech-text-body)" }}>
-                    <span className="flex items-center gap-2">
-                      {t.value.startsWith("#") && (
-                        <span
-                          className="w-3 h-3 rounded-full border border-white/20"
-                          style={{ backgroundColor: t.value }}
-                        />
-                      )}
-                      {t.value}
-                    </span>
-                  </TableCell>
-                  <TableCell style={{ color: "var(--jtech-text-body)" }}>{t.usage}</TableCell>
+              <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
+                <TableCell className="font-mono font-medium" style={{ color: "var(--dss-jtech-accent)" }}>default</TableCell>
+                <TableCell style={{ color: "var(--jtech-text-body)" }}>Conteúdo principal do avatar</TableCell>
+                <TableCell style={{ color: "var(--jtech-text-body)" }}>Iniciais, imagens, elementos customizados</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </div>
+      </CollapsibleSection>
+
+      {/* 7.3 Tokens (TIPOS aceitos, não tokens individuais) */}
+      <CollapsibleSection icon={Code} title="Tokens">
+        <div className="pt-4">
+          <p className="text-sm mb-4" style={{ color: "var(--jtech-text-body)" }}>
+            Este componente aceita os seguintes tipos de tokens DSS:
+          </p>
+          <Table>
+            <TableHeader>
+              <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Tipo de Token</TableHead>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Papel no Componente</TableHead>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Referência</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {[
+                { type: "Cores Semânticas", role: "Background do avatar em estados padrão e feedback", ref: "DSS_TOKEN_REFERENCE.md" },
+                { type: "Brand Tokens", role: "Borda de identidade visual (Hub, Water, Waste)", ref: "DSS_TOKEN_REFERENCE.md" },
+                { type: "Dimensões", role: "Tamanhos e touch targets (xs–xl)", ref: "DSS_TOKEN_REFERENCE.md" },
+                { type: "Tipografia", role: "Fonte e peso do texto de iniciais", ref: "DSS_TOKEN_REFERENCE.md" },
+                { type: "Bordas", role: "Border-radius (circular, rounded, square)", ref: "DSS_TOKEN_REFERENCE.md" },
+                { type: "Motion", role: "Transições hover e focus", ref: "DSS_TOKEN_REFERENCE.md" },
+              ].map((row, i) => (
+                <TableRow key={i} style={{ borderColor: "var(--jtech-card-border)" }}>
+                  <TableCell className="font-medium" style={{ color: "var(--jtech-heading-tertiary)" }}>{row.type}</TableCell>
+                  <TableCell style={{ color: "var(--jtech-text-body)" }}>{row.role}</TableCell>
+                  <TableCell className="font-mono text-xs" style={{ color: "var(--dss-jtech-accent)" }}>{row.ref}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -720,23 +630,21 @@ export default function DssAvatarPage() {
         </div>
       </CollapsibleSection>
 
-      {/* Acessibilidade */}
+      {/* 7.4 Acessibilidade WCAG */}
       <CollapsibleSection icon={CheckCircle} title="Acessibilidade" titleAccent="WCAG 2.1 AA">
         <div className="grid md:grid-cols-2 gap-6 pt-4">
           <div className="space-y-3">
-            <h4 className="font-medium" style={{ color: "var(--jtech-heading-tertiary)" }}>
-              ✅ Implementado
-            </h4>
+            <h4 className="font-medium" style={{ color: "var(--jtech-heading-tertiary)" }}>✅ Implementado</h4>
             <ul className="space-y-2 text-sm" style={{ color: "var(--jtech-text-body)" }}>
               {[
                 "aria-label para avatares com ícone",
-                "role=\"img\" quando tem aria-label",
+                'role="img" quando tem aria-label',
                 "Status indicators com aria-label",
                 "Focus ring em avatares clicáveis",
                 "Contraste mínimo 4.5:1",
                 "Suporte a prefers-reduced-motion",
-                "Suporte a prefers-contrast: more (CSS Level 5)",
-                "Suporte a forced-colors: active (Windows)",
+                "Suporte a prefers-contrast: more",
+                "Suporte a forced-colors: active",
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-2">
                   <Check className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: "var(--dss-positive)" }} />
@@ -746,9 +654,7 @@ export default function DssAvatarPage() {
             </ul>
           </div>
           <div className="space-y-3">
-            <h4 className="font-medium" style={{ color: "var(--jtech-heading-tertiary)" }}>
-              📋 Critérios WCAG Atendidos
-            </h4>
+            <h4 className="font-medium" style={{ color: "var(--jtech-heading-tertiary)" }}>📋 Critérios WCAG Atendidos</h4>
             <Table>
               <TableHeader>
                 <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
@@ -784,7 +690,9 @@ export default function DssAvatarPage() {
         </div>
       </CollapsibleSection>
 
-      {/* Anti-patterns */}
+      {/* ================================================================
+       * SEÇÃO 8: ANTI-PATTERNS (§8)
+       * ================================================================ */}
       <CollapsibleSection icon={AlertTriangle} title="Anti-patterns" titleAccent="& Erros Comuns">
         <div className="space-y-4 pt-4">
           {[
@@ -792,19 +700,19 @@ export default function DssAvatarPage() {
               title: "Avatar sem identificação acessível",
               wrong: '<DssAvatar icon="person" />',
               correct: '<DssAvatar icon="person" aria-label="Avatar do usuário" />',
-              reason: "Screen readers precisam de contexto.",
+              reason: "Screen readers precisam de contexto para comunicar o papel do elemento.",
             },
             {
               title: "Imagem sem alt text",
               wrong: '<DssAvatar>\n  <img src="/photo.jpg" />\n</DssAvatar>',
               correct: '<DssAvatar>\n  <img src="/photo.jpg" alt="Foto de João" />\n</DssAvatar>',
-              reason: "WCAG 1.1.1 exige alternativas textuais.",
+              reason: "WCAG 1.1.1 exige alternativas textuais para conteúdo não-textual.",
             },
             {
-              title: "Cores hardcoded",
+              title: "Cores hardcoded em vez de tokens",
               wrong: '<DssAvatar style="background-color: #ff0000;" />',
               correct: '<DssAvatar color="negative" />',
-              reason: "Bypassa tokens e brandabilidade.",
+              reason: "Bypassa o sistema de tokens e quebra a brandabilidade.",
             },
           ].map((pattern, idx) => (
             <div
@@ -812,29 +720,17 @@ export default function DssAvatarPage() {
               className="p-4 rounded-lg border"
               style={{ backgroundColor: "var(--jtech-card-bg)", borderColor: "var(--jtech-card-border)" }}
             >
-              <h4 className="font-medium mb-3" style={{ color: "var(--jtech-heading-tertiary)" }}>
-                {pattern.title}
-              </h4>
+              <h4 className="font-medium mb-3" style={{ color: "var(--jtech-heading-tertiary)" }}>{pattern.title}</h4>
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <span className="text-xs font-medium" style={{ color: "var(--dss-negative)" }}>
-                    ❌ Incorreto
-                  </span>
-                  <pre
-                    className="mt-1 p-2 rounded text-xs font-mono"
-                    style={{ backgroundColor: "rgba(216, 24, 46, 0.1)", color: "var(--jtech-text-body)" }}
-                  >
+                  <span className="text-xs font-medium" style={{ color: "var(--dss-negative)" }}>❌ Incorreto</span>
+                  <pre className="mt-1 p-2 rounded text-xs font-mono" style={{ backgroundColor: "rgba(216, 24, 46, 0.1)", color: "var(--jtech-text-body)" }}>
                     {pattern.wrong}
                   </pre>
                 </div>
                 <div>
-                  <span className="text-xs font-medium" style={{ color: "var(--dss-positive)" }}>
-                    ✅ Correto
-                  </span>
-                  <pre
-                    className="mt-1 p-2 rounded text-xs font-mono"
-                    style={{ backgroundColor: "rgba(77, 210, 40, 0.1)", color: "var(--jtech-text-body)" }}
-                  >
+                  <span className="text-xs font-medium" style={{ color: "var(--dss-positive)" }}>✅ Correto</span>
+                  <pre className="mt-1 p-2 rounded text-xs font-mono" style={{ backgroundColor: "rgba(77, 210, 40, 0.1)", color: "var(--jtech-text-body)" }}>
                     {pattern.correct}
                   </pre>
                 </div>
@@ -847,42 +743,52 @@ export default function DssAvatarPage() {
         </div>
       </CollapsibleSection>
 
-      {/* Exceções Documentadas */}
-      <CollapsibleSection icon={Info} title="Exceções" titleAccent="Documentadas (Selo DSS v2.2)">
-        <div className="pt-4">
-          <p className="text-sm mb-4" style={{ color: "var(--jtech-text-body)" }}>
-            Valores mantidos intencionalmente sem token DSS, com justificativa técnica. 
-            Cada exceção é referenciada no código-fonte via comentário <code>/* EXCEÇÃO DOCUMENTADA */</code>.
-          </p>
+      {/* ================================================================
+       * SEÇÃO 9: VINCULANTES DSS v2.2 (§9)
+       * ================================================================ */}
+      <CollapsibleSection icon={Shield} title="Vinculantes" titleAccent="DSS v2.2">
+        <div className="space-y-4 pt-4">
           <Table>
             <TableHeader>
               <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
-                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>ID</TableHead>
-                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Valor</TableHead>
-                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Justificativa</TableHead>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Regra</TableHead>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Aplicação no DssAvatar</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {[
-                { id: "EXC-01", value: "Touch target tokens para sizing", justification: "DssAvatar é Visual/Identity (não interativo). Reutiliza --dss-touch-target-* porque DSS não possui --dss-size-* genéricos." },
-                { id: "EXC-02", value: "40px, 80px (sizes sm, xl)", justification: "Nenhum token canônico corresponde. Mantidos para fidelidade dimensional ao QAvatar." },
-                { id: "EXC-03", value: "outline: 2px, outline-offset: 2px", justification: "Focus ring com valores fixos por convenção CSS de acessibilidade WCAG." },
-                { id: "EXC-04", value: "@media (max-width: 768px)", justification: "CSS @media queries não suportam var(). Limitação técnica." },
-                { id: "EXC-05", value: "8-20px (status indicators)", justification: "Dimensões proporcionais ao avatar. Não existem tokens para sub-elementos proporcionais." },
-                { id: "EXC-06", value: "TypeScript maps (SIZE_MAP, etc.)", justification: "TS não consome CSS custom properties. Alternativa (getComputedStyle) tem custo inaceitável." },
-              ].map((exc, idx) => (
-                <TableRow key={idx} style={{ borderColor: "var(--jtech-card-border)" }}>
-                  <TableCell className="font-mono font-medium" style={{ color: "var(--dss-jtech-accent)" }}>
-                    {exc.id}
-                  </TableCell>
-                  <TableCell className="font-mono text-xs" style={{ color: "var(--jtech-text-body)" }}>
-                    {exc.value}
-                  </TableCell>
-                  <TableCell style={{ color: "var(--jtech-text-muted)" }}>{exc.justification}</TableCell>
+                { rule: "Pseudo-elementos (::before / ::after)", application: "Utilizado em ::after para o status indicator posicionamento" },
+                { rule: "Uso de brightness()", application: "Não utilizado — estados são controlados via tokens de opacidade e scale" },
+                { rule: "Classificação do componente", application: "Visual Component (representação, não ação)" },
+              ].map((row, i) => (
+                <TableRow key={i} style={{ borderColor: "var(--jtech-card-border)" }}>
+                  <TableCell className="font-medium" style={{ color: "var(--jtech-heading-tertiary)" }}>{row.rule}</TableCell>
+                  <TableCell style={{ color: "var(--jtech-text-body)" }}>{row.application}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
+        </div>
+      </CollapsibleSection>
+
+      {/* ================================================================
+       * SEÇÃO 10: REFERÊNCIAS NORMATIVAS (§10)
+       * ================================================================ */}
+      <CollapsibleSection icon={BookOpen} title="Referências" titleAccent="Normativas">
+        <div className="pt-4">
+          <ul className="space-y-2 text-sm" style={{ color: "var(--jtech-text-body)" }}>
+            {[
+              "DSS_TOKEN_REFERENCE.md",
+              "DSS_COMPONENT_ARCHITECTURE.md",
+              "DSS_GOLDEN_COMPONENTS.md",
+              "DSS/docs/compliance/seals/DssAvatar/DSS_AVATAR_SELO_v2.2.md",
+            ].map((ref, i) => (
+              <li key={i} className="flex items-center gap-2">
+                <FileText className="h-4 w-4 flex-shrink-0" style={{ color: "var(--dss-jtech-accent)" }} />
+                <code className="font-mono text-xs" style={{ color: "var(--dss-jtech-accent)" }}>{ref}</code>
+              </li>
+            ))}
+          </ul>
         </div>
       </CollapsibleSection>
     </div>
