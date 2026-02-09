@@ -517,11 +517,9 @@ export default function DssButtonPage() {
       <DssPlayground
         title="Configure o Botão"
         description="Selecione as props e veja o resultado em tempo real com tokens DSS reais."
-        layout="canonical"
         isDarkMode={isDarkMode}
         onDarkModeToggle={() => setIsDarkMode(!isDarkMode)}
         previewMinHeight="320px"
-        previewRatio={0.65}
         previewContent={
           <DssButtonPreview
             label="Clique aqui"
@@ -555,30 +553,27 @@ export default function DssButtonPage() {
               onSelect={setSelectedSize}
             />
 
-            {/* 3. COLOR - Cores semânticas (desativado se brand selecionado) */}
+            {/* 3. COLOR - Cores semânticas */}
             <ColorPicker
               label="Color"
               colors={Object.values(DSS_SEMANTIC_COLORS)}
               selectedColor={selectedColor}
               onSelect={handleColorChange}
-              disabled={!!selectedBrand}
             />
 
-            {/* 4. BRAND - Marcas Sansys (SEM botão "Nenhum" - v3.1) */}
+            {/* 4. BRAND - Marcas Sansys */}
             <BrandPicker
               brands={DSS_BRAND_COLORS}
               selectedBrand={selectedBrand}
               onSelect={handleBrandChange}
-              disabled={!!selectedColor}
             />
 
-            {/* 5. FEEDBACK - Cores de feedback (desativado se brand selecionado) */}
+            {/* 5. FEEDBACK - Cores de feedback */}
             <FeedbackColorPicker
               label="Feedback"
               colors={feedbackColors}
               selectedColor={selectedColor}
               onSelect={handleColorChange}
-              disabled={!!selectedBrand}
             />
 
             {/* 6. STATES - Estados booleanos */}
