@@ -441,15 +441,18 @@ export default function DssButtonPage() {
     iconRight: false,
   });
 
-  // Exclusividade Brand vs Color (padrão obrigatório)
+  // Exclusividade Color × Brand (PLAYGROUND_STANDARD v3.1)
+  // Seleção automática sem botão "Nenhum"
   const handleColorChange = (color: string) => {
     setSelectedColor(color);
-    setSelectedBrand(null);
+    setSelectedBrand(null); // Limpa brand automaticamente
   };
 
   const handleBrandChange = (brand: string | null) => {
-    setSelectedBrand(brand);
-    if (brand) setSelectedColor(null);
+    if (brand) {
+      setSelectedBrand(brand);
+      setSelectedColor(null); // Limpa color automaticamente
+    }
   };
 
   const toggleBooleanState = (name: string) => {
@@ -459,10 +462,10 @@ export default function DssButtonPage() {
     }));
   };
 
-  // Lógica de cor efetiva
+  // Lógica de cor efetiva (fallback para primary se nada selecionado)
   const effectiveColor = selectedBrand ? "primary" : selectedColor || "primary";
 
-  // Geração de código (padrão unificado)
+  // Geração de código (PLAYGROUND_STANDARD v3.1: código de produção real)
   const generateCode = () => {
     const props: string[] = [];
     props.push('label="Clique aqui"');
@@ -480,19 +483,6 @@ export default function DssButtonPage() {
     if (booleanStates.iconRight) props.push('icon-right="arrow_forward"');
 
     return `<DssButton\n  ${props.join("\n  ")}\n/>`;
-  };
-
-  // Token ativo baseado na seleção
-  const getActiveToken = () => {
-    if (selectedBrand) {
-      return DSS_BRAND_COLORS[selectedBrand]?.tokens.principal;
-    }
-    if (selectedColor) {
-      const allColors = { ...DSS_SEMANTIC_COLORS, ...feedbackColors };
-      const color = allColors[selectedColor];
-      return color?.tokens.base;
-    }
-    return undefined;
   };
 
   // Opções de toggle para estados
@@ -521,7 +511,7 @@ export default function DssButtonPage() {
         ]}
       />
 
-      {/* SEÇÃO 2: PLAYGROUND INTERATIVO (COMPONENTE UNIFICADO) */}
+      {/* SEÇÃO 2: PLAYGROUND INTERATIVO (PLAYGROUND_STANDARD v3.1) */}
       <SectionHeader title="Playground" titleAccent="Interativo" badge="Live Preview" />
 
       <DssPlayground
@@ -530,8 +520,8 @@ export default function DssButtonPage() {
         layout="canonical"
         isDarkMode={isDarkMode}
         onDarkModeToggle={() => setIsDarkMode(!isDarkMode)}
-        previewMinHeight="360px"
-        previewRatio={0.7}
+        previewMinHeight="320px"
+        previewRatio={0.65}
         previewContent={
           <DssButtonPreview
             label="Clique aqui"
@@ -547,17 +537,25 @@ export default function DssButtonPage() {
           />
         }
         controls={
+          /* PLAYGROUND_STANDARD v3.1: Grid horizontal, mín. 4 colunas
+           * Ordem obrigatória: variant → size → color → brand → feedback → states
+           */
           <ControlGrid columns={4}>
+            {/* 1. VARIANT - Seleção de variante visual */}
             <VariantSelector
               variants={variants}
               selectedVariant={selectedVariant}
               onSelect={setSelectedVariant}
             />
+
+            {/* 2. SIZE - Seleção de tamanho */}
             <SizeSelector
               sizes={sizes}
               selectedSize={selectedSize}
               onSelect={setSelectedSize}
             />
+
+            {/* 3. COLOR - Cores semânticas (desativado se brand selecionado) */}
             <ColorPicker
               label="Color"
               colors={Object.values(DSS_SEMANTIC_COLORS)}
@@ -565,11 +563,16 @@ export default function DssButtonPage() {
               onSelect={handleColorChange}
               disabled={!!selectedBrand}
             />
+
+            {/* 4. BRAND - Marcas Sansys (SEM botão "Nenhum" - v3.1) */}
             <BrandPicker
               brands={DSS_BRAND_COLORS}
               selectedBrand={selectedBrand}
               onSelect={handleBrandChange}
+              disabled={!!selectedColor}
             />
+
+            {/* 5. FEEDBACK - Cores de feedback (desativado se brand selecionado) */}
             <FeedbackColorPicker
               label="Feedback"
               colors={feedbackColors}
@@ -577,6 +580,8 @@ export default function DssButtonPage() {
               onSelect={handleColorChange}
               disabled={!!selectedBrand}
             />
+
+            {/* 6. STATES - Estados booleanos */}
             <ToggleGroup
               label="Estados & Ícones"
               options={toggleOptions}
@@ -586,7 +591,6 @@ export default function DssButtonPage() {
           </ControlGrid>
         }
         codePreview={generateCode()}
-        activeToken={getActiveToken()}
       />
 
       {/* Anatomia 4 Camadas */}
