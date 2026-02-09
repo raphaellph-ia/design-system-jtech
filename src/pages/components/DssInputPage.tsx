@@ -1,14 +1,7 @@
 import React, { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { DssTabs, DssTabsContent, DssTabsList, DssTabsTrigger } from "@/components/ui/dss-tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { AnatomySection } from "@/components/ui/AnatomySection";
-import { CollapsibleSection } from "@/components/ui/CollapsibleSection";
 import {
-  Copy,
   Check,
-  Layers,
   Code,
   FileText,
   Eye,
@@ -19,15 +12,18 @@ import {
   User,
   Phone,
   AlertCircle,
-  CheckCircle2,
-  Info,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
   X,
-  Globe,
+  BookOpen,
+  Shield,
 } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionHeader } from "@/components/ui/SectionHeader";
+import { AnatomySection } from "@/components/ui/AnatomySection";
+import { CollapsibleSection } from "@/components/ui/CollapsibleSection";
 
-// Importar sistema de Playground UNIFICADO
 import {
   DssPlayground,
   ControlGrid,
@@ -40,27 +36,24 @@ import {
 } from "@/components/ui/playground";
 
 // ============================================================================
-// DADOS ESPECÍFICOS DO DSSINPUT
+// DADOS DO COMPONENTE
 // ============================================================================
 
-// Variantes Visuais do DssInput
 const variants = [
-  { name: "outlined", label: "Outlined", desc: "Borda visível (padrão Quasar)", hasOutline: true },
-  { name: "filled", label: "Filled", desc: "Background preenchido, sem borda", hasOutline: false },
-  { name: "standout", label: "Standout", desc: "Background com destaque no focus", hasOutline: false },
-  { name: "borderless", label: "Borderless", desc: "Sem borda, apenas linha inferior", hasOutline: false },
+  { name: "outlined", label: "Outlined", desc: "Borda visível (padrão Quasar)" },
+  { name: "filled", label: "Filled", desc: "Background preenchido, sem borda" },
+  { name: "standout", label: "Standout", desc: "Background com destaque no focus" },
+  { name: "borderless", label: "Borderless", desc: "Sem borda, apenas linha inferior" },
 ];
 
-// Tipos de Input
 const inputTypes = [
-  { name: "text", label: "Text", icon: FileText },
-  { name: "email", label: "Email", icon: Mail },
-  { name: "password", label: "Password", icon: Lock },
-  { name: "search", label: "Search", icon: Search },
-  { name: "tel", label: "Telefone", icon: Phone },
+  { name: "text", label: "Text" },
+  { name: "email", label: "Email" },
+  { name: "password", label: "Password" },
+  { name: "search", label: "Search" },
+  { name: "tel", label: "Telefone" },
 ];
 
-// Props API
 const propsData = [
   { category: "Valor", prop: "modelValue", type: "String | Number", default: "''", description: "Valor do input (v-model)" },
   { category: "Valor", prop: "type", type: "'text' | 'email' | 'password' | ...", default: "'text'", description: "Tipo do input HTML" },
@@ -80,36 +73,6 @@ const propsData = [
   { category: "Densidade", prop: "dense", type: "Boolean", default: "false", description: "Versão compacta" },
 ];
 
-// Tokens organizados por categoria
-const tokensUsed = [
-  { category: "Action", token: "--dss-action-primary", value: "#1f86de", usage: "Borda focus primary" },
-  { category: "Action", token: "--dss-action-secondary", value: "#26a69a", usage: "Borda focus secondary" },
-  { category: "Feedback", token: "--dss-feedback-success", value: "#4dd228", usage: "Borda/ícone success" },
-  { category: "Feedback", token: "--dss-feedback-error", value: "#d8182e", usage: "Borda/ícone error" },
-  { category: "Feedback", token: "--dss-feedback-warning", value: "#fabd14", usage: "Borda/ícone warning" },
-  { category: "Brand Hub", token: "--dss-hub-600", value: "#ef7a11", usage: "Focus border Hub" },
-  { category: "Brand Hub", token: "--dss-hub-100", value: "#fef2d6", usage: "Background filled Hub" },
-  { category: "Brand Water", token: "--dss-water-500", value: "#0e88e4", usage: "Focus border Water" },
-  { category: "Brand Water", token: "--dss-water-100", value: "#e0eefe", usage: "Background filled Water" },
-  { category: "Brand Waste", token: "--dss-waste-500", value: "#18b173", usage: "Focus border Waste" },
-  { category: "Brand Waste", token: "--dss-waste-100", value: "#d3f8e2", usage: "Background filled Waste" },
-  { category: "Sizing", token: "--dss-touch-target-sm", value: "36px", usage: "Altura dense" },
-  { category: "Sizing", token: "--dss-touch-target-md", value: "44px", usage: "Altura padrão WCAG" },
-  { category: "Spacing", token: "--dss-spacing-2", value: "8px", usage: "Gap icon-text" },
-  { category: "Spacing", token: "--dss-spacing-3", value: "12px", usage: "Padding horizontal" },
-  { category: "Border Radius", token: "--dss-radius-sm", value: "4px", usage: "Border-radius padrão" },
-  { category: "Borders", token: "--dss-border-width-thin", value: "1px", usage: "Borda padrão" },
-  { category: "Borders", token: "--dss-border-width-md", value: "2px", usage: "Borda no focus" },
-  { category: "Typography", token: "--dss-font-size-sm", value: "14px", usage: "Texto do input" },
-  { category: "Text", token: "--dss-text-body", value: "#454545", usage: "Texto do input" },
-  { category: "Text", token: "--dss-text-subtle", value: "#737373", usage: "Placeholder text" },
-  { category: "Motion", token: "--dss-duration-fast", value: "150ms", usage: "Transição focus" },
-  { category: "Surface", token: "--dss-surface-default", value: "#ffffff", usage: "Background outlined" },
-  { category: "States", token: "--dss-shadow-focus", value: "0 0 0 3px rgba(31,134,222,0.25)", usage: "Focus ring primary" },
-  { category: "Opacity", token: "--dss-opacity-disabled", value: "0.6", usage: "Opacidade disabled" },
-];
-
-// Anatomia 4 Camadas
 const anatomyData = {
   structure: {
     files: ["DssInput.ts.vue"],
@@ -216,7 +179,6 @@ function DssInputPreview({
         iconColor: "#d8182e",
       };
     }
-
     if (brand && DSS_BRAND_COLORS[brand]) {
       const brandData = DSS_BRAND_COLORS[brand];
       return {
@@ -226,7 +188,6 @@ function DssInputPreview({
         iconColor: brandData.principal,
       };
     }
-
     const colorData = DSS_SEMANTIC_COLORS[color];
     if (colorData) {
       return {
@@ -236,7 +197,6 @@ function DssInputPreview({
         iconColor: colorData.bg,
       };
     }
-
     return {
       border: "#1f86de",
       focusShadow: "0 0 0 3px rgba(31,134,222,0.25)",
@@ -380,7 +340,6 @@ function DssInputPreview({
 // ============================================================================
 
 export default function DssInputPage() {
-  // Estados do Playground (padrão unificado)
   const [selectedVariant, setSelectedVariant] = useState("outlined");
   const [selectedColor, setSelectedColor] = useState<string | null>("primary");
   const [selectedType, setSelectedType] = useState("text");
@@ -397,24 +356,17 @@ export default function DssInputPage() {
     hint: false,
   });
 
-  // Clipboard
-  const [copiedToken, setCopiedToken] = useState<string | null>(null);
-
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedToken(text);
-    setTimeout(() => setCopiedToken(null), 2000);
-  };
-
-  // Exclusividade Brand vs Color (padrão obrigatório)
+  // Exclusividade Color × Brand (v3.2 — substituição implícita)
   const handleColorChange = (color: string) => {
     setSelectedColor(color);
     setSelectedBrand(null);
   };
 
   const handleBrandChange = (brand: string | null) => {
-    setSelectedBrand(brand);
-    if (brand) setSelectedColor(null);
+    if (brand) {
+      setSelectedBrand(brand);
+      setSelectedColor(null);
+    }
   };
 
   const toggleBooleanState = (name: string) => {
@@ -424,10 +376,18 @@ export default function DssInputPage() {
     }));
   };
 
-  // Cor efetiva
   const effectiveColor = selectedBrand ? "primary" : selectedColor || "primary";
 
-  // Geração de código (padrão unificado)
+  const getPrefixIcon = () => {
+    switch (selectedType) {
+      case "email": return <Mail size={18} />;
+      case "search": return <Search size={18} />;
+      case "tel": return <Phone size={18} />;
+      case "password": return <Lock size={18} />;
+      default: return <User size={18} />;
+    }
+  };
+
   const generateCode = () => {
     const props: string[] = [];
     if (selectedVariant !== "outlined") props.push(`variant="${selectedVariant}"`);
@@ -447,7 +407,7 @@ export default function DssInputPage() {
     if (booleanStates.hint) props.push('hint="Informe um email válido"');
 
     let code = `<DssInput\n  ${props.join("\n  ")}\n  v-model="value"`;
-    
+
     if (booleanStates.prefix || booleanStates.suffix) {
       code += ">\n";
       if (booleanStates.prefix) code += '  <template #prepend>\n    <q-icon name="mail" />\n  </template>\n';
@@ -460,18 +420,6 @@ export default function DssInputPage() {
     return code;
   };
 
-  // Get prefix icon
-  const getPrefixIcon = () => {
-    switch (selectedType) {
-      case "email": return <Mail size={18} />;
-      case "search": return <Search size={18} />;
-      case "tel": return <Phone size={18} />;
-      case "password": return <Lock size={18} />;
-      default: return <User size={18} />;
-    }
-  };
-
-  // Opções de toggle
   const stateOptions = [
     { name: "error", label: "Error" },
     { name: "disabled", label: "Disabled" },
@@ -486,36 +434,100 @@ export default function DssInputPage() {
     { name: "hint", label: "Hint" },
   ];
 
-  // Token categories
-  const tokenCategories = [...new Set(tokensUsed.map((t) => t.category))];
-
   return (
     <div className="p-6 space-y-8 pb-12">
-      {/* SEÇÃO 1: BADGES + TÍTULO */}
+      {/* ================================================================
+       * SEÇÃO 1: BADGES + TÍTULO (§1, §2)
+       * ================================================================ */}
       <PageHeader
         icon={FileText}
         badge="Componente Base"
         badgeVariant="accent"
         title="Componente"
         titleAccent="DssInput"
-        subtitle="DssInput é o componente responsável pela entrada de dados do usuário em formulários e fluxos interativos. Oferece suporte a diferentes tipos de entrada, estados e feedbacks visuais."
-        subtitleHighlights={["tokens DSS", "brandability", "WCAG 2.1 AA"]}
+        subtitle="DssInput é o componente responsável pela entrada de dados do usuário em formulários e fluxos interativos. Oferece suporte a diferentes tipos de entrada, variantes visuais e feedbacks contextuais, integrando-se ao sistema de brandabilidade multi-marca e tokens DSS para garantir consistência visual em todo o produto."
+        subtitleHighlights={["brandabilidade multi-marca", "tokens DSS", "WCAG 2.1 AA"]}
         extraBadges={[
           { label: "v2.3.0", variant: "info" },
           { label: "Quasar Compatible", variant: "success" },
         ]}
       />
 
-      {/* SEÇÃO 2: PLAYGROUND INTERATIVO - PLAYGROUND_STANDARD v3.1 */}
+      {/* ================================================================
+       * SEÇÃO 2: QUANDO USAR / QUANDO NÃO USAR (§3)
+       * ================================================================ */}
+      <div className="grid md:grid-cols-2 gap-6">
+        <div
+          className="p-5 rounded-lg border"
+          style={{ backgroundColor: "rgba(77, 210, 40, 0.1)", borderColor: "var(--dss-positive)" }}
+        >
+          <h4 className="font-medium mb-3 flex items-center gap-2" style={{ color: "var(--dss-positive)" }}>
+            <CheckCircle className="h-5 w-5" />
+            Quando Usar
+          </h4>
+          <ul className="space-y-2 text-sm" style={{ color: "var(--jtech-text-body)" }}>
+            {[
+              "Formulários de cadastro, login e edição de dados",
+              "Campos de busca e filtragem em listas e tabelas",
+              "Entrada de dados estruturados (email, telefone, senha)",
+              "Fluxos de validação com feedback visual em tempo real",
+              "Inputs com slots para ícones, prefixos e sufixos contextuais",
+              "Campos em contextos multi-marca com brandabilidade",
+            ].map((item, i) => (
+              <li key={i} className="flex items-start gap-2">
+                <Check className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: "var(--dss-positive)" }} />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div
+          className="p-5 rounded-lg border"
+          style={{ backgroundColor: "rgba(216, 24, 46, 0.1)", borderColor: "var(--dss-negative)" }}
+        >
+          <h4 className="font-medium mb-3 flex items-center gap-2" style={{ color: "var(--dss-negative)" }}>
+            <XCircle className="h-5 w-5" />
+            Quando NÃO Usar
+          </h4>
+          <Table>
+            <TableHeader>
+              <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Cenário</TableHead>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Alternativa</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {[
+                { scenario: "Seleção entre opções pré-definidas", alt: "DssSelect" },
+                { scenario: "Texto longo de múltiplas linhas", alt: "DssTextarea" },
+                { scenario: "Alternância entre dois estados", alt: "DssToggle / DssCheckbox" },
+                { scenario: "Seleção de data ou horário", alt: "DssDatePicker" },
+                { scenario: "Upload de arquivos", alt: "DssFileUpload" },
+              ].map((row, i) => (
+                <TableRow key={i} style={{ borderColor: "var(--jtech-card-border)" }}>
+                  <TableCell style={{ color: "var(--jtech-text-body)" }}>{row.scenario}</TableCell>
+                  <TableCell className="font-mono text-xs" style={{ color: "var(--dss-jtech-accent)" }}>
+                    {row.alt}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
+
+      {/* ================================================================
+       * SEÇÃO 3: PLAYGROUND INTERATIVO (§4, PLAYGROUND_STANDARD v3.2)
+       * ================================================================ */}
       <SectionHeader title="Playground" titleAccent="Interativo" badge="Live Preview" />
 
       <DssPlayground
-        layout="canonical"
         title="Configure o Input"
-        description="Selecione as props e veja o resultado em tempo real."
+        description="Selecione as props e veja o resultado em tempo real com tokens DSS reais."
         isDarkMode={isDarkMode}
         onDarkModeToggle={() => setIsDarkMode(!isDarkMode)}
-        previewRatio={0.65}
+        previewMinHeight="320px"
         previewContent={
           <DssInputPreview
             variant={selectedVariant}
@@ -538,7 +550,6 @@ export default function DssInputPage() {
         }
         controls={
           <ControlGrid columns={4}>
-            {/* Linha 1: Variant, Type, Color, Brand */}
             <VariantSelector
               variants={variants}
               selectedVariant={selectedVariant}
@@ -546,7 +557,7 @@ export default function DssInputPage() {
             />
             <VariantSelector
               label="Type"
-              variants={inputTypes.map(t => ({ name: t.name, label: t.label }))}
+              variants={inputTypes.map((t) => ({ name: t.name, label: t.label }))}
               selectedVariant={selectedType}
               onSelect={setSelectedType}
             />
@@ -555,15 +566,12 @@ export default function DssInputPage() {
               colors={Object.values(DSS_SEMANTIC_COLORS)}
               selectedColor={selectedColor}
               onSelect={handleColorChange}
-              disabled={!!selectedBrand}
             />
             <BrandPicker
               brands={DSS_BRAND_COLORS}
               selectedBrand={selectedBrand}
               onSelect={handleBrandChange}
-              disabled={!!selectedColor}
             />
-            {/* Linha 2: Estados e Extras */}
             <ToggleGroup
               label="Estados"
               options={stateOptions}
@@ -581,119 +589,347 @@ export default function DssInputPage() {
         codePreview={generateCode()}
       />
 
-      {/* Anatomia 4 Camadas */}
+      {/* ================================================================
+       * SEÇÃO 4: ESTADOS INTERATIVOS (§5)
+       * ================================================================ */}
+      <SectionHeader title="Estados" titleAccent="Interativos" badge="Comportamento" />
+
+      <div
+        className="rounded-xl border overflow-hidden"
+        style={{ backgroundColor: "var(--jtech-card-bg)", borderColor: "var(--jtech-card-border)" }}
+      >
+        <Table>
+          <TableHeader>
+            <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
+              <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Estado</TableHead>
+              <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Visual</TableHead>
+              <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Interação</TableHead>
+              <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Tokens Aplicados</TableHead>
+              <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Acessibilidade</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {[
+              { state: "Default", visual: "Borda neutra, label e placeholder visíveis", interaction: "Pronto para interação", tokens: "--dss-border-width-thin, --dss-gray-300", a11y: "—" },
+              { state: "Hover", visual: "Borda levemente mais escura", interaction: "Pointer over", tokens: "--dss-duration-fast", a11y: "—" },
+              { state: "Focus", visual: "Borda 2px na cor semântica, focus ring", interaction: "Teclado / clique", tokens: "--dss-shadow-focus, --dss-border-width-md", a11y: "WCAG 2.4.7" },
+              { state: "Error", visual: "Borda vermelha, ícone de alerta, mensagem de erro", interaction: "Validação falhou", tokens: "--dss-feedback-error", a11y: "aria-invalid, aria-describedby" },
+              { state: "Disabled", visual: "Opacidade reduzida, cursor not-allowed", interaction: "Não interativo", tokens: "--dss-opacity-disabled", a11y: "aria-disabled" },
+              { state: "Readonly", visual: "Aparência normal, sem edição", interaction: "Apenas leitura", tokens: "—", a11y: "aria-readonly" },
+              { state: "Loading", visual: "Spinner no lugar do sufixo", interaction: "Bloqueia interação", tokens: "--dss-duration-fast", a11y: "aria-busy" },
+            ].map((row, i) => (
+              <TableRow key={i} style={{ borderColor: "var(--jtech-card-border)" }}>
+                <TableCell className="font-medium" style={{ color: "var(--jtech-heading-tertiary)" }}>{row.state}</TableCell>
+                <TableCell style={{ color: "var(--jtech-text-body)" }}>{row.visual}</TableCell>
+                <TableCell style={{ color: "var(--jtech-text-body)" }}>{row.interaction}</TableCell>
+                <TableCell className="font-mono text-xs" style={{ color: "var(--dss-jtech-accent)" }}>{row.tokens}</TableCell>
+                <TableCell className="font-mono text-xs" style={{ color: "var(--jtech-text-body)" }}>{row.a11y}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* ================================================================
+       * SEÇÃO 5: ANATOMIA 4 CAMADAS (§6)
+       * ================================================================ */}
       <SectionHeader title="Anatomia" titleAccent="4 Camadas" badge="Arquitetura DSS" />
       <AnatomySection componentName="DssInput" layers={anatomyData} />
 
-      {/* Documentação Técnica */}
-      <SectionHeader
-        title="Documentação"
-        titleAccent="Técnica"
-        badge={`${propsData.length} props • ${tokensUsed.length} tokens`}
-      />
+      {/* ================================================================
+       * SEÇÕES TÉCNICAS COLAPSÁVEIS INDEPENDENTES (§7)
+       * ================================================================ */}
 
-      {/* Props API */}
-      <CollapsibleSection icon={Code} title="Props API" titleAccent="& Eventos" defaultOpen={false}>
-        <Card
-          className="overflow-hidden"
-          style={{
-            backgroundColor: "var(--jtech-card-bg)",
-            borderColor: "var(--jtech-card-border)",
-          }}
-        >
-          <div className="overflow-x-auto">
+      {/* 7.1 Props API & Eventos */}
+      <CollapsibleSection icon={FileText} title="Props API" titleAccent="& Eventos">
+        <div className="space-y-6 pt-4">
+          <Table>
+            <TableHeader>
+              <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Categoria</TableHead>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Prop</TableHead>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Type</TableHead>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Default</TableHead>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Descrição</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {propsData.map((p, idx) => (
+                <TableRow key={idx} style={{ borderColor: "var(--jtech-card-border)" }}>
+                  <TableCell style={{ color: "var(--jtech-text-muted)" }}>{p.category}</TableCell>
+                  <TableCell className="font-mono font-medium" style={{ color: "var(--dss-jtech-accent)" }}>{p.prop}</TableCell>
+                  <TableCell className="font-mono text-xs" style={{ color: "var(--jtech-text-body)" }}>{p.type}</TableCell>
+                  <TableCell className="font-mono text-xs" style={{ color: "var(--jtech-text-muted)" }}>{p.default}</TableCell>
+                  <TableCell style={{ color: "var(--jtech-text-body)" }}>{p.description}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+
+          <div className="pt-4">
+            <h4 className="font-medium mb-3" style={{ color: "var(--jtech-heading-tertiary)" }}>Eventos</h4>
             <Table>
               <TableHeader>
                 <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
-                  <TableHead style={{ color: "var(--jtech-text-muted)" }}>Categoria</TableHead>
-                  <TableHead style={{ color: "var(--jtech-text-muted)" }}>Prop</TableHead>
-                  <TableHead style={{ color: "var(--jtech-text-muted)" }}>Tipo</TableHead>
-                  <TableHead style={{ color: "var(--jtech-text-muted)" }}>Default</TableHead>
-                  <TableHead style={{ color: "var(--jtech-text-muted)" }}>Descrição</TableHead>
+                  <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Evento</TableHead>
+                  <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Payload</TableHead>
+                  <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Descrição</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {propsData.map((prop, index) => (
-                  <TableRow key={index} style={{ borderColor: "var(--jtech-card-border)" }} className="hover:bg-white/5">
-                    <TableCell>
-                      <Badge variant="outline" className="text-xs" style={{ borderColor: "var(--jtech-card-border)", color: "var(--jtech-text-muted)" }}>
-                        {prop.category}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <code className="text-sm font-mono px-1.5 py-0.5 rounded" style={{ backgroundColor: "rgba(255,255,255,0.1)", color: "var(--dss-jtech-accent)" }}>
-                        {prop.prop}
-                      </code>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-xs font-mono" style={{ color: "var(--jtech-text-body)" }}>{prop.type}</span>
-                    </TableCell>
-                    <TableCell>
-                      <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ backgroundColor: "rgba(0,0,0,0.2)", color: "#a3a3a3" }}>
-                        {prop.default}
-                      </code>
-                    </TableCell>
-                    <TableCell style={{ color: "var(--jtech-text-body)" }}>{prop.description}</TableCell>
+                {[
+                  { event: "update:modelValue", payload: "String | Number", desc: "Emitido ao alterar o valor do input (v-model)" },
+                  { event: "focus", payload: "FocusEvent", desc: "Emitido quando o input recebe foco" },
+                  { event: "blur", payload: "FocusEvent", desc: "Emitido quando o input perde foco" },
+                  { event: "clear", payload: "void", desc: "Emitido quando o botão clearable é acionado" },
+                ].map((e, idx) => (
+                  <TableRow key={idx} style={{ borderColor: "var(--jtech-card-border)" }}>
+                    <TableCell className="font-mono font-medium" style={{ color: "var(--dss-jtech-accent)" }}>{e.event}</TableCell>
+                    <TableCell className="font-mono text-xs" style={{ color: "var(--jtech-text-body)" }}>{e.payload}</TableCell>
+                    <TableCell style={{ color: "var(--jtech-text-body)" }}>{e.desc}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </div>
-        </Card>
+        </div>
       </CollapsibleSection>
 
-      {/* Tokens DSS */}
-      <CollapsibleSection icon={Layers} title="Tokens DSS" titleAccent="Utilizados" defaultOpen={false}>
-        <DssTabs defaultValue={tokenCategories[0]} className="space-y-4">
-          <DssTabsList className="flex-wrap">
-            {tokenCategories.map((category) => (
-              <DssTabsTrigger key={category} value={category} badge={tokensUsed.filter((t) => t.category === category).length}>
-                {category}
-              </DssTabsTrigger>
-            ))}
-          </DssTabsList>
+      {/* 7.2 Slots */}
+      <CollapsibleSection icon={Code} title="Slots">
+        <div className="pt-4">
+          <Table>
+            <TableHeader>
+              <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Slot</TableHead>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Descrição</TableHead>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Uso Recomendado</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {[
+                { slot: "prepend", desc: "Conteúdo à esquerda do input", usage: "Ícones contextuais (email, busca, etc.)" },
+                { slot: "append", desc: "Conteúdo à direita do input", usage: "Ícones de ação, botões de toggle" },
+                { slot: "label", desc: "Substituição do label padrão", usage: "Labels complexos com badges ou tooltips" },
+                { slot: "hint", desc: "Substituição do hint padrão", usage: "Hints com formatação rica" },
+              ].map((s, idx) => (
+                <TableRow key={idx} style={{ borderColor: "var(--jtech-card-border)" }}>
+                  <TableCell className="font-mono font-medium" style={{ color: "var(--dss-jtech-accent)" }}>{s.slot}</TableCell>
+                  <TableCell style={{ color: "var(--jtech-text-body)" }}>{s.desc}</TableCell>
+                  <TableCell style={{ color: "var(--jtech-text-body)" }}>{s.usage}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </CollapsibleSection>
 
-          {tokenCategories.map((category) => (
-            <DssTabsContent key={category} value={category}>
-              <Card style={{ backgroundColor: "var(--jtech-card-bg)", borderColor: "var(--jtech-card-border)" }}>
-                <CardContent className="pt-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {tokensUsed
-                      .filter((t) => t.category === category)
-                      .map((token, idx) => (
-                        <div
-                          key={idx}
-                          className="flex items-center gap-3 p-3 rounded-lg group cursor-pointer transition-all hover:bg-white/5"
-                          onClick={() => copyToClipboard(token.token)}
-                          style={{ backgroundColor: "rgba(255,255,255,0.02)", border: "1px solid var(--jtech-card-border)" }}
-                        >
-                          <div
-                            className="w-8 h-8 rounded flex-shrink-0"
-                            style={{
-                              backgroundColor: token.value.startsWith("#") || token.value.startsWith("rgba") ? token.value : "transparent",
-                              border: token.value.startsWith("#") || token.value.startsWith("rgba") ? "none" : "1px dashed var(--jtech-card-border)",
-                            }}
-                          />
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2">
-                              <code className="text-xs font-mono truncate" style={{ color: "var(--dss-jtech-accent)" }}>{token.token}</code>
-                              {copiedToken === token.token ? (
-                                <Check size={12} style={{ color: "#4dd228" }} />
-                              ) : (
-                                <Copy size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: "var(--jtech-text-muted)" }} />
-                              )}
-                            </div>
-                            <p className="text-xs truncate" style={{ color: "var(--jtech-text-muted)" }}>{token.usage}</p>
-                          </div>
-                          <code className="text-xs font-mono flex-shrink-0" style={{ color: "var(--jtech-text-body)" }}>{token.value}</code>
-                        </div>
-                      ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </DssTabsContent>
+      {/* 7.3 Tokens (TIPOS aceitos, não tokens individuais) */}
+      <CollapsibleSection icon={Code} title="Tokens">
+        <div className="pt-4">
+          <p className="text-sm mb-4" style={{ color: "var(--jtech-text-body)" }}>
+            Este componente aceita os seguintes tipos de tokens DSS:
+          </p>
+          <Table>
+            <TableHeader>
+              <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Tipo de Token</TableHead>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Papel no Componente</TableHead>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Referência</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {[
+                { type: "Cores Semânticas", role: "Cor de borda e focus ring por estado (primary, secondary, etc.)", ref: "DSS_TOKEN_REFERENCE.md" },
+                { type: "Feedback Tokens", role: "Estados de erro, sucesso e warning no input", ref: "DSS_TOKEN_REFERENCE.md" },
+                { type: "Brand Tokens", role: "Identidade visual multi-marca (Hub, Water, Waste)", ref: "DSS_TOKEN_REFERENCE.md" },
+                { type: "Dimensões", role: "Altura do input e touch targets (dense / padrão)", ref: "DSS_TOKEN_REFERENCE.md" },
+                { type: "Espaçamento", role: "Padding interno e gap entre ícones e texto", ref: "DSS_TOKEN_REFERENCE.md" },
+                { type: "Tipografia", role: "Font-size do texto e placeholder", ref: "DSS_TOKEN_REFERENCE.md" },
+                { type: "Bordas", role: "Border-radius e espessura de borda por variante", ref: "DSS_TOKEN_REFERENCE.md" },
+                { type: "Motion", role: "Transições de focus, hover e estados", ref: "DSS_TOKEN_REFERENCE.md" },
+                { type: "Opacidade", role: "Opacidade no estado disabled", ref: "DSS_TOKEN_REFERENCE.md" },
+              ].map((row, i) => (
+                <TableRow key={i} style={{ borderColor: "var(--jtech-card-border)" }}>
+                  <TableCell className="font-medium" style={{ color: "var(--jtech-heading-tertiary)" }}>{row.type}</TableCell>
+                  <TableCell style={{ color: "var(--jtech-text-body)" }}>{row.role}</TableCell>
+                  <TableCell className="font-mono text-xs" style={{ color: "var(--dss-jtech-accent)" }}>{row.ref}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </CollapsibleSection>
+
+      {/* 7.4 Acessibilidade WCAG */}
+      <CollapsibleSection icon={CheckCircle} title="Acessibilidade" titleAccent="WCAG 2.1 AA">
+        <div className="grid md:grid-cols-2 gap-6 pt-4">
+          <div className="space-y-3">
+            <h4 className="font-medium" style={{ color: "var(--jtech-heading-tertiary)" }}>✅ Implementado</h4>
+            <ul className="space-y-2 text-sm" style={{ color: "var(--jtech-text-body)" }}>
+              {[
+                "Label associado via for/id ao input nativo",
+                "aria-invalid quando em estado de erro",
+                "aria-describedby vinculado à mensagem de erro/hint",
+                "aria-disabled no estado desabilitado",
+                "aria-readonly no estado somente leitura",
+                "Focus ring visível com --dss-shadow-focus",
+                "Contraste mínimo 4.5:1 em todos os estados",
+                "Suporte a prefers-reduced-motion",
+              ].map((item, i) => (
+                <li key={i} className="flex items-start gap-2">
+                  <Check className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: "var(--dss-positive)" }} />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="space-y-3">
+            <h4 className="font-medium" style={{ color: "var(--jtech-heading-tertiary)" }}>📋 Critérios WCAG Atendidos</h4>
+            <Table>
+              <TableHeader>
+                <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
+                  <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Critério</TableHead>
+                  <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Nível</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {[
+                  { criterion: "1.3.1 Informações e Relações", level: "A" },
+                  { criterion: "1.4.3 Contraste (Mínimo)", level: "AA" },
+                  { criterion: "2.4.7 Foco Visível", level: "AA" },
+                  { criterion: "3.3.1 Identificação de Erro", level: "A" },
+                  { criterion: "3.3.2 Labels ou Instruções", level: "A" },
+                  { criterion: "4.1.2 Nome, Função, Valor", level: "A" },
+                ].map((item, idx) => (
+                  <TableRow key={idx} style={{ borderColor: "var(--jtech-card-border)" }}>
+                    <TableCell style={{ color: "var(--jtech-text-body)" }}>{item.criterion}</TableCell>
+                    <TableCell>
+                      <span
+                        className="px-2 py-0.5 rounded text-xs font-medium"
+                        style={{
+                          backgroundColor: item.level === "AA" ? "rgba(77, 210, 40, 0.2)" : "rgba(31, 134, 222, 0.2)",
+                          color: item.level === "AA" ? "var(--dss-positive)" : "var(--dss-action-primary)",
+                        }}
+                      >
+                        {item.level}
+                      </span>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </div>
+      </CollapsibleSection>
+
+      {/* ================================================================
+       * SEÇÃO 8: ANTI-PATTERNS (§8)
+       * ================================================================ */}
+      <CollapsibleSection icon={AlertTriangle} title="Anti-patterns" titleAccent="& Erros Comuns">
+        <div className="space-y-4 pt-4">
+          {[
+            {
+              title: "Input sem label associado",
+              wrong: '<DssInput placeholder="Email" />',
+              correct: '<DssInput label="Email" placeholder="Digite seu email" />',
+              reason: "WCAG 3.3.2 exige labels visíveis. Placeholders não substituem labels.",
+            },
+            {
+              title: "Validação sem feedback visual",
+              wrong: 'if (!valid) alert("Erro")',
+              correct: '<DssInput error="Este campo é obrigatório" />',
+              reason: "Erros devem ser comunicados inline, não via alert. WCAG 3.3.1.",
+            },
+            {
+              title: "Cores hardcoded em vez de tokens",
+              wrong: '<DssInput style="border-color: #ff0000;" />',
+              correct: '<DssInput color="negative" />',
+              reason: "Bypassa o sistema de tokens e quebra a brandabilidade e temas.",
+            },
+            {
+              title: "Usar DssInput para seleção entre opções",
+              wrong: '<DssInput placeholder="Selecione..." />',
+              correct: '<DssSelect :options="items" />',
+              reason: "Inputs de texto livre não comunicam opções disponíveis ao usuário.",
+            },
+          ].map((pattern, idx) => (
+            <div
+              key={idx}
+              className="p-4 rounded-lg border"
+              style={{ backgroundColor: "var(--jtech-card-bg)", borderColor: "var(--jtech-card-border)" }}
+            >
+              <h4 className="font-medium mb-3" style={{ color: "var(--jtech-heading-tertiary)" }}>{pattern.title}</h4>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <span className="text-xs font-medium" style={{ color: "var(--dss-negative)" }}>❌ Incorreto</span>
+                  <pre className="mt-1 p-2 rounded text-xs font-mono" style={{ backgroundColor: "rgba(216, 24, 46, 0.1)", color: "var(--jtech-text-body)" }}>
+                    {pattern.wrong}
+                  </pre>
+                </div>
+                <div>
+                  <span className="text-xs font-medium" style={{ color: "var(--dss-positive)" }}>✅ Correto</span>
+                  <pre className="mt-1 p-2 rounded text-xs font-mono" style={{ backgroundColor: "rgba(77, 210, 40, 0.1)", color: "var(--jtech-text-body)" }}>
+                    {pattern.correct}
+                  </pre>
+                </div>
+              </div>
+              <p className="mt-2 text-sm" style={{ color: "var(--jtech-text-muted)" }}>
+                <strong>Por quê:</strong> {pattern.reason}
+              </p>
+            </div>
           ))}
-        </DssTabs>
+        </div>
+      </CollapsibleSection>
+
+      {/* ================================================================
+       * SEÇÃO 9: VINCULANTES DSS v2.2 (§9)
+       * ================================================================ */}
+      <CollapsibleSection icon={Shield} title="Vinculantes" titleAccent="DSS v2.2">
+        <div className="space-y-4 pt-4">
+          <Table>
+            <TableHeader>
+              <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Regra</TableHead>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Aplicação no DssInput</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {[
+                { rule: "Pseudo-elementos (::before / ::after)", application: "Utilizado em ::after para linha de focus na variante borderless" },
+                { rule: "Uso de brightness()", application: "Não utilizado — estados controlados via tokens de opacidade e border-color" },
+                { rule: "Classificação do componente", application: "Action Component (entrada de dados interativa)" },
+              ].map((row, i) => (
+                <TableRow key={i} style={{ borderColor: "var(--jtech-card-border)" }}>
+                  <TableCell className="font-medium" style={{ color: "var(--jtech-heading-tertiary)" }}>{row.rule}</TableCell>
+                  <TableCell style={{ color: "var(--jtech-text-body)" }}>{row.application}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </CollapsibleSection>
+
+      {/* ================================================================
+       * SEÇÃO 10: REFERÊNCIAS NORMATIVAS (§10)
+       * ================================================================ */}
+      <CollapsibleSection icon={BookOpen} title="Referências" titleAccent="Normativas">
+        <div className="pt-4">
+          <ul className="space-y-2 text-sm" style={{ color: "var(--jtech-text-body)" }}>
+            {[
+              "DSS_TOKEN_REFERENCE.md",
+              "DSS_COMPONENT_ARCHITECTURE.md",
+              "DSS_GOLDEN_COMPONENTS.md",
+              "PLAYGROUND_STANDARD.md (v3.2)",
+              "COMPONENT_PAGE_STRUCTURE.md (v2.3)",
+            ].map((ref, i) => (
+              <li key={i} className="flex items-center gap-2">
+                <FileText className="h-4 w-4 flex-shrink-0" style={{ color: "var(--dss-jtech-accent)" }} />
+                <code className="text-sm font-mono" style={{ color: "var(--dss-jtech-accent)" }}>{ref}</code>
+              </li>
+            ))}
+          </ul>
+        </div>
       </CollapsibleSection>
     </div>
   );
