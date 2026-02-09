@@ -113,8 +113,6 @@ interface ColorPickerProps {
   colors: SemanticColor[] | Array<SemanticColor & { [key: string]: any }>;
   selectedColor: string | null;
   onSelect: (color: string) => void;
-  /** Desativa a seleção quando brand está ativo */
-  disabled?: boolean;
 }
 
 export function ColorPicker({
@@ -122,7 +120,6 @@ export function ColorPicker({
   colors,
   selectedColor,
   onSelect,
-  disabled = false,
 }: ColorPickerProps) {
   return (
     <ControlSection label={label}>
@@ -130,7 +127,7 @@ export function ColorPicker({
         <PlaygroundButton
           key={c.name}
           onClick={() => onSelect(c.name)}
-          isSelected={selectedColor === c.name && !disabled}
+          isSelected={selectedColor === c.name}
           selectedBg={c.bg}
           selectedColor="#ffffff"
           selectedBorder={c.bg}
@@ -156,8 +153,6 @@ interface FeedbackColorPickerProps {
   colors: FeedbackColor[] | Record<string, FeedbackColor>;
   selectedColor: string | null;
   onSelect: (color: string) => void;
-  /** Desativa a seleção quando brand está ativo */
-  disabled?: boolean;
 }
 
 export function FeedbackColorPicker({
@@ -165,7 +160,6 @@ export function FeedbackColorPicker({
   colors,
   selectedColor,
   onSelect,
-  disabled = false,
 }: FeedbackColorPickerProps) {
   const colorArray = Array.isArray(colors) ? colors : Object.values(colors);
   
@@ -175,7 +169,7 @@ export function FeedbackColorPicker({
         <PlaygroundButton
           key={c.name}
           onClick={() => onSelect(c.name)}
-          isSelected={selectedColor === c.name && !disabled}
+          isSelected={selectedColor === c.name}
           selectedBg={c.bg}
           selectedColor={c.name === "warning" ? "#1a1a1a" : "#ffffff"}
           selectedBorder={c.bg}
@@ -205,8 +199,6 @@ interface BrandPickerProps {
   label?: string;
   /** @deprecated PROIBIDO pelo PLAYGROUND_STANDARD v3.1 - NÃO usar */
   showNone?: boolean;
-  /** Desativa a seleção quando color está ativo */
-  disabled?: boolean;
 }
 
 export function BrandPicker({ 
@@ -215,19 +207,18 @@ export function BrandPicker({
   onSelect,
   label = "Brand",
   showNone = false, // PADRÃO: false (v3.1)
-  disabled = false,
 }: BrandPickerProps) {
   return (
     <ControlSection label={label}>
       {Object.values(brands).map((b) => (
         <PlaygroundButton
           key={b.name}
-          onClick={() => !disabled && onSelect(b.name)}
-          isSelected={selectedBrand === b.name && !disabled}
+          onClick={() => onSelect(b.name)}
+          isSelected={selectedBrand === b.name}
           selectedBg={b.principal}
           selectedColor="#ffffff"
           selectedBorder={b.principal}
-          className={`flex items-center gap-1.5 ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+          className="flex items-center gap-1.5"
         >
           <span>{b.icon}</span>
           {b.label}
