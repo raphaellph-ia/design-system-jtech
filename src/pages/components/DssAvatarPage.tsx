@@ -413,11 +413,9 @@ export default function DssAvatarPage() {
       <DssPlayground
         title="Configure o Avatar"
         description="Selecione as props e veja o resultado em tempo real com tokens DSS reais."
-        layout="canonical"
         isDarkMode={isDarkMode}
         onDarkModeToggle={() => setIsDarkMode(!isDarkMode)}
         previewMinHeight="320px"
-        previewRatio={0.65}
         previewContent={
           <DssAvatarPreview
             content="JD"
@@ -449,14 +447,12 @@ export default function DssAvatarPage() {
               colors={Object.values(DSS_SEMANTIC_COLORS)}
               selectedColor={selectedColor}
               onSelect={handleColorChange}
-              disabled={!!selectedBrand}
             />
 
             <BrandPicker
               brands={DSS_BRAND_COLORS}
               selectedBrand={selectedBrand}
               onSelect={handleBrandChange}
-              disabled={!!selectedColor}
             />
 
             <VariantSelector
