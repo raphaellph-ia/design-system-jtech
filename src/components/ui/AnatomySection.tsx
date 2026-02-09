@@ -392,7 +392,7 @@ export function AnatomySection({ componentName, layers }: AnatomySectionProps) {
                         className="text-xs p-4 rounded-lg overflow-x-auto"
                         style={{ 
                           backgroundColor: 'var(--jtech-code-bg)',
-                          color: 'var(--jtech-text-code)'
+                          color: 'var(--jtech-heading-secondary)'
                         }}
                       >
                         <code>{content.codeExample}</code>
