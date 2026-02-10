@@ -13,6 +13,8 @@ import {
   XCircle,
   AlertTriangle,
   Info,
+  BookOpen,
+  Shield,
 } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionHeader } from "@/components/ui/SectionHeader";
@@ -93,90 +95,55 @@ const propsData = [
   { category: "Estados", prop: "percentage", type: "Number", default: "null", description: "Barra de progresso (0-100)" },
   { category: "Estados", prop: "disabled", type: "Boolean", default: "false", description: "Estado desabilitado" },
   { category: "Brandabilidade", prop: "brand", type: "'hub' | 'water' | 'waste'", default: "null", description: "Tema de marca Sansys" },
-];
-
-// Tokens utilizados pelo DssButton (organizados por categoria)
-const tokensUsed = [
-  // Action
-  { category: "Action", token: "--dss-action-primary", value: "#1f86de", usage: "Background primary button" },
-  { category: "Action", token: "--dss-action-primary-hover", value: "#0f5295", usage: "Hover primary" },
-  { category: "Action", token: "--dss-action-primary-light", value: "#86c0f3", usage: "Light primary (outline bg)" },
-  { category: "Action", token: "--dss-action-secondary", value: "#26a69a", usage: "Background secondary" },
-  { category: "Action", token: "--dss-action-tertiary", value: "#ff6607", usage: "Background tertiary" },
-  { category: "Action", token: "--dss-action-accent", value: "#b454c4", usage: "Background accent" },
-  { category: "Action", token: "--dss-action-dark", value: "#454545", usage: "Background dark" },
-  // Feedback
-  { category: "Feedback", token: "--dss-feedback-success", value: "#4dd228", usage: "Positive/Success button" },
-  { category: "Feedback", token: "--dss-feedback-error", value: "#d8182e", usage: "Negative/Error button" },
-  { category: "Feedback", token: "--dss-feedback-warning", value: "#fabd14", usage: "Warning button" },
-  { category: "Feedback", token: "--dss-feedback-info", value: "#0cc4e9", usage: "Info button" },
-  // Brand Hub
-  { category: "Brand Hub", token: "--dss-hub-600", value: "#ef7a11", usage: "Hub principal (button bg)" },
-  { category: "Brand Hub", token: "--dss-hub-700", value: "#bf590f", usage: "Hub hover" },
-  // Brand Water
-  { category: "Brand Water", token: "--dss-water-500", value: "#0e88e4", usage: "Water principal (button bg)" },
-  { category: "Brand Water", token: "--dss-water-600", value: "#026cc7", usage: "Water hover" },
-  // Brand Waste
-  { category: "Brand Waste", token: "--dss-waste-500", value: "#18b173", usage: "Waste principal (button bg)" },
-  { category: "Brand Waste", token: "--dss-waste-600", value: "#0b8154", usage: "Waste hover" },
-  // Sizing
-  { category: "Sizing", token: "--dss-touch-target-md", value: "44px", usage: "Altura mínima WCAG 2.1 AA" },
-  { category: "Sizing", token: "--dss-btn-min-width", value: "64px", usage: "Largura mínima" },
-  // Spacing
-  { category: "Spacing", token: "--dss-spacing-2", value: "8px", usage: "Gap icon-label (sm/md)" },
-  { category: "Spacing", token: "--dss-spacing-4", value: "16px", usage: "Padding horizontal (md)" },
-  // Border Radius
-  { category: "Border Radius", token: "--dss-radius-sm", value: "4px", usage: "Radius padrão (xs/sm)" },
-  { category: "Border Radius", token: "--dss-radius-full", value: "9999px", usage: "Botão round/pill" },
-  // Elevation
-  { category: "Elevation", token: "--dss-elevation-1", value: "0 1px 3px rgba(0,0,0,0.25)", usage: "Sombra elevated" },
-  { category: "Elevation", token: "--dss-elevation-2", value: "0 4px 6px rgba(0,0,0,0.30)", usage: "Sombra hover" },
-  // Typography
-  { category: "Typography", token: "--dss-font-size-md", value: "14px", usage: "Texto medium (padrão)" },
-  { category: "Typography", token: "--dss-font-weight-medium", value: "500", usage: "Peso label" },
-  // Text
-  { category: "Text", token: "--dss-text-inverse", value: "#ffffff", usage: "Texto sobre bg escuro" },
-  { category: "Text", token: "--dss-text-body", value: "#454545", usage: "Texto sobre bg claro" },
-  // Motion
-  { category: "Motion", token: "--dss-duration-fast", value: "150ms", usage: "Transição rápida (hover)" },
-  { category: "Motion", token: "--dss-easing-standard", value: "cubic-bezier(0.4,0,0.2,1)", usage: "Easing padrão" },
-  // Opacity
-  { category: "Opacity", token: "--dss-opacity-disabled", value: "0.4", usage: "Estado desabilitado" },
-  // States
-  { category: "States", token: "--dss-state-active-scale", value: "0.98", usage: "Scale no pressed" },
-  // Gray Scale
-  { category: "Gray Scale", token: "--dss-gray-300", value: "#e5e5e5", usage: "Borda light" },
+  { category: "Layout", prop: "stack", type: "Boolean", default: "false", description: "Empilha ícone e label verticalmente" },
+  { category: "Layout", prop: "stretch", type: "Boolean", default: "false", description: "Ocupa largura total do container" },
+  { category: "Layout", prop: "no-caps", type: "Boolean", default: "false", description: "Desativa uppercase no label" },
+  { category: "Layout", prop: "no-wrap", type: "Boolean", default: "false", description: "Impede quebra de linha no label" },
+  { category: "Layout", prop: "padding", type: "String", default: "null", description: "Padding customizado (CSS)" },
+  { category: "Layout", prop: "align", type: "'left' | 'center' | 'right'", default: "'center'", description: "Alinhamento do conteúdo" },
+  { category: "Navegação", prop: "type", type: "'button' | 'submit' | 'reset'", default: "'button'", description: "Tipo nativo do botão" },
+  { category: "Navegação", prop: "to", type: "String | Object", default: "null", description: "Rota Vue Router (transforma em router-link)" },
+  { category: "Navegação", prop: "replace", type: "Boolean", default: "false", description: "Usa router.replace em vez de push" },
+  { category: "Interação", prop: "ripple", type: "Boolean", default: "false", description: "Efeito ripple no clique" },
+  { category: "Interação", prop: "tabindex", type: "Number | String", default: "null", description: "Tabindex customizado" },
+  { category: "Acessibilidade", prop: "aria-label", type: "String", default: "undefined", description: "Label ARIA para screen readers" },
 ];
 
 // Anatomia 4 Camadas DSS
 const anatomyData = {
   structure: {
-    files: ["DssButton.vue"],
+    files: ["DssButton.ts.vue"],
     description: "Camada responsável pelo template Vue, definição de props e interface do componente.",
     responsibilities: [
-      "Definição do template HTML semântico (<button> ou <a>)",
+      "Definição do template HTML semântico (<button> ou <router-link>)",
       "Declaração de props com validação TypeScript",
-      "Emissão de eventos (@click, @focus, @blur)",
+      "Emissão de eventos (@click)",
       "Binding de slots (default, icon, icon-right)",
+      "Composables useButtonClasses, useButtonComponent, useButtonProgress",
     ],
     tokens: [],
     codeExample: `<template>
-  <button
-    class="dss-button"
-    :class="buttonClasses"
+  <component
+    :is="componentType"
+    :type="nativeType"
     :disabled="disabled || loading"
+    :class="buttonClasses"
     @click="handleClick"
   >
-    <slot name="icon" />
+    <span v-if="loading" class="dss-button__loading">
+      <span class="dss-button__spinner" />
+    </span>
+    <span v-if="icon" class="dss-button__icon--left">
+      {{ icon }}
+    </span>
     <span class="dss-button__label">
       <slot>{{ label }}</slot>
     </span>
-    <slot name="icon-right" />
-  </button>
+  </component>
 </template>`,
   },
   composition: {
-    files: ["_base.scss", "_reset.scss", "_layout.scss"],
+    files: ["2-composition/_base.scss", "_reset.scss", "_layout.scss"],
     description: "Estilos fundamentais que definem o layout, tipografia e reset do componente.",
     responsibilities: [
       "Reset de estilos nativos do browser",
@@ -196,13 +163,15 @@ const anatomyData = {
 }`,
   },
   variants: {
-    files: ["_elevated.scss", "_flat.scss", "_outline.scss", "_unelevated.scss", "_push.scss", "_glossy.scss"],
+    files: ["3-variants/_elevated.scss", "_flat.scss", "_outline.scss", "_unelevated.scss", "_push.scss", "_glossy.scss"],
     description: "Define as variações visuais do componente sem incluir cores.",
     responsibilities: [
       "Elevated: box-shadow com --dss-elevation-1",
       "Flat: background transparent, sem borda",
       "Outline: borda 1px, background transparent",
       "Push: efeito 3D com sombra inferior",
+      "Glossy: gradiente linear brilhante",
+      "Unelevated: sólido sem shadow",
     ],
     tokens: ["--dss-elevation-0", "--dss-elevation-1", "--dss-elevation-2", "--dss-radius-sm"],
     codeExample: `.dss-button--elevated {
@@ -214,13 +183,14 @@ const anatomyData = {
 }`,
   },
   output: {
-    files: ["_colors.scss", "_brands.scss", "_states.scss", "_sizes.scss"],
+    files: ["4-output/_colors.scss", "_brands.scss", "_states.scss", "_sizes.scss"],
     description: "Camada final que aplica cores semânticas, temas de brand e estados interativos.",
     responsibilities: [
       "Aplicação de cores semânticas (primary, secondary, etc.)",
       "Brandability completa (Hub, Water, Waste)",
       "Estados hover, focus, active, disabled",
       "Focus ring com --dss-shadow-focus",
+      "Suporte a prefers-reduced-motion e forced-colors",
     ],
     tokens: ["--dss-action-primary", "--dss-hub-600", "--dss-water-500", "--dss-waste-500"],
     codeExample: `.dss-button--primary {
@@ -265,7 +235,6 @@ function DssButtonPreview({
 }: DssButtonPreviewProps) {
   const [isHovered, setIsHovered] = useState(false);
 
-  // Obter cores do DSS
   const getColors = () => {
     if (brand && DSS_BRAND_COLORS[brand]) {
       const b = DSS_BRAND_COLORS[brand];
@@ -322,7 +291,6 @@ function DssButtonPreview({
   const colors = getColors();
   const sizeStyles = getSizeStyles();
 
-  // Estilos baseados na variante COM suporte a hover dinâmico
   const getVariantStyles = (): React.CSSProperties => {
     const base: React.CSSProperties = {
       display: "inline-flex",
@@ -423,7 +391,8 @@ function DssButtonPreview({
 }
 
 // ============================================================================
-// COMPONENTE PRINCIPAL
+// COMPONENTE PRINCIPAL — Reconstruído conforme Addendum v1.0
+// Baseline: DssAvatarPage | Guia: COMPONENT_PAGE_STRUCTURE.md v2.3
 // ============================================================================
 
 export default function DssButtonPage() {
@@ -442,16 +411,15 @@ export default function DssButtonPage() {
   });
 
   // Exclusividade Color × Brand (PLAYGROUND_STANDARD v3.1)
-  // Seleção automática sem botão "Nenhum"
   const handleColorChange = (color: string) => {
     setSelectedColor(color);
-    setSelectedBrand(null); // Limpa brand automaticamente
+    setSelectedBrand(null);
   };
 
   const handleBrandChange = (brand: string | null) => {
     if (brand) {
       setSelectedBrand(brand);
-      setSelectedColor(null); // Limpa color automaticamente
+      setSelectedColor(null);
     }
   };
 
@@ -462,7 +430,6 @@ export default function DssButtonPage() {
     }));
   };
 
-  // Lógica de cor efetiva (fallback para primary se nada selecionado)
   const effectiveColor = selectedBrand ? "primary" : selectedColor || "primary";
 
   // Geração de código (PLAYGROUND_STANDARD v3.1: código de produção real)
@@ -485,7 +452,6 @@ export default function DssButtonPage() {
     return `<DssButton\n  ${props.join("\n  ")}\n/>`;
   };
 
-  // Opções de toggle para estados
   const toggleOptions = [
     { name: "disabled", label: "Disabled" },
     { name: "loading", label: "Loading" },
@@ -496,22 +462,91 @@ export default function DssButtonPage() {
 
   return (
     <div className="p-6 space-y-8 pb-12">
-      {/* SEÇÃO 1: BADGES + TÍTULO */}
+      {/* ================================================================
+       * SEÇÃO 1: BADGES + TÍTULO (COMPONENT_PAGE_STRUCTURE §1, §2)
+       * ================================================================ */}
       <PageHeader
         icon={Box}
-        badge="Golden Sample"
+        badge="Golden Component"
         badgeVariant="accent"
         title="Componente"
         titleAccent="DssButton"
-        subtitle="DssButton é o componente utilizado para representar ações na interface, como confirmar, cancelar, enviar ou navegar. Ele oferece variações visuais e comportamentais bem definidas para diferentes contextos de uso."
-        subtitleHighlights={["tokens DSS", "brandability", "WCAG 2.1 AA"]}
+        subtitle="DssButton é o componente utilizado para representar ações na interface, como confirmar, cancelar, enviar ou navegar. Ele oferece variações visuais e comportamentais bem definidas para diferentes contextos de uso, podendo ser utilizado de forma isolada ou aninhado dentro de outros componentes interativos."
+        subtitleHighlights={["brandabilidade multi-marca", "6 variantes visuais", "WCAG 2.1 AA"]}
         extraBadges={[
-          { label: "v2.1.0", variant: "info" },
+          { label: "v2.2.0", variant: "info" },
+          { label: "DSS Selo Aprovado", variant: "success" },
           { label: "Quasar Compatible", variant: "success" },
         ]}
       />
 
-      {/* SEÇÃO 2: PLAYGROUND INTERATIVO (PLAYGROUND_STANDARD v3.1) */}
+      {/* ================================================================
+       * SEÇÃO 2: QUANDO USAR / QUANDO NÃO USAR (§3)
+       * ================================================================ */}
+      <div className="grid md:grid-cols-2 gap-6">
+        <div
+          className="p-5 rounded-lg border"
+          style={{ backgroundColor: "rgba(77, 210, 40, 0.1)", borderColor: "var(--dss-positive)" }}
+        >
+          <h4 className="font-medium mb-3 flex items-center gap-2" style={{ color: "var(--dss-positive)" }}>
+            <CheckCircle className="h-5 w-5" />
+            Quando Usar
+          </h4>
+          <ul className="space-y-2 text-sm" style={{ color: "var(--jtech-text-body)" }}>
+            {[
+              "Ações primárias como salvar, enviar, confirmar ou criar",
+              "Ações secundárias como cancelar, voltar ou descartar",
+              "Navegação principal via router-link (prop to)",
+              "Ações de formulário (submit, reset)",
+              "Ações com feedback de loading/progresso",
+              "Toolbars, dialogs, cards e footers de página",
+            ].map((item, i) => (
+              <li key={i} className="flex items-start gap-2">
+                <Check className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: "var(--dss-positive)" }} />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div
+          className="p-5 rounded-lg border"
+          style={{ backgroundColor: "rgba(216, 24, 46, 0.1)", borderColor: "var(--dss-negative)" }}
+        >
+          <h4 className="font-medium mb-3 flex items-center gap-2" style={{ color: "var(--dss-negative)" }}>
+            <XCircle className="h-5 w-5" />
+            Quando NÃO Usar
+          </h4>
+          <Table>
+            <TableHeader>
+              <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Cenário</TableHead>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Alternativa</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {[
+                { scenario: "Links de navegação inline no texto", alt: "DssLink ou <a>" },
+                { scenario: "Toggles on/off de estado", alt: "DssToggle ou DssCheckbox" },
+                { scenario: "Tags ou labels informativos", alt: "DssBadge ou DssChip" },
+                { scenario: "Ações em menus dropdown", alt: "DssMenu item" },
+                { scenario: "Ícones de ação sem label", alt: "DssIconButton" },
+              ].map((row, i) => (
+                <TableRow key={i} style={{ borderColor: "var(--jtech-card-border)" }}>
+                  <TableCell style={{ color: "var(--jtech-text-body)" }}>{row.scenario}</TableCell>
+                  <TableCell className="font-mono text-xs" style={{ color: "var(--dss-jtech-accent)" }}>
+                    {row.alt}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
+
+      {/* ================================================================
+       * SEÇÃO 3: PLAYGROUND INTERATIVO (§4, PLAYGROUND_STANDARD v3.1)
+       * ================================================================ */}
       <SectionHeader title="Playground" titleAccent="Interativo" badge="Live Preview" />
 
       <DssPlayground
@@ -535,25 +570,19 @@ export default function DssButtonPage() {
           />
         }
         controls={
-          /* PLAYGROUND_STANDARD v3.1: Grid horizontal, mín. 4 colunas
-           * Ordem obrigatória: variant → size → color → brand → feedback → states
-           */
           <ControlGrid columns={4}>
-            {/* 1. VARIANT - Seleção de variante visual */}
             <VariantSelector
               variants={variants}
               selectedVariant={selectedVariant}
               onSelect={setSelectedVariant}
             />
 
-            {/* 2. SIZE - Seleção de tamanho */}
             <SizeSelector
               sizes={sizes}
               selectedSize={selectedSize}
               onSelect={setSelectedSize}
             />
 
-            {/* 3. COLOR - Cores semânticas */}
             <ColorPicker
               label="Color"
               colors={Object.values(DSS_SEMANTIC_COLORS)}
@@ -561,14 +590,12 @@ export default function DssButtonPage() {
               onSelect={handleColorChange}
             />
 
-            {/* 4. BRAND - Marcas Sansys */}
             <BrandPicker
               brands={DSS_BRAND_COLORS}
               selectedBrand={selectedBrand}
               onSelect={handleBrandChange}
             />
 
-            {/* 5. FEEDBACK - Cores de feedback */}
             <FeedbackColorPicker
               label="Feedback"
               colors={feedbackColors}
@@ -576,7 +603,6 @@ export default function DssButtonPage() {
               onSelect={handleColorChange}
             />
 
-            {/* 6. STATES - Estados booleanos */}
             <ToggleGroup
               label="Estados & Ícones"
               options={toggleOptions}
@@ -588,11 +614,59 @@ export default function DssButtonPage() {
         codePreview={generateCode()}
       />
 
-      {/* Anatomia 4 Camadas */}
+      {/* ================================================================
+       * SEÇÃO 4: ESTADOS INTERATIVOS (§5)
+       * ================================================================ */}
+      <SectionHeader title="Estados" titleAccent="Interativos" badge="Comportamento" />
+
+      <div
+        className="rounded-xl border overflow-hidden"
+        style={{ backgroundColor: "var(--jtech-card-bg)", borderColor: "var(--jtech-card-border)" }}
+      >
+        <Table>
+          <TableHeader>
+            <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
+              <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Estado</TableHead>
+              <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Visual</TableHead>
+              <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Interação</TableHead>
+              <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Tokens Aplicados</TableHead>
+              <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Acessibilidade</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {[
+              { state: "Default", visual: "Aparência padrão com cor semântica", interaction: "Pronto para interação", tokens: "--dss-action-primary", a11y: "—" },
+              { state: "Hover", visual: "Cor escurecida, elevação aumentada", interaction: "Pointer over", tokens: "--dss-action-primary-hover, --dss-elevation-2", a11y: "—" },
+              { state: "Focus", visual: "Focus ring 2px visível", interaction: "Navegação por teclado", tokens: "--dss-shadow-focus", a11y: "WCAG 2.4.7" },
+              { state: "Active", visual: "Scale 0.98, cor pressionada", interaction: "Clique / toque", tokens: "--dss-state-active-scale", a11y: "—" },
+              { state: "Disabled", visual: "Opacidade reduzida (0.4)", interaction: "Não interativo", tokens: "--dss-opacity-disabled", a11y: "aria-disabled" },
+              { state: "Loading", visual: "Spinner ou barra de progresso", interaction: "Bloqueia interação", tokens: "--dss-duration-fast", a11y: "aria-busy" },
+            ].map((row, i) => (
+              <TableRow key={i} style={{ borderColor: "var(--jtech-card-border)" }}>
+                <TableCell className="font-medium" style={{ color: "var(--jtech-heading-tertiary)" }}>{row.state}</TableCell>
+                <TableCell style={{ color: "var(--jtech-text-body)" }}>{row.visual}</TableCell>
+                <TableCell style={{ color: "var(--jtech-text-body)" }}>{row.interaction}</TableCell>
+                <TableCell className="font-mono text-xs" style={{ color: "var(--dss-jtech-accent)" }}>{row.tokens}</TableCell>
+                <TableCell className="font-mono text-xs" style={{ color: "var(--jtech-text-body)" }}>{row.a11y}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* ================================================================
+       * SEÇÃO 5: ANATOMIA 4 CAMADAS (§6)
+       * ================================================================ */}
       <SectionHeader title="Anatomia" titleAccent="4 Camadas" badge="Arquitetura DSS" />
       <AnatomySection componentName="DssButton" layers={anatomyData} />
 
-      {/* Documentação Técnica - Seção Colapsável */}
+      {/* ================================================================
+       * SEÇÕES TÉCNICAS COLAPSÁVEIS INDEPENDENTES (§7)
+       * Cada seção é um bloco colapsável independente.
+       * ❌ PROIBIDO agrupar dentro de container genérico.
+       * ================================================================ */}
+
+      {/* 7.1 Props API & Eventos */}
       <CollapsibleSection icon={FileText} title="Props API" titleAccent="& Eventos">
         <div className="space-y-6 pt-4">
           <Table>
@@ -623,22 +697,104 @@ export default function DssButtonPage() {
               ))}
             </TableBody>
           </Table>
+
+          <div className="pt-4">
+            <h4 className="font-medium mb-3" style={{ color: "var(--jtech-heading-tertiary)" }}>Eventos</h4>
+            <Table>
+              <TableHeader>
+                <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
+                  <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Evento</TableHead>
+                  <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Payload</TableHead>
+                  <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Descrição</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
+                  <TableCell className="font-mono font-medium" style={{ color: "var(--dss-jtech-accent)" }}>click</TableCell>
+                  <TableCell className="font-mono text-xs" style={{ color: "var(--jtech-text-body)" }}>MouseEvent</TableCell>
+                  <TableCell style={{ color: "var(--jtech-text-body)" }}>Emitido quando o botão é clicado (não emite se disabled ou loading)</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </div>
         </div>
       </CollapsibleSection>
 
+      {/* 7.2 Slots */}
+      <CollapsibleSection icon={Code} title="Slots">
+        <div className="pt-4">
+          <Table>
+            <TableHeader>
+              <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Slot</TableHead>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Descrição</TableHead>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Uso Recomendado</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
+                <TableCell className="font-mono font-medium" style={{ color: "var(--dss-jtech-accent)" }}>default</TableCell>
+                <TableCell style={{ color: "var(--jtech-text-body)" }}>Conteúdo principal do botão (substitui label)</TableCell>
+                <TableCell style={{ color: "var(--jtech-text-body)" }}>Conteúdo customizado, ícones inline, badges internos</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </div>
+      </CollapsibleSection>
+
+      {/* 7.3 Tokens (TIPOS aceitos, não tokens individuais) */}
+      <CollapsibleSection icon={Code} title="Tokens">
+        <div className="pt-4">
+          <p className="text-sm mb-4" style={{ color: "var(--jtech-text-body)" }}>
+            Este componente aceita os seguintes tipos de tokens DSS:
+          </p>
+          <Table>
+            <TableHeader>
+              <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Tipo de Token</TableHead>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Papel no Componente</TableHead>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Referência</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {[
+                { type: "Cores Semânticas", role: "Background, texto e borda em todas as variantes", ref: "DSS_TOKEN_REFERENCE.md" },
+                { type: "Brand Tokens", role: "Identidade visual Hub, Water e Waste", ref: "DSS_TOKEN_REFERENCE.md" },
+                { type: "Cores de Feedback", role: "Estados de sucesso, erro, alerta e informação", ref: "DSS_TOKEN_REFERENCE.md" },
+                { type: "Dimensões", role: "Alturas, paddings e touch targets (xs–xl)", ref: "DSS_TOKEN_REFERENCE.md" },
+                { type: "Tipografia", role: "Tamanho, peso e espaçamento do label", ref: "DSS_TOKEN_REFERENCE.md" },
+                { type: "Bordas", role: "Border-radius (square, padrão, round)", ref: "DSS_TOKEN_REFERENCE.md" },
+                { type: "Elevação", role: "Box-shadow para variantes elevated, push e glossy", ref: "DSS_TOKEN_REFERENCE.md" },
+                { type: "Motion", role: "Transições de hover, focus e active", ref: "DSS_TOKEN_REFERENCE.md" },
+                { type: "Opacidade", role: "Estado desabilitado", ref: "DSS_TOKEN_REFERENCE.md" },
+              ].map((row, i) => (
+                <TableRow key={i} style={{ borderColor: "var(--jtech-card-border)" }}>
+                  <TableCell className="font-medium" style={{ color: "var(--jtech-heading-tertiary)" }}>{row.type}</TableCell>
+                  <TableCell style={{ color: "var(--jtech-text-body)" }}>{row.role}</TableCell>
+                  <TableCell className="font-mono text-xs" style={{ color: "var(--dss-jtech-accent)" }}>{row.ref}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </CollapsibleSection>
+
+      {/* 7.4 Acessibilidade WCAG */}
       <CollapsibleSection icon={CheckCircle} title="Acessibilidade" titleAccent="WCAG 2.1 AA">
         <div className="grid md:grid-cols-2 gap-6 pt-4">
           <div className="space-y-3">
-            <h4 className="font-medium" style={{ color: "var(--jtech-heading-tertiary)" }}>
-              ✅ Implementado
-            </h4>
+            <h4 className="font-medium" style={{ color: "var(--jtech-heading-tertiary)" }}>✅ Implementado</h4>
             <ul className="space-y-2 text-sm" style={{ color: "var(--jtech-text-body)" }}>
               {[
                 "Touch target mínimo 44x44px (WCAG 2.5.5)",
-                "Focus ring visível com :focus-visible",
+                "Focus ring visível com :focus-visible (WCAG 2.4.7)",
                 "Contraste mínimo 4.5:1 em todas as cores",
+                "aria-busy durante loading",
+                "aria-disabled em estado desabilitado",
+                "aria-label customizável via prop",
                 "Respeita prefers-reduced-motion",
-                "Suporte a prefers-contrast: high",
+                "Suporte a prefers-contrast: more",
+                "Suporte a forced-colors: active",
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-2">
                   <Check className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: "var(--dss-positive)" }} />
@@ -648,14 +804,46 @@ export default function DssButtonPage() {
             </ul>
           </div>
           <div className="space-y-3">
-            <h4 className="font-medium" style={{ color: "var(--jtech-heading-tertiary)" }}>
-              📋 Media Queries
-            </h4>
+            <h4 className="font-medium" style={{ color: "var(--jtech-heading-tertiary)" }}>📋 Critérios WCAG Atendidos</h4>
+            <Table>
+              <TableHeader>
+                <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
+                  <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Critério</TableHead>
+                  <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Nível</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {[
+                  { criterion: "1.4.3 Contraste (Mínimo)", level: "AA" },
+                  { criterion: "2.1.1 Teclado", level: "A" },
+                  { criterion: "2.4.7 Foco Visível", level: "AA" },
+                  { criterion: "2.5.5 Tamanho do Alvo", level: "AAA" },
+                  { criterion: "4.1.2 Nome, Função, Valor", level: "A" },
+                ].map((item, idx) => (
+                  <TableRow key={idx} style={{ borderColor: "var(--jtech-card-border)" }}>
+                    <TableCell style={{ color: "var(--jtech-text-body)" }}>{item.criterion}</TableCell>
+                    <TableCell>
+                      <span
+                        className="px-2 py-0.5 rounded text-xs font-medium"
+                        style={{
+                          backgroundColor: item.level === "AAA" ? "rgba(180, 84, 196, 0.2)" : item.level === "AA" ? "rgba(77, 210, 40, 0.2)" : "rgba(31, 134, 222, 0.2)",
+                          color: item.level === "AAA" ? "var(--dss-action-accent)" : item.level === "AA" ? "var(--dss-positive)" : "var(--dss-action-primary)",
+                        }}
+                      >
+                        {item.level}
+                      </span>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+
+            <h4 className="font-medium mt-4" style={{ color: "var(--jtech-heading-tertiary)" }}>📋 Media Queries</h4>
             <pre
               className="p-3 rounded-lg text-xs font-mono overflow-x-auto"
               style={{
-                backgroundColor: "rgba(0,0,0,0.4)",
-                color: "var(--jtech-text-body)",
+                backgroundColor: "var(--jtech-code-bg)",
+                color: "var(--jtech-heading-secondary)",
                 border: "1px solid var(--jtech-card-border)",
               }}
             >
@@ -672,9 +860,124 @@ export default function DssButtonPage() {
   .dss-button {
     transition: none !important;
   }
+}
+
+/* Forced colors (Windows High Contrast) */
+@media (forced-colors: active) {
+  .dss-button {
+    border: 1px solid ButtonText;
+  }
 }`}
             </pre>
           </div>
+        </div>
+      </CollapsibleSection>
+
+      {/* ================================================================
+       * SEÇÃO 8: ANTI-PATTERNS (§8)
+       * ================================================================ */}
+      <CollapsibleSection icon={AlertTriangle} title="Anti-patterns" titleAccent="& Erros Comuns">
+        <div className="space-y-4 pt-4">
+          {[
+            {
+              title: "Botão sem label acessível",
+              wrong: '<DssButton icon="save" />',
+              correct: '<DssButton icon="save" aria-label="Salvar registro" />',
+              reason: "Botões com apenas ícone precisam de aria-label para screen readers (WCAG 4.1.2).",
+            },
+            {
+              title: "Cores hardcoded em vez de tokens",
+              wrong: '<DssButton style="background: #ff0000" label="Erro" />',
+              correct: '<DssButton color="negative" label="Erro" />',
+              reason: "Bypassa o sistema de tokens e quebra brandabilidade, dark mode e contraste WCAG.",
+            },
+            {
+              title: "Usar DssButton como toggle de estado",
+              wrong: '<DssButton :color="isActive ? \'positive\' : \'negative\'" @click="toggle" />',
+              correct: '<DssToggle v-model="isActive" label="Ativar recurso" />',
+              reason: "Botões representam ações, não estados. Para on/off, usar DssToggle ou DssCheckbox.",
+            },
+            {
+              title: "Botão disabled sem feedback visual alternativo",
+              wrong: '<DssButton disabled label="Enviar" />',
+              correct: '<DssButton disabled label="Enviar" />\n<span class="text-caption">Preencha todos os campos</span>',
+              reason: "Usuários precisam entender por que a ação está indisponível.",
+            },
+          ].map((pattern, idx) => (
+            <div
+              key={idx}
+              className="p-4 rounded-lg border"
+              style={{ backgroundColor: "var(--jtech-card-bg)", borderColor: "var(--jtech-card-border)" }}
+            >
+              <h4 className="font-medium mb-3" style={{ color: "var(--jtech-heading-tertiary)" }}>{pattern.title}</h4>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <span className="text-xs font-medium" style={{ color: "var(--dss-negative)" }}>❌ Incorreto</span>
+                  <pre className="mt-1 p-2 rounded text-xs font-mono" style={{ backgroundColor: "rgba(216, 24, 46, 0.1)", color: "var(--jtech-text-body)" }}>
+                    {pattern.wrong}
+                  </pre>
+                </div>
+                <div>
+                  <span className="text-xs font-medium" style={{ color: "var(--dss-positive)" }}>✅ Correto</span>
+                  <pre className="mt-1 p-2 rounded text-xs font-mono" style={{ backgroundColor: "rgba(77, 210, 40, 0.1)", color: "var(--jtech-text-body)" }}>
+                    {pattern.correct}
+                  </pre>
+                </div>
+              </div>
+              <p className="mt-2 text-sm" style={{ color: "var(--jtech-text-muted)" }}>
+                <strong>Por quê:</strong> {pattern.reason}
+              </p>
+            </div>
+          ))}
+        </div>
+      </CollapsibleSection>
+
+      {/* ================================================================
+       * SEÇÃO 9: VINCULANTES DSS v2.2 (§9)
+       * ================================================================ */}
+      <CollapsibleSection icon={Shield} title="Vinculantes" titleAccent="DSS v2.2">
+        <div className="space-y-4 pt-4">
+          <Table>
+            <TableHeader>
+              <TableRow style={{ borderColor: "var(--jtech-card-border)" }}>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Regra</TableHead>
+                <TableHead style={{ color: "var(--jtech-heading-tertiary)" }}>Aplicação no DssButton</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {[
+                { rule: "Pseudo-elementos (::before / ::after)", application: "Utilizado em ::after para efeito ripple e ::before para progress overlay" },
+                { rule: "Uso de brightness()", application: "Não utilizado — hover é controlado via tokens de cor específicos (--dss-action-*-hover)" },
+                { rule: "Classificação do componente", application: "Action Component (interação primária do usuário)" },
+              ].map((row, i) => (
+                <TableRow key={i} style={{ borderColor: "var(--jtech-card-border)" }}>
+                  <TableCell className="font-medium" style={{ color: "var(--jtech-heading-tertiary)" }}>{row.rule}</TableCell>
+                  <TableCell style={{ color: "var(--jtech-text-body)" }}>{row.application}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </CollapsibleSection>
+
+      {/* ================================================================
+       * SEÇÃO 10: REFERÊNCIAS NORMATIVAS (§10)
+       * ================================================================ */}
+      <CollapsibleSection icon={BookOpen} title="Referências" titleAccent="Normativas">
+        <div className="pt-4">
+          <ul className="space-y-2 text-sm" style={{ color: "var(--jtech-text-body)" }}>
+            {[
+              "DSS_TOKEN_REFERENCE.md",
+              "DSS_COMPONENT_ARCHITECTURE.md",
+              "DSS_GOLDEN_COMPONENTS.md",
+              "DSS/docs/compliance/seals/DssButton/DSS_BUTTON_SELO_v2.2.md",
+            ].map((ref, i) => (
+              <li key={i} className="flex items-center gap-2">
+                <FileText className="h-4 w-4 flex-shrink-0" style={{ color: "var(--dss-jtech-accent)" }} />
+                <span className="font-mono text-xs">{ref}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </CollapsibleSection>
     </div>
