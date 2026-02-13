@@ -9,7 +9,8 @@
   "goldenComponent": "DssChip",
   "secondaryGoldenComponent": "DssBadge",
   "category": "Basico (Surface/Container)",
-  "phase": 1,
+  "phase": 2,
+  "phaseDescription": "Fase 2 Ready — Composicao Interna DSS documentada",
   "hasReservations": true,
   "classification": "Componente de superficie estrutural composto",
   "subcomponents": ["DssCardSection", "DssCardActions"],
@@ -21,6 +22,18 @@
   "statesApplicable": ["default", "hover", "focus", "active"],
   "statesNotApplicable": ["disabled", "loading", "error", "indeterminate"],
   "statesNotApplicableJustification": "DssCard e superficie estrutural. Estados de loading/disabled/error pertencem aos componentes internos (DssButton, DssInput, etc.).",
+  "compositionRecommendations": [
+    "DssAvatar",
+    "DssBadge",
+    "DssButton",
+    "DssCheckbox",
+    "DssChip",
+    "DssInput",
+    "DssRadio",
+    "DssToggle",
+    "DssTooltip"
+  ],
+  "compositionNote": "Composicao e recomendacao, nao dependencia tecnica. O DssCard funciona independentemente dos componentes listados.",
   "exceptions": [
     {
       "id": "EXC-01",

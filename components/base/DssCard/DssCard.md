@@ -46,7 +46,7 @@ Componente de superfície estrutural com suporte a elevação, bordas e brandabi
 ### ❌ Quando Não Usar
 
 - **Layout de página principal**: Use containers semânticos (`<main>`, `<section>`)
-- **Listas simples de itens**: Use `DssList` ou `<ul>/<ol>` nativo
+- **Listas simples de itens**: Use `<ul>/<ol>` nativo
 - **Superfícies sem conteúdo relacionado**: Não force cards onde não há agrupamento lógico
 - **Excesso de cards aninhados**: Evite cards dentro de cards (máximo 2 níveis)
 - **Conteúdo inline**: Para textos ou elementos inline, não use card
@@ -1201,6 +1201,288 @@ export default {
 
 ---
 
+## 17. Matriz de Composicao DSS
+
+### 17.1 Papel Estrutural do DssCard
+
+O DssCard e uma **superficie estrutural composta** que fornece slots para composicao livre. Seu papel e:
+
+- **Container neutro**: Agrupa conteudo visualmente sem impor layout interno rigido
+- **Slots abertos**: O slot `default` aceita qualquer combinacao de subcomponentes DSS
+- **Nao instancia componentes**: O DssCard nao cria nem gerencia instancias de outros componentes DSS — a composicao e **responsabilidade exclusiva do consumidor**
+
+**Implicacao pratica:** Exemplos de composicao nesta secao sao **recomendacoes**, nao requisitos. O DssCard funciona independentemente dos componentes listados abaixo.
+
+---
+
+### 17.2 Componentes DSS Recomendados
+
+Os seguintes componentes DSS **existem no repositorio** e sao recomendados para composicao dentro do DssCard:
+
+| Componente | Caso de Uso no Card | Slot/Secao Recomendada | Observacoes | Status Selo |
+|------------|---------------------|------------------------|-------------|-------------|
+| `DssAvatar` | Foto/iniciais de usuario, icone de entidade | `DssCardSection` (horizontal) | Usar com layout horizontal para avatar + texto lado a lado | Selo DSS v2.2 |
+| `DssBadge` | Indicador de status, contadores, notificacoes | `DssCardSection` | Posicionar proximo ao titulo ou metrica relevante | Selo DSS v2.2 |
+| `DssButton` | Acoes primarias/secundarias do card | `DssCardActions` | Usar variantes `flat` para acoes secundarias, `color="primary"` para primarias | N/A |
+| `DssCheckbox` | Listas de selecao, opcoes dentro do card | `DssCardSection` | Cada checkbox em linha separada para clareza | Selo DSS v2.2 |
+| `DssChip` | Tags, categorias, filtros, labels | `DssCardSection` | Agrupar em container flex com gap via token `--dss-spacing-2` | Selo DSS v2.2 |
+| `DssInput` | Formularios embutidos no card | `DssCardSection` | Combinar com `DssButton` em `DssCardActions` para submit | Selo DSS v2.2 |
+| `DssRadio` | Selecao exclusiva dentro do card | `DssCardSection` | Agrupar opcoes em lista vertical | Selo DSS v2.2 |
+| `DssToggle` | Configuracoes on/off, preferencias | `DssCardSection` | Usar com texto descritivo ao lado | Selo DSS v2.2 |
+| `DssTooltip` | Informacao contextual em titulos ou labels | `DssCardSection` | Envolver o elemento-alvo com `DssTooltip` | Selo DSS v2.2 |
+
+> **Nota:** Componentes como DssIcon, DssList, DssItem, DssToolbar e DssSeparator **nao existem** no DSS e nao devem ser referenciados como componentes DSS.
+
+---
+
+### 17.3 Padroes de Layout para Composicao
+
+#### Padrao 1: User/Profile Card
+
+```
+┌────────────────────────────────────────┐
+│  [DssCardSection horizontal]           │
+│    [DssAvatar]  Nome do Usuario        │
+│                 Cargo / Descricao      │
+├────────────────────────────────────────┤
+│  [DssCardActions]                      │
+│    [DssButton flat]  [DssButton]       │
+└────────────────────────────────────────┘
+```
+
+**Componentes:** DssAvatar + DssButton
+**Layout:** `DssCardSection` com prop `horizontal` para alinhar avatar e texto.
+
+#### Padrao 2: Status Card
+
+```
+┌────────────────────────────────────────┐
+│  [DssCardSection]                      │
+│    Titulo         [DssBadge status]    │
+│    Metrica principal                   │
+│    Descricao complementar              │
+└────────────────────────────────────────┘
+```
+
+**Componentes:** DssBadge
+**Layout:** `DssCardSection` com badge posicionado via flex junto ao titulo.
+
+#### Padrao 3: Tags Card
+
+```
+┌────────────────────────────────────────┐
+│  [DssCardSection]                      │
+│    Titulo                              │
+│    [DssChip] [DssChip] [DssChip]       │
+│    [DssChip] [DssChip]                 │
+└────────────────────────────────────────┘
+```
+
+**Componentes:** DssChip (multiplos)
+**Layout:** Chips agrupados em container com `display: flex`, `flex-wrap: wrap`, `gap: var(--dss-spacing-2)`.
+
+#### Padrao 4: Form Card
+
+```
+┌────────────────────────────────────────┐
+│  [DssCardSection]                      │
+│    Titulo do Formulario                │
+│    [DssInput label="Campo 1"]          │
+│    [DssInput label="Campo 2"]          │
+├────────────────────────────────────────┤
+│  [DssCardActions align="right"]        │
+│    [DssButton flat]  [DssButton]       │
+└────────────────────────────────────────┘
+```
+
+**Componentes:** DssInput + DssButton
+**Layout:** Inputs em `DssCardSection`, botoes em `DssCardActions`.
+
+#### Padrao 5: Settings Card
+
+```
+┌────────────────────────────────────────┐
+│  [DssCardSection]                      │
+│    Titulo das Configuracoes            │
+│    [DssToggle] Notificacoes            │
+│    [DssToggle] Modo escuro             │
+│    [DssToggle] Atualizacoes            │
+└────────────────────────────────────────┘
+```
+
+**Componentes:** DssToggle (multiplos)
+**Layout:** Cada toggle com descricao em linha, empilhados verticalmente.
+
+#### Padrao 6: Dashboard Card Misto
+
+```
+┌────────────────────────────────────────┐
+│  [DssCardSection horizontal]           │
+│    [DssAvatar]  Nome    [DssBadge]     │
+├────────────────────────────────────────┤
+│  [DssCardSection]                      │
+│    [DssChip] [DssChip] [DssChip]       │
+├────────────────────────────────────────┤
+│  [DssCardActions]                      │
+│    [DssButton flat]  [DssButton]       │
+└────────────────────────────────────────┘
+```
+
+**Componentes:** DssAvatar + DssBadge + DssChip + DssButton
+**Layout:** Composicao mista usando multiplos `DssCardSection` e `DssCardActions`.
+
+---
+
+### 17.4 Limites de Responsabilidade
+
+O DssCard e seus subcomponentes internos gerenciam **apenas** a superficie. Estilos e estados dos componentes filhos pertencem aos proprios filhos.
+
+| Aspecto | Responsavel | Como |
+|---------|-------------|------|
+| Background e elevacao | DssCard | Via props `variant`, `dark` |
+| Padding interno das secoes | DssCardSection / DssCardActions | Via tokens `--dss-spacing-*` |
+| Alinhamento de acoes | DssCardActions | Via prop `align` |
+| Brand accent (border-left) | DssCard | Via prop `brand` ou contexto `data-brand` |
+| Cor do texto do titulo | Consumidor | Via classes CSS ou markup HTML |
+| Estado disabled de botoes | DssButton | Via prop `:disabled` do DssButton |
+| Estado loading de botoes | DssButton | Via prop `:loading` do DssButton |
+| Estado error de inputs | DssInput | Via prop `error` do DssInput |
+| Cor/variante de chips | DssChip | Via props do DssChip |
+| Tamanho de avatar | DssAvatar | Via prop `size` do DssAvatar |
+| Tipografia interna | Componente filho | Cada componente DSS gerencia sua propria tipografia |
+
+> **Regra fundamental:** O DssCard **nao desabilita**, **nao carrega** e **nao valida** componentes filhos. Esses estados pertencem exclusivamente aos componentes internos.
+
+---
+
+### 17.5 Anti-patterns de Composicao
+
+#### 1. Usar `<img>` nativo quando DssAvatar existe
+
+```vue
+<!-- ❌ INCORRETO -->
+<DssCard>
+  <DssCardSection horizontal>
+    <img src="/foto.jpg" style="width: 40px; height: 40px; border-radius: 50%;" />
+    <span>Nome</span>
+  </DssCardSection>
+</DssCard>
+
+<!-- ✅ CORRETO -->
+<DssCard>
+  <DssCardSection horizontal>
+    <DssAvatar src="/foto.jpg" />
+    <span>Nome</span>
+  </DssCardSection>
+</DssCard>
+```
+
+**Por que:** DssAvatar gerencia fallback, iniciais, tamanhos padronizados e acessibilidade. `<img>` nativo perde tudo isso.
+
+#### 2. Usar `<button>` nativo quando DssButton existe
+
+```vue
+<!-- ❌ INCORRETO -->
+<DssCardActions>
+  <button class="my-btn" @click="save">Salvar</button>
+</DssCardActions>
+
+<!-- ✅ CORRETO -->
+<DssCardActions>
+  <DssButton color="primary" @click="save">Salvar</DssButton>
+</DssCardActions>
+```
+
+**Por que:** DssButton garante consistencia visual, brandabilidade, estados e acessibilidade do Design System.
+
+#### 3. Usar `::v-deep` para sobrescrever estilos de filhos DSS
+
+```vue
+<!-- ❌ INCORRETO -->
+<style scoped>
+.my-card :deep(.dss-button) {
+  background-color: red !important;
+  font-size: 20px !important;
+}
+</style>
+
+<!-- ✅ CORRETO -->
+<!-- Use as props do componente filho para customizacao -->
+<DssButton color="primary" size="lg">Acao</DssButton>
+```
+
+**Por que:** `::v-deep` quebra o encapsulamento e cria acoplamento fragil. Use props e tokens.
+
+#### 4. Aninhar DssCard > DssCard > DssCard (mais de 2 niveis)
+
+```vue
+<!-- ❌ INCORRETO -->
+<DssCard>
+  <DssCardSection>
+    <DssCard>
+      <DssCardSection>
+        <DssCard>
+          <DssCardSection>Conteudo</DssCardSection>
+        </DssCard>
+      </DssCardSection>
+    </DssCard>
+  </DssCardSection>
+</DssCard>
+
+<!-- ✅ CORRETO (maximo 2 niveis) -->
+<DssCard variant="elevated">
+  <DssCardSection>
+    <DssCard variant="flat">
+      <DssCardSection>Conteudo agrupado</DssCardSection>
+    </DssCard>
+  </DssCardSection>
+</DssCard>
+```
+
+**Por que:** Hierarquia visual excessiva confunde o usuario. Maximo 2 niveis de cards.
+
+#### 5. Misturar elementos nativos com equivalentes DSS
+
+```vue
+<!-- ❌ INCORRETO -->
+<DssCard>
+  <DssCardSection>
+    <input type="checkbox" /> Aceito os termos  <!-- checkbox nativo -->
+    <DssToggle v-model="darkMode">Dark Mode</DssToggle>  <!-- toggle DSS -->
+  </DssCardSection>
+</DssCard>
+
+<!-- ✅ CORRETO -->
+<DssCard>
+  <DssCardSection>
+    <DssCheckbox v-model="terms">Aceito os termos</DssCheckbox>
+    <DssToggle v-model="darkMode">Dark Mode</DssToggle>
+  </DssCardSection>
+</DssCard>
+```
+
+**Por que:** Misturar componentes nativos com DSS cria inconsistencia visual e comportamental. Quando houver equivalente DSS, use-o.
+
+---
+
+### 17.6 Governanca de Composicao
+
+| Categoria | Descricao | Exemplos |
+|-----------|-----------|----------|
+| **Permitido** | Composicao livre com componentes DSS existentes nos slots | DssButton em DssCardActions, DssChip em DssCardSection, DssAvatar em section horizontal |
+| **Permitido** | Elementos HTML semanticos dentro das sections | `<h3>`, `<p>`, `<ul>`, `<span>` para conteudo textual |
+| **Permitido** | Customizacao via tokens CSS em classes do consumidor | `.my-card-header { margin-bottom: var(--dss-spacing-4); }` |
+| **Requer RFC** | Criar subcomponente derivado (ex: `DssProductCard`) | Componente que encapsula DssCard + layout interno fixo |
+| **Requer RFC** | Adicionar slot nomeado ao DssCard (ex: `header`, `footer`) | Mudanca de API publica |
+| **Requer RFC** | Tornar composicao obrigatoria (ex: DssCard exige DssButton) | Criaria dependencia tecnica |
+| **Proibido** | Referenciar componentes DSS inexistentes na documentacao | DssIcon, DssList, DssItem, DssToolbar, DssSeparator |
+| **Proibido** | Sobrescrever estilos de filhos DSS via `::v-deep` ou `!important` | Quebra encapsulamento |
+| **Proibido** | Criar tokens component-specific para composicao (ex: `--dss-card-chip-gap`) | Viola principio Token First generico |
+
+> **Principio:** Composicao e uma recomendacao de boas praticas. Exemplos nesta documentacao **nao criam dependencias tecnicas** entre DssCard e os componentes listados.
+
+---
+
 ## 📋 Recursos
 
 - [Documentação Oficial do Quasar QCard](https://quasar.dev/vue-components/card)
@@ -1262,4 +1544,4 @@ Use este checklist ao documentar novos componentes baseado no Template 13.1:
 **Última atualização:** Fevereiro 2026
 **Versão:** DSS v2.2.0
 **Status:** 📋 Documentação Padrão DSS - Template 13.1
-**Fase:** Fase 1 - Componente Básico (Nível B)
+**Fase:** Fase 2 Ready - Componente Basico com Composicao DSS (Nivel B)

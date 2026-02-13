@@ -304,3 +304,229 @@ O componente DssCard apresenta:
 **Assinatura Digital:** Claude Code — Modo Auditor DSS
 **Data:** 12 de Fevereiro de 2026
 **Modelo:** Claude Opus 4.6
+
+---
+---
+
+# RE-AUDITORIA DSS v2.2 — DssCard (Ciclo Fase 2 Ready)
+
+**Componente:** DssCard (+ DssCardSection, DssCardActions)
+**Auditor:** Claude Code (Modo Auditor DSS)
+**Data:** 13 de Fevereiro de 2026
+**Tipo:** Re-auditoria Fase 2 Ready (pos-composicao)
+**Auditoria Anterior:** 12 de Fevereiro de 2026 (Selo v2.2 concedido — Fase 1)
+**Golden Components de Referencia:** DssChip (primario), DssBadge (secundario)
+**SCSS compilado:** 3120 linhas, zero erros
+**Objetivo:** Elevar DssCard ao padrao "Fase 2 Ready" via documentacao e exemplos de composicao com componentes DSS existentes
+
+---
+
+## 1. ESCOPO DA ALTERACAO
+
+### Arquivos Modificados
+
+| Arquivo | Tipo de Alteracao | Descricao |
+|---------|-------------------|-----------|
+| `DssCard.md` | Edicao | Adicionada Secao 17 (Matriz de Composicao DSS) com 6 subsecoes. Corrigida referencia a DssList inexistente na Secao 2. |
+| `DssCard.example.vue` | Edicao | Adicionados 8 cenarios de composicao (secoes 12-19). Novos imports: DssAvatar, DssBadge, DssChip, DssInput, DssCheckbox, DssToggle, DssTooltip. Dados reativos adicionados. |
+| `README.md` | Edicao | Adicionada secao "Composicao com Componentes DSS" com 3 exemplos e tabela de recomendacoes. |
+| `DSSCARD_API.md` | Edicao | Adicionada secao "Composicao com Componentes DSS" com tabelas de recomendacao por slot e padroes. |
+| `dss.meta.json` | Edicao | Adicionados campos `compositionRecommendations` (array de 9 componentes), `compositionNote`, `phaseDescription`. Campo `phase` atualizado de 1 para 2. |
+
+### Arquivos NAO Modificados
+
+- Nenhum arquivo de componente (.vue, .scss, .ts) do core foi alterado
+- Nenhum token criado ou removido
+- Nenhuma prop/evento/slot adicionado ou removido
+- API publica inalterada
+
+---
+
+## 2. VERIFICACAO DE NCs ANTERIORES (CONFIRMACAO)
+
+### NC-01 a NC-06 + NC-R01 a NC-R03 — Status mantido
+
+| Validacao | Resultado |
+|-----------|-----------|
+| `grep -ri "100%.*compat"` | **0 ocorrencias** |
+| `grep -r "--dss-action-primary-rgb"` | **0 ocorrencias** |
+| `grep "#[0-9a-fA-F]{6}"` em .vue/.scss/.ts | **0 ocorrencias** (hex 6-digitos) |
+| SCSS compila sem erros | **Sim** (3120 linhas) |
+
+**Status:** Todas as NCs anteriores continuam resolvidas. Zero regressao.
+
+---
+
+## 3. AUDITORIA DOS NOVOS CONTEUDOS
+
+### 3.1 DssCard.md — Secao 17
+
+| Aspecto | Resultado | Detalhes |
+|---------|-----------|----------|
+| Subsecoes completas | OK | 17.1 a 17.6 presentes |
+| Componentes referenciados existem | OK | 9 componentes verificados via path real |
+| Componentes inexistentes NAO referenciados como DSS | OK | DssIcon/DssList/DssItem/DssToolbar/DssSeparator citados APENAS como "nao existem" |
+| Anti-patterns documentados (min 5) | OK | 5 anti-patterns com exemplos incorreto/correto |
+| Governanca de composicao | OK | Tabela Permitido/RFC/Proibido |
+| Limites de responsabilidade | OK | Tabela com 11 aspectos |
+| Padroes de layout | OK | 6 padroes com diagrama textual |
+| Frases proibidas | OK | Zero "100% compativel" |
+| Tokens inexistentes | OK | Zero `--dss-action-primary-rgb` |
+
+**Correcao aplicada:** Secao 2 referenciava `DssList` como alternativa — corrigido para `<ul>/<ol> nativo`.
+
+### 3.2 DssCard.example.vue — Secoes 12-19
+
+| Aspecto | Resultado | Detalhes |
+|---------|-----------|----------|
+| 8 cenarios implementados | OK | Secoes 12-19 |
+| Composition API + TypeScript | OK | `<script setup lang="ts">` |
+| Imports de componentes DSS existentes | OK | 9 imports verificados (DssAvatar, DssBadge, DssChip, DssInput, DssCheckbox, DssRadio, DssToggle, DssTooltip, DssButton) |
+| Zero hex/rgb hardcoded nos novos cenarios | OK | Verificado via grep |
+| Tokens DSS nos estilos scoped | OK | Todos usam `var(--dss-*)` |
+| Zero componentes DSS inexistentes | OK | Nenhum DssIcon/DssList/etc. importado |
+| Dados reativos tipados | OK | `ref()` e `reactive()` com tipos inferidos |
+| Handlers tipados | OK | Funcoes com `:void` return type |
+
+### 3.3 README.md
+
+| Aspecto | Resultado |
+|---------|-----------|
+| Secao de composicao adicionada | OK |
+| 3 exemplos resumidos (Avatar, Form, Dashboard) | OK |
+| Tabela de componentes recomendados | OK (9 componentes) |
+| Referencia a DssCard.md Secao 17 | OK |
+| Zero promessas de compatibilidade | OK |
+
+### 3.4 DSSCARD_API.md
+
+| Aspecto | Resultado |
+|---------|-----------|
+| Tabela de componentes por slot | OK |
+| Tabela de padroes de composicao | OK (6 padroes) |
+| Referencia a DssCard.md Secao 17 | OK |
+| Principio de nao-dependencia declarado | OK |
+
+### 3.5 dss.meta.json
+
+| Aspecto | Resultado |
+|---------|-----------|
+| `compositionRecommendations` adicionado | OK (array de 9 strings) |
+| `compositionNote` adicionado | OK |
+| `phase` atualizado para 2 | OK |
+| `phaseDescription` adicionado | OK |
+| Excecoes mantidas (7 EXC-IDs) | OK |
+| Campos existentes preservados | OK |
+
+---
+
+## 4. VALIDACAO DE CONSISTENCIA
+
+| Verificacao | DssCard.md | DSSCARD_API.md | dss.meta.json | README.md | Resultado |
+|-------------|------------|----------------|---------------|-----------|-----------|
+| 9 componentes listados | OK | OK | OK | OK | Consistente |
+| Excecoes (7 IDs) | OK | OK | OK | N/A | Consistente |
+| Phase = 2 | OK (texto) | N/A | OK (campo) | N/A | Consistente |
+| Zero dependencias obrigatorias | OK (declarado) | OK (declarado) | OK (compositionNote) | OK (referencia) | Consistente |
+
+---
+
+## 5. EXCECOES ATUALIZADAS
+
+Sem novas excecoes. As 7 excecoes da Fase 1 permanecem validas e inalteradas:
+
+| ID | Valor | Local | Status |
+|----|-------|-------|--------|
+| EXC-01 | `rgba(255, 255, 255, 0.12)` | `_states.scss` | Mantida |
+| EXC-02 | `rgba(255, 255, 255, 0.2)` | `_states.scss` | Mantida |
+| EXC-03 | `border-radius: 0` | `_base.scss` | Mantida |
+| EXC-04 | `2px solid ButtonText` | `_states.scss` | Mantida |
+| EXC-05 | `3px solid Highlight` | `_states.scss` | Mantida |
+| EXC-06 | `4px solid Highlight` | `_states.scss` | Mantida |
+| EXC-07 | `linear-gradient(...)` | `DssCard.example.vue` | Mantida |
+
+---
+
+## 6. RESERVAS ATUALIZADAS
+
+As 3 reservas da Fase 1 permanecem validas. Nenhuma nova reserva adicionada.
+
+| ID | Descricao | Status |
+|----|-----------|--------|
+| RES-01 | Tokens de brand usam referencia numerica (`--dss-hub-600`) | Mantida |
+| RES-02 | Mixins DSS nao utilizados (card nao e Compact Control) | Mantida |
+| RES-03 | Sem testes unitarios/integracao | Mantida |
+
+---
+
+## 7. CHECKLIST DE VALIDACAO INTERNA
+
+- [x] `grep "100%.*compat"` = 0 ocorrencias
+- [x] `grep "--dss-action-primary-rgb"` = 0 ocorrencias
+- [x] `grep "#[0-9a-fA-F]{6}"` em .vue/.scss/.ts = 0 ocorrencias (hex colors)
+- [x] SCSS compila sem erros (3120 linhas CSS)
+- [x] Tokens documentados consistentes entre todos os arquivos
+- [x] dss.meta.json <-> DssCard.md <-> DSSCARD_API.md consistentes
+- [x] Exemplos usam APENAS componentes DSS existentes (9 verificados)
+- [x] Zero dependencias obrigatorias criadas
+- [x] Zero tokens criados
+- [x] Zero alteracoes de API publica
+- [x] Referencia a DssList inexistente corrigida na Secao 2
+- [x] Novos cenarios (12-19) usam Composition API + TypeScript
+- [x] Estilos scoped novos usam exclusivamente tokens DSS
+
+---
+
+## 8. RESUMO EXECUTIVO
+
+### Alteracoes neste Ciclo (Fase 2 Ready)
+
+| Categoria | Quantidade |
+|-----------|------------|
+| NCs Bloqueantes | **0** |
+| NCs Nao-bloqueantes | **0** |
+| Correcoes preventivas | **1** (referencia a DssList na Secao 2) |
+| Novas excecoes | **0** |
+| Novas reservas | **0** |
+| Componentes DSS compostos no exemplo | **9** (DssAvatar, DssBadge, DssChip, DssInput, DssCheckbox, DssRadio, DssToggle, DssTooltip, DssButton) |
+| Cenarios de composicao adicionados | **8** (secoes 12-19) |
+| Subsecoes de documentacao adicionadas | **6** (17.1 a 17.6) |
+
+### Estado Pos-Ciclo
+
+| Metrica | Valor |
+|---------|-------|
+| NCs Abertas | **0** |
+| Excecoes | **7** (EXC-01 a EXC-07, todas da Fase 1) |
+| Reservas | **3** (RES-01 a RES-03, todas da Fase 1) |
+| SCSS | **3120 linhas, zero erros** |
+| Fase | **2 (Ready)** |
+| Composicao documentada | **9 componentes DSS** |
+
+---
+
+## 9. VEREDITO FINAL
+
+### STATUS: CONFORME
+
+**Justificativa:**
+- Zero NCs bloqueantes
+- Zero NCs nao-bloqueantes
+- Documentacao de composicao completa (DssCard.md Secao 17, 6 subsecoes)
+- 8 cenarios de exemplo funcional com componentes DSS existentes
+- Consistencia total entre DssCard.md, DSSCARD_API.md, dss.meta.json e README.md
+- SCSS compilado sem erros (3120 linhas)
+- Nenhuma alteracao de API publica
+- Nenhuma dependencia obrigatoria criada
+- Todos os componentes referenciados verificados como existentes no repositorio
+- Correcao preventiva aplicada (referencia a DssList inexistente)
+
+**O componente DssCard esta elegivel para emissao de novo Selo DSS v2.2 (Fase 2 Ready).**
+
+> **Nota:** A emissao do selo e ato separado que requer validacao pelo mantenedor do DSS. Este relatorio confirma que o componente atende aos criterios de Fase 2 Ready do DSS v2.2.
+
+---
+
+**Assinatura Digital:** Claude Code — Modo Auditor DSS
+**Data:** 13 de Fevereiro de 2026
+**Modelo:** Claude Opus 4.6

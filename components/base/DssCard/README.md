@@ -61,7 +61,7 @@ DssCard/
 │
 ├── DssCard.module.scss       # Importa todas as camadas (~40 linhas)
 ├── DssCard.vue               # Re-export principal
-├── DssCard.example.vue       # 11 seções de exemplos práticos
+├── DssCard.example.vue       # 19 secoes de exemplos (11 base + 8 composicao DSS)
 ├── DssCard.md                # 📋 Documentação Completa (Template 13.1)
 ├── index.js                  # Exports
 └── README.md                 # Esta documentação (Quick Start)
@@ -390,6 +390,88 @@ O DssCard foi completamente refatorado para estar **alinhado** com a documentaç
 - `--dss-hub-600`, `--dss-hub-300`, `--dss-hub-400`, `--dss-hub-700`
 - `--dss-water-500`, `--dss-water-200`, `--dss-water-300`, `--dss-water-600`
 - `--dss-waste-600`, `--dss-waste-200`, `--dss-waste-300`, `--dss-waste-700`
+
+---
+
+## 🔗 Composicao com Componentes DSS
+
+O DssCard funciona como superficie para composicao com outros componentes DSS existentes. Exemplos completos em `DssCard.example.vue` (secoes 12-19).
+
+### Card com Avatar (Perfil)
+
+```vue
+<DssCard variant="elevated">
+  <DssCardSection horizontal>
+    <DssAvatar src="/foto.jpg" size="lg" />
+    <div>
+      <h3>Maria Silva</h3>
+      <p>Engenheira de Software</p>
+    </div>
+  </DssCardSection>
+  <DssCardActions align="right">
+    <DssButton variant="flat">Mensagem</DssButton>
+    <DssButton color="primary">Ver Perfil</DssButton>
+  </DssCardActions>
+</DssCard>
+```
+
+### Form Card (Input + Button)
+
+```vue
+<DssCard variant="elevated">
+  <DssCardSection>
+    <h3>Contato</h3>
+    <DssInput v-model="name" label="Nome" />
+    <DssInput v-model="email" label="E-mail" type="email" />
+  </DssCardSection>
+  <DssCardActions align="right">
+    <DssButton variant="flat">Cancelar</DssButton>
+    <DssButton color="primary">Enviar</DssButton>
+  </DssCardActions>
+</DssCard>
+```
+
+### Dashboard Card Misto
+
+```vue
+<DssCard variant="elevated" brand="hub">
+  <DssCardSection horizontal>
+    <DssAvatar src="/lead.jpg" size="lg" />
+    <div style="flex: 1;">
+      <div style="display: flex; align-items: center; gap: var(--dss-spacing-2);">
+        <h3>Carlos Mendes</h3>
+        <DssBadge color="info">Tech Lead</DssBadge>
+      </div>
+      <p>Equipe de Engenharia</p>
+    </div>
+  </DssCardSection>
+  <DssCardSection>
+    <DssChip>Vue.js</DssChip>
+    <DssChip>Node.js</DssChip>
+    <DssChip color="primary">DSS</DssChip>
+  </DssCardSection>
+  <DssCardActions align="right">
+    <DssButton variant="flat">Projetos</DssButton>
+    <DssButton color="primary">Contatar</DssButton>
+  </DssCardActions>
+</DssCard>
+```
+
+### Componentes DSS Recomendados para Composicao
+
+| Componente | Caso de Uso |
+|------------|-------------|
+| DssAvatar | Perfis, fotos de usuario |
+| DssBadge | Status, contadores |
+| DssButton | Acoes em DssCardActions |
+| DssCheckbox | Listas de selecao |
+| DssChip | Tags, categorias |
+| DssInput | Formularios embutidos |
+| DssRadio | Selecao exclusiva |
+| DssToggle | Configuracoes on/off |
+| DssTooltip | Info contextual em titulos |
+
+> **Documentacao completa de composicao:** Ver DssCard.md, Secao 17.
 
 ---
 

@@ -239,14 +239,45 @@ interface CardActionsProps {
 
 ---
 
-## Governança
+## Composicao com Componentes DSS
 
-- API governada pelo DSS — subconjunto curado do Quasar `q-card`
-- Cores aplicadas via classes utilitárias, NÃO via SCSS
-- Brand via prop `brand` ou contexto `[data-brand]`
-- Extensões (novas variantes, props) requerem RFC + aprovação
+O DssCard suporta composicao livre com componentes DSS existentes. A tabela abaixo lista recomendacoes por slot/secao.
+
+### Componentes Recomendados por Slot
+
+| Slot / Secao | Componentes Recomendados | Notas |
+|--------------|--------------------------|-------|
+| `DssCardSection` | DssAvatar, DssBadge, DssChip, DssInput, DssCheckbox, DssRadio, DssToggle, DssTooltip | Conteudo principal do card. Qualquer combinacao e valida. |
+| `DssCardSection` (horizontal) | DssAvatar + texto | Layout horizontal ideal para perfis (avatar + info). |
+| `DssCardActions` | DssButton | Area de acoes. Usar variante `flat` para secundarias. |
+| Qualquer secao (tooltip) | DssTooltip | Envolver elementos que precisam de contexto informativo. |
+
+### Padroes de Composicao
+
+| Padrao | Componentes | Descricao |
+|--------|-------------|-----------|
+| Profile Card | DssAvatar + DssButton | Avatar com info em section horizontal + acoes |
+| Status Card | DssBadge | Badge junto ao titulo para indicar status |
+| Tags Card | DssChip (multiplos) | Grupo de chips em container flex |
+| Form Card | DssInput + DssButton | Inputs em section + botoes em actions |
+| Settings Card | DssToggle | Toggles com descricao em lista vertical |
+| Dashboard Misto | DssAvatar + DssBadge + DssChip + DssButton | Composicao completa multi-componente |
+
+> **Documentacao completa:** Ver DssCard.md, Secao 17 (Matriz de Composicao DSS).
+
+> **Principio:** Composicao e recomendacao, nao dependencia. O DssCard funciona independentemente dos componentes listados.
 
 ---
 
-**Versão:** DSS v2.2.0
-**Última atualização:** Fevereiro 2026
+## Governanca
+
+- API governada pelo DSS — subconjunto curado do Quasar `q-card`
+- Cores aplicadas via classes utilitarias, NAO via SCSS
+- Brand via prop `brand` ou contexto `[data-brand]`
+- Extensoes (novas variantes, props) requerem RFC + aprovacao
+- Composicao com componentes DSS e recomendada, nao obrigatoria
+
+---
+
+**Versao:** DSS v2.2.0
+**Ultima atualizacao:** Fevereiro 2026
