@@ -25,6 +25,7 @@ import {
   ColorPicker,
   FeedbackColorPicker,
   BrandPicker,
+  SizeSelector,
   ToggleGroup,
   DSS_SEMANTIC_COLORS,
   DSS_BRAND_COLORS,
@@ -450,10 +451,14 @@ export default function DssCardPage() {
   const [selectedColor, setSelectedColor] = useState<string | null>("primary");
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [selectedTemplate, setSelectedTemplate] = useState("basic");
+  const [selectedActionsAlign, setSelectedActionsAlign] = useState("right");
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [booleanStates, setBooleanStates] = useState({
     clickable: false,
     square: false,
+    dark: false,
+    horizontalSection: false,
+    verticalActions: false,
   });
 
   // Color Application Domain v3.2: última seleção substitui silenciosamente
@@ -476,6 +481,10 @@ export default function DssCardPage() {
     }));
   };
 
+  // Templates que possuem DssCardActions
+  const templatesWithActions = ["actions", "profile", "form", "dashboard"];
+  const hasActions = templatesWithActions.includes(selectedTemplate);
+
   // Geração de código por template (PLAYGROUND_STANDARD v3.2)
   const generateCode = () => {
     const props: string[] = [];
@@ -483,23 +492,27 @@ export default function DssCardPage() {
     if (selectedBrand) props.push(`brand="${selectedBrand}"`);
     if (booleanStates.clickable) props.push("clickable");
     if (booleanStates.square) props.push("square");
-    if (isDarkMode) props.push("dark");
+    if (booleanStates.dark) props.push("dark");
 
     const propsStr = props.length > 0 ? `\n  ${props.join("\n  ")}` : "";
+    const actionsAlignStr = selectedActionsAlign !== "right" ? ` align="${selectedActionsAlign}"` : ` align="right"`;
+    const verticalStr = booleanStates.verticalActions ? " vertical" : "";
+    const horizontalStr = booleanStates.horizontalSection ? " horizontal" : "";
+    const actionsAttrs = `${actionsAlignStr}${verticalStr}`;
 
     const templateCode: Record<string, string> = {
       basic: `<DssCard${propsStr}>
-  <DssCardSection>
+  <DssCardSection${horizontalStr}>
     <h3>Card Title</h3>
     <p>Card content here.</p>
   </DssCardSection>
 </DssCard>`,
       actions: `<DssCard${propsStr}>
-  <DssCardSection>
+  <DssCardSection${horizontalStr}>
     <h3>Confirmação</h3>
     <p>Tem certeza que deseja continuar?</p>
   </DssCardSection>
-  <DssCardActions align="right">
+  <DssCardActions${actionsAttrs}>
     <DssButton variant="flat">Cancelar</DssButton>
     <DssButton color="primary">Confirmar</DssButton>
   </DssCardActions>
@@ -512,13 +525,13 @@ export default function DssCardPage() {
       <p>Engenheira de Software</p>
     </div>
   </DssCardSection>
-  <DssCardActions align="right">
+  <DssCardActions${actionsAttrs}>
     <DssButton variant="flat">Mensagem</DssButton>
     <DssButton color="primary">Ver Perfil</DssButton>
   </DssCardActions>
 </DssCard>`,
       status: `<DssCard${propsStr}>
-  <DssCardSection>
+  <DssCardSection${horizontalStr}>
     <div class="flex items-center justify-between">
       <h3>Pedidos Pendentes</h3>
       <DssBadge color="warning">12</DssBadge>
@@ -528,7 +541,7 @@ export default function DssCardPage() {
   </DssCardSection>
 </DssCard>`,
       tags: `<DssCard${propsStr}>
-  <DssCardSection>
+  <DssCardSection${horizontalStr}>
     <h3>Categorias do Projeto</h3>
     <div class="chip-group">
       <DssChip>Frontend</DssChip>
@@ -539,18 +552,18 @@ export default function DssCardPage() {
   </DssCardSection>
 </DssCard>`,
       form: `<DssCard${propsStr}>
-  <DssCardSection>
+  <DssCardSection${horizontalStr}>
     <h3>Contato</h3>
     <DssInput v-model="name" label="Nome completo" />
     <DssInput v-model="email" label="E-mail" type="email" />
   </DssCardSection>
-  <DssCardActions align="right">
+  <DssCardActions${actionsAttrs}>
     <DssButton variant="flat">Cancelar</DssButton>
     <DssButton color="primary">Enviar</DssButton>
   </DssCardActions>
 </DssCard>`,
       settings: `<DssCard${propsStr}>
-  <DssCardSection>
+  <DssCardSection${horizontalStr}>
     <h3>Configurações</h3>
     <div class="toggle-list">
       <DssToggle v-model="darkMode">Modo escuro</DssToggle>
@@ -568,12 +581,12 @@ export default function DssCardPage() {
       <p>Equipe de Engenharia</p>
     </div>
   </DssCardSection>
-  <DssCardSection>
+  <DssCardSection${horizontalStr}>
     <DssChip>Vue.js</DssChip>
     <DssChip>Node.js</DssChip>
     <DssChip color="primary">DSS</DssChip>
   </DssCardSection>
-  <DssCardActions align="right">
+  <DssCardActions${actionsAttrs}>
     <DssButton variant="flat">Projetos</DssButton>
     <DssButton color="primary">Contatar</DssButton>
   </DssCardActions>
@@ -582,6 +595,25 @@ export default function DssCardPage() {
 
     return templateCode[selectedTemplate] || templateCode.basic;
   };
+
+  const cardToggles = [
+    { name: "clickable", label: "Clickable" },
+    { name: "square", label: "Square" },
+    { name: "dark", label: "Dark" },
+  ];
+
+  const slotToggles = [
+    { name: "horizontalSection", label: "Horizontal Section" },
+    { name: "verticalActions", label: "Vertical Actions" },
+  ];
+
+  const actionsAlignOptions = [
+    { name: "left", label: "Left" },
+    { name: "center", label: "Center" },
+    { name: "right", label: "Right", isDefault: true },
+    { name: "between", label: "Between" },
+    { name: "around", label: "Around" },
+  ];
 
   return (
     <div className="p-6 space-y-8 pb-12">
@@ -673,7 +705,7 @@ export default function DssCardPage() {
 
       <DssPlayground
         title="Configure o Card"
-        description="Selecione variante, composição e cor para explorar aninhamentos reais do DssCard."
+        description="Explore TODAS as props do DssCard, DssCardSection e DssCardActions em tempo real."
         isDarkMode={isDarkMode}
         onDarkModeToggle={() => setIsDarkMode(!isDarkMode)}
         previewMinHeight="360px"
@@ -682,14 +714,14 @@ export default function DssCardPage() {
             variant={selectedVariant}
             clickable={booleanStates.clickable}
             square={booleanStates.square}
-            dark={isDarkMode}
+            dark={booleanStates.dark}
             brand={selectedBrand}
             semanticColor={selectedColor}
             template={selectedTemplate}
           />
         }
         controls={
-          <ControlGrid columns={6}>
+          <ControlGrid columns={5}>
             {/* Variant */}
             <VariantSelector
               variants={variants}
@@ -735,16 +767,31 @@ export default function DssCardPage() {
               onSelect={handleBrandChange}
             />
 
-            {/* Boolean States */}
+            {/* Card Props */}
             <ToggleGroup
-              label="Estados & Opções"
-              options={[
-                { name: "clickable", label: "Clickable" },
-                { name: "square", label: "Square" },
-              ]}
+              label="Card Props"
+              options={cardToggles}
               values={booleanStates}
               onToggle={toggleBooleanState}
             />
+
+            {/* Slot/Composition Controls */}
+            <ToggleGroup
+              label="Section & Actions"
+              options={slotToggles}
+              values={booleanStates}
+              onToggle={toggleBooleanState}
+            />
+
+            {/* Actions Align (only relevant for templates with actions) */}
+            {hasActions && (
+              <SizeSelector
+                label="Actions Align"
+                sizes={actionsAlignOptions}
+                selectedSize={selectedActionsAlign}
+                onSelect={setSelectedActionsAlign}
+              />
+            )}
           </ControlGrid>
         }
         codePreview={generateCode()}

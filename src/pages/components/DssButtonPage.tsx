@@ -25,6 +25,7 @@ import { CollapsibleSection } from "@/components/ui/CollapsibleSection";
 import {
   DssPlayground,
   ControlGrid,
+  ControlSection,
   VariantSelector,
   ColorPicker,
   FeedbackColorPicker,
@@ -36,6 +37,7 @@ import {
   DSS_BRAND_COLORS,
   type FeedbackColor,
 } from "@/components/ui/playground";
+import { PlaygroundButton } from "@/components/ui/PlaygroundButton";
 
 // ============================================================================
 // DADOS ESPECÍFICOS DO DSSBUTTON
@@ -216,6 +218,17 @@ interface DssButtonPreviewProps {
   disabled?: boolean;
   loading?: boolean;
   round?: boolean;
+  square?: boolean;
+  dense?: boolean;
+  noCaps?: boolean;
+  stack?: boolean;
+  stretch?: boolean;
+  noWrap?: boolean;
+  ripple?: boolean;
+  align?: string;
+  padding?: string;
+  percentage?: number | null;
+  darkPercentage?: boolean;
   icon?: React.ReactNode;
   iconRight?: React.ReactNode;
   brand?: string | null;
@@ -229,6 +242,17 @@ function DssButtonPreview({
   disabled = false,
   loading = false,
   round = false,
+  square = false,
+  dense = false,
+  noCaps = false,
+  stack = false,
+  stretch = false,
+  noWrap = false,
+  ripple = false,
+  align = "center",
+  padding: customPadding,
+  percentage = null,
+  darkPercentage = false,
   icon,
   iconRight,
   brand = null,
@@ -292,22 +316,34 @@ function DssButtonPreview({
   const sizeStyles = getSizeStyles();
 
   const getVariantStyles = (): React.CSSProperties => {
+    const densePadding = dense ? { padding: "2px 6px" } : {};
+    const alignMap: Record<string, string> = {
+      left: "flex-start", center: "center", right: "flex-end",
+      between: "space-between", around: "space-around", evenly: "space-evenly",
+    };
+
     const base: React.CSSProperties = {
       display: "inline-flex",
       alignItems: "center",
-      justifyContent: "center",
+      justifyContent: alignMap[align] || "center",
       gap: "8px",
       fontWeight: 500,
-      textTransform: "uppercase",
-      letterSpacing: "0.0892857143em",
+      textTransform: noCaps ? "none" : "uppercase",
+      letterSpacing: noCaps ? "normal" : "0.0892857143em",
       cursor: disabled ? "not-allowed" : "pointer",
       opacity: disabled ? 0.4 : 1,
-      borderRadius: round ? "9999px" : "4px",
+      borderRadius: round ? "9999px" : square ? "0" : "4px",
       transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
       minHeight: sizeStyles.height,
-      padding: sizeStyles.padding,
+      padding: customPadding || sizeStyles.padding,
       fontSize: sizeStyles.fontSize,
       fontFamily: "system-ui, -apple-system, sans-serif",
+      flexDirection: stack ? "column" : "row",
+      width: stretch ? "100%" : undefined,
+      whiteSpace: noWrap ? "nowrap" : undefined,
+      ...densePadding,
+      position: "relative",
+      overflow: "hidden",
     };
 
     switch (variant) {
@@ -370,23 +406,45 @@ function DssButtonPreview({
   };
 
   return (
-    <button
-      style={getVariantStyles()}
-      disabled={disabled || loading}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="focus:outline-none focus:ring-2 focus:ring-offset-2"
-    >
-      {loading ? (
-        <Loader2 className="animate-spin" style={{ width: sizeStyles.fontSize, height: sizeStyles.fontSize }} />
-      ) : (
-        <>
-          {icon}
-          {label && <span>{label}</span>}
-          {iconRight}
-        </>
-      )}
-    </button>
+    <div style={{ width: stretch ? "100%" : "auto" }}>
+      <button
+        style={getVariantStyles()}
+        disabled={disabled || loading}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className="focus:outline-none focus:ring-2 focus:ring-offset-2"
+      >
+        {/* Percentage bar */}
+        {percentage !== null && loading && (
+          <div style={{
+            position: "absolute", bottom: 0, left: 0, height: "3px", width: "100%",
+            backgroundColor: darkPercentage ? "rgba(0,0,0,0.2)" : "rgba(255,255,255,0.3)",
+          }}>
+            <div style={{
+              height: "100%", width: `${percentage}%`,
+              backgroundColor: darkPercentage ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.7)",
+              transition: "width 0.3s ease",
+            }} />
+          </div>
+        )}
+        {loading ? (
+          <Loader2 className="animate-spin" style={{ width: sizeStyles.fontSize, height: sizeStyles.fontSize }} />
+        ) : (
+          <>
+            {icon}
+            {label && <span>{label}</span>}
+            {iconRight}
+          </>
+        )}
+        {/* Ripple indicator */}
+        {ripple && (
+          <span style={{
+            position: "absolute", top: 2, right: 2, width: 6, height: 6,
+            borderRadius: "50%", backgroundColor: "rgba(255,255,255,0.4)",
+          }} />
+        )}
+      </button>
+    </div>
   );
 }
 
@@ -401,11 +459,22 @@ export default function DssButtonPage() {
   const [selectedColor, setSelectedColor] = useState<string | null>("primary");
   const [selectedSize, setSelectedSize] = useState("md");
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
+  const [selectedAlign, setSelectedAlign] = useState("center");
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const [percentage, setPercentage] = useState<number | null>(null);
+  const [customPadding, setCustomPadding] = useState("");
   const [booleanStates, setBooleanStates] = useState({
     disabled: false,
     loading: false,
     round: false,
+    square: false,
+    dense: false,
+    noCaps: false,
+    stack: false,
+    stretch: false,
+    noWrap: false,
+    ripple: false,
+    darkPercentage: false,
     iconLeft: false,
     iconRight: false,
   });
@@ -432,7 +501,7 @@ export default function DssButtonPage() {
 
   const effectiveColor = selectedBrand ? "primary" : selectedColor || "primary";
 
-  // Geração de código (PLAYGROUND_STANDARD v3.1: código de produção real)
+  // Geração de código (PLAYGROUND_STANDARD v3.2: código de produção real)
   const generateCode = () => {
     const props: string[] = [];
     props.push('label="Clique aqui"');
@@ -446,18 +515,61 @@ export default function DssButtonPage() {
     if (booleanStates.disabled) props.push("disabled");
     if (booleanStates.loading) props.push("loading");
     if (booleanStates.round) props.push("round");
+    if (booleanStates.square) props.push("square");
+    if (booleanStates.dense) props.push("dense");
+    if (booleanStates.noCaps) props.push("no-caps");
+    if (booleanStates.stack) props.push("stack");
+    if (booleanStates.stretch) props.push("stretch");
+    if (booleanStates.noWrap) props.push("no-wrap");
+    if (booleanStates.ripple) props.push("ripple");
+    if (selectedAlign !== "center") props.push(`align="${selectedAlign}"`);
+    if (customPadding) props.push(`padding="${customPadding}"`);
     if (booleanStates.iconLeft) props.push('icon="save"');
     if (booleanStates.iconRight) props.push('icon-right="arrow_forward"');
+    if (percentage !== null) {
+      props.push(`:percentage="${percentage}"`);
+      if (booleanStates.darkPercentage) props.push("dark-percentage");
+    }
 
     return `<DssButton\n  ${props.join("\n  ")}\n/>`;
   };
 
-  const toggleOptions = [
+  const stateToggles = [
     { name: "disabled", label: "Disabled" },
     { name: "loading", label: "Loading" },
-    { name: "round", label: "Round" },
     { name: "iconLeft", label: "Icon Left" },
     { name: "iconRight", label: "Icon Right" },
+  ];
+
+  const shapeToggles = [
+    { name: "round", label: "Round" },
+    { name: "square", label: "Square" },
+    { name: "dense", label: "Dense" },
+  ];
+
+  const layoutToggles = [
+    { name: "noCaps", label: "No Caps" },
+    { name: "stack", label: "Stack" },
+    { name: "stretch", label: "Stretch" },
+    { name: "noWrap", label: "No Wrap" },
+    { name: "ripple", label: "Ripple" },
+  ];
+
+  const alignOptions = [
+    { name: "left", label: "Left" },
+    { name: "center", label: "Center", isDefault: true },
+    { name: "right", label: "Right" },
+    { name: "between", label: "Between" },
+    { name: "around", label: "Around" },
+    { name: "evenly", label: "Evenly" },
+  ];
+
+  const percentageOptions = [
+    { name: "none", label: "Off" },
+    { name: "25", label: "25%" },
+    { name: "50", label: "50%" },
+    { name: "75", label: "75%" },
+    { name: "100", label: "100%" },
   ];
 
   return (
@@ -551,7 +663,7 @@ export default function DssButtonPage() {
 
       <DssPlayground
         title="Configure o Botão"
-        description="Selecione as props e veja o resultado em tempo real com tokens DSS reais."
+        description="Explore TODAS as props visuais e comportamentais do DssButton em tempo real."
         isDarkMode={isDarkMode}
         onDarkModeToggle={() => setIsDarkMode(!isDarkMode)}
         previewMinHeight="320px"
@@ -564,25 +676,39 @@ export default function DssButtonPage() {
             disabled={booleanStates.disabled}
             loading={booleanStates.loading}
             round={booleanStates.round}
+            square={booleanStates.square}
+            dense={booleanStates.dense}
+            noCaps={booleanStates.noCaps}
+            stack={booleanStates.stack}
+            stretch={booleanStates.stretch}
+            noWrap={booleanStates.noWrap}
+            ripple={booleanStates.ripple}
+            align={selectedAlign}
+            padding={customPadding || undefined}
+            percentage={percentage}
+            darkPercentage={booleanStates.darkPercentage}
             brand={selectedBrand}
             icon={booleanStates.iconLeft ? <Save className="w-4 h-4" /> : undefined}
             iconRight={booleanStates.iconRight ? <ChevronRight className="w-4 h-4" /> : undefined}
           />
         }
         controls={
-          <ControlGrid columns={4}>
+          <ControlGrid columns={5}>
+            {/* Variant */}
             <VariantSelector
               variants={variants}
               selectedVariant={selectedVariant}
               onSelect={setSelectedVariant}
             />
 
+            {/* Size */}
             <SizeSelector
               sizes={sizes}
               selectedSize={selectedSize}
               onSelect={setSelectedSize}
             />
 
+            {/* Color Domain — Semantic */}
             <ColorPicker
               label="Color"
               colors={Object.values(DSS_SEMANTIC_COLORS)}
@@ -590,12 +716,14 @@ export default function DssButtonPage() {
               onSelect={handleColorChange}
             />
 
+            {/* Color Domain — Brand */}
             <BrandPicker
               brands={DSS_BRAND_COLORS}
               selectedBrand={selectedBrand}
               onSelect={handleBrandChange}
             />
 
+            {/* Color Domain — Feedback */}
             <FeedbackColorPicker
               label="Feedback"
               colors={feedbackColors}
@@ -603,12 +731,62 @@ export default function DssButtonPage() {
               onSelect={handleColorChange}
             />
 
+            {/* Shape */}
             <ToggleGroup
-              label="Estados & Ícones"
-              options={toggleOptions}
+              label="Forma"
+              options={shapeToggles}
               values={booleanStates}
               onToggle={toggleBooleanState}
             />
+
+            {/* Layout */}
+            <ToggleGroup
+              label="Layout"
+              options={layoutToggles}
+              values={booleanStates}
+              onToggle={toggleBooleanState}
+            />
+
+            {/* States & Icons */}
+            <ToggleGroup
+              label="Estados & Ícones"
+              options={stateToggles}
+              values={booleanStates}
+              onToggle={toggleBooleanState}
+            />
+
+            {/* Align */}
+            <SizeSelector
+              label="Align"
+              sizes={alignOptions}
+              selectedSize={selectedAlign}
+              onSelect={setSelectedAlign}
+            />
+
+            {/* Loading Progress */}
+            <ControlSection label="Progress (Loading)">
+              {percentageOptions.map((p) => (
+                <PlaygroundButton
+                  key={p.name}
+                  onClick={() => setPercentage(p.name === "none" ? null : Number(p.name))}
+                  isSelected={p.name === "none" ? percentage === null : percentage === Number(p.name)}
+                  selectedBg="var(--dss-jtech-accent)"
+                  selectedColor="#ffffff"
+                >
+                  {p.label}
+                </PlaygroundButton>
+              ))}
+              {percentage !== null && (
+                <PlaygroundButton
+                  onClick={() => toggleBooleanState("darkPercentage")}
+                  isSelected={booleanStates.darkPercentage}
+                  selectedBg="var(--dss-positive)"
+                  selectedColor="#ffffff"
+                >
+                  {booleanStates.darkPercentage && "✓ "}Dark %
+                </PlaygroundButton>
+              )}
+            </ControlSection>
           </ControlGrid>
         }
         codePreview={generateCode()}
