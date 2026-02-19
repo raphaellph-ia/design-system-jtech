@@ -52,6 +52,11 @@ const inputTypes = [
   { name: "password", label: "Password" },
   { name: "search", label: "Search" },
   { name: "tel", label: "Telefone" },
+  { name: "number", label: "Number" },
+  { name: "url", label: "URL" },
+  { name: "date", label: "Date" },
+  { name: "time", label: "Time" },
+  { name: "datetime-local", label: "DateTime" },
 ];
 
 const propsData = [
@@ -146,6 +151,11 @@ interface DssInputPreviewProps {
   brand?: string | null;
   showPasswordToggle?: boolean;
   isDarkMode?: boolean;
+  stackLabel?: boolean;
+  loading?: boolean;
+  required?: boolean;
+  before?: React.ReactNode;
+  after?: React.ReactNode;
 }
 
 function DssInputPreview({
@@ -165,6 +175,11 @@ function DssInputPreview({
   brand = null,
   showPasswordToggle = false,
   isDarkMode = false,
+  stackLabel = false,
+  loading = false,
+  required = false,
+  before,
+  after,
 }: DssInputPreviewProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [internalValue, setInternalValue] = useState("");
@@ -270,15 +285,19 @@ function DssInputPreview({
 
   return (
     <div className="w-full max-w-sm">
+      {/* Before slot */}
+      {before && <div className="mb-1 text-xs" style={{ color: isDarkMode ? "#808080" : "#737373" }}>{before}</div>}
+
+      {/* Label */}
       {label && (
         <label
-          className="block text-sm font-medium mb-1.5"
+          className={`block font-medium mb-1.5 ${stackLabel ? "text-xs uppercase tracking-wider" : "text-sm"}`}
           style={{
             color: error ? "#d8182e" : focused ? colors.labelColor : isDarkMode ? "#a0a0a0" : "#454545",
             transition: "color 150ms ease",
           }}
         >
-          {label}
+          {label}{required && <span style={{ color: "#d8182e" }}> *</span>}
         </label>
       )}
 
@@ -292,16 +311,26 @@ function DssInputPreview({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           placeholder={placeholder}
-          disabled={disabled}
+          disabled={disabled || loading}
           readOnly={readonly}
           className="flex-1 bg-transparent outline-none border-none"
           style={{
             color: disabled ? "#d4d4d4" : isDarkMode ? "#e5e5e5" : "#454545",
             fontSize: "14px",
           }}
+          aria-required={required || undefined}
         />
 
-        {clearable && internalValue && !disabled && !readonly && (
+        {/* Loading spinner */}
+        {loading && (
+          <span className="flex-shrink-0 animate-spin" style={{ color: focused ? colors.iconColor : isDarkMode ? "#606060" : "#737373" }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+            </svg>
+          </span>
+        )}
+
+        {clearable && internalValue && !disabled && !readonly && !loading && (
           <button
             onClick={() => setInternalValue("")}
             className="flex-shrink-0 p-1 rounded hover:bg-black/5 transition-colors"
@@ -311,7 +340,7 @@ function DssInputPreview({
           </button>
         )}
 
-        {type === "password" && showPasswordToggle && (
+        {type === "password" && showPasswordToggle && !loading && (
           <button
             onClick={() => setShowPassword(!showPassword)}
             className="flex-shrink-0 p-1 rounded hover:bg-black/5 transition-colors"
@@ -321,7 +350,7 @@ function DssInputPreview({
           </button>
         )}
 
-        {suffix && <span style={{ color: focused ? colors.iconColor : isDarkMode ? "#606060" : "#737373", flexShrink: 0 }}>{suffix}</span>}
+        {suffix && !loading && <span style={{ color: focused ? colors.iconColor : isDarkMode ? "#606060" : "#737373", flexShrink: 0 }}>{suffix}</span>}
 
         {error && <AlertCircle size={18} style={{ color: "#d8182e", flexShrink: 0 }} />}
       </div>
@@ -331,6 +360,9 @@ function DssInputPreview({
           {typeof error === "string" ? error : hint}
         </p>
       )}
+
+      {/* After slot */}
+      {after && <div className="mt-1 text-xs" style={{ color: isDarkMode ? "#808080" : "#737373" }}>{after}</div>}
     </div>
   );
 }
@@ -351,9 +383,14 @@ export default function DssInputPage() {
     readonly: false,
     clearable: false,
     dense: false,
+    loading: false,
+    required: false,
+    stackLabel: false,
     prefix: false,
     suffix: false,
     hint: false,
+    before: false,
+    after: false,
   });
 
   // Exclusividade Color × Brand (v3.2 — substituição implícita)
@@ -398,20 +435,27 @@ export default function DssInputPage() {
     }
     if (selectedType !== "text") props.push(`type="${selectedType}"`);
     props.push('label="Email"');
+    if (booleanStates.stackLabel) props.push("stack-label");
     props.push('placeholder="Digite seu email"');
-    if (booleanStates.error) props.push('error="Este campo é obrigatório"');
+    if (booleanStates.error) props.push(':error="true"\n  error-message="Este campo é obrigatório"');
     if (booleanStates.disabled) props.push("disabled");
     if (booleanStates.readonly) props.push("readonly");
+    if (booleanStates.loading) props.push("loading");
+    if (booleanStates.required) props.push("required");
     if (booleanStates.clearable) props.push("clearable");
     if (booleanStates.dense) props.push("dense");
     if (booleanStates.hint) props.push('hint="Informe um email válido"');
 
+    const hasSlots = booleanStates.prefix || booleanStates.suffix || booleanStates.before || booleanStates.after;
+
     let code = `<DssInput\n  ${props.join("\n  ")}\n  v-model="value"`;
 
-    if (booleanStates.prefix || booleanStates.suffix) {
+    if (hasSlots) {
       code += ">\n";
+      if (booleanStates.before) code += '  <template #before>\n    <q-icon name="event" />\n  </template>\n';
       if (booleanStates.prefix) code += '  <template #prepend>\n    <q-icon name="mail" />\n  </template>\n';
       if (booleanStates.suffix) code += '  <template #append>\n    <q-icon name="search" />\n  </template>\n';
+      if (booleanStates.after) code += '  <template #after>\n    <q-btn round dense flat icon="send" />\n  </template>\n';
       code += "</DssInput>";
     } else {
       code += "\n/>";
@@ -424,13 +468,21 @@ export default function DssInputPage() {
     { name: "error", label: "Error" },
     { name: "disabled", label: "Disabled" },
     { name: "readonly", label: "Readonly" },
-    { name: "clearable", label: "Clearable" },
-    { name: "dense", label: "Dense" },
+    { name: "loading", label: "Loading" },
+    { name: "required", label: "Required" },
   ];
 
-  const extraOptions = [
-    { name: "prefix", label: "Prefix" },
-    { name: "suffix", label: "Suffix" },
+  const featureOptions = [
+    { name: "clearable", label: "Clearable" },
+    { name: "dense", label: "Dense" },
+    { name: "stackLabel", label: "Stack Label" },
+  ];
+
+  const slotOptions = [
+    { name: "prefix", label: "Prepend" },
+    { name: "suffix", label: "Append" },
+    { name: "before", label: "Before" },
+    { name: "after", label: "After" },
     { name: "hint", label: "Hint" },
   ];
 
@@ -540,16 +592,21 @@ export default function DssInputPage() {
             readonly={booleanStates.readonly}
             clearable={booleanStates.clearable}
             dense={booleanStates.dense}
+            loading={booleanStates.loading}
+            required={booleanStates.required}
+            stackLabel={booleanStates.stackLabel}
             prefix={booleanStates.prefix ? getPrefixIcon() : undefined}
             suffix={booleanStates.suffix ? <Search size={18} /> : undefined}
             hint={booleanStates.hint ? "Informe um email válido" : undefined}
             brand={selectedBrand}
+            before={booleanStates.before ? <span className="text-xs">📅</span> : undefined}
+            after={booleanStates.after ? <span className="text-xs">📤</span> : undefined}
             showPasswordToggle={selectedType === "password"}
             isDarkMode={isDarkMode}
           />
         }
         controls={
-          <ControlGrid columns={4}>
+          <ControlGrid columns={5}>
             <VariantSelector
               variants={variants}
               selectedVariant={selectedVariant}
@@ -579,8 +636,14 @@ export default function DssInputPage() {
               onToggle={toggleBooleanState}
             />
             <ToggleGroup
-              label="Extras"
-              options={extraOptions}
+              label="Features"
+              options={featureOptions}
+              values={booleanStates}
+              onToggle={toggleBooleanState}
+            />
+            <ToggleGroup
+              label="Slots"
+              options={slotOptions}
               values={booleanStates}
               onToggle={toggleBooleanState}
             />
