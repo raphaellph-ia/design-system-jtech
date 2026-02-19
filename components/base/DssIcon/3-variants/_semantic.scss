@@ -1,0 +1,30 @@
+/* ==========================================================================
+   DssIcon - LAYER 3: VARIANTS - Semantic
+
+   RESPONSABILIDADE: Variantes semanticas de cor
+
+   NOTA: Cores semanticas sao aplicadas via classes utilitarias globais
+   (.text-primary, .text-negative, etc.) definidas em utils/_colors.scss.
+
+   Este arquivo define APENAS comportamentos semanticos adicionais
+   que NAO podem ser resolvidos por classes utilitarias.
+
+   CORES DISPONIVEIS (via classes utilitarias):
+   - .text-primary   → var(--dss-primary)
+   - .text-secondary → var(--dss-secondary)
+   - .text-tertiary  → var(--dss-tertiary)
+   - .text-accent    → var(--dss-accent)
+   - .text-positive  → var(--dss-positive)
+   - .text-negative  → var(--dss-negative)
+   - .text-warning   → var(--dss-warning)
+   - .text-info      → var(--dss-info)
+   ========================================================================== */
+
+/* ==========================================================================
+   ICONE DECORATIVO
+   Icones decorativos tem opacidade reduzida para indicar papel auxiliar
+   ========================================================================== */
+
+.dss-icon--decorative {
+  opacity: var(--dss-opacity-60);
+}

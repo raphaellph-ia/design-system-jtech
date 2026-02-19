@@ -1,0 +1,55 @@
+/* ==========================================================================
+   DssIcon - LAYER 3: VARIANTS - Animations
+
+   RESPONSABILIDADE: Animacoes de icone (spin, pulse)
+
+   TOKENS UTILIZADOS:
+   - --dss-duration-1000: 1000ms (rotacao completa)
+   - --dss-duration-500: 500ms (pulso)
+   - --dss-easing-standard: cubic-bezier(0.4, 0, 0.2, 1)
+
+   ACESSIBILIDADE:
+   - Todas as animacoes sao desativadas com prefers-reduced-motion
+   - Reducao de movimento tratada em 4-output/_states.scss
+   ========================================================================== */
+
+/* ==========================================================================
+   SPIN - Rotacao continua
+   Uso: indicadores de carregamento, sincronizacao
+   ========================================================================== */
+
+.dss-icon--spin {
+  animation: dss-icon-spin var(--dss-duration-1000) linear infinite;
+}
+
+@keyframes dss-icon-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==========================================================================
+   PULSE - Efeito de pulso
+   Uso: notificacoes, alertas, chamar atencao
+   ========================================================================== */
+
+.dss-icon--pulse {
+  animation: dss-icon-pulse calc(var(--dss-duration-1000) * 2) var(--dss-easing-standard) infinite;
+}
+
+@keyframes dss-icon-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: var(--dss-opacity-60);
+    transform: scale(0.9);
+  }
+}

@@ -1,0 +1,56 @@
+/* ==========================================================================
+   DssIcon - LAYER 4: OUTPUT - Brands
+
+   RESPONSABILIDADE: Brandability (Hub, Water, Waste)
+
+   CARACTERISTICAS:
+   - Usa tokens numericos de brand (--dss-hub-*, --dss-water-*, --dss-waste-*)
+   - Aplica cor da brand ao icone
+   - Suporta seletor via prop (.dss-icon--brand-*) e data-attribute ([data-brand])
+   - Suporta heranca contextual ([data-brand] no pai)
+
+   NOTA: Tokens semanticos de brand (--dss-{brand}-primary) nao existem ainda.
+   Usando tokens numericos conforme padrao DssBadge/DssCard.
+   ========================================================================== */
+
+/* ==========================================================================
+   HUB BRAND (Orange)
+   ========================================================================== */
+
+/* Via prop: <DssIcon brand="hub" /> */
+.dss-icon--brand-hub.dss-icon {
+  color: var(--dss-hub-600);
+}
+
+/* Via heranca contextual: <div data-brand="hub"><DssIcon /></div> */
+[data-brand="hub"] .dss-icon {
+  color: var(--dss-hub-600);
+}
+
+/* ==========================================================================
+   WATER BRAND (Blue)
+   ========================================================================== */
+
+/* Via prop: <DssIcon brand="water" /> */
+.dss-icon--brand-water.dss-icon {
+  color: var(--dss-water-500);
+}
+
+/* Via heranca contextual: <div data-brand="water"><DssIcon /></div> */
+[data-brand="water"] .dss-icon {
+  color: var(--dss-water-500);
+}
+
+/* ==========================================================================
+   WASTE BRAND (Green)
+   ========================================================================== */
+
+/* Via prop: <DssIcon brand="waste" /> */
+.dss-icon--brand-waste.dss-icon {
+  color: var(--dss-waste-600);
+}
+
+/* Via heranca contextual: <div data-brand="waste"><DssIcon /></div> */
+[data-brand="waste"] .dss-icon {
+  color: var(--dss-waste-600);
+}

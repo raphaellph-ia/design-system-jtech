@@ -1,0 +1,44 @@
+/* ==========================================================================
+   DssIcon - LAYER 3: VARIANTS - Sizes
+
+   RESPONSABILIDADE: Variantes de tamanho usando tokens --dss-icon-size-*
+
+   TOKENS UTILIZADOS:
+   - --dss-icon-size-xs: 16px (inline icons, textos auxiliares)
+   - --dss-icon-size-sm: 20px (icones secundarios)
+   - --dss-icon-size-md: 24px (default, icones interativos)
+   - --dss-icon-size-lg: 32px (icones de destaque)
+   - --dss-icon-size-xl: 48px (icones grandes, avatares)
+
+   ❌ ZERO valores hardcoded
+   ========================================================================== */
+
+.dss-icon--xs {
+  width: var(--dss-icon-size-xs);
+  height: var(--dss-icon-size-xs);
+  font-size: var(--dss-icon-size-xs);
+}
+
+.dss-icon--sm {
+  width: var(--dss-icon-size-sm);
+  height: var(--dss-icon-size-sm);
+  font-size: var(--dss-icon-size-sm);
+}
+
+.dss-icon--md {
+  width: var(--dss-icon-size-md);
+  height: var(--dss-icon-size-md);
+  font-size: var(--dss-icon-size-md);
+}
+
+.dss-icon--lg {
+  width: var(--dss-icon-size-lg);
+  height: var(--dss-icon-size-lg);
+  font-size: var(--dss-icon-size-lg);
+}
+
+.dss-icon--xl {
+  width: var(--dss-icon-size-xl);
+  height: var(--dss-icon-size-xl);
+  font-size: var(--dss-icon-size-xl);
+}

@@ -1,0 +1,102 @@
+/* ==========================================================================
+   DssIcon - LAYER 4: OUTPUT - States
+
+   RESPONSABILIDADE: Estados especiais e acessibilidade
+
+   CARACTERISTICAS:
+   - Dark mode
+   - High contrast mode (prefers-contrast: more)
+   - Forced colors (Windows High Contrast Mode)
+   - Reduced motion
+
+   CONVENCOES:
+   - DssIcon NAO e interativo por design (decisao arquitetural DSS v2.2)
+   - Touch target e responsabilidade do contexto de uso (DssButton, etc.)
+   - Hover/active/focus NAO se aplicam a icones standalone
+   - Icones interativos devem usar DssButton com prop icon
+
+   GOLDEN COMPONENT: DssBadge (Opcao B — sem touch target)
+   ========================================================================== */
+
+/* ==========================================================================
+   DARK MODE
+   ========================================================================== */
+
+[data-theme="dark"] {
+  .dss-icon {
+    /* Tokens semanticos ja fazem a maior parte do trabalho via currentColor */
+  }
+
+  /* Brands em dark mode podem precisar de ajustes de brilho */
+  .dss-icon--brand-hub {
+    color: var(--dss-hub-500);
+  }
+
+  .dss-icon--brand-water {
+    color: var(--dss-water-400);
+  }
+
+  .dss-icon--brand-waste {
+    color: var(--dss-waste-500);
+  }
+}
+
+/* ==========================================================================
+   HIGH CONTRAST MODE
+   ========================================================================== */
+
+/*
+ * CONTEXTO DE ACESSIBILIDADE: prefers-contrast: more
+ *
+ * Em high contrast, icones recebem cor forcada para garantir visibilidade.
+ * Decorative icons mantem opacidade reduzida para manter distincao visual.
+ */
+@media (prefers-contrast: more) {
+  .dss-icon {
+    /* Garante contraste maximo */
+    opacity: 1;
+  }
+
+  /* Icones decorativos mantem reducao de opacidade mesmo em high contrast */
+  .dss-icon--decorative {
+    opacity: var(--dss-opacity-75);
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .dss-icon,
+  .dss-icon * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ==========================================================================
+   FORCED COLORS (Windows High Contrast Mode)
+   ========================================================================== */
+
+/*
+ * CONTEXTO DE ACESSIBILIDADE: forced-colors: active
+ *
+ * Em Windows High Contrast Mode, o navegador IGNORA cores CSS customizadas.
+ * Icones usam ButtonText para garantir visibilidade no tema do usuario.
+ *
+ * Referencia: https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors
+ */
+@media (forced-colors: active) {
+  .dss-icon {
+    /* Usa cor do sistema - tokens CSS sao ignorados neste contexto */
+    color: ButtonText;
+  }
+
+  /* Brands nao se aplicam em forced-colors - sistema controla cores */
+  .dss-icon--brand-hub,
+  .dss-icon--brand-water,
+  .dss-icon--brand-waste {
+    color: ButtonText;
+  }
+}

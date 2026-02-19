@@ -1,0 +1,1 @@
+export { useIconClasses } from './useIconClasses'

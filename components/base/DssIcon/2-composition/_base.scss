@@ -1,0 +1,65 @@
+/* ==========================================================================
+   DssIcon - LAYER 2: COMPOSITION (Base Styles)
+
+   RESPONSABILIDADE: Estilos fundamentais usando APENAS tokens genericos
+
+   REGRAS:
+   ✅ APENAS tokens genericos (--dss-icon-size-*, --dss-duration-*, etc.)
+   ✅ Layout base para modo standalone e embedded
+   ✅ Heranca de cor via currentColor
+   ❌ ZERO valores hardcoded
+   ❌ ZERO logica de variantes (variantes vao em 3-variants/)
+   ❌ ZERO cores aplicadas (cores via classes utilitarias)
+
+   GOLDEN COMPONENT: DssBadge (nao interativo)
+   TOUCH TARGET: Opcao B — NAO implementado
+   ========================================================================== */
+
+/* ==========================================================================
+   ICON BASE
+   ========================================================================== */
+
+.dss-icon {
+  /* Display e Layout */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  vertical-align: middle;
+  flex-shrink: 0;
+
+  /* Cor - herda do contexto por padrao (currentColor) */
+  color: inherit;
+
+  /* Dimensoes default (md = 24px) */
+  width: var(--dss-icon-size-md);
+  height: var(--dss-icon-size-md);
+
+  /* Transicoes */
+  transition:
+    color var(--dss-duration-150) var(--dss-easing-standard),
+    transform var(--dss-duration-200) var(--dss-easing-standard);
+
+  /* Comportamento */
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   INNER ICON (QIcon)
+   O elemento interno QIcon deve preencher todo o container DSS
+   ========================================================================== */
+
+.dss-icon__inner {
+  /* Preenche o container */
+  width: 100%;
+  height: 100%;
+
+  /* Herda tamanho do container via font-size */
+  font-size: inherit;
+
+  /* Garante que QIcon nao adicione margens proprias */
+  margin: 0;
+  padding: 0;
+}
