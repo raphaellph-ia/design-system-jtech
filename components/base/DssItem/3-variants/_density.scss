@@ -1,0 +1,51 @@
+/* ==========================================================================
+   DssItem - LAYER 3: VARIANTS - Density
+
+   RESPONSABILIDADE: Variantes de densidade (default, compact)
+
+   REGRAS:
+   - Usa tokens genericos (--dss-spacing-*)
+   - Default: altura confortavel com touch target
+   - Compact: altura reduzida, touch target removido
+   ========================================================================== */
+
+/* ==========================================================================
+   DEFAULT DENSITY
+   ========================================================================== */
+
+.dss-item--default {
+  padding: var(--dss-spacing-3) var(--dss-spacing-4);
+  min-height: var(--dss-spacing-12);
+  gap: var(--dss-spacing-4);
+}
+
+/* ==========================================================================
+   COMPACT DENSITY
+   ========================================================================== */
+
+.dss-item--compact {
+  padding: var(--dss-spacing-1) var(--dss-spacing-4);
+  min-height: var(--dss-spacing-8);
+  gap: var(--dss-spacing-3);
+  font-size: var(--dss-font-size-sm);
+
+  /* Touch target removido em modo compact */
+  &::before {
+    display: none;
+  }
+
+  /* Ajuste do caption em compact */
+  .dss-item__caption {
+    font-size: var(--dss-font-size-xs);
+  }
+
+  /* Ajuste da leading area em compact */
+  .dss-item__leading {
+    min-width: var(--dss-spacing-5);
+  }
+
+  /* Ajuste da trailing area em compact */
+  .dss-item__trailing {
+    min-width: var(--dss-spacing-5);
+  }
+}

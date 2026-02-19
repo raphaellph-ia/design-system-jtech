@@ -3,7 +3,7 @@
  * Design System Sansys v2.2
  *
  * Classificacao: Compact Control interativo
- * Golden Component de referencia: DssCheckbox
+ * Golden Context: DssCheckbox
  *
  * Subset controlado da API do Quasar q-radio.
  * Este componente NAO replica a API completa do q-radio.

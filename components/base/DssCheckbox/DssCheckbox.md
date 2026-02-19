@@ -19,8 +19,9 @@ Componente de checkbox do Design System Sansys baseado em `<input type="checkbox
 ### Tipo do Componente
 **Básico** — Compact Control interativo (Fase 1 — Atomic Controls).
 
-### Golden Component de Referência
-**DssChip** — Referência estrutural para padrão de touch target `::before`, tokens genéricos de compact control e convenção de pseudo-elementos.
+### Golden Reference / Golden Context
+**Golden Reference:** DssChip — Referencia normativa global para Compact Controls interativos.
+**Golden Context:** DssChip — Referência estrutural para padrão de touch target `::before`, tokens genéricos de compact control e convenção de pseudo-elementos.
 
 ### Características Principais
 
@@ -913,4 +914,5 @@ Propriedade da Jtech
 **Última atualização:** Janeiro 2026
 **Versão:** DSS v2.2.0
 **Status:** 📦 Componente Base
-**Golden Component de referência:** DssChip
+**Golden Reference:** DssChip
+**Golden Context:** DssChip

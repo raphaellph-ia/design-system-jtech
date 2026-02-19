@@ -329,7 +329,7 @@ export default function DssAvatarPage() {
        * ================================================================ */}
       <PageHeader
         icon={User}
-        badge="Golden Component"
+        badge="Golden Context: DssChip"
         badgeVariant="accent"
         title="Componente"
         titleAccent="DssAvatar"

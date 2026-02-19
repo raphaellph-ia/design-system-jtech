@@ -914,7 +914,7 @@ computed: {
 ## 📞 Suporte
 
 **Dúvidas sobre arquitetura?**
-- Consulte o DssButton como golden sample
+- Consulte o DssButton como Golden Sample (referencia de documentacao — Template 13.1). Para governanca de auditoria, consulte [DSS_GOLDEN_COMPONENTS.md](../governance/DSS_GOLDEN_COMPONENTS.md)
 - Leia este guia completo
 - Verifique a filosofia DSS: "Tokens = Provedores, Componentes = Consumidores"
 

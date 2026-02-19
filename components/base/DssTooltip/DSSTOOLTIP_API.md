@@ -10,7 +10,8 @@
 |---------|-------|
 | **Nome** | `DssTooltip` |
 | **Classificacao** | Elemento Informativo Contextual (NAO interativo) |
-| **Golden Component** | DssBadge |
+| **Golden Reference** | DssBadge |
+| **Golden Context** | DssBadge |
 | **Versao DSS** | 2.2.0 |
 | **Fase** | 1 — Componente Basico |
 

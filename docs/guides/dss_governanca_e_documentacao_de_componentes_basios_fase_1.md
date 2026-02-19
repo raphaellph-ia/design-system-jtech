@@ -11,9 +11,11 @@ Ele é derivado da Seção 13.1 (Governança) do PRD e tem como objetivo:
 
 ## 1️⃣ Princípios de Documentação
 
-### Golden Sample
+### Golden Sample (Documentacao)
 
-O **DSSButton** é o componente de referência oficial. Use-o como modelo para estrutura, profundidade e qualidade de documentação.
+O **DSSButton** e o Golden Sample oficial — referencia de **documentacao** (Template 13.1). Use-o como modelo para estrutura, profundidade e qualidade de documentacao.
+
+> **Nota**: Golden Sample e diferente de Golden Reference (governanca de categoria) e Golden Context (baseline de auditoria). Para definicoes completas, consulte [DSS_GOLDEN_COMPONENTS.md](../governance/DSS_GOLDEN_COMPONENTS.md).
 
 ### Fonte da Verdade
 

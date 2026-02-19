@@ -19,8 +19,9 @@ Wrapper DSS para exibicao de informacao contextual. Componente de tooltip para a
 ### Tipo do Componente
 **Basico** - Elemento Informativo Contextual (NAO interativo).
 
-### Golden Component
+### Golden Context
 **DssBadge** - Compact Control nao interativo.
+**Golden Reference:** DssBadge.
 
 Justificativa normativa:
 - Uso informativo (nao acionavel)
@@ -647,7 +648,7 @@ const show = ref(false)
 
 ---
 
-## Tabela de Paridade com Golden Component (DssBadge)
+## Tabela de Paridade com Golden Context (DssBadge)
 
 | Aspecto | Golden (DssBadge) | DssTooltip | Status | Justificativa |
 |---------|-------------------|------------|--------|---------------|

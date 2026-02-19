@@ -579,7 +579,7 @@ export default function DssButtonPage() {
        * ================================================================ */}
       <PageHeader
         icon={Box}
-        badge="Golden Component"
+        badge="Golden Sample"
         badgeVariant="accent"
         title="Componente"
         titleAccent="DssButton"

@@ -67,7 +67,7 @@
  * Componente de checkbox moderno com TypeScript + Composition API
  * Baseado na API do Quasar q-checkbox com extensoes DSS
  *
- * Golden Component de referencia: DssChip (Compact Control interativo)
+ * Golden Context: DssChip (Compact Control interativo)
  *
  * @see https://quasar.dev/vue-components/checkbox
  *

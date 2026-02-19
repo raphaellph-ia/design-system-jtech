@@ -9,7 +9,7 @@
  * - Sem brand: usa classes utilitarias Quasar (.bg-*, .text-*)
  * - Com brand: usa classe DSS (.dss-toggle--{color}) para CSS de _brands.scss
  *
- * Golden Component: DssCheckbox (mesmo padrao de composable)
+ * Golden Context: DssCheckbox (mesmo padrao de composable)
  *
  * @example
  * ```ts

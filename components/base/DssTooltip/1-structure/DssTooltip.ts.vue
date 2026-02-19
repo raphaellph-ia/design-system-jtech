@@ -19,7 +19,7 @@
  * Componente de tooltip para informacao contextual.
  * Classificacao: Elemento Informativo Contextual (NAO interativo).
  *
- * Golden Component: DssBadge
+ * Golden Context: DssBadge
  *
  * COMPORTAMENTOS EXPLICITOS:
  * - inheritAttrs: true (default). Atributos HTML (id, class, style, data-*)
@@ -36,7 +36,7 @@
  * - ::before: PROIBIDO (decisao congelada).
  * - ::after: Permitido apenas para efeitos visuais passivos.
  *
- * @see DssBadge (Golden Component)
+ * @see DssBadge (Golden Context)
  * @version 2.2.0
  * @author Hebert Daniel Oliveira Chaves
  */

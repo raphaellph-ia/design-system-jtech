@@ -8,7 +8,7 @@
  *
  * Template: 13.1 (13 seções padronizadas)
  * Selo: DSS v2.2 - Aprovado em 07/02/2026
- * Golden Component de Referência: DssCheckbox
+ * Golden Context: DssCheckbox
  */
 
 import React, { useState } from "react";

@@ -5,7 +5,7 @@
  *
  * Interfaces para props, emits e slots do DssToggle.
  *
- * Golden Component de referencia: DssCheckbox
+ * Golden Context: DssCheckbox
  * Diferenca principal: Toggle nao suporta indeterminate (binario puro).
  * Toggle usa role="switch" ao inves de checkbox puro.
  *

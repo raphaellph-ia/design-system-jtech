@@ -1,0 +1,9 @@
+/* ==========================================================================
+   DssItem - LAYER 3: VARIANTS - Orchestrator
+
+   Importa todas as variantes na ordem correta
+   ========================================================================== */
+
+@use './density' as density;
+@use './interactive' as interactive;
+@use './alignment' as alignment;

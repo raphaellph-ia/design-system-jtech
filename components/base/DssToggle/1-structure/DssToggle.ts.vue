@@ -73,7 +73,7 @@
  * Componente de toggle (switch) moderno com TypeScript + Composition API
  * Baseado na API do Quasar QToggle com extensoes DSS
  *
- * Golden Component de referencia: DssCheckbox (Compact Control interativo)
+ * Golden Context: DssCheckbox (Compact Control interativo)
  * Referencia secundaria: DssRadio (error state, aria-describedby)
  *
  * Diferenca principal do DssCheckbox:

@@ -1166,9 +1166,10 @@ export default {
 
 ---
 
-## 15. Paridade com Golden Component
+## 15. Paridade com Golden Context
 
-**Golden Component de Referência:** DssChip (primário), DssBadge (secundário)
+**Golden Reference:** DssChip
+**Golden Context:** DssChip (primário), DssBadge (secundário)
 
 | Aspecto | DssCard | Golden (DssChip) | Status | Justificativa |
 |---------|---------|-------------------|--------|---------------|

@@ -3,8 +3,9 @@
 **Versao:** 1.0.0
 **Status:** Pre-normativo em processo de conformidade DSS v2.2
 **Classificacao:** Compact Control interativo — Form / Selection
-**Golden Component de referencia:** DssCheckbox (arquitetura, estados, tokens, acessibilidade)
-**Golden Component secundario:** DssChip (touch target, pseudo-elementos, contrastes)
+**Golden Reference:** DssChip (referencia normativa global da categoria)
+**Golden Context:** DssCheckbox (arquitetura, estados, tokens, acessibilidade)
+**Golden Context secundario:** DssChip (touch target, pseudo-elementos, contrastes)
 **Data:** 04 de Fevereiro de 2026
 
 ---
@@ -335,7 +336,7 @@ O indicador de selecao (circulo preenchido) e implementado como elemento real `<
 
 | Decisao | Valor | Justificativa |
 |---------|-------|---------------|
-| Golden Component | DssCheckbox | Mesma categoria (form control), mesma arquitetura |
+| Golden Context | DssCheckbox | Mesma categoria (form control), mesma arquitetura |
 | Indicador visual | `<span>` real | Consistencia com DssCheckbox (nao pseudo-elemento) |
 | Touch target | 48px via `::before` | WCAG 2.5.5, mesmo padrao DssCheckbox/DssChip |
 | Sem variantes (Layer 3) | Fase 1 atomico | Controle unico, sem variantes visuais |

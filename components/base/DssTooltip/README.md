@@ -4,9 +4,10 @@
 
 Componente de tooltip para informacao contextual. Elemento informativo NAO interativo com visibilidade controlada externamente.
 
-## Golden Component
+## Golden Context
 
-**DssBadge** — Compact Control nao interativo.
+**DssBadge** — Baseline de auditoria (Compact Control nao interativo).
+**Golden Reference:** DssBadge.
 
 ## Quando Usar
 

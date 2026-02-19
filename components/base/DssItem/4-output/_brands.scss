@@ -1,0 +1,82 @@
+/* ==========================================================================
+   DssItem - LAYER 4: OUTPUT - Brands
+
+   RESPONSABILIDADE: Brandability (Hub, Water, Waste)
+
+   CARACTERISTICAS:
+   - Usa tokens numericos de brand (--dss-hub-*, --dss-water-*, --dss-waste-*)
+   - Aplica cor da brand ao item ativo e ao leading/trailing
+   - Suporta seletor via prop (.dss-item--brand-*) e data-attribute ([data-brand])
+   - Suporta heranca contextual ([data-brand] no pai)
+
+   NOTA: Tokens semanticos de brand (--dss-{brand}-primary) nao existem ainda.
+   Usando tokens numericos conforme padrao DssBadge/DssCard.
+   ========================================================================== */
+
+/* ==========================================================================
+   MIXIN PARA BRAND ITEM
+   ========================================================================== */
+
+@mixin item-brand($brand, $color-light, $color-dark) {
+  /* Active state com cor da brand */
+  &.dss-item--active {
+    color: #{$color-light};
+
+    .dss-item__leading {
+      color: #{$color-light};
+    }
+  }
+
+  /* Dark mode */
+  @media (prefers-color-scheme: dark) {
+    &.dss-item--active {
+      color: #{$color-dark};
+
+      .dss-item__leading {
+        color: #{$color-dark};
+      }
+    }
+  }
+}
+
+/* ==========================================================================
+   HUB BRAND (Orange)
+   ========================================================================== */
+
+/* Via prop: <DssItem brand="hub" /> */
+.dss-item--brand-hub.dss-item {
+  @include item-brand(hub, var(--dss-hub-600), var(--dss-hub-500));
+}
+
+/* Via heranca contextual: <div data-brand="hub"><DssItem /></div> */
+[data-brand="hub"] .dss-item {
+  @include item-brand(hub, var(--dss-hub-600), var(--dss-hub-500));
+}
+
+/* ==========================================================================
+   WATER BRAND (Blue)
+   ========================================================================== */
+
+/* Via prop: <DssItem brand="water" /> */
+.dss-item--brand-water.dss-item {
+  @include item-brand(water, var(--dss-water-500), var(--dss-water-400));
+}
+
+/* Via heranca contextual: <div data-brand="water"><DssItem /></div> */
+[data-brand="water"] .dss-item {
+  @include item-brand(water, var(--dss-water-500), var(--dss-water-400));
+}
+
+/* ==========================================================================
+   WASTE BRAND (Green)
+   ========================================================================== */
+
+/* Via prop: <DssItem brand="waste" /> */
+.dss-item--brand-waste.dss-item {
+  @include item-brand(waste, var(--dss-waste-600), var(--dss-waste-500));
+}
+
+/* Via heranca contextual: <div data-brand="waste"><DssItem /></div> */
+[data-brand="waste"] .dss-item {
+  @include item-brand(waste, var(--dss-waste-600), var(--dss-waste-500));
+}

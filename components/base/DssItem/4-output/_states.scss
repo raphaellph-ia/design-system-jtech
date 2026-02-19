@@ -1,0 +1,153 @@
+/* ==========================================================================
+   DssItem - LAYER 4: OUTPUT (States)
+
+   RESPONSABILIDADE: Estilos para estados especiais (dark mode, high contrast)
+
+   REGRAS:
+   - Usa media queries para preferencias do usuario
+   - Ajusta contraste e visibilidade
+   - Mantem acessibilidade WCAG 2.1 AA
+   - ::before RESERVADO para touch target, ::after para efeitos visuais
+   ========================================================================== */
+
+/* ==========================================================================
+   DARK MODE
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  .dss-item {
+    color: var(--dss-text-body);
+  }
+
+  .dss-item__caption {
+    color: var(--dss-text-subtle);
+  }
+
+  .dss-item__leading,
+  .dss-item__trailing {
+    color: var(--dss-text-subtle);
+  }
+
+  /*
+   * Hover/active em dark mode usa mesma estrategia de overlay
+   * (::after com currentColor) — funciona automaticamente com
+   * cores invertidas do dark mode
+   */
+
+  .dss-item--active {
+    background-color: var(--dss-surface-active);
+  }
+
+  .dss-item--disabled {
+    opacity: var(--dss-opacity-disabled);
+  }
+
+  .dss-item--divider {
+    border-bottom-color: var(--dss-border-default);
+  }
+}
+
+/* ==========================================================================
+   HIGH CONTRAST MODE
+   ========================================================================== */
+
+@media (prefers-contrast: more) {
+  .dss-item--clickable:focus-visible {
+    outline-width: var(--dss-border-width-thick);
+    outline-offset: calc(-1 * var(--dss-border-width-thick));
+  }
+
+  .dss-item--active {
+    /* Borda lateral para indicacao visual clara */
+    border-left: var(--dss-border-width-thick) solid currentColor;
+  }
+
+  .dss-item--disabled {
+    opacity: var(--dss-opacity-50);
+    text-decoration: line-through;
+  }
+
+  .dss-item--divider {
+    border-bottom-width: var(--dss-border-width-md);
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .dss-item {
+    transition: none;
+  }
+
+  .dss-item--clickable::after {
+    transition: none;
+  }
+}
+
+/* ==========================================================================
+   FORCED COLORS (Windows High Contrast)
+   ========================================================================== */
+
+/*
+ * Em Windows High Contrast Mode, o navegador IGNORA cores CSS customizadas.
+ * Valores como ButtonText, Highlight, GrayText sao keywords do sistema.
+ *
+ * Bordas e outlines usam valores absolutos porque:
+ * 1. Tokens CSS custom properties sao ignorados em forced-colors
+ * 2. Valores precisam ser visiveis no tema de alto contraste do usuario
+ */
+@media (forced-colors: active) {
+  .dss-item {
+    color: ButtonText;
+    border-color: ButtonText;
+  }
+
+  .dss-item--clickable:hover {
+    background-color: Highlight;
+    color: HighlightText;
+  }
+
+  .dss-item--clickable:focus-visible {
+    outline: 3px solid Highlight;
+  }
+
+  .dss-item--active {
+    background-color: Highlight;
+    color: HighlightText;
+    border-left: 3px solid HighlightText;
+  }
+
+  .dss-item--disabled {
+    color: GrayText;
+    border-color: GrayText;
+  }
+
+  .dss-item--divider {
+    border-bottom: 1px solid ButtonText;
+  }
+}
+
+/* ==========================================================================
+   PRINT STYLES
+   ========================================================================== */
+
+@media print {
+  .dss-item {
+    /* Remove efeitos para impressao */
+    box-shadow: none;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  .dss-item--clickable {
+    cursor: default;
+  }
+
+  .dss-item--active {
+    border-left: var(--dss-border-width-md) solid currentColor;
+  }
+}

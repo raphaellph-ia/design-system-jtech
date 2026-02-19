@@ -1,0 +1,22 @@
+/* ==========================================================================
+   DssItem - LAYER 3: VARIANTS - Alignment
+
+   RESPONSABILIDADE: Alinhamento de conteudo em modos multiline
+
+   REGRAS:
+   - Multiline: leading e trailing alinham ao topo
+   - Single-line: leading e trailing centralizados (default em _base.scss)
+   ========================================================================== */
+
+/* ==========================================================================
+   MULTILINE ALIGNMENT
+   ========================================================================== */
+
+.dss-item--multiline {
+  /* Leading e trailing alinham ao topo quando tem caption */
+  .dss-item__leading,
+  .dss-item__trailing {
+    align-self: flex-start;
+    padding-top: var(--dss-spacing-0_5);
+  }
+}

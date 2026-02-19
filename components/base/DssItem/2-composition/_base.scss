@@ -1,0 +1,112 @@
+/* ==========================================================================
+   DssItem - LAYER 2: COMPOSITION (Base Styles)
+
+   RESPONSABILIDADE: Estilos fundamentais usando APENAS tokens genericos
+
+   REGRAS:
+   - APENAS tokens genericos (--dss-spacing-*, --dss-font-*, etc.)
+   - Reset e layout base
+   - ZERO valores hardcoded
+   - ZERO logica de variantes
+   ========================================================================== */
+
+/* ==========================================================================
+   ITEM BASE
+   ========================================================================== */
+
+.dss-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--dss-spacing-4);
+
+  /* Typography */
+  font-family: var(--dss-font-family-sans);
+  font-size: var(--dss-font-size-md);
+  font-weight: var(--dss-font-weight-normal);
+  line-height: var(--dss-line-height-normal);
+  color: var(--dss-text-body);
+  text-decoration: none;
+
+  /* Layout */
+  padding: var(--dss-spacing-3) var(--dss-spacing-4);
+  min-height: var(--dss-spacing-12);
+  width: 100%;
+  box-sizing: border-box;
+
+  /* Interaction (default: nao interativo) */
+  cursor: default;
+  user-select: none;
+  outline: 0;
+
+  /* Transitions */
+  transition: background-color var(--dss-duration-150) var(--dss-easing-standard),
+              color var(--dss-duration-150) var(--dss-easing-standard);
+
+  /* Prevent tap highlight */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ==========================================================================
+   LEADING AREA (icone, avatar, checkbox)
+   ========================================================================== */
+
+.dss-item__leading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: var(--dss-spacing-6);
+  color: var(--dss-text-subtle);
+}
+
+/* ==========================================================================
+   CONTENT AREA (label + caption)
+   ========================================================================== */
+
+.dss-item__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  gap: var(--dss-spacing-0_5);
+}
+
+.dss-item__label {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: inherit;
+}
+
+.dss-item__caption {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--dss-font-size-sm);
+  color: var(--dss-text-subtle);
+  line-height: var(--dss-line-height-tight);
+}
+
+/* ==========================================================================
+   TRAILING AREA (icone, badge, toggle)
+   ========================================================================== */
+
+.dss-item__trailing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: var(--dss-spacing-6);
+  color: var(--dss-text-subtle);
+}
+
+/* ==========================================================================
+   DIVIDER
+   ========================================================================== */
+
+.dss-item--divider {
+  border-bottom: var(--dss-border-width-thin) solid var(--dss-border-default);
+}

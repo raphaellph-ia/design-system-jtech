@@ -1,0 +1,20 @@
+/* ==========================================================================
+   DssItem - SCSS Module Orchestrator
+
+   Importa as camadas na ordem correta:
+   Layer 2 (Composition) → Layer 3 (Variants) → Layer 4 (Output)
+
+   Layer 1 (Structure) e o componente Vue em 1-structure/DssItem.ts.vue
+
+   NOTA: Layer 2 (_base.scss) define os estilos fundamentais.
+   As camadas subsequentes adicionam variantes e estados.
+   ========================================================================== */
+
+/* Layer 2: Composition (estilos base) */
+@use './2-composition/base' as base;
+
+/* Layer 3: Variants (density, interactive, alignment) */
+@use './3-variants/index' as variants;
+
+/* Layer 4: Output (brands, states) */
+@use './4-output/index' as output;

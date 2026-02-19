@@ -8,7 +8,7 @@
  *
  * Template: 13.1 (13 seções padronizadas)
  * Selo: DSS v2.2 - Aprovado em 01/02/2026
- * Golden Component de Referência: DssChip
+ * Golden Context: DssChip
  */
 
 import React, { useState } from "react";

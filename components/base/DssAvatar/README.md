@@ -2,7 +2,8 @@
 
 Status: ✅ Selo DSS v2.2
 Auditoria Final: 02/02/2026
-Golden Component: DssChip
+Golden Reference: DssChip
+Golden Context: DssChip
 Classificação: Basico (Visual/Identity)
 
 Componente de avatar do Design System Sansys para representacao visual de usuarios, entidades ou placeholders.

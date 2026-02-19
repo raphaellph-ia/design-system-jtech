@@ -5,7 +5,7 @@
  *
  * Tipos e interfaces para o componente DssTooltip
  *
- * Golden Component: DssBadge
+ * Golden Context: DssBadge
  * Classificacao: Elemento Informativo Contextual (NAO interativo)
  *
  * @version 2.2.0

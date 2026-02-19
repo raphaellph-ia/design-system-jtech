@@ -2,7 +2,8 @@
 
 Status: ✅ Selo DSS v2.2
 Auditoria Final: 27/01/2026
-Golden Component: DssChip
+Golden Reference: DssBadge (referencia normativa global para Compact Controls nao interativos)
+Golden Context: DssChip
 Classificação: Compact Control nao interativo
 
 Componente de badge do Design System Sansys para exibir informacoes contextuais que precisam de destaque, como contadores de notificacoes, status ou labels.

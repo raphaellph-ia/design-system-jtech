@@ -6,7 +6,7 @@
  * Composable para gerar classes CSS do DssTooltip
  * Segue o padrao Quasar de classes utilitarias (.bg-*, .text-*)
  *
- * Golden Component: DssBadge (useBadgeClasses)
+ * Golden Context: DssBadge (useBadgeClasses)
  * Paridade: Mesma logica de cores via classes utilitarias
  *
  * @example

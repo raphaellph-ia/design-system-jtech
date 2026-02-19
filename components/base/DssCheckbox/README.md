@@ -2,12 +2,13 @@
 
 Status: ✅ Selo DSS v2.2
 Auditoria Final: 01/02/2026
-Golden Component: DssChip
+Golden Reference: DssChip
+Golden Context: DssChip
 Classificação: Compact Control interativo
 
 Componente de checkbox do Design System Sansys baseado em `<input type="checkbox">` nativo, com API pública governada pelo DSS.
 
-> Compact Control interativo (Fase 1 — Atomic Controls). Golden Component de referência: DssChip.
+> Compact Control interativo (Fase 1 — Atomic Controls). Golden Context: DssChip.
 
 ---
 

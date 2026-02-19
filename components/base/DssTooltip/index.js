@@ -2,7 +2,7 @@
  * DssTooltip - Exportacao do Componente
  * Elemento Informativo Contextual (NAO interativo)
  *
- * Golden Component: DssBadge
+ * Golden Context: DssBadge
  * Usando versao .ts.vue com type safety completo
  */
 

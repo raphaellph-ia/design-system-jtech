@@ -5,7 +5,8 @@
   "seal": "DSS v2.2",
   "auditMode": "Final",
   "auditDate": "2026-02-02",
-  "goldenComponent": "DssChip",
+  "goldenReference": "DssChip",
+  "goldenContext": "DssChip",
   "category": "Basico (Visual/Identity)",
   "hasReservations": true
 }

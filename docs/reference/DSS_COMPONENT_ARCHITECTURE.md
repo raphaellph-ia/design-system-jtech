@@ -1867,26 +1867,36 @@ Use como exemplo ao criar novos componentes:
   - Sistema de tamanhos consistente
   - Exemplo de fallback de conteúdo
 
-### **🏆 Golden Components — Referências Normativas**
+### **🏆 Modelo Golden — Governanca de Auditoria**
 
-> **⚠️ VINCULANTE**: Novos componentes Compact Controls DEVEM ser auditados usando um Golden Component como referência.
+> **⚠️ VINCULANTE**: Novos componentes DEVEM declarar um **Golden Context** (baseline de auditoria) e respeitar o **Golden Reference** da categoria.
 
-Os **Golden Components** são componentes que passaram por auditoria completa e receberam o **Selo de Conformidade DSS v2.2**. Eles servem como referência normativa para:
+O DSS utiliza tres conceitos distintos de "Golden":
 
-- Uso correto dos tokens `--dss-compact-control-height-*`
-- Decisões sobre touch target (implementado vs contextual)
-- Convenção de pseudo-elementos (`::before` / `::after`)
-- Documentação de exceções visuais
-- Implementação de acessibilidade avançada
+#### Golden Reference (Governanca Global)
 
-| Componente | Categoria | Interativo | Touch Target | Referência |
+Componentes designados como referencia normativa **global** para toda a categoria. Definem padroes transversais obrigatorios.
+
+| Componente | Categoria | Interativo | Touch Target | Designacao |
 |------------|-----------|------------|--------------|------------|
-| **DssChip** | Compact Control | ✅ Sim | Implementado via `::before` | [DssChip.md](../../components/base/DssChip/DssChip.md) |
-| **DssBadge** | Compact Control | ❌ Não | Contextual (delegado ao pai) | [DssBadge.md](../../components/base/DssBadge/DssBadge.md) |
+| **DssChip** | Compact Control | ✅ Sim | Implementado via `::before` | Golden Reference interativo |
+| **DssBadge** | Compact Control | ❌ Nao | Contextual (delegado ao pai) | Golden Reference nao interativo |
+
+**Golden Reference define para a categoria**: tokens de altura, touch target, pseudo-elementos, excecoes visuais, acessibilidade avancada.
+
+#### Golden Context (Baseline de Auditoria)
+
+Componente especifico usado como baseline para auditar um determinado componente. Pode ser qualquer componente com Selo DSS v2.2.
+
+Exemplos: DssCheckbox e Golden Context de DssRadio; DssBadge e Golden Context de DssTooltip.
+
+#### Golden Sample (Documentacao)
+
+Referencia de documentacao (Template 13.1). **NAO e referencia de arquitetura.** Golden Sample oficial: **DssButton**.
 
 **Diretriz Normativa:**
-> Nem todo Compact Control é interativo.
-> Touch target é uma decisão semântica e contextual, não uma obrigação universal do componente.
+> Nem todo Compact Control e interativo.
+> Touch target e uma decisao semantica e contextual, nao uma obrigacao universal do componente.
 
 📖 **Documento Oficial:** [DSS_GOLDEN_COMPONENTS.md](../governance/DSS_GOLDEN_COMPONENTS.md)
 

@@ -1,6 +1,6 @@
  /**
   * ==========================================================================
-  * DssChipPage - Documentação do Golden Component DssChip
+  * DssChipPage - Documentação do Golden Reference DssChip
   * ==========================================================================
   *
   * Página de documentação seguindo o padrão Golden Sample V2.2
@@ -336,7 +336,7 @@
            variant="outline"
            className="bg-amber-500/10 text-amber-600 border-amber-500/30"
          >
-           🏆 Golden Component
+           🏆 Golden Reference
          </Badge>
          <Badge variant="outline" className="bg-blue-500/10 text-blue-600 border-blue-500/30">
            DSS v2.2

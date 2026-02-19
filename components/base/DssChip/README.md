@@ -2,7 +2,8 @@
 
 Status: ✅ Selo DSS v2.2
 Auditoria Final: 27/01/2026
-Golden Component: DssChip (self — referencia normativa)
+Golden Reference: DssChip (self — referencia normativa global para Compact Controls interativos)
+Golden Context: DssChip
 Classificação: Compact Control interativo
 
 Wrapper DSS baseado no QChip, com API pública governada pelo Design System Sansys.

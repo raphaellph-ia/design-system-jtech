@@ -5,7 +5,8 @@
 **Versao:** 1.0.0
 **DSS:** v2.2
 **Status:** Draft (elegivel para auditoria)
-**Golden Component:** DssCheckbox (primario), DssRadio (secundario)
+**Golden Reference:** DssChip
+**Golden Context:** DssCheckbox (primario), DssRadio (secundario)
 **Classificacao:** Compact Control interativo | Form / Selection | Fase 1
 
 ---

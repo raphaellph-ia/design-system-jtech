@@ -14,8 +14,9 @@
 | **Componente** | DssToggle |
 | **Versao** | 1.0.0 |
 | **DSS** | v2.2 |
-| **Golden Component Primario** | DssCheckbox (Compact Control interativo, Selo DSS v2.2) |
-| **Golden Component Secundario** | DssRadio (Form/Selection, Selo DSS v2.2) |
+| **Golden Reference** | DssChip (referencia normativa global da categoria) |
+| **Golden Context Primario** | DssCheckbox (Compact Control interativo, Selo DSS v2.2) |
+| **Golden Context Secundario** | DssRadio (Form/Selection, Selo DSS v2.2) |
 | **Paralelo Framework** | Quasar QToggle |
 | **Escopo** | Subset controlado da API QToggle |
 
@@ -269,7 +270,7 @@ Dense mode aplica as seguintes reducoes visuais:
 | font-size | `--dss-font-size-sm` (14px) | `--dss-font-size-xs` (12px) |
 | touch target | 48px via `::before` | Removido (`display: none`) |
 
-### Comparacao com Golden Component (DssCheckbox)
+### Comparacao com Golden Context (DssCheckbox)
 
 | Aspecto | DssCheckbox (dense) | DssToggle (dense) |
 |---------|--------------------|--------------------|
@@ -342,8 +343,8 @@ background-color: var(--dss-hub-primary);
 
 | Decisao | Valor | Justificativa |
 |---------|-------|---------------|
-| Golden Component | DssCheckbox (primario) | Mesma categoria: Compact Control interativo |
-| Golden Secundario | DssRadio | Error state e aria-describedby como referencia |
+| Golden Context | DssCheckbox (primario) | Mesma categoria: Compact Control interativo |
+| Golden Context Secundario | DssRadio | Error state e aria-describedby como referencia |
 | ARIA role | `switch` | WAI-ARIA recomenda `role="switch"` para controles on/off |
 | Touch target | 48px via `::before` | WCAG 2.5.5 AA; `::before` reservado |
 | Dense touch target | Removido (`display: none`) | Seguindo DssRadio |

@@ -3,7 +3,7 @@
  * Design System Sansys v2.2
  *
  * Gera classes CSS dinamicas com base em props e estado.
- * Segue o mesmo padrao do useCheckboxClasses (Golden Component).
+ * Segue o mesmo padrao do useCheckboxClasses (Golden Context).
  */
 
 import { computed, type Ref } from 'vue'

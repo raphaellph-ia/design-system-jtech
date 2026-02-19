@@ -5,7 +5,8 @@
   "seal": "DSS v2.2",
   "auditMode": "Final",
   "auditDate": "2026-01-27",
-  "goldenComponent": "DssChip",
+  "goldenReference": "DssChip",
+  "goldenContext": "DssChip",
   "category": "Compact Control interativo",
   "hasReservations": false
 }

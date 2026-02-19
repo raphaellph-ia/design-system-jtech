@@ -3,7 +3,8 @@
 **Versao**: 2.2.0
 **Classificacao**: Elemento Visual Base nao interativo
 **Fase**: 1
-**Golden Component**: DssBadge (unico)
+**Golden Reference**: DssBadge
+**Golden Context**: DssBadge
 **Selo DSS**: Pendente auditoria
 
 ---
@@ -190,7 +191,7 @@ Cada brand pode ser ativada via:
 
 DssIcon e um elemento de exibicao, nao interativo. A responsabilidade de touch target pertence ao componente wrapper (DssButton, DssChip, etc.).
 
-Referencia: DssBadge (Golden Component, mesma decisao).
+Referencia: DssBadge (Golden Context, mesma decisao).
 
 ### ARIA
 

@@ -7,7 +7,7 @@
  * Componente base estrutural do DSS para exibicao de icones
  *
  * Dependencia interna: QIcon (Quasar Framework)
- * Golden Component: DssBadge (nao interativo)
+ * Golden Context: DssBadge (nao interativo)
  *
  * @version 2.2.0
  * @author Hebert Daniel Oliveira Chaves

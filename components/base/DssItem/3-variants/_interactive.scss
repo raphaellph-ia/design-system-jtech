@@ -1,0 +1,103 @@
+/* ==========================================================================
+   DssItem - LAYER 3: VARIANTS - Interactive
+
+   RESPONSABILIDADE: Estilos para modo clickable (hover, active, focus, disabled)
+
+   REGRAS:
+   - ::before RESERVADO para touch target (WCAG 2.5.5)
+   - ::after para efeitos visuais (hover, active overlays)
+   - brightness() segue tabela canonica DSS
+   - Focus ring via outline (nao ::after)
+   ========================================================================== */
+
+/* ==========================================================================
+   CLICKABLE STATE
+   ========================================================================== */
+
+.dss-item--clickable {
+  cursor: pointer;
+
+  /* Touch Target WCAG 2.5.5 (48px minimo) via pseudo-elemento */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: var(--dss-touch-target-min);
+    pointer-events: none;
+  }
+
+  /* Overlay para hover/active via ::after */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-color: currentColor;
+    opacity: 0;
+    transition: opacity var(--dss-duration-150) var(--dss-easing-standard);
+  }
+
+  /*
+   * HOVER STATE
+   *
+   * Usa overlay semi-transparente via ::after
+   * Token: --dss-opacity-hover
+   */
+  &:hover::after {
+    opacity: var(--dss-opacity-hover);
+  }
+
+  /*
+   * ACTIVE STATE
+   *
+   * Usa overlay com opacidade maior via ::after
+   * Token: --dss-opacity-active
+   */
+  &:active::after {
+    opacity: var(--dss-opacity-active);
+  }
+}
+
+/* ==========================================================================
+   ACTIVE STATE (prop — destaque visual permanente)
+   ========================================================================== */
+
+.dss-item--active {
+  background-color: var(--dss-surface-active);
+  color: var(--dss-action-primary);
+  font-weight: var(--dss-font-weight-medium);
+
+  .dss-item__leading {
+    color: var(--dss-action-primary);
+  }
+}
+
+/* ==========================================================================
+   DISABLED STATE
+   ========================================================================== */
+
+.dss-item--disabled {
+  opacity: var(--dss-opacity-disabled);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   FOCUS STATE (A11y)
+   ========================================================================== */
+
+.dss-item--clickable:focus-visible {
+  outline: var(--dss-border-width-md) solid var(--dss-focus-ring);
+  outline-offset: calc(-1 * var(--dss-border-width-md));
+}
+
+/* ==========================================================================
+   INSET (recuo para alinhamento com itens que possuem leading)
+   ========================================================================== */
+
+.dss-item--inset {
+  padding-left: calc(var(--dss-spacing-4) + var(--dss-spacing-6) + var(--dss-spacing-4));
+}

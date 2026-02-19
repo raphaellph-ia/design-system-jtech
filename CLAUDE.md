@@ -98,15 +98,21 @@ O **DssButton é referência**, não fonte única de verdade.
    - ⚠️ Novos valores exigem justificativa explícita e aprovação
    - 📖 Consulte [DSS_COMPONENT_ARCHITECTURE.md - Valores Visuais Permitidos](docs/reference/DSS_COMPONENT_ARCHITECTURE.md#valores-visuais-permitidos-como-exceção-não-tokenizados)
 
-9. **Golden Components como Referência Normativa (VINCULANTE)**
-   - ❌ NUNCA auditar componentes sem referência a um Golden Component
-   - ✅ SEMPRE usar Golden Components como baseline para auditorias DSS
-   - ⚠️ Golden Components são componentes aprovados com Selo DSS v2.2
+9. **Modelo Golden — Governanca de Auditoria (VINCULANTE)**
+   - ❌ NUNCA auditar componentes sem declarar um **Golden Context** (baseline de auditoria)
+   - ✅ SEMPRE usar **Golden Reference** como baseline global para a categoria
+   - ✅ SEMPRE usar **Golden Context** como baseline especifico para o componente auditado
+   - ⚠️ Golden Sample (DssButton) e referencia de DOCUMENTACAO, NAO de arquitetura
    - 📖 Consulte [DSS_GOLDEN_COMPONENTS.md](docs/governance/DSS_GOLDEN_COMPONENTS.md)
 
-   **Golden Components Oficiais (Janeiro 2026):**
-   - **DssChip** — Compact Control interativo (referência para touch target `::before`)
-   - **DssBadge** — Compact Control não interativo (referência para decisões contextuais)
+   **Tres conceitos distintos:**
+   - **Golden Reference** — Governanca global de categoria (DssChip interativo, DssBadge nao interativo)
+   - **Golden Context** — Baseline especifico de auditoria (ex: DssCheckbox para DssRadio)
+   - **Golden Sample** — Referencia de documentacao / Template 13.1 (DssButton)
+
+   **Golden References Oficiais (Janeiro 2026):**
+   - **DssChip** — Golden Reference interativo (touch target `::before`, pseudo-elementos)
+   - **DssBadge** — Golden Reference nao interativo (decisoes contextuais)
 
 ---
 

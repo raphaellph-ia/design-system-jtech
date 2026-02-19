@@ -2,7 +2,9 @@
 
 **Template 13.1 - Design System Sansys**
 
-Use este checklist ao criar ou revisar documentação de componentes DSS. Baseado no Golden Sample: [DssButton.md](./components/base/DssButton/DssButton.md)
+Use este checklist ao criar ou revisar documentacao de componentes DSS. Baseado no Golden Sample (documentacao): [DssButton.md](./components/base/DssButton/DssButton.md)
+
+> **Nota**: Golden Sample e referencia de DOCUMENTACAO (Template 13.1). Para referencia de ARQUITETURA, consulte Golden Reference/Golden Context em [DSS_GOLDEN_COMPONENTS.md](../governance/DSS_GOLDEN_COMPONENTS.md).
 
 ---
 
@@ -37,7 +39,9 @@ O DSS e uma **camada de governanca** sobre o Quasar, nao um espelho. Componentes
 - [ ] Descrição clara e concisa
 - [ ] Tipo identificado (Básico - wrapper Quasar | Composto - composição DSS)
 - [ ] Características principais (bullets conceituais, não detalhadas)
-- [ ] Badge "Golden Sample" se aplicável
+- [ ] Golden Context declarado (baseline de auditoria)
+- [ ] Golden Reference indicada (se a categoria possui)
+- [ ] Badge "Golden Sample" se aplicavel (referencia documental)
 
 ### Seção 2 - Quando Usar / Quando Não Usar
 - [ ] Lista de casos de uso recomendados (✅ Quando Usar)
@@ -274,19 +278,21 @@ Use estas métricas para avaliar a documentação:
 
 ---
 
-## 🏆 Golden Sample de Referência
+## 🏆 Golden Sample de Referencia (Documentacao)
 
 **Componente:** [DssButton](./components/base/DssButton/DssButton.md)
 **Status:** Golden Sample Oficial - Template 13.1
-**Versão:** DSS v2.2.0
-**Última atualização:** Janeiro 2025
+**Versao:** DSS v2.2.0
+**Ultima atualizacao:** Janeiro 2025
 
-Use este componente como referência para:
-- Estrutura completa de documentação
+Use este componente como referencia para:
+- Estrutura completa de documentacao
 - Formato de tabelas (tokens, estados, props)
 - Estilo de escrita e exemplos
-- Nível de detalhe esperado
-- Organização de anti-patterns e governança
+- Nivel de detalhe esperado
+- Organizacao de anti-patterns e governanca
+
+> **Importante**: Golden Sample define DOCUMENTACAO. Para referencia de ARQUITETURA e GOVERNANCA, consulte Golden Reference (DssChip/DssBadge) em [DSS_GOLDEN_COMPONENTS.md](../governance/DSS_GOLDEN_COMPONENTS.md).
 
 ---
 

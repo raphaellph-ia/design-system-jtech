@@ -29,14 +29,14 @@
  * DssListItem, DssToolbar, DssCard, e demais componentes DSS.
  *
  * DEPENDENCIA INTERNA: QIcon (Quasar Framework)
- * GOLDEN COMPONENT: DssBadge (nao interativo)
+ * GOLDEN CONTEXT: DssBadge (nao interativo)
  * TOUCH TARGET: Opcao B — NAO implementado (responsabilidade do wrapper)
  *
  * MODOS DE USO:
  * - Standalone: icone independente com acessibilidade propria
  * - Embedded: dentro de outro componente DSS (herda cor via currentColor)
  *
- * @see DssBadge - Golden Component de referencia
+ * @see DssBadge - Golden Context
  * @version 2.2.0
  * @author Hebert Daniel Oliveira Chaves
  */
