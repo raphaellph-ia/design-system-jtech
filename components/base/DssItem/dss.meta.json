@@ -7,10 +7,10 @@
   "goldenReference": "DssChip",
   "goldenContext": "DssChip",
   "goldenContextSecondary": null,
-  "seal": "pending",
+  "seal": "granted",
   "audit": {
-    "status": "corrections-applied",
-    "ncs": 5,
+    "status": "approved",
+    "ncs": 0,
     "gaps": 6,
     "lastAudit": "2026-02-13"
   },
