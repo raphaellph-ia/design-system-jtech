@@ -7,7 +7,12 @@
    - Dark mode
    - High contrast mode (prefers-contrast: more)
    - Forced colors (Windows High Contrast Mode)
-   - Reduced motion
+   - Print
+
+   ⚠️ NOTA: prefers-reduced-motion NÃO está aqui.
+   O mixin @include dss-transition em 2-composition/_base.scss já
+   encapsula o @media (prefers-reduced-motion: reduce) internamente.
+   Duplicar aqui causaria sobrescrita desnecessária.
 
    NOTA SOBRE TOUCH TARGET:
    DssSeparator é NÃO INTERATIVO (Opção B — Golden: DssBadge).
@@ -45,26 +50,21 @@
 /*
  * Em prefers-contrast: more, reforçamos a visibilidade do separador.
  *
+ * NOTA: `color: currentColor !important` sobrescreve modificadores de cor
+ * (ex: .dss-separator--color-primary) via !important explícito.
+ * Isso garante que o separador use a cor do contexto (texto do pai), independente
+ * de qual modificador de cor esteja ativo — máximo contraste acessível.
+ *
  * Exceção documentada:
  * - border-width: var(--dss-border-width-md) forçado — garante linha visível
- *   mesmo para separadores hairline ou thin em monitores com contraste elevado.
+ *   mesmo para separadores hairline em monitores com contraste elevado.
  */
 @media (prefers-contrast: more) {
   .dss-separator {
-    color: currentColor; /* herda cor do contexto — máximo contraste */
+    color: currentColor !important; /* herda cor do contexto — máximo contraste */
     border-top-width: var(--dss-border-width-md) !important;  /* 2px */
     border-left-width: var(--dss-border-width-md) !important; /* 2px (vertical) */
     opacity: 1 !important;
-  }
-}
-
-/* ==========================================================================
-   REDUCED MOTION
-   ========================================================================== */
-
-@media (prefers-reduced-motion: reduce) {
-  .dss-separator {
-    transition: none !important;
   }
 }
 
@@ -78,7 +78,7 @@
  * Em Windows High Contrast Mode, tokens CSS custom properties são ignorados.
  * Usando CanvasText (sistema) para garantir visibilidade máxima.
  *
- * Exceções documentadas:
+ * Exceções documentadas (EXC-02):
  * - border-color: CanvasText → keyword do sistema (tokens ignorados)
  * - border-width: 1px → valor absoluto necessário (tokens ignorados)
  */
@@ -89,8 +89,8 @@
     border-top-color: CanvasText;
 
     /* Espessura mínima garantida */
-    border-top-width: 1px;   /* Exceção: tokens ignorados em forced-colors */
-    border-left-width: 1px;  /* Exceção: tokens ignorados em forced-colors */
+    border-top-width: 1px;   /* EXC-02: tokens ignorados em forced-colors */
+    border-left-width: 1px;  /* EXC-02: tokens ignorados em forced-colors */
   }
 }
 

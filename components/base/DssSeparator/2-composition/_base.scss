@@ -8,6 +8,7 @@
    ✅ APENAS tokens genéricos (--dss-border-width-*, --dss-spacing-*, etc.)
    ✅ Reset de estilos default do browser para <hr>
    ✅ Técnica currentColor para cor de borda (prop color → CSS color → currentColor)
+   ✅ Transição via @include dss-transition (encapsula prefers-reduced-motion)
    ❌ ZERO valores hardcoded
    ❌ ZERO lógica de variantes (variantes vão em 3-variants/)
    ❌ ZERO cores de marca (cores de marca vão em 4-output/_brands.scss)
@@ -18,6 +19,9 @@
    herda via `currentColor`. Não são usadas classes utilitárias (bg-*, text-*)
    pois o separador não possui preenchimento — apenas borda.
    ========================================================================== */
+
+/* Import do mixin oficial DSS — path relativo a partir de 2-composition/ */
+@use '../../../../utils/mixins' as *;
 
 /* ==========================================================================
    RESET DO BROWSER PARA <hr>
@@ -38,7 +42,6 @@
   width: 100%;
   height: 0;
   flex-shrink: 0; /* Não encolhe em flex containers */
-  align-self: stretch; /* Ocupa largura total em flex row */
 
   /* ==========================================================================
      BORDA — Horizontal
@@ -55,7 +58,9 @@
   border-top-color: currentColor;
 
   /* ==========================================================================
-     TRANSIÇÃO
+     TRANSIÇÃO — via mixin oficial DSS
+     O mixin dss-transition encapsula @media (prefers-reduced-motion: reduce)
+     internamente. NÃO duplicar no 4-output/_states.scss.
      ========================================================================== */
-  transition: color var(--dss-duration-150) var(--dss-easing-standard);
+  @include dss-transition(color, 'fast');
 }

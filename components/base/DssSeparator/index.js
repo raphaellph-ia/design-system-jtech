@@ -1,12 +1,21 @@
 /**
- * DssSeparator — Barrel Export
- * Ponto de entrada público do componente.
+ * ==========================================================================
+ * DssSeparator - BARREL EXPORT
  *
- * Exporta o wrapper (entry point) como default e named export.
- * Types e composable exportados para consumidores TypeScript.
+ * RESPONSABILIDADE: Exportar todos os artefatos públicos do componente
+ *
+ * EXPORTS:
+ * - DssSeparator: Componente Vue principal
+ * - useSeparatorClasses: Composable para geração de classes
+ * - Types: Interfaces TypeScript
+ * ==========================================================================
  */
 
-import DssSeparator from './DssSeparator.vue'
+// Componente Vue principal (via Entry Point Wrapper)
+export { default as DssSeparator } from './DssSeparator.vue'
 
-export { DssSeparator }
-export default DssSeparator
+// Composables
+export { useSeparatorClasses } from './composables'
+
+// Types (re-export para consumidores TypeScript)
+export * from './types/separator.types'

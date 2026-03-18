@@ -40,6 +40,8 @@ Uma linha visual que marca a transição semântica entre seções ou agrupa ele
 
 **Golden Reference: DssBadge**
 
+**Justificativa do Golden Context:** DssBadge foi escolhido como Golden Context pois é o único componente certificado não-interativo disponível na cadeia DSS v2.2 no momento desta implementação. A ausência de um componente certificado da categoria "Decorativo/Estrutural" impede um Golden Context de categoria mais próxima. A escolha é consistente com o padrão estabelecido por DssTooltip e DssIcon, que também usam DssBadge como Golden Context por serem elementos não-interativos fora da categoria Compact Control.
+
 O `DssSeparator` segue as mesmas decisões arquiteturais do `DssBadge` por ser **não interativo**:
 
 | Decisão                    | DssBadge (Golden)             | DssSeparator                              |
@@ -94,13 +96,19 @@ O separador usa a propriedade CSS `color` como veículo para a cor da borda:
 
 **Vantagem**: Um único modificador de cor funciona para horizontal E vertical, sem duplicação.
 
-### 4.4 Tokens de Divider Removidos
+### 4.4 Uso de `<hr>` e `<div>` Nativos em vez de `<q-separator>`
+
+O DSS atua como uma camada de tokens aplicada sobre o Quasar Framework. Para elementos puramente estruturais e semânticos — como separadores — onde o HTML nativo fornece acessibilidade superior out-of-the-box (`<hr>` com `role="separator"` implícito), o uso de tags nativas é preferido em relação ao wrapping de componentes Quasar.
+
+Essa decisão alinha-se ao padrão estabelecido pelo `DssBadge` (Golden Context), que também usa `<div>` nativo em vez de `<q-badge>`. O padrão de wrapping Quasar é documentado apenas para `DssButton`, que por decisão arquitetural mantém estrutura idêntica ao `<q-btn>`.
+
+### 4.6 Tokens de Divider Removidos
 
 Os tokens `--dss-border-divider-subtle/default/strong` foram **removidos** no Sprint Jan 2025.
 O componente usa diretamente `var(--dss-gray-100/200/300)` conforme a refatoração.
 Ver: `DSS/tokens/semantic/_borders.scss` — seção ⚠️ TOKENS COMPONENT-SPECIFIC REMOVIDOS.
 
-### 4.5 `inheritAttrs: true` (default)
+### 4.7 `inheritAttrs: true` (default)
 
 Atributos HTML são forwarded automaticamente para o elemento raiz. Isso permite:
 ```vue

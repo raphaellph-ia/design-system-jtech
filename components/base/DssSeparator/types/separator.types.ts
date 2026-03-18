@@ -69,6 +69,13 @@ export interface SeparatorProps {
    * Remove o separador da árvore de acessibilidade.
    * Use quando o separador é puramente decorativo e não agrega semântica.
    * Pode ser passado diretamente como atributo HTML: <DssSeparator aria-hidden="true" />
+   *
+   * NOTA DE PRECEDÊNCIA (inheritAttrs: true):
+   * Se o consumidor passar `aria-hidden="true"` como atributo HTML nativo
+   * (não como prop camelCase `ariaHidden`), o Vue realizará merge via $attrs,
+   * e o valor do $attrs pode ter precedência sobre este binding explícito.
+   * Recomendação: use sempre a prop `ariaHidden` para garantir comportamento
+   * consistente e type-safety no TypeScript.
    */
   ariaHidden?: boolean
 }
