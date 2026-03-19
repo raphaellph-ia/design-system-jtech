@@ -37,9 +37,7 @@ defineOptions({
   inheritAttrs: true
 })
 
-const props = withDefaults(defineProps<SpaceProps>(), {
-  size: undefined
-})
+const props = defineProps<SpaceProps>()
 
 const { spaceClasses } = useSpaceClasses(props)
 </script>

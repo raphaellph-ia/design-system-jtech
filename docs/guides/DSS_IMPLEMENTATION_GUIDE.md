@@ -695,6 +695,19 @@ Antes de considerar um componente pronto para auditoria, verificar:
 
 > **Fonte de verdade**: [CLAUDE.md — Gate Estrutural DSS](../../CLAUDE.md#-checklist-de-validação-final-gate-estrutural-dss)
 
+### Política para Arquivos .example.vue
+
+Arquivos `.example.vue` são considerados scaffolding de demonstração. Eles estão isentos do Gate de Composição e da regra estrita de Token First. É permitido o uso de tags HTML nativas (como `<button>`) e valores CSS hardcoded (como `padding: 16px` ou `background: #eee`), desde que aplicados EXCLUSIVAMENTE aos elementos de contexto que circundam o componente demonstrado. O componente DSS em si, mesmo dentro do exemplo, deve ser usado corretamente.
+
+**Escopo da isenção:**
+- ✅ Elementos de contexto ao redor do componente demonstrado (wrappers, rótulos, botões placeholder)
+- ✅ Valores CSS hardcoded em inline styles de scaffolding
+- ✅ Tags HTML nativas como `<button>`, `<span>`, `<div>` nos elementos de contexto
+- ❌ O componente DSS sendo demonstrado — deve ser usado com API correta
+- ❌ Props inválidas ou anti-patterns no próprio componente dentro do exemplo
+
+**Decisão registrada em**: Auditoria DssSpace v1.0.0 — GAP-01 e GAP-03 (18 Mar 2026)
+
 ---
 
 ## 🔘 Componentes Vue
