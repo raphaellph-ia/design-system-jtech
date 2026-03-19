@@ -5,7 +5,7 @@
  *
  * Gera a lista de classes CSS baseada nas props do componente.
  * Segue a arquitetura DSS: lógica de classes centralizada no composable,
- * aplicação de estilos exclusivamente via SCSS (não via utility classes bg-*/text-*,
+ * aplicação de estilos exclusivamente via SCSS (não via utility classes bg-/text-,
  * pois DssSeparator não possui cor de preenchimento — apenas borda).
  *
  * @example
