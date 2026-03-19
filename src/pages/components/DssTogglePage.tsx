@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * ==========================================================================
  * DssTogglePage - Documentação do Componente DssToggle

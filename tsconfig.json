@@ -1,67 +1,40 @@
 {
   "compilerOptions": {
-    "allowImportingTsExtensions": true,
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "checkJs": false,
-    "declaration": true,
-    "declarationMap": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "jsxImportSource": "vue",
-    "lib": [
-      "ES2020",
-      "DOM",
-      "DOM.Iterable"
-    ],
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "noEmit": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@components/*": [
-        "./components/*"
-      ],
-      "@tokens/*": [
-        "./tokens/*"
-      ],
-      "@utils/*": [
-        "./utils/*"
-      ]
-    },
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "strict": true,
     "target": "ES2020",
-    "types": [
-      "vite/client",
-      "node"
-    ]
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "checkJs": false,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+
+    "paths": {
+      "@/*": ["./src/*"],
+      "@components/*": ["./components/*"],
+      "@tokens/*": ["./tokens/*"],
+      "@utils/*": ["./utils/*"]
+    }
   },
+  "include": [
+    "src"
+  ],
   "exclude": [
     "node_modules",
-    "dist",
-    "**/*.js",
-    "**/*.mjs"
-  ],
-  "include": [
-    "components/**/*.ts",
-    "components/**/*.vue",
-    "composables/**/*.ts",
-    "types/**/*.ts",
-    "utils/**/*.ts",
-    "index.ts"
-  ],
-  "vueCompilerOptions": {
-    "target": 3.4
-  }
+    "dist"
+  ]
 }

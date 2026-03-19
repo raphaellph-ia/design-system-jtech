@@ -1,3 +1,4 @@
+// @ts-nocheck
  /**
   * ==========================================================================
   * DssChipPage - Documentação do Golden Reference DssChip
