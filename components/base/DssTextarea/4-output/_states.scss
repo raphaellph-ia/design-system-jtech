@@ -1,0 +1,164 @@
+/* ==========================================================================
+   DssTextarea - LAYER 4: OUTPUT - States
+
+   RESPONSABILIDADE: Estados especiais (dark mode, high contrast, a11y)
+   ========================================================================== */
+
+/* ==========================================================================
+   DARK MODE
+   ========================================================================== */
+
+[data-theme="dark"] {
+  .dss-textarea {
+    /* Filled variant em dark mode */
+    &.dss-textarea--filled .q-field__control {
+      background-color: var(--dss-gray-900);
+      border-bottom-color: var(--dss-gray-700);
+    }
+
+    &.dss-textarea--filled.dss-textarea--focused .q-field__control,
+    &.dss-textarea--filled.q-field--focused .q-field__control {
+      background-color: var(--dss-gray-800);
+    }
+
+    /* Outlined variant em dark mode */
+    &.dss-textarea--outlined .q-field__control {
+      border-color: var(--dss-gray-600);
+    }
+
+    /* Standout em dark mode */
+    &.dss-textarea--standout .q-field__control {
+      background-color: var(--dss-gray-700);
+    }
+
+    &.dss-textarea--standout.dss-textarea--focused .q-field__control,
+    &.dss-textarea--standout.q-field--focused .q-field__control {
+      background-color: var(--dss-gray-600);
+    }
+
+    /* Texto do textarea em dark mode */
+    .q-field__native {
+      color: var(--dss-text-inverse);
+
+      &::placeholder {
+        color: var(--dss-text-inverse-hint);
+      }
+    }
+
+    /* Label em dark mode */
+    .q-field__label {
+      color: var(--dss-text-inverse-secondary);
+    }
+
+    /* Appendages em dark mode */
+    .q-field__prepend,
+    .q-field__append {
+      color: var(--dss-text-inverse-secondary);
+    }
+
+    /* Messages (hint) em dark mode */
+    &:not(.q-field--error) .q-field__messages {
+      color: var(--dss-text-inverse-secondary);
+    }
+  }
+}
+
+/* ==========================================================================
+   FOCUS VISIBLE (A11Y — teclado)
+   ========================================================================== */
+
+.dss-textarea:has(:focus-visible) .q-field__control {
+  outline: var(--dss-border-width-md) solid var(--dss-focus-ring);
+  outline-offset: var(--dss-spacing-1);
+}
+
+/* ==========================================================================
+   HIGH CONTRAST MODE (prefers-contrast: more)
+   ========================================================================== */
+
+@media (prefers-contrast: more) {
+  .dss-textarea .q-field__control {
+    border-width: var(--dss-border-width-md) !important;
+    border-color: currentColor !important;
+  }
+
+  .dss-textarea.dss-textarea--focused .q-field__control,
+  .dss-textarea.q-field--focused .q-field__control {
+    outline: var(--dss-border-width-thick) solid var(--dss-action-primary);
+    outline-offset: var(--dss-spacing-1);
+  }
+
+  .dss-textarea .q-field__native {
+    color: currentColor;
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .dss-textarea .q-field__control,
+  .dss-textarea .q-field__label {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ==========================================================================
+   PRINT STYLES
+   ========================================================================== */
+
+@media print {
+  .dss-textarea {
+    /* Remove fundos nas variantes para economizar tinta */
+    &.dss-textarea--filled .q-field__control,
+    &.dss-textarea--standout .q-field__control {
+      background: none !important;
+      border: var(--dss-border-width-thin) solid var(--dss-text-primary) !important;
+      box-shadow: none !important;
+    }
+
+    /* Outlined mantém a borda — útil para imprimir formulários */
+    &.dss-textarea--outlined .q-field__control {
+      box-shadow: none !important;
+    }
+  }
+}
+
+/* ==========================================================================
+   FORCED COLORS (Windows High Contrast)
+   ========================================================================== */
+
+@media (forced-colors: active) {
+  .dss-textarea .q-field__control {
+    border: var(--dss-border-width-md) solid ButtonText;
+    forced-color-adjust: none;
+  }
+
+  .dss-textarea.dss-textarea--focused .q-field__control,
+  .dss-textarea.q-field--focused .q-field__control {
+    border-color: Highlight;
+    outline: var(--dss-border-width-md) solid Highlight;
+  }
+
+  .dss-textarea.dss-textarea--error .q-field__control,
+  .dss-textarea.q-field--error .q-field__control {
+    border-color: LinkText;
+  }
+
+  .dss-textarea.dss-textarea--disabled .q-field__control {
+    border-color: GrayText;
+    color: GrayText;
+  }
+
+  .dss-textarea .q-field__native {
+    color: FieldText;
+    background-color: Field;
+    forced-color-adjust: none;
+  }
+
+  .dss-textarea .q-field__label {
+    color: FieldText;
+  }
+}

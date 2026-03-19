@@ -1,0 +1,152 @@
+/* ==========================================================================
+   DssTextarea - LAYER 2: COMPOSITION (Base Styles)
+
+   RESPONSABILIDADE: Estilos fundamentais usando APENAS tokens genéricos.
+   Sobrescreve estilos padrão do Quasar via seletores descendentes
+   aplicados a partir da classe raiz .dss-textarea.
+
+   ARQUITETURA:
+   - .dss-textarea é aplicado ao elemento raiz do QInput (via :class)
+   - QInput gera internamente .q-field__control, .q-field__native, etc.
+   - Este SCSS usa .dss-textarea .q-field__* para sobrescrever Quasar
+
+   REGRAS:
+   ✅ APENAS tokens genéricos (--dss-spacing-*, --dss-font-*, etc.)
+   ✅ Tokens de motion para transições
+   ✅ Reset e layout base
+   ❌ ZERO valores hardcoded
+   ❌ ZERO lógica de variantes (pertence à Layer 3)
+   ========================================================================== */
+
+
+/* ==========================================================================
+   WRAPPER RAIZ (.dss-textarea é aplicado ao QInput root)
+   ========================================================================== */
+
+.dss-textarea {
+  width: 100%;
+  font-family: var(--dss-font-family-sans);
+
+  /* ==========================================================================
+     FIELD CONTROL (container visual: borda/fundo — gerado pelo QInput)
+     ========================================================================== */
+
+  .q-field__control {
+    min-height: var(--dss-input-height-md); /* Touch Target Opção A: 44px — WCAG 2.1 AA */
+    transition:
+      border-color var(--dss-duration-200) var(--dss-easing-standard),
+      box-shadow var(--dss-duration-200) var(--dss-easing-standard),
+      background-color var(--dss-duration-200) var(--dss-easing-standard);
+    font-family: var(--dss-font-family-sans);
+  }
+
+  /* Dense: altura mínima reduzida */
+  &.dss-textarea--dense .q-field__control {
+    min-height: var(--dss-input-height-sm);
+  }
+
+  /* ==========================================================================
+     NATIVE TEXTAREA (elemento <textarea> gerado pelo QInput)
+     ========================================================================== */
+
+  .q-field__native {
+    font-family: var(--dss-font-family-sans);
+    font-size: var(--dss-font-size-md);
+    color: var(--dss-text-primary);
+    line-height: var(--dss-line-height-normal);
+
+    /* EX-01: --dss-textarea-max-height não é token DSS.
+       É uma CSS custom property de bridge para a prop maxHeight.
+       Definida inline pelo componente quando a prop é fornecida.
+       Fallback: none (sem limite de altura). */
+    max-height: var(--dss-textarea-max-height, none);
+    overflow-y: auto;
+
+    /* resize desabilitado: autogrow controla o tamanho;
+       redimensionamento manual pelo usuário evitado por design. */
+    resize: none;
+
+    &::placeholder {
+      color: var(--dss-text-hint);
+      opacity: 1;
+    }
+  }
+
+  /* Dense: padding interno reduzido */
+  &.dss-textarea--dense .q-field__native {
+    padding: var(--dss-spacing-2) 0;
+  }
+
+  /* Disabled state no textarea nativo */
+  &.dss-textarea--disabled .q-field__native,
+  &.q-field--disabled .q-field__native {
+    color: var(--dss-text-disabled);
+    cursor: not-allowed;
+  }
+
+  /* Readonly state */
+  &.dss-textarea--readonly .q-field__native,
+  &.q-field--readonly .q-field__native {
+    cursor: default;
+  }
+
+  /* ==========================================================================
+     LABEL (gerada pelo QInput como .q-field__label)
+     ========================================================================== */
+
+  .q-field__label {
+    font-family: var(--dss-font-family-sans);
+    font-size: var(--dss-font-size-md);
+    color: var(--dss-text-secondary);
+    transition: all var(--dss-duration-200) var(--dss-easing-standard);
+  }
+
+  /* ==========================================================================
+     APPENDAGES (prepend, append — gerados pelo QInput)
+     ========================================================================== */
+
+  .q-field__prepend,
+  .q-field__append {
+    color: var(--dss-text-secondary);
+  }
+
+  /* ==========================================================================
+     BOTTOM AREA (hint/error — .q-field__bottom gerado pelo QInput)
+     ========================================================================== */
+
+  .q-field__bottom {
+    padding: var(--dss-spacing-1) var(--dss-spacing-4) 0;
+    font-family: var(--dss-font-family-sans);
+    font-size: var(--dss-font-size-sm);
+    line-height: var(--dss-line-height-normal);
+  }
+
+  .q-field__messages {
+    font-size: var(--dss-font-size-sm);
+    color: var(--dss-text-secondary);
+  }
+
+  /* Error message color */
+  &.q-field--error .q-field__messages {
+    color: var(--dss-error-600);
+  }
+
+  /* ==========================================================================
+     DISABLED STATE (global — sobrescreve Quasar)
+     ========================================================================== */
+
+  &.dss-textarea--disabled,
+  &.q-field--disabled {
+    opacity: var(--dss-opacity-disabled);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* ==========================================================================
+     LOADING STATE
+     ========================================================================== */
+
+  &.dss-textarea--loading {
+    pointer-events: none;
+  }
+}

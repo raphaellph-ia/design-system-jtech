@@ -1,0 +1,58 @@
+/* ==========================================================================
+   DssTextarea - LAYER 3: VARIANT - Borderless
+
+   RESPONSABILIDADE: Estilo da variante borderless (sem borda)
+
+   CARACTERÍSTICAS:
+   - Sem borda, sem fundo definido
+   - Apenas sublinhado sutil no foco
+   - Uso em contextos com delimitação visual já fornecida pelo container
+   ========================================================================== */
+
+.dss-textarea--borderless {
+
+  .q-field__control {
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    padding: var(--dss-spacing-2) 0;
+    box-shadow: none;
+  }
+
+  /* Hover */
+  &:not(.dss-textarea--disabled):not(.dss-textarea--readonly):not(.dss-textarea--focused):hover {
+    .q-field__control {
+      border-bottom: var(--dss-border-width-thin) solid var(--dss-gray-300);
+    }
+  }
+
+  /* Focus state — sublinhado sutil */
+  &.dss-textarea--focused .q-field__control,
+  &.q-field--focused .q-field__control {
+    border-bottom: var(--dss-border-width-md) solid var(--dss-action-primary);
+    box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-action-primary);
+  }
+
+  /* Focus: label color */
+  &.dss-textarea--focused .q-field__label,
+  &.q-field--focused .q-field__label {
+    color: var(--dss-action-primary);
+  }
+
+  /* Error state */
+  &.dss-textarea--error .q-field__control,
+  &.q-field--error .q-field__control {
+    border-bottom: var(--dss-border-width-md) solid var(--dss-error-600);
+    box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-error-600);
+  }
+
+  /* Disabled state */
+  &.dss-textarea--disabled .q-field__control {
+    border-bottom: var(--dss-border-width-thin) dotted var(--dss-gray-400);
+  }
+
+  /* Readonly state */
+  &.dss-textarea--readonly .q-field__control {
+    border-bottom: var(--dss-border-width-thin) solid var(--dss-gray-200);
+  }
+}

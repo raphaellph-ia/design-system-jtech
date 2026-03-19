@@ -1,0 +1,74 @@
+/* ==========================================================================
+   DssTextarea - LAYER 3: VARIANT - Outlined
+
+   RESPONSABILIDADE: Estilo da variante outlined (borda completa)
+
+   CARACTERÍSTICAS:
+   - Borda completa ao redor do campo
+   - Fundo transparente
+   - Label flutua sobre a borda (notch effect)
+
+   NOTA: Sobrescreve estilos de .q-field--outlined do Quasar via
+   especificidade .dss-textarea--outlined (nossa classe) +
+   seletor descendente .q-field__control.
+   ========================================================================== */
+
+.dss-textarea--outlined {
+
+  .q-field__control {
+    background-color: transparent;
+    border: var(--dss-border-width-thin) solid var(--dss-gray-400);
+    border-radius: var(--dss-radius-md);
+    padding: var(--dss-spacing-3) var(--dss-spacing-4);
+  }
+
+  /* Hover (não desabilitado, não readonly, não focado) */
+  &:not(.dss-textarea--disabled):not(.dss-textarea--readonly):not(.dss-textarea--focused):hover {
+    .q-field__control {
+      border-color: var(--dss-gray-600);
+    }
+  }
+
+  /* Focus state — usa nossa classe E a do QInput como fallback */
+  &.dss-textarea--focused .q-field__control,
+  &.q-field--focused .q-field__control {
+    border-color: var(--dss-action-primary);
+    border-width: var(--dss-border-width-md);
+    box-shadow: 0 0 0 var(--dss-border-width-thin) var(--dss-action-primary);
+  }
+
+  /* Focus: label color */
+  &.dss-textarea--focused .q-field__label,
+  &.q-field--focused .q-field__label {
+    color: var(--dss-action-primary);
+  }
+
+  /* Error state */
+  &.dss-textarea--error .q-field__control,
+  &.q-field--error .q-field__control {
+    border-color: var(--dss-error-600);
+    border-width: var(--dss-border-width-md);
+    box-shadow: 0 0 0 var(--dss-border-width-thin) var(--dss-error-600);
+  }
+
+  /* Disabled state */
+  &.dss-textarea--disabled .q-field__control {
+    border-style: dotted;
+    background-color: var(--dss-gray-50);
+  }
+
+  /* Readonly state */
+  &.dss-textarea--readonly .q-field__control {
+    border-color: var(--dss-gray-300);
+  }
+
+  /* Label notch — fundo para "cortar" a borda atrás da label flutuante */
+  .q-field__label {
+    background-color: transparent;
+  }
+
+  &.q-field--float .q-field__label {
+    background-color: var(--dss-surface-default);
+    padding: 0 var(--dss-spacing-1);
+  }
+}

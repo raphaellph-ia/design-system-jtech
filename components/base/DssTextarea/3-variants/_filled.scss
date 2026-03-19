@@ -1,0 +1,60 @@
+/* ==========================================================================
+   DssTextarea - LAYER 3: VARIANT - Filled
+
+   RESPONSABILIDADE: Estilo da variante filled (fundo preenchido)
+
+   CARACTERÍSTICAS:
+   - Fundo preenchido (surface)
+   - Borda apenas na parte inferior
+   - Label flutua para o topo
+   ========================================================================== */
+
+.dss-textarea--filled {
+
+  .q-field__control {
+    background-color: var(--dss-gray-100);
+    border-bottom: var(--dss-border-width-thin) solid var(--dss-gray-400);
+    border-radius: var(--dss-radius-md) var(--dss-radius-md) 0 0;
+    padding: var(--dss-spacing-5) var(--dss-spacing-4) var(--dss-spacing-2);
+  }
+
+  /* Hover */
+  &:not(.dss-textarea--disabled):not(.dss-textarea--readonly):not(.dss-textarea--focused):hover {
+    .q-field__control {
+      background-color: var(--dss-gray-200);
+    }
+  }
+
+  /* Focus state */
+  &.dss-textarea--focused .q-field__control,
+  &.q-field--focused .q-field__control {
+    border-bottom-color: var(--dss-action-primary);
+    border-bottom-width: var(--dss-border-width-md);
+    box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-action-primary);
+  }
+
+  /* Focus: label color */
+  &.dss-textarea--focused .q-field__label,
+  &.q-field--focused .q-field__label {
+    color: var(--dss-action-primary);
+  }
+
+  /* Error state */
+  &.dss-textarea--error .q-field__control,
+  &.q-field--error .q-field__control {
+    border-bottom-color: var(--dss-error-600);
+    border-bottom-width: var(--dss-border-width-md);
+    box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-error-600);
+  }
+
+  /* Disabled state */
+  &.dss-textarea--disabled .q-field__control {
+    background-color: var(--dss-gray-50);
+    border-bottom-style: dotted;
+  }
+
+  /* Readonly state */
+  &.dss-textarea--readonly .q-field__control {
+    border-bottom-color: var(--dss-gray-300);
+  }
+}

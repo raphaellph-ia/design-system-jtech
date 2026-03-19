@@ -1,0 +1,61 @@
+/* ==========================================================================
+   DssTextarea - LAYER 3: VARIANT - Standout
+
+   RESPONSABILIDADE: Estilo da variante standout (destaque com sombra no foco)
+
+   CARACTERÍSTICAS:
+   - Fundo sutil em estado neutro
+   - Box-shadow pronunciado ao focar (sem borda)
+   - Visual de "destaque" vs filled mais sutil
+   ========================================================================== */
+
+.dss-textarea--standout {
+
+  .q-field__control {
+    background-color: var(--dss-gray-100);
+    border: none;
+    border-radius: var(--dss-radius-md);
+    padding: var(--dss-spacing-5) var(--dss-spacing-4) var(--dss-spacing-2);
+    box-shadow: none;
+    transition:
+      background-color var(--dss-duration-200) var(--dss-easing-standard),
+      box-shadow var(--dss-duration-200) var(--dss-easing-standard);
+  }
+
+  /* Hover */
+  &:not(.dss-textarea--disabled):not(.dss-textarea--readonly):not(.dss-textarea--focused):hover {
+    .q-field__control {
+      background-color: var(--dss-gray-200);
+    }
+  }
+
+  /* Focus state — box-shadow pronunciado */
+  &.dss-textarea--focused .q-field__control,
+  &.q-field--focused .q-field__control {
+    background-color: var(--dss-gray-50);
+    box-shadow: 0 0 0 var(--dss-border-width-md) var(--dss-action-primary);
+  }
+
+  /* Focus: label color */
+  &.dss-textarea--focused .q-field__label,
+  &.q-field--focused .q-field__label {
+    color: var(--dss-action-primary);
+  }
+
+  /* Error state */
+  &.dss-textarea--error .q-field__control,
+  &.q-field--error .q-field__control {
+    box-shadow: 0 0 0 var(--dss-border-width-md) var(--dss-error-600);
+    background-color: var(--dss-gray-50);
+  }
+
+  /* Disabled state */
+  &.dss-textarea--disabled .q-field__control {
+    background-color: var(--dss-gray-50);
+  }
+
+  /* Readonly state */
+  &.dss-textarea--readonly .q-field__control {
+    background-color: var(--dss-gray-50);
+  }
+}

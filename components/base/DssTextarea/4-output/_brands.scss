@@ -1,0 +1,155 @@
+/* ==========================================================================
+   DssTextarea - LAYER 4: OUTPUT - Brands
+
+   RESPONSABILIDADE: Brandability (Hub, Water, Waste)
+
+   CARACTERÍSTICAS:
+   - Usa tokens numéricos de brand (--dss-hub-*, --dss-water-*, --dss-waste-*)
+   - Apenas accent color no focus e hint
+   - Mantém estrutura visual da variante
+   - Error state sempre usa --dss-error-600 (brand não sobrescreve erro)
+   ========================================================================== */
+
+/* ==========================================================================
+   HUB BRAND (Laranja)
+   ========================================================================== */
+
+[data-brand="hub"],
+.dss-textarea--brand-hub {
+
+  &.dss-textarea--filled.dss-textarea--focused .q-field__control,
+  &.dss-textarea--filled.q-field--focused .q-field__control {
+    border-bottom-color: var(--dss-hub-600);
+    box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-hub-600);
+  }
+
+  &.dss-textarea--outlined.dss-textarea--focused .q-field__control,
+  &.dss-textarea--outlined.q-field--focused .q-field__control {
+    border-color: var(--dss-hub-600);
+    box-shadow: 0 0 0 var(--dss-border-width-thin) var(--dss-hub-600);
+  }
+
+  &.dss-textarea--standout.dss-textarea--focused .q-field__control,
+  &.dss-textarea--standout.q-field--focused .q-field__control {
+    box-shadow: 0 0 0 var(--dss-border-width-md) var(--dss-hub-600);
+  }
+
+  &.dss-textarea--borderless.dss-textarea--focused .q-field__control,
+  &.dss-textarea--borderless.q-field--focused .q-field__control {
+    border-bottom-color: var(--dss-hub-600);
+    box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-hub-600);
+  }
+
+  /* Label color no foco */
+  &.dss-textarea--focused .q-field__label,
+  &.q-field--focused .q-field__label {
+    color: var(--dss-hub-700);
+  }
+
+  /* Error state mantém --dss-error-600 */
+  &.dss-textarea--error .q-field__control,
+  &.q-field--error .q-field__control {
+    /* error-600 prevalece sobre brand — sem override aqui */
+  }
+}
+
+/* ==========================================================================
+   WATER BRAND (Azul)
+   ========================================================================== */
+
+[data-brand="water"],
+.dss-textarea--brand-water {
+
+  &.dss-textarea--filled.dss-textarea--focused .q-field__control,
+  &.dss-textarea--filled.q-field--focused .q-field__control {
+    border-bottom-color: var(--dss-water-500);
+    box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-water-500);
+  }
+
+  &.dss-textarea--outlined.dss-textarea--focused .q-field__control,
+  &.dss-textarea--outlined.q-field--focused .q-field__control {
+    border-color: var(--dss-water-500);
+    box-shadow: 0 0 0 var(--dss-border-width-thin) var(--dss-water-500);
+  }
+
+  &.dss-textarea--standout.dss-textarea--focused .q-field__control,
+  &.dss-textarea--standout.q-field--focused .q-field__control {
+    box-shadow: 0 0 0 var(--dss-border-width-md) var(--dss-water-500);
+  }
+
+  &.dss-textarea--borderless.dss-textarea--focused .q-field__control,
+  &.dss-textarea--borderless.q-field--focused .q-field__control {
+    border-bottom-color: var(--dss-water-500);
+    box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-water-500);
+  }
+
+  /* Label color no foco */
+  &.dss-textarea--focused .q-field__label,
+  &.q-field--focused .q-field__label {
+    color: var(--dss-water-600);
+  }
+}
+
+/* ==========================================================================
+   WASTE BRAND (Verde)
+   ========================================================================== */
+
+[data-brand="waste"],
+.dss-textarea--brand-waste {
+
+  &.dss-textarea--filled.dss-textarea--focused .q-field__control,
+  &.dss-textarea--filled.q-field--focused .q-field__control {
+    border-bottom-color: var(--dss-waste-600);
+    box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-waste-600);
+  }
+
+  &.dss-textarea--outlined.dss-textarea--focused .q-field__control,
+  &.dss-textarea--outlined.q-field--focused .q-field__control {
+    border-color: var(--dss-waste-600);
+    box-shadow: 0 0 0 var(--dss-border-width-thin) var(--dss-waste-600);
+  }
+
+  &.dss-textarea--standout.dss-textarea--focused .q-field__control,
+  &.dss-textarea--standout.q-field--focused .q-field__control {
+    box-shadow: 0 0 0 var(--dss-border-width-md) var(--dss-waste-600);
+  }
+
+  &.dss-textarea--borderless.dss-textarea--focused .q-field__control,
+  &.dss-textarea--borderless.q-field--focused .q-field__control {
+    border-bottom-color: var(--dss-waste-600);
+    box-shadow: 0 var(--dss-border-width-thin) 0 0 var(--dss-waste-600);
+  }
+
+  /* Label color no foco */
+  &.dss-textarea--focused .q-field__label,
+  &.q-field--focused .q-field__label {
+    color: var(--dss-waste-700);
+  }
+}
+
+/* ==========================================================================
+   BRAND HINT COLORS
+   ========================================================================== */
+
+/* Hub */
+[data-brand="hub"] .dss-textarea .q-field__messages,
+.dss-textarea--brand-hub .q-field__messages {
+  color: var(--dss-hub-700);
+}
+
+/* Water */
+[data-brand="water"] .dss-textarea .q-field__messages,
+.dss-textarea--brand-water .q-field__messages {
+  color: var(--dss-water-700);
+}
+
+/* Waste */
+[data-brand="waste"] .dss-textarea .q-field__messages,
+.dss-textarea--brand-waste .q-field__messages {
+  color: var(--dss-waste-800);
+}
+
+/* Error sempre usa --dss-error-600 independente de brand */
+.dss-textarea.q-field--error .q-field__messages {
+  color: var(--dss-error-600) !important;
+}

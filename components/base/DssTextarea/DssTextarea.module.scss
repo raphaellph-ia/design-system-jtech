@@ -1,0 +1,28 @@
+/* ==========================================================================
+   DssTextarea - MAIN MODULE (Orquestrador Final)
+
+   Filosofia DSS: Arquitetura em 4 Camadas
+
+   LAYER 1: Structure (DssTextarea.ts.vue)
+   LAYER 2: Composition (Base styles via tokens DSS)
+   LAYER 3: Variants (outlined, filled, standout, borderless)
+   LAYER 4: Output (states, brands)
+
+   Este arquivo importa TODAS as camadas e gera o CSS final.
+   Media queries de acessibilidade estão em 4-output/_states.scss.
+
+   NOTA ARQUITETURAL:
+   DssTextarea sobrescreve estilos internos do QInput via seletores
+   descendentes (.dss-textarea .q-field__*). O CSS do DSS deve ser
+   carregado APÓS o CSS do Quasar no bundle final para que as
+   sobrescritas tenham efeito correto.
+   ========================================================================== */
+
+/* Layer 2: Composition */
+@use './2-composition/base' as composition;
+
+/* Layer 3: Variants */
+@use './3-variants' as variants;
+
+/* Layer 4: Output */
+@use './4-output' as output;
