@@ -32,39 +32,6 @@ import InstallationPage from "./pages/resources/InstallationPage";
 import FAQPage from "./pages/resources/FAQPage";
 import NotFound from "./pages/NotFound";
 
-console.log('DEBUG IMPORTS:', {
-  Toaster: typeof Toaster,
-  TooltipProvider: typeof TooltipProvider,
-  DSSLayout: typeof DSSLayout,
-  HomePage: typeof HomePage,
-  GettingStartedPage: typeof GettingStartedPage,
-  ColorsPage: typeof ColorsPage,
-  TypographyPage: typeof TypographyPage,
-  SpacingPage: typeof SpacingPage,
-  ShadowsPage: typeof ShadowsPage,
-  BordersPage: typeof BordersPage,
-  DssButtonPage: typeof DssButtonPage,
-  DssBadgePage: typeof DssBadgePage,
-  DssCardPage: typeof DssCardPage,
-  DssInputPage: typeof DssInputPage,
-  DssAvatarPage: typeof DssAvatarPage,
-  DssChipPage: typeof DssChipPage,
-  DssCheckboxPage: typeof DssCheckboxPage,
-  DssTogglePage: typeof DssTogglePage,
-  ComponentPlaceholder: typeof ComponentPlaceholder,
-  ArchitecturePage: typeof ArchitecturePage,
-  ClassificationPage: typeof ClassificationPage,
-  ChecklistPage: typeof ChecklistPage,
-  ContributingPage: typeof ContributingPage,
-  BrandabilityPage: typeof BrandabilityPage,
-  DarkModePage: typeof DarkModePage,
-  AccessibilityPage: typeof AccessibilityPage,
-  FigmaPage: typeof FigmaPage,
-  InstallationPage: typeof InstallationPage,
-  FAQPage: typeof FAQPage,
-  NotFound: typeof NotFound,
-});
-
 const queryClient = new QueryClient();
 
 const App = () => (
