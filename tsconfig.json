@@ -54,6 +54,8 @@
     "**/*.mjs"
   ],
   "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
     "components/**/*.ts",
     "components/**/*.vue",
     "composables/**/*.ts",
