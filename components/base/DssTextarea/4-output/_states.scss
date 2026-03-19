@@ -131,9 +131,11 @@
    ========================================================================== */
 
 @media (forced-colors: active) {
+  /* Não usar forced-color-adjust: none — permite que o browser aplique
+     corretamente as system colors nos filhos do QInput não mapeados
+     (ícones internos, spinner, clear button, etc.). */
   .dss-textarea .q-field__control {
     border: var(--dss-border-width-md) solid ButtonText;
-    forced-color-adjust: none;
   }
 
   .dss-textarea.dss-textarea--focused .q-field__control,
@@ -155,7 +157,6 @@
   .dss-textarea .q-field__native {
     color: FieldText;
     background-color: Field;
-    forced-color-adjust: none;
   }
 
   .dss-textarea .q-field__label {

@@ -199,6 +199,20 @@ Implementado em `4-output/_states.scss`. Cobre:
 - Disabled: `border-color: GrayText`
 - Texto: `color: FieldText`, fundo: `background-color: Field`
 
+### Redimensionamento Manual (`resize: none`)
+
+O componente aplica `resize: none` ao elemento `<textarea>` nativo via `2-composition/_base.scss`. Isso **desabilita intencionalmente** o handle de redimensionamento manual do browser.
+
+**Justificativa**: O DSS governa o dimensionamento do textarea via props declaradas (`rows`, `autogrow`, `maxHeight`). Redimensionamento ad-hoc pelo usuário quebraria o layout do formulário consumidor.
+
+**Alternativas para usuários que precisam ver conteúdo extenso:**
+- `autogrow` — o campo cresce automaticamente conforme o conteúdo é digitado
+- `autogrow` + `maxHeight` — cresce até um limite e então exibe scrollbar
+- `rows` com valor maior — define uma área inicial mais generosa
+- A scrollbar interna (`overflow-y: auto`) permite navegar o conteúdo sem redimensionar
+
+**Conformidade WCAG**: O conteúdo é acessível via scrollbar interna; `resize: none` não viola SC 1.4.4 (Resize text) nem SC 2.5.5 (Target Size).
+
 ### Reduced Motion
 
 - Todas as `transition` e `animation` são suprimidas via `transition: none !important`

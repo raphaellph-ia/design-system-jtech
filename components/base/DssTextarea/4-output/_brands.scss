@@ -149,7 +149,8 @@
   color: var(--dss-waste-800);
 }
 
-/* Error sempre usa --dss-error-600 independente de brand */
+/* Error sempre usa --dss-error-600 independente de brand.
+   Especificidade (0-3-0) supera as regras de brand (0-2-0) — sem !important necessário. */
 .dss-textarea.q-field--error .q-field__messages {
-  color: var(--dss-error-600) !important;
+  color: var(--dss-error-600);
 }

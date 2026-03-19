@@ -98,10 +98,8 @@ const props = withDefaults(defineProps<TextareaProps>(), {
   clearable: false,
   autogrow: false,
   rows: 3,
-  maxHeight: undefined,
 
   // Accessibility
-  ariaLabel: undefined,
   clearAriaLabel: 'Clear textarea',
   tabindex: null
 })
