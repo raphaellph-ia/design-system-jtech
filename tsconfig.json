@@ -1,69 +1,44 @@
 {
   "compilerOptions": {
-    "allowImportingTsExtensions": true,
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "checkJs": false,
-    "declaration": true,
-    "declarationMap": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
-    "jsx": "react-jsx",
-    "jsxImportSource": "react",
-    "lib": [
-      "ES2020",
-      "DOM",
-      "DOM.Iterable"
-    ],
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "noEmit": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@components/*": [
-        "./components/*"
-      ],
-      "@tokens/*": [
-        "./tokens/*"
-      ],
-      "@utils/*": [
-        "./utils/*"
-      ]
-    },
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "strict": true,
     "target": "ES2020",
-    "types": [
-      "vite/client",
-      "node"
-    ]
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* Interop */
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "checkJs": false,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+
+    "paths": {
+      "@/*": ["./src/*"],
+      "@components/*": ["./components/*"],
+      "@tokens/*": ["./tokens/*"],
+      "@utils/*": ["./utils/*"]
+    }
   },
+  "include": [
+    "src"
+  ],
   "exclude": [
     "node_modules",
-    "dist",
-    "**/*.js",
-    "**/*.mjs"
-  ],
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "components/**/*.ts",
-    "components/**/*.vue",
-    "composables/**/*.ts",
-    "types/**/*.ts",
-    "utils/**/*.ts",
-    "index.ts"
-  ],
-  "vueCompilerOptions": {
-    "target": 3.4
-  }
+    "dist"
+  ]
 }
