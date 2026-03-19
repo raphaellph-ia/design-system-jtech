@@ -14,7 +14,7 @@
  */
 
 import type { Ref } from 'vue'
-import type { TextareaEmits } from '../types/textarea.types'
+// Types used for documentation reference only
 
 /**
  * Composable para ações do textarea
