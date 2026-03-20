@@ -69,6 +69,7 @@ const navigation = {
       { title: "DssCheckbox", url: "/componentes/dss-checkbox", icon: CheckSquareIcon, status: "stable" },
       { title: "DssToggle", url: "/componentes/dss-toggle", icon: Circle, status: "stable" },
       { title: "DssAvatar", url: "/componentes/dss-avatar", icon: User, status: "stable" },
+      { title: "DssTooltip", url: "/componentes/dss-tooltip", icon: MessageSquare, status: "stable" },
     ],
   },
   padroes: {
