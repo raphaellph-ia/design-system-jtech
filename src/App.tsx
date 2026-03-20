@@ -63,6 +63,7 @@ const App = () => (
             <Route path="/componentes/dss-checkbox" element={<DssCheckboxPage />} />
             <Route path="/componentes/dss-toggle" element={<DssTogglePage />} />
             <Route path="/componentes/dss-input" element={<DssInputPage />} />
+            <Route path="/componentes/dss-tooltip" element={<DssTooltipPage />} />
             <Route path="/componentes/:componentId" element={<ComponentPlaceholder />} />
             
             {/* Governança */}
