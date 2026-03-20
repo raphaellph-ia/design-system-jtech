@@ -37,6 +37,7 @@ import {
   Circle,
   ChevronRight,
   ChevronDown,
+  MessageSquare,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
