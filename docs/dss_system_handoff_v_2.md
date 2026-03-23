@@ -33,6 +33,7 @@ Todos os componentes abaixo possuem **Selo DSS v2.2 emitido** e são considerado
 | **DssTextarea** | Form Control | DssChip |
 | **DssSelect** | Form Control | DssChip |
 | **DssSlider** | Form Control / Range | DssToggle |
+| **DssRange** | Form Control / Range (2 thumbs) | DssSlider |
 | **DssIcon** | Feedback simples | — |
 | **DssBadge** | Feedback simples | DssBadge |
 | **DssChip** | Feedback simples | DssChip |

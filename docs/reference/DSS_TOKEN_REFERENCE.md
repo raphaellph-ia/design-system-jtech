@@ -738,6 +738,20 @@ Cores para estados e alertas (sucesso, erro, aviso, informação).
 | `--dss-feedback-warning-surface` | rgba(250, 189, 20, 0.1) | Fundo para alertas de aviso |
 | `--dss-feedback-info-surface` | rgba(12, 196, 233, 0.1) | Fundo para alertas de informação |
 
+## 4.6 Superfícies e Textos de Componentes
+
+Tokens de superfície e texto usados por componentes de formulário interativos (DssSlider, DssRange e similares). Presentes em `DSS/src/index.css`.
+
+**Total: 5 tokens**
+
+| Token | Uso |
+|-------|-----|
+| `--dss-surface-muted` | Fundo do track inativo (trilha não selecionada) |
+| `--dss-surface-disabled` | Fundo de superfícies no estado desabilitado |
+| `--dss-text-hint` | Cor do texto de hint / dica abaixo de controles |
+| `--dss-text-inverse` | Cor de texto sobre fundos escuros (ex.: label tooltip do slider) |
+| `--dss-text-secondary` | Cor de texto secundário (menor ênfase visual) |
+
 ---
 
 # 5. Motion e Animação

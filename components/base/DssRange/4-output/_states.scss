@@ -1,0 +1,149 @@
+// DssRange — Camada 4: States
+//
+// Dark mode, High Contrast, Reduced Motion, Print, Forced Colors.
+// Mesmo padrão do DssSlider (Golden Reference).
+
+// ─── Dark Mode ────────────────────────────────────────────────────────────────
+//
+// EX-04: brightness(1.10) — hover dark mode canônico DSS (CLAUDE.md Princípio #8).
+
+@media (prefers-color-scheme: dark) {
+  .dss-range:not(.dss-range--disabled):not(.dss-range--readonly) {
+    .q-slider:hover {
+      .q-slider__selection {
+        filter: brightness(1.1); // EX-04
+      }
+
+      .q-slider__thumb-shape {
+        filter: brightness(1.1); // EX-04
+      }
+    }
+  }
+
+  .dss-range__hint {
+    color: var(--dss-text-hint);
+  }
+
+  .dss-range__error {
+    color: var(--dss-feedback-error);
+  }
+}
+
+// ─── High Contrast (prefers-contrast: more) ───────────────────────────────────
+//
+// EX-05: saturate(1.2) — valor canônico DSS para high contrast.
+
+@media (prefers-contrast: more) {
+  .dss-range .q-slider__track {
+    outline:        var(--dss-border-width-thin) solid currentColor;
+    outline-offset: var(--dss-spacing-0_5);
+  }
+
+  .dss-range .q-slider__focus-ring {
+    box-shadow: 0 0 0 var(--dss-border-width-thick) var(--dss-action-primary);
+    outline:    var(--dss-border-width-md) solid var(--dss-action-primary);
+  }
+
+  .dss-range .q-slider__selection {
+    filter: saturate(1.2); // EX-05
+  }
+}
+
+// ─── Reduced Motion (prefers-reduced-motion: reduce) ─────────────────────────
+//
+// Desabilita todas as transições para usuários que preferem movimento reduzido.
+// !important necessário para sobrescrever transições inline do Quasar.
+
+@media (prefers-reduced-motion: reduce) {
+  .dss-range .q-slider__track,
+  .dss-range .q-slider__selection,
+  .dss-range .q-slider__thumb-container {
+    transition: none !important;
+  }
+
+  .dss-range {
+    transition: none;
+  }
+}
+
+// ─── Print ───────────────────────────────────────────────────────────────────
+
+@media print {
+  .dss-range {
+    filter: none;
+  }
+
+  // Tooltips de valor não têm utilidade em impressão
+  .dss-range .q-slider__pin {
+    display: none !important;
+  }
+
+  .dss-range .q-slider__track {
+    background-color: var(--dss-gray-300);
+  }
+
+  .dss-range .q-slider__selection {
+    background-color: var(--dss-gray-700);
+  }
+
+  .dss-range .q-slider__thumb-shape {
+    fill: var(--dss-gray-900);
+  }
+}
+
+// ─── Forced Colors (Windows High Contrast Mode) ───────────────────────────────
+//
+// EX-06: 2px e 3px absolutos — tokens CSS são ignorados pelo browser em
+// forced-colors mode. System color keywords são obrigatórios para garantir
+// visibilidade em Windows High Contrast Mode.
+
+@media (forced-colors: active) {
+  .dss-range .q-slider__track {
+    background-color: ButtonFace;
+    border: 2px solid ButtonText; // EX-06: 2px absoluto, token ignorado pelo HCM
+  }
+
+  .dss-range .q-slider__selection {
+    background-color: Highlight;
+  }
+
+  .dss-range .q-slider__thumb-shape {
+    fill: ButtonText;
+  }
+
+  .dss-range .q-slider__focus-ring {
+    outline:    3px solid Highlight; // EX-06: 3px absoluto, token ignorado pelo HCM
+    box-shadow: none;
+  }
+
+  // Disabled
+  .dss-range--disabled .q-slider__track {
+    border-color: GrayText;
+  }
+
+  .dss-range--disabled .q-slider__selection {
+    background-color: GrayText;
+  }
+
+  .dss-range--disabled .q-slider__thumb-shape {
+    fill: GrayText;
+  }
+
+  // Error
+  .dss-range--error .q-slider__selection {
+    background-color: LinkText;
+  }
+
+  .dss-range--error .q-slider__thumb-shape {
+    fill: LinkText;
+  }
+
+  // Messages
+  .dss-range__error {
+    color: LinkText;
+  }
+
+  .dss-range__hint {
+    color: GrayText;
+  }
+}

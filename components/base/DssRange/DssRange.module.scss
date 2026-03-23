@@ -1,0 +1,21 @@
+// DssRange — Orchestrador Principal SCSS
+//
+// Importa as 3 camadas na ordem obrigatória: L2 → L3 → L4.
+// ⚠️  NUNCA altere a ordem de import.
+//
+// Tokens utilizados (35 tokens):
+//   Spacing:     --dss-spacing-{0_5, 1, 2, 4, 5}
+//   Typography:  --dss-font-family-sans, --dss-font-size-xs,
+//                --dss-font-weight-medium, --dss-line-height-normal
+//   Colors:      --dss-action-primary, --dss-surface-muted, --dss-surface-disabled,
+//                --dss-feedback-error, --dss-text-hint, --dss-text-inverse,
+//                --dss-text-secondary, --dss-gray-{300, 400, 700, 900}
+//   Interaction: --dss-touch-target-md (44px), --dss-touch-target-sm (36px),
+//                --dss-opacity-disabled, --dss-shadow-focus, --dss-focus-ring-width
+//   Motion:      --dss-duration-200, --dss-easing-standard
+//   Border:      --dss-radius-md, --dss-border-width-{thin, md, thick}
+//   Brand:       --dss-hub-600, --dss-water-500, --dss-waste-600
+
+@use './2-composition/base'    as base;
+@use './3-variants/index'      as variants;
+@use './4-output/index'        as output;

@@ -1,0 +1,34 @@
+// DssRange — Camada 4: Brands
+//
+// Brandabilidade: Hub (laranja), Water (azul), Waste (verde).
+//
+// A cor primária (--dss-action-primary) cascateia automaticamente por brand,
+// cobrindo track selecionado, thumbs e tooltips sem regras adicionais.
+// Aqui sobrescrevemos apenas o focus ring com o token de brand correspondente.
+//
+// Padrão: [data-brand="x"] .dss-range E .dss-range[data-brand="x"]
+// (suporte a brand no ancestor OU no próprio componente)
+//
+// Nota: Estado de erro sempre usa --dss-feedback-error independente do brand.
+// A especificidade das regras de erro em _base.scss garante precedência correta.
+
+// ─── Hub (Laranja) ────────────────────────────────────────────────────────────
+
+[data-brand='hub'] .dss-range .q-slider__focus-ring,
+.dss-range[data-brand='hub'] .q-slider__focus-ring {
+  box-shadow: 0 0 0 var(--dss-focus-ring-width) var(--dss-hub-600);
+}
+
+// ─── Water (Azul) ─────────────────────────────────────────────────────────────
+
+[data-brand='water'] .dss-range .q-slider__focus-ring,
+.dss-range[data-brand='water'] .q-slider__focus-ring {
+  box-shadow: 0 0 0 var(--dss-focus-ring-width) var(--dss-water-500);
+}
+
+// ─── Waste (Verde) ────────────────────────────────────────────────────────────
+
+[data-brand='waste'] .dss-range .q-slider__focus-ring,
+.dss-range[data-brand='waste'] .q-slider__focus-ring {
+  box-shadow: 0 0 0 var(--dss-focus-ring-width) var(--dss-waste-600);
+}

@@ -1,0 +1,259 @@
+// DssRange — Camada 2: Composition (Base)
+//
+// Golden Reference: DssSlider (arquitetura CSS idêntica, adaptada para dois thumbs)
+// Golden Context:   DssInput (padrão de hint/errorMessage abaixo do controle)
+//
+// Responsabilidades:
+//   - Layout e dimensionamento do wrapper
+//   - Touch target (WCAG 2.5.5) — Option A: componente INTERATIVO
+//   - Tokens de cor base (track, thumbs, label, mensagens)
+//   - Estados base (hover, disabled, readonly, error, focused, dense)
+//   - Cursor especial para drag-range
+//   - Transições base
+//
+// Nota sobre QRange:
+//   O QRange renderiza com classes .q-range.q-slider na raiz.
+//   Internamente usa as mesmas classes .q-slider__* do QSlider.
+//   Seletores .dss-range .q-slider__* cobrem ambos os dois thumbs.
+//
+// ⚠️  Token First: NENHUM valor hardcoded sem ID de exceção.
+
+// ─── Wrapper ──────────────────────────────────────────────────────────────────
+
+.dss-range {
+  display: block;
+  width: 100%;
+  font-family: var(--dss-font-family-sans);
+  transition: opacity var(--dss-duration-200) var(--dss-easing-standard);
+}
+
+// ─── Touch Target — WCAG 2.5.5 ───────────────────────────────────────────────
+//
+// Estratégia Option A (interativo): min-height no container do track.
+// O target cobre todo o track horizontal, garantindo ≥ 44px de área clicável.
+// Tokens: --dss-touch-target-md (44px padrão), --dss-touch-target-sm (36px dense).
+//
+// ⚠️  ::before é reservado para touch target em Compact Controls (CLAUDE.md §7).
+//     O DssRange não é Compact Control — usa min-height diretamente no track-container.
+
+.dss-range .q-slider__track-container,
+.dss-range .q-slider__track-container--h {
+  min-height: var(--dss-touch-target-md);
+}
+
+// ─── Track ────────────────────────────────────────────────────────────────────
+
+.dss-range .q-slider__track {
+  background-color: var(--dss-surface-muted);
+  border-radius: 9999px; // EX-01: pill shape do track — não tokenizável, inerente ao design de range sliders
+  overflow: hidden;
+}
+
+// Área selecionada — intervalo entre os dois thumbs
+.dss-range .q-slider__selection {
+  background-color: var(--dss-action-primary);
+  border-radius: 9999px; // EX-01
+}
+
+// ─── Thumbs ───────────────────────────────────────────────────────────────────
+//
+// QRange possui dois thumbs (.q-slider__thumb) — min e max.
+// Ambos herdam a cor via currentColor → var(--dss-action-primary) definido no .q-slider.
+
+.dss-range .q-slider {
+  color: var(--dss-action-primary);
+}
+
+.dss-range .q-slider__thumb {
+  width:  var(--dss-spacing-5); // 20px
+  height: var(--dss-spacing-5);
+}
+
+.dss-range .q-slider__thumb-shape {
+  fill: var(--dss-action-primary);
+}
+
+// ─── Focus Ring ───────────────────────────────────────────────────────────────
+//
+// EX-02: border-radius: 50% — círculo envolvendo o thumb; não tokenizável.
+// Cada thumb tem seu próprio focus ring independente.
+
+.dss-range .q-slider__focus-ring {
+  border-radius: 50%; // EX-02
+  box-shadow: var(--dss-shadow-focus);
+  width:     calc(var(--dss-spacing-5) + var(--dss-spacing-2)); // 28px
+  height:    calc(var(--dss-spacing-5) + var(--dss-spacing-2));
+  top:       50%;
+  left:      50%;
+  transform: translate(-50%, -50%);
+}
+
+// ─── Label (tooltip de valor) ─────────────────────────────────────────────────
+//
+// QRange exibe dois tooltips independentes (um por thumb) quando label=true.
+
+.dss-range .q-slider__pin {
+  background-color: var(--dss-action-primary);
+  border-radius: var(--dss-radius-md);
+}
+
+.dss-range .q-slider__pin-value-marker-bg {
+  background-color: var(--dss-action-primary);
+}
+
+.dss-range .q-slider__pin-text,
+.dss-range .q-slider__pin-value-marker-text {
+  color:       var(--dss-text-inverse);
+  font-family: var(--dss-font-family-sans);
+  font-size:   var(--dss-font-size-xs);
+  font-weight: var(--dss-font-weight-medium);
+  line-height: var(--dss-line-height-normal);
+}
+
+// ─── Markers ──────────────────────────────────────────────────────────────────
+
+.dss-range .q-slider__marker {
+  background-color: var(--dss-surface-muted);
+}
+
+.dss-range .q-slider__markers > div {
+  background-color: var(--dss-text-inverse);
+}
+
+.dss-range .q-slider__marker-labels {
+  font-family: var(--dss-font-family-sans);
+  font-size:   var(--dss-font-size-xs);
+  color:       var(--dss-text-secondary);
+}
+
+// ─── Transições ───────────────────────────────────────────────────────────────
+
+.dss-range .q-slider__track,
+.dss-range .q-slider__selection,
+.dss-range .q-slider__thumb-container {
+  transition: all var(--dss-duration-200) var(--dss-easing-standard);
+}
+
+// ─── Drag Range — cursor interativo ──────────────────────────────────────────
+//
+// EX-07: cursor: grab / grabbing — não tokenizável.
+// Indica ao usuário que o intervalo inteiro pode ser arrastado
+// quando a prop dragRange=true (classe .dss-range--drag-range).
+
+.dss-range--drag-range:not(.dss-range--disabled):not(.dss-range--readonly) .q-slider__selection {
+  cursor: grab; // EX-07
+}
+
+.dss-range--drag-range:not(.dss-range--disabled):not(.dss-range--readonly) .q-slider__selection:active {
+  cursor: grabbing; // EX-07
+}
+
+// ─── Hover ────────────────────────────────────────────────────────────────────
+//
+// EX-03: brightness(0.95) — valor canônico DSS (CLAUDE.md Princípio #8).
+// Aplica em ambos os thumbs e na seleção.
+
+.dss-range:not(.dss-range--disabled):not(.dss-range--readonly) .q-slider:hover .q-slider__selection {
+  filter: brightness(0.95); // EX-03
+}
+
+.dss-range:not(.dss-range--disabled):not(.dss-range--readonly) .q-slider:hover .q-slider__thumb-shape {
+  filter: brightness(0.95); // EX-03
+}
+
+// ─── Estado Focused ───────────────────────────────────────────────────────────
+
+.dss-range--focused .q-slider__focus-ring {
+  opacity: 1;
+}
+
+// ─── Estado Disabled ──────────────────────────────────────────────────────────
+
+.dss-range--disabled {
+  opacity: var(--dss-opacity-disabled);
+  pointer-events: none;
+}
+
+.dss-range--disabled .q-slider__track {
+  background-color: var(--dss-surface-disabled);
+}
+
+.dss-range--disabled .q-slider__selection {
+  background-color: var(--dss-gray-400);
+}
+
+.dss-range--disabled .q-slider__thumb-shape {
+  fill: var(--dss-gray-400);
+}
+
+// ─── Estado Readonly ──────────────────────────────────────────────────────────
+//
+// Diferente de disabled: aparência normal, mas sem interação.
+
+.dss-range--readonly .q-slider {
+  cursor: default;
+  pointer-events: none;
+}
+
+// ─── Estado Error ─────────────────────────────────────────────────────────────
+//
+// Sobrescreve --dss-action-primary em todos os elementos visuais.
+// Garante especificidade maior que a regra de cor base.
+
+.dss-range--error .q-slider {
+  color: var(--dss-feedback-error);
+}
+
+.dss-range--error .q-slider__selection {
+  background-color: var(--dss-feedback-error);
+}
+
+.dss-range--error .q-slider__thumb-shape {
+  fill: var(--dss-feedback-error);
+}
+
+.dss-range--error .q-slider__pin {
+  background-color: var(--dss-feedback-error);
+}
+
+.dss-range--error .q-slider__pin-value-marker-bg {
+  background-color: var(--dss-feedback-error);
+}
+
+// ─── Modo Dense ───────────────────────────────────────────────────────────────
+
+.dss-range--dense .q-slider__track-container,
+.dss-range--dense .q-slider__track-container--h {
+  min-height: var(--dss-touch-target-sm); // 36px
+}
+
+.dss-range--dense .q-slider__thumb {
+  width:  var(--dss-spacing-4); // 16px
+  height: var(--dss-spacing-4);
+}
+
+.dss-range--dense .q-slider__focus-ring {
+  width:  calc(var(--dss-spacing-4) + var(--dss-spacing-2)); // 24px
+  height: calc(var(--dss-spacing-4) + var(--dss-spacing-2));
+}
+
+// ─── Mensagens (Hint / Error) ─────────────────────────────────────────────────
+//
+// Renderizadas abaixo do QRange pelo wrapper Vue.
+// QRange não é QField — não tem suporte nativo a hint/error.
+
+.dss-range__hint {
+  display:     block;
+  margin-top:  var(--dss-spacing-1);
+  font-size:   var(--dss-font-size-xs);
+  line-height: var(--dss-line-height-normal);
+  color:       var(--dss-text-hint);
+}
+
+.dss-range__error {
+  display:     block;
+  margin-top:  var(--dss-spacing-1);
+  font-size:   var(--dss-font-size-xs);
+  line-height: var(--dss-line-height-normal);
+  color:       var(--dss-feedback-error);
+}
