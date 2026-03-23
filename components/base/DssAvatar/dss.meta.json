@@ -7,6 +7,7 @@
   "auditDate": "2026-02-02",
   "goldenReference": "DssChip",
   "goldenContext": "DssChip",
+  "phase": 1,
   "category": "Basico (Visual/Identity)",
   "hasReservations": true
 }

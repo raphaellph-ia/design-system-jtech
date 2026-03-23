@@ -7,6 +7,7 @@
   "auditDate": "2026-02-01",
   "goldenReference": "DssChip",
   "goldenContext": "DssChip",
+  "phase": 1,
   "category": "Compact Control interativo",
   "hasReservations": true
 }

@@ -8,6 +8,7 @@
   "reauditDate": "2026-03-20",
   "goldenReference": "DssToggle",
   "goldenContext": "DssInput",
+  "phase": 1,
   "category": "Action Control interativo — campo de intervalo numérico",
   "touchTarget": "Option A — interativo, min-height: var(--dss-touch-target-md) no .q-slider__track-container",
   "hasReservations": false,

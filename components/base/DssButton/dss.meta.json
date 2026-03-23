@@ -1,0 +1,21 @@
+{
+  "component": "DssButton",
+  "version": "2.2.0",
+  "classification": "Ação Principal",
+  "category": "Action",
+  "phase": 1,
+  "goldenReference": "DssButton",
+  "goldenContext": "DssButton",
+  "status": "approved",
+  "seal": "DSS v2.2",
+  "auditDate": "2026-01-20",
+  "tokens": {
+    "spacing": ["--dss-spacing-0_5", "--dss-spacing-1", "--dss-spacing-2", "--dss-spacing-3", "--dss-spacing-4", "--dss-spacing-5", "--dss-spacing-6", "--dss-spacing-12", "--dss-spacing-14", "--dss-spacing-16", "--dss-spacing-20", "--dss-spacing-24"],
+    "typography": ["--dss-font-family-sans", "--dss-font-size-xs", "--dss-font-size-sm", "--dss-font-size-md", "--dss-font-size-lg", "--dss-font-size-xl", "--dss-font-weight-medium", "--dss-font-weight-bold", "--dss-line-height-tight"],
+    "colors": ["--dss-primary-light", "--dss-secondary-light", "--dss-gray-900"],
+    "interaction": ["--dss-touch-target-xs", "--dss-touch-target-sm", "--dss-touch-target-md", "--dss-touch-target-lg", "--dss-touch-target-xl", "--dss-opacity-30", "--dss-opacity-60", "--dss-opacity-active", "--dss-opacity-disabled", "--dss-opacity-selected", "--dss-focus-ring"],
+    "motion": ["--dss-duration-200", "--dss-duration-300", "--dss-duration-slowest", "--dss-easing-standard", "--dss-easing-ease-out"],
+    "border": ["--dss-border-width-thin", "--dss-border-width-md", "--dss-border-width-thick", "--dss-radius-sm", "--dss-radius-full"],
+    "brand": ["--dss-gradient-glossy", "--dss-gradient-glossy-active"]
+  }
+}

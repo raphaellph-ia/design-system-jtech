@@ -7,6 +7,7 @@
   "auditDate": "2026-03-20",
   "goldenReference": "DssChip",
   "goldenContext": "DssInput",
+  "phase": 1,
   "category": "Action Control interativo — campo de seleção",
   "touchTarget": "Option A — interativo, min-height: var(--dss-input-height-md) no .q-field__control",
   "hasReservations": null,

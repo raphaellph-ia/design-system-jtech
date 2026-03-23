@@ -7,6 +7,7 @@
   "auditDate": "2026-03-18",
   "goldenReference": "DssBadge",
   "goldenContext": "DssSeparator",
+  "phase": 1,
   "category": "Elemento de Layout puro nao interativo",
   "touchTarget": "Option B — nao aplicavel (componente nao interativo)",
   "hasReservations": false,

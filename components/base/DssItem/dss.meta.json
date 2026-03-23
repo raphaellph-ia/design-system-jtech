@@ -7,7 +7,7 @@
   "goldenReference": "DssChip",
   "goldenContext": "DssChip",
   "goldenContextSecondary": null,
-  "seal": "granted",
+  "seal": "DSS/docs/Compliance/seals/DssItem/DSSITEM_SELO_v2.2.md",
   "audit": {
     "status": "approved",
     "ncs": 0,
