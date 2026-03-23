@@ -19,13 +19,34 @@ Ele substitui histórico de conversa, contexto implícito e decisões dispersas.
 
 ## 2. COMPONENTES SELADOS (ESTADO ATUAL)
 
-Componentes que possuem **Selo DSS v2.2 emitido** e são considerados referência válida:
+Todos os componentes abaixo possuem **Selo DSS v2.2 emitido** e são considerados referência válida. A lista de faseamento canônica e completa está em [`docs/reference/DSS_FASEAMENTO_COMPONENTES.md`](./reference/DSS_FASEAMENTO_COMPONENTES.md).
 
-- **DssCheckbox** — Compact Control interativo (Golden Component primário)
-- **DssRadio** — Compact Control interativo (Golden Component secundário)
-- **DssToggle** — Compact Control interativo (alinhado a Checkbox/Radio)
-- **DssInput** — Form Control (auditado e selado)
-- **DssButton** — Action Control (auditado e selado)
+### Fase 1 — Concluída
+
+| Componente | Categoria | Golden Reference |
+|---|---|---|
+| **DssButton** | Action Control (Golden Sample do DSS) | — |
+| **DssCheckbox** | Compact Control interativo (Golden Primário) | DssChip |
+| **DssRadio** | Compact Control interativo (Golden Secundário) | DssChip |
+| **DssToggle** | Compact Control interativo | DssToggle |
+| **DssInput** | Form Control | DssChip |
+| **DssTextarea** | Form Control | DssChip |
+| **DssSelect** | Form Control | DssChip |
+| **DssSlider** | Form Control / Range | DssToggle |
+| **DssIcon** | Feedback simples | — |
+| **DssBadge** | Feedback simples | DssBadge |
+| **DssChip** | Feedback simples | DssChip |
+| **DssAvatar** | Feedback simples | DssChip |
+| **DssTooltip** | Feedback simples | DssChip |
+| **DssSeparator** | Estrutural simples | DssBadge |
+| **DssSpace** | Estrutural simples | DssBadge |
+| **DssItem** | Estrutural dual-mode | DssChip |
+
+### Fase 2 — Em andamento
+
+| Componente | Categoria | Status |
+|---|---|---|
+| **DssCard** | Container / Superfície | `conformant` — Selado |
 
 > Componentes selados **NÃO DEVEM ser re-arquitetados**. Apenas correções pontuais mediante nova auditoria.
 
@@ -253,7 +274,19 @@ Estes erros **NÃO DEVEM reaparecer**:
 
 ---
 
-## 14. ORIENTAÇÃO PARA FASE 2 (COMPONENTES COMPOSTOS)
+## 14. FASEAMENTO DE COMPONENTES
+
+A classificação oficial de todos os componentes Quasar por fase está documentada em:
+
+**[`docs/reference/DSS_FASEAMENTO_COMPONENTES.md`](./reference/DSS_FASEAMENTO_COMPONENTES.md)**
+
+Este arquivo é a **fonte única de verdade** para decisões de faseamento. Qualquer dúvida sobre em qual fase um componente deve ser criado deve ser resolvida consultando-o.
+
+> **Nota de revisão (Março 2026):** `QOptionGroup`, `QBtnGroup`, `QFab` e `QFabAction` foram reclassificados da Fase 1 para a Fase 2, pois envolvem composição interna e gestão de estado entre filhos, violando a regra de ouro da Fase 1.
+
+---
+
+## 15. ORIENTAÇÃO PARA FASE 2 (COMPONENTES COMPOSTOS)
 
 Fase 2 introduz maior complexidade:
 
@@ -269,7 +302,7 @@ Portanto:
 
 ---
 
-## 15. USO DESTE DOCUMENTO
+## 16. USO DESTE DOCUMENTO
 
 Este arquivo deve ser:
 
