@@ -20,6 +20,7 @@ import DssChipPage from "./pages/components/DssChipPage";
 import DssCheckboxPage from "./pages/components/DssCheckboxPage";
 import DssTogglePage from "./pages/components/DssTogglePage";
 import DssTooltipPage from "./pages/components/DssTooltipPage";
+import DssRangePage from "./pages/components/DssRangePage";
 import ComponentPlaceholder from "./pages/components/ComponentPlaceholder";
 import ArchitecturePage from "./pages/governance/ArchitecturePage";
 import ClassificationPage from "./pages/governance/ClassificationPage";
