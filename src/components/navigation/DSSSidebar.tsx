@@ -38,6 +38,7 @@ import {
   ChevronRight,
   ChevronDown,
   MessageSquare,
+  SlidersHorizontal,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
