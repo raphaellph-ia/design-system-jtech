@@ -146,6 +146,7 @@ export function DSSSidebar() {
 
   return (
     <Sidebar 
+      collapsible="icon"
       className="border-r"
       style={{ 
         borderColor: 'hsl(var(--sidebar-border))',
