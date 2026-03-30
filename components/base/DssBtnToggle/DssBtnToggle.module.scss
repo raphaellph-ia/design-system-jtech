@@ -32,9 +32,4 @@
   }
 }
 
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .dss-btn-toggle {
-    transition: none;
-  }
-}
+/* Reduced motion encapsulado pelo mixin dss-transition em 2-composition/_base.scss */

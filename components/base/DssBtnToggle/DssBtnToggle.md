@@ -2,7 +2,7 @@
 
 **Design System Sansys v2.2 — Componente Fase 2**
 **Categoria:** Container de Seleção Exclusiva (Grupo de Alternância)
-**Status:** Pré-auditoria
+**Status:** ✅ Selado — DSS v2.2 (27 Mar 2026)
 
 ---
 
@@ -279,13 +279,24 @@ Seletores `.q-btn-item` são Quasar DOM internals — não subcomponentes DSS fi
 
 ## 13. Gate Exceptions (v2.4)
 
-### Gate de Composição v2.4
+### Gate de Composição v2.4 — Regra 1 (Uso direto de QBtnToggle no template)
+
+| Campo | Valor |
+|-------|-------|
+| Regra violada | Regra 1 — Uso Exclusivo de DSS |
+| Arquivo | `1-structure/DssBtnToggle.ts.vue` |
+| Violação | Uso direto de `<q-btn-toggle>` (componente Quasar) no template |
+| Justificativa | Abordagem WRAP obrigatória. QBtnToggle fornece v-model, aria-pressed, keyboard navigation e gerenciamento de seleção nativos. Rebuilding seria duplicação sem ganho arquitetural. Precedente: DssBtnDropdown (selado Mar 2026) usa mesma estratégia WRAP. |
+| Decisão arquitetural | Chat Estratégico DSS — Pré-formalizado no pre-prompt (27 Mar 2026) |
+
+### Gate de Composição v2.4 — Regra 2 (Seletores CSS .q-btn-item)
 
 | Campo | Valor |
 |-------|-------|
 | Seletor | `.q-btn-item` |
 | Arquivos | `_base.scss`, `_flat.scss`, `_outline.scss`, `_unelevated.scss`, `_states.scss` |
 | Justificativa | `.q-btn-item` é elemento DOM interno do QBtnToggle (Quasar), não subcomponente DSS. O Gate v2.4 aplica-se exclusivamente a componentes DSS filhos. Precedente: DssBtnGroup (selado Mar 2026). |
+| Decisão arquitetural | Chat Estratégico DSS — Pré-formalizado no pre-prompt (27 Mar 2026) |
 
 ### Gate de Responsabilidade v2.4
 
@@ -294,6 +305,7 @@ Seletores `.q-btn-item` são Quasar DOM internals — não subcomponentes DSS fi
 | Seletor | `.q-btn-item:hover, .q-btn-item:focus-visible` |
 | Arquivos | `_outline.scss` |
 | Justificativa | Ajuste de z-index (posicionamento estrutural) — não captura aparência visual dos estados interativos dos filhos. Necessário para que borda ativa fique visível sobre adjacente com margin-left negativo. Precedente: DssBtnGroup Ciclo 2 (selado Mar 2026). |
+| Decisão arquitetural | Chat Estratégico DSS — Pré-formalizado no pre-prompt (27 Mar 2026) |
 
 ---
 
@@ -366,4 +378,4 @@ O DssBtnToggle é um **container de seleção** — ele gera e gerencia seus fil
 ---
 
 *Design System Sansys — DSS v2.2 — DssBtnToggle*
-*Status: Pré-auditoria*
+*Status: ✅ Selado — 27 Mar 2026*

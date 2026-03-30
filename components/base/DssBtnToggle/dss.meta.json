@@ -1,9 +1,9 @@
 {
   "component": "DssBtnToggle",
   "dssVersion": "2.2",
-  "status": "pre-audit",
-  "auditMode": "Pré-auditoria",
-  "auditDate": null,
+  "status": "sealed",
+  "auditMode": "Auditoria Completa",
+  "auditDate": "2026-03-27",
   "goldenReference": "DssChip",
   "goldenContext": "DssBtnGroup",
   "goldenContextNote": "DssBtnGroup é o Golden Context por ser o componente composto irmão mais próximo (Action Group Fase 2, selado Mar 2026). Ambos são containers de botões agrupados com mesma governança de border-radius e separadores.",
@@ -82,6 +82,13 @@
     }
   ],
   "gateExceptions": {
+    "compositionGateV24_rule1": {
+      "rule": "Regra 1 — Uso Exclusivo de DSS",
+      "location": "1-structure/DssBtnToggle.ts.vue",
+      "violation": "Uso direto de <q-btn-toggle> (componente Quasar) no template",
+      "justification": "Abordagem WRAP obrigatória. QBtnToggle fornece v-model, aria-pressed, keyboard navigation e gerenciamento de seleção nativos. Rebuilding seria duplicação sem ganho arquitetural. Precedente: DssBtnDropdown usa mesma estratégia WRAP.",
+      "approvedBy": "Chat Estratégico — Decisão Arquitetural Fase 2 (Mar 2026)"
+    },
     "compositionGateV24": {
       "files": [
         "2-composition/_base.scss",

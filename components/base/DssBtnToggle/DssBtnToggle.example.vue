@@ -79,6 +79,17 @@
           aria-label="Demonstração variante unelevated"
         />
       </div>
+
+      <div class="example-row">
+        <span>push:</span>
+        <DssBtnToggle
+          v-model="varianteDemo"
+          :options="opcoesDemo"
+          variant="push"
+          toggle-color="primary"
+          aria-label="Demonstração variante push"
+        />
+      </div>
     </section>
 
     <!-- ================================================================
@@ -230,7 +241,7 @@ const opcoesDemo: BtnToggleOption[] = [
 ]
 </script>
 
-<style>
+<style scoped>
 .example-container {
   display: flex;
   flex-direction: column;
