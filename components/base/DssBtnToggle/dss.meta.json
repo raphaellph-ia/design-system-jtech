@@ -1,0 +1,156 @@
+{
+  "component": "DssBtnToggle",
+  "dssVersion": "2.2",
+  "status": "sealed",
+  "auditMode": "Auditoria Completa",
+  "auditDate": "2026-03-27",
+  "goldenReference": "DssChip",
+  "goldenContext": "DssBtnGroup",
+  "goldenContextNote": "DssBtnGroup é o Golden Context por ser o componente composto irmão mais próximo (Action Group Fase 2, selado Mar 2026). Ambos são containers de botões agrupados com mesma governança de border-radius e separadores.",
+  "category": "Container de Seleção Exclusiva (Grupo de Alternância)",
+  "phase": 2,
+  "phaseDescription": "Fase 2 — Componente Composto. O DssBtnToggle gerencia estado de seleção (v-model) entre múltiplas opções renderizadas internamente pelo QBtnToggle como botões de rádio visuais.",
+  "hasReservations": true,
+  "classification": "Wrapper governado de QBtnToggle — container de seleção exclusiva com estilos DSS",
+  "subcomponents": [],
+  "compositionRequirements": [],
+  "compositionNote": "DssBtnToggle envolve QBtnToggle diretamente. Os botões internos são renderizados pelo Quasar via prop `options`. Não usa DssButton como filho explícito — diferença fundamental vs. DssBtnGroup que aceita DssButton via <slot>.",
+  "wrapperApproach": "WRAP QBtnToggle — não reconstrói seleção do zero. Justificativa: QBtnToggle fornece gerenciamento de v-model, estado de seleção, acessibilidade WAI-ARIA e keyboard navigation nativos. Rebuilding seria duplicação de esforço sem ganho arquitetural.",
+  "variantMapping": {
+    "elevated": "nenhuma prop booleana (padrão Quasar)",
+    "flat": "flat: true",
+    "outline": "outline: true",
+    "unelevated": "unelevated: true",
+    "push": "push: true"
+  },
+  "props": {
+    "DssBtnToggle": [
+      "modelValue",
+      "options",
+      "variant",
+      "color",
+      "toggleColor",
+      "textColor",
+      "toggleTextColor",
+      "rounded",
+      "square",
+      "spread",
+      "stretch",
+      "disable",
+      "readonly",
+      "clearable",
+      "brand",
+      "ariaLabel"
+    ]
+  },
+  "propsBlocked": ["dark", "glossy", "size", "dense", "noCaps"],
+  "propsBlockedJustification": {
+    "dark": "O DSS gerencia dark mode via CSS global (body.body--dark / [data-theme=dark]), não via prop de componente.",
+    "glossy": "Estilo glossy não é parte da linguagem visual DSS v2.2.",
+    "size": "Controle de tamanho deve seguir tokens de Compact Controls DSS (--dss-compact-control-height-*), não prop nativa Quasar.",
+    "dense": "Mesmo motivo de size — deve seguir tokens DSS. Fase 2 Ciclo 1 não implementa dense.",
+    "noCaps": "Comportamento de casing é gerenciado por tokens de tipografia DSS. O componente já aplica no-caps internamente via prop nativa para consistência visual."
+  },
+  "statesApplicable": ["default", "disabled", "readonly"],
+  "statesNotApplicable": ["hover", "focus", "active", "error", "indeterminate", "loading"],
+  "statesNotApplicableJustification": "DssBtnToggle é container de composição. Estados hover/focus/active pertencem aos botões internos renderizados pelo QBtnToggle. Error e indeterminate não são estados de grupos de alternância. Loading não é aplicável (Fase 2, sem operações assíncronas de seleção).",
+  "touchTarget": "Opção B — Delegado ao QBtnToggle interno. Os botões internos do QBtnToggle já implementam touch target adequado. DssBtnToggle não é Compact Control standalone.",
+  "ariaRole": "group — definido explicitamente no template via role='group'. Os botões internos têm role='button' e aria-pressed gerenciados pelo Quasar.",
+  "accessibility": {
+    "keyboardNavigation": "Tab navega entre botões do grupo. Enter/Space alterna seleção. Totalmente gerenciado pelo QBtnToggle.",
+    "screenReader": "aria-pressed='true'/'false' em cada botão interno, gerenciado pelo Quasar. aria-label no container via prop ariaLabel.",
+    "ariaLabel": "Prop ariaLabel altamente recomendada — o grupo não possui label visual próprio."
+  },
+  "exceptions": [
+    {
+      "id": "EXC-01",
+      "value": "border-radius: 0",
+      "location": "2-composition/_base.scss (.dss-btn-toggle--square > .q-btn-item)",
+      "justification": "Square variant — border-radius 0 é semanticamente 'sem arredondamento', não hardcoded visual. Padrão DssBtnGroup EXC-01 (selado Mar 2026)."
+    },
+    {
+      "id": "EXC-02",
+      "value": "rgba(255, 255, 255, 0.12)",
+      "location": "4-output/_states.scss ([data-theme=dark])",
+      "justification": "Dark mode dividers — sem token DSS equivalente para white com alpha parcial. Padrão Material Design. Idêntico ao DssBtnGroup EXC-02 e DssCard EXC-01."
+    },
+    {
+      "id": "EXC-03",
+      "value": "1px solid ButtonText",
+      "location": "4-output/_states.scss (@media forced-colors: active)",
+      "justification": "Forced-colors mode — system color keywords obrigatórios. Tokens CSS ignorados pelo navegador neste modo. Padrão DssBtnGroup EXC-03."
+    }
+  ],
+  "gateExceptions": {
+    "compositionGateV24_rule1": {
+      "rule": "Regra 1 — Uso Exclusivo de DSS",
+      "location": "1-structure/DssBtnToggle.ts.vue",
+      "violation": "Uso direto de <q-btn-toggle> (componente Quasar) no template",
+      "justification": "Abordagem WRAP obrigatória. QBtnToggle fornece v-model, aria-pressed, keyboard navigation e gerenciamento de seleção nativos. Rebuilding seria duplicação sem ganho arquitetural. Precedente: DssBtnDropdown usa mesma estratégia WRAP.",
+      "approvedBy": "Chat Estratégico — Decisão Arquitetural Fase 2 (Mar 2026)"
+    },
+    "compositionGateV24": {
+      "files": [
+        "2-composition/_base.scss",
+        "3-variants/_flat.scss",
+        "3-variants/_outline.scss",
+        "3-variants/_unelevated.scss",
+        "4-output/_states.scss"
+      ],
+      "selector": ".q-btn-item",
+      "justification": "Uso de seletor interno do Quasar (.q-btn-item) necessário para gerenciar border-radius nas extremidades e separadores visuais entre botões. .q-btn-item é um elemento DOM interno do QBtnToggle (Quasar), não um subcomponente DSS. O Gate de Composição v2.4 aplica-se exclusivamente a componentes DSS filhos. Precedente: DssBtnGroup registra exceção equivalente para seletores em .dss-button internos (selado Mar 2026)."
+    },
+    "responsibilityGateV24": {
+      "files": [
+        "3-variants/_outline.scss"
+      ],
+      "selector": ".q-btn-item:hover, .q-btn-item:focus-visible",
+      "justification": "Uso de :hover/:focus-visible em .q-btn-item para ajuste de z-index no modo outline. O ajuste é estrutural de posicionamento (z-index: 1 apenas) — não captura nem modifica aparência visual de estados interativos. Necessário para que a borda do botão ativo fique visível sobre o botão adjacente com margin-left negativo. Precedente: DssBtnGroup Gate Exception responsibilityGateV24 (selado Mar 2026)."
+    }
+  },
+  "tokens": {
+    "border": [
+      "--dss-border-width-thin",
+      "--dss-border-width-thick",
+      "--dss-border-width-md"
+    ],
+    "shape": [
+      "--dss-radius-full"
+    ],
+    "colors": [
+      "--dss-gray-200",
+      "--dss-gray-300"
+    ],
+    "brand": [
+      "--dss-hub-600",
+      "--dss-hub-400",
+      "--dss-water-500",
+      "--dss-water-400",
+      "--dss-waste-600",
+      "--dss-waste-500"
+    ]
+  },
+  "reservations": [
+    {
+      "id": "RES-01",
+      "description": "Tokens de brand numéricos",
+      "detail": "Os tokens --dss-hub-600, --dss-water-500, etc. são numéricos por ausência de tokens semânticos de brand no catálogo DSS v2.2. Quando tokens semânticos forem criados, este componente deve ser atualizado.",
+      "severity": "baixa",
+      "blocking": false
+    },
+    {
+      "id": "RES-02",
+      "description": "<style> sem scoped obrigatório",
+      "detail": "O uso de <style lang='scss'> sem 'scoped' é necessário para que os seletores .q-btn-item funcionem em runtime. Documentado como comportamento intencional. Precedente: DssBtnGroup e DssBtnDropdown.",
+      "severity": "baixa",
+      "blocking": false
+    },
+    {
+      "id": "RES-03",
+      "description": "Sem testes unitários",
+      "detail": "Testes unitários e de acessibilidade não foram implementados neste ciclo.",
+      "severity": "baixa",
+      "blocking": false
+    }
+  ]
+}

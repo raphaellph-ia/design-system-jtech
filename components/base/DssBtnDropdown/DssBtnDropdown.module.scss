@@ -1,0 +1,18 @@
+/* ==========================================================================
+   DssBtnDropdown.module.scss — ORCHESTRADOR PRINCIPAL
+
+   Importa as camadas na ordem obrigatória DSS: L2 → L3 → L4
+
+   ⚠️ REGRA CRÍTICA (CLAUDE.md):
+   A ordem de importação é OBRIGATÓRIA e não pode ser alterada.
+   L2 define a base, L3 sobrescreve com variantes, L4 aplica estados finais.
+   ========================================================================== */
+
+/* Layer 2: Composition (base styles) */
+@use './2-composition/base' as base;
+
+/* Layer 3: Variants */
+@use './3-variants/index' as variants;
+
+/* Layer 4: Output (states + brands) */
+@use './4-output/index' as output;

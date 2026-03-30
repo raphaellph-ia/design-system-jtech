@@ -1,0 +1,121 @@
+/* ==========================================================================
+   DssBtnGroup - LAYER 2: COMPOSITION (Base Styles)
+
+   Responsabilidade: Estilos fundamentais do container de grupo
+   usando APENAS tokens genéricos.
+
+   Filosofia DSS: Tokens = Provedores, Componentes = Consumidores
+
+   Nota arquitetural (Exceção de Composição documentada):
+   O DssBtnGroup usa seletores CSS globais do tipo `.dss-btn-group > .dss-button`
+   para gerenciar border-radius e separadores dos filhos. Isso é intrínseco à
+   função de grouping (o único objetivo do componente) e NÃO usa ::v-deep
+   (estilos globais, não scoped). Esta é a única exceção permitida à regra
+   "componentes DSS não estilizam filhos internamente".
+   ========================================================================== */
+
+@import '../../../../utils/index';
+
+/* ==========================================================================
+   CONTAINER BASE DO GRUPO
+   ========================================================================== */
+
+.dss-btn-group {
+  /* Reset e layout */
+  display: inline-flex;
+  align-items: stretch;
+  vertical-align: middle;
+
+  /* Remove tap highlight em mobile (padrão Golden Reference DssChip) */
+  -webkit-tap-highlight-color: transparent;
+
+  /* Transição suave */
+  @include dss-transition(all, 'fast');
+}
+
+/* ==========================================================================
+   GERENCIAMENTO DE BORDER-RADIUS DOS FILHOS (DssButton)
+
+   O DssBtnGroup aplica border-radius apenas nas extremidades do grupo.
+   Filhos internos têm border-radius: 0 nas faces adjacentes.
+   ========================================================================== */
+
+/* Primeiro filho: remove corners da direita (face interna) */
+.dss-btn-group > .dss-button:first-child:not(:only-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* Último filho: remove corners da esquerda (face interna) */
+.dss-btn-group > .dss-button:last-child:not(:only-child) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/* Filhos intermediários: sem border-radius */
+.dss-btn-group > .dss-button:not(:first-child):not(:last-child) {
+  border-radius: 0;
+}
+
+/* ==========================================================================
+   VARIANTE ROUNDED
+   Aplica cantos completamente arredondados (pill) nas extremidades do grupo.
+   Os botões intermediários continuam com border-radius: 0.
+   ========================================================================== */
+
+.dss-btn-group--rounded > .dss-button:first-child:not(:only-child) {
+  border-top-left-radius: var(--dss-radius-full);
+  border-bottom-left-radius: var(--dss-radius-full);
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.dss-btn-group--rounded > .dss-button:last-child:not(:only-child) {
+  border-top-right-radius: var(--dss-radius-full);
+  border-bottom-right-radius: var(--dss-radius-full);
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.dss-btn-group--rounded > .dss-button:only-child {
+  border-radius: var(--dss-radius-full);
+}
+
+/* ==========================================================================
+   VARIANTE SQUARE
+
+   EXC-01: border-radius: 0
+   Justificativa: Square variant. Valor 0 é semanticamente "sem radius",
+   não hardcoded visual. Padrão idêntico ao DssCard EXC-03 e DssButton.
+   ========================================================================== */
+
+.dss-btn-group--square > .dss-button {
+  border-radius: 0; /* EXC-01 */
+}
+
+/* ==========================================================================
+   VARIANTE SPREAD
+   Botões distribuídos horizontalmente ocupando toda a largura disponível.
+   ========================================================================== */
+
+.dss-btn-group--spread {
+  display: flex;
+
+  > .dss-button {
+    flex: 1;
+  }
+}
+
+/* ==========================================================================
+   VARIANTE STRETCH
+   Em contexto flexbox, o grupo e seus botões esticam até a altura do pai.
+   ========================================================================== */
+
+.dss-btn-group--stretch {
+  align-self: stretch;
+
+  > .dss-button {
+    align-self: stretch;
+    min-height: 0; /* Remove min-height do DssButton para esticar livremente */
+  }
+}

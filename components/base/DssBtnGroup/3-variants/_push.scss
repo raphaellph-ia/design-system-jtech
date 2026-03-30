@@ -1,0 +1,17 @@
+/* ==========================================================================
+   DssBtnGroup - LAYER 3: VARIANTS - Push
+
+   Ajuste de separador para grupo de botões com estilo push (3D/pressed).
+   O efeito push (sombra inferior 3D) vem de cada DssButton filho.
+   O grupo adiciona um separador sutil entre botões adjacentes.
+
+   ⚠️ PROP SYNC: Esta classe só produz resultado visual correto quando
+   os DssButton filhos também usam a prop `push`.
+   ========================================================================== */
+
+.dss-btn-group--push {
+  /* Separador sutil entre botões push adjacentes */
+  > .dss-button:not(:last-child) {
+    border-right: var(--dss-border-width-thin) solid var(--dss-gray-200);
+  }
+}

@@ -1,0 +1,17 @@
+/* ==========================================================================
+   DssBtnToggle - LAYER 3: VARIANTS - Unelevated
+
+   Ajuste de separador para grupo de alternância sem elevação (unelevated).
+   Sem elevação/borda externa, os botões precisam de um separador para
+   delimitar visualmente cada elemento do grupo.
+
+   Separador: borda direita mais sutil que o flat (var(--dss-gray-200)).
+   Precedente: DssBtnGroup _unelevated.scss (selado Mar 2026) — mesmo padrão.
+   ========================================================================== */
+
+.dss-btn-toggle--unelevated {
+  /* Separador sutil entre botões unelevated adjacentes */
+  > .q-btn-item:not(:last-child) {
+    border-right: var(--dss-border-width-thin) solid var(--dss-gray-200);
+  }
+}

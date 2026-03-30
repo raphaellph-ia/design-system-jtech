@@ -1,0 +1,58 @@
+/* ==========================================================================
+   DssBtnToggle - LAYER 4: OUTPUT (States)
+
+   Responsabilidade: Estados especiais (dark mode, forced-colors).
+   DssBtnToggle não possui estados interativos próprios (hover, focus, active).
+   Esses estados pertencem aos botões internos renderizados pelo QBtnToggle.
+   ========================================================================== */
+
+/* ==========================================================================
+   DARK MODE
+
+   Ajuste de cor dos separadores entre botões em dark mode.
+   ========================================================================== */
+
+[data-theme="dark"] .dss-btn-toggle {
+
+  /* Separadores flat/push/unelevated em dark mode
+     EXC-02: rgba(255, 255, 255, 0.12) — Dark mode divider.
+     Justificativa: Nenhum token DSS fornece white com alpha parcial.
+     Padrão Material Design: dividers em dark = white 12% opacity.
+     Padrão idêntico ao DssBtnGroup EXC-02 e DssCard EXC-01. */
+  &.dss-btn-toggle--flat > .q-btn-item:not(:last-child),
+  &.dss-btn-toggle--push > .q-btn-item:not(:last-child),
+  &.dss-btn-toggle--unelevated > .q-btn-item:not(:last-child) {
+    border-right-color: rgba(255, 255, 255, 0.12); /* EXC-02 */
+  }
+}
+
+/* ==========================================================================
+   FORCED-COLORS MODE (Windows High Contrast)
+
+   Padrão DssChip/DssCard/DssBtnGroup: system keywords, valores absolutos.
+   Tokens CSS são ignorados pelo navegador em forced-colors mode.
+   ========================================================================== */
+
+@media (forced-colors: active) {
+  .dss-btn-toggle {
+    /* Contorno visível para identificação do grupo
+       EXC-03: 1px solid ButtonText — forced-colors absolute value.
+       Justificativa: Valores absolutos são obrigatórios em forced-colors;
+       tokens CSS são ignorados pelo navegador neste modo.
+       Padrão idêntico ao DssBtnGroup EXC-03. */
+    outline: 1px solid ButtonText; /* EXC-03 */
+    outline-offset: 1px;
+  }
+
+  /* Separadores em forced-colors */
+  .dss-btn-toggle--flat > .q-btn-item:not(:last-child),
+  .dss-btn-toggle--push > .q-btn-item:not(:last-child),
+  .dss-btn-toggle--unelevated > .q-btn-item:not(:last-child) {
+    border-right-color: ButtonText;
+  }
+
+  /* Reset margin-left em outline — borda dupla é aceitável em forced-colors */
+  .dss-btn-toggle--outline > .q-btn-item:not(:first-child) {
+    margin-left: 0;
+  }
+}

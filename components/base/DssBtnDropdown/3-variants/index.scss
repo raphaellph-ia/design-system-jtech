@@ -1,0 +1,11 @@
+/* ==========================================================================
+   DssBtnDropdown - LAYER 3: VARIANTS Orchestrator
+
+   Importa todos os arquivos de variantes visuais.
+   Ordem de importação: da mais genérica para a mais específica.
+   ========================================================================== */
+
+@use './elevated' as elevated;
+@use './flat' as flat;
+@use './outline' as outline;
+@use './unelevated' as unelevated;

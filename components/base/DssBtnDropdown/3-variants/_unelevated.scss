@@ -1,0 +1,15 @@
+/* ==========================================================================
+   DssBtnDropdown - LAYER 3: VARIANT (Unelevated)
+
+   Responsabilidade: Ajustes visuais específicos para variante unelevated.
+   O QBtnDropdown com :unelevated="true" já gerencia a aparência do trigger.
+   Este arquivo adiciona separador entre trigger e seta em modo split.
+   ========================================================================== */
+
+/* Separador entre botão e seta em modo split unelevated */
+.dss-btn-dropdown--unelevated.dss-btn-dropdown--split {
+  .q-btn-dropdown__arrow-container {
+    /* Separador sutil para dividir as duas ações */
+    border-left: var(--dss-border-width-thin) solid var(--dss-gray-200);
+  }
+}

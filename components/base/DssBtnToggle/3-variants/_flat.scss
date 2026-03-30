@@ -1,0 +1,16 @@
+/* ==========================================================================
+   DssBtnToggle - LAYER 3: VARIANTS - Flat
+
+   Adiciona separador visual sutil entre botões adjacentes no grupo flat.
+
+   Separador: borda direita em todos os botões exceto o último.
+   Cor: var(--dss-gray-300) — sutil, adequada para fundo claro.
+
+   Precedente: DssBtnGroup _flat.scss (selado Mar 2026) — mesmo padrão.
+   ========================================================================== */
+
+.dss-btn-toggle--flat {
+  > .q-btn-item:not(:last-child) {
+    border-right: var(--dss-border-width-thin) solid var(--dss-gray-300);
+  }
+}

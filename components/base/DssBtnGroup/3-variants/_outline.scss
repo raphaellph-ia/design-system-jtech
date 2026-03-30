@@ -1,0 +1,27 @@
+/* ==========================================================================
+   DssBtnGroup - LAYER 3: VARIANTS - Outline
+
+   Colapsa bordas duplicadas entre botões adjacentes quando o estilo outline
+   é aplicado. Sem este ajuste, a borda direita de um botão e a borda
+   esquerda do botão seguinte formariam uma borda dupla visível.
+
+   ⚠️ PROP SYNC: Esta classe só produz resultado visual correto quando
+   os DssButton filhos também usam a prop `outline`.
+
+   Técnica: margin-left negativo = largura de uma borda (token).
+   z-index em hover/focus garante que a borda do botão ativo fique visível.
+   ========================================================================== */
+
+.dss-btn-group--outline {
+  > .dss-button:not(:first-child) {
+    /* Colapsa borda dupla entre botões adjacentes */
+    margin-left: calc(-1 * var(--dss-border-width-thin));
+
+    /* Garante visibilidade completa da borda quando em hover ou focus */
+    &:hover,
+    &:focus-visible {
+      position: relative;
+      z-index: 1;
+    }
+  }
+}

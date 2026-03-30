@@ -1,0 +1,15 @@
+/* ==========================================================================
+   DssBtnDropdown - LAYER 3: VARIANT (Outline)
+
+   Responsabilidade: Ajustes visuais específicos para variante outline.
+   O QBtnDropdown com :outline="true" já gerencia borda e aparência do trigger.
+   Este arquivo gerencia sobreposição de bordas em modo split.
+   ========================================================================== */
+
+/* Colapso de borda dupla em modo split outline */
+.dss-btn-dropdown--outline.dss-btn-dropdown--split {
+  .q-btn-dropdown__arrow-container {
+    /* Colapsa a borda esquerda da seta com a borda direita do botão */
+    margin-left: calc(-1 * var(--dss-border-width-thin));
+  }
+}

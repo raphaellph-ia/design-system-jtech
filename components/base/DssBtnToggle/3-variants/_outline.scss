@@ -1,0 +1,32 @@
+/* ==========================================================================
+   DssBtnToggle - LAYER 3: VARIANTS - Outline
+
+   Colapsa bordas duplicadas entre botões adjacentes quando o estilo outline
+   é aplicado. Sem este ajuste, a borda direita de um botão e a borda
+   esquerda do botão seguinte formariam uma borda dupla visível.
+
+   Técnica: margin-left negativo = largura de uma borda (token).
+   z-index em hover/focus garante que a borda do botão ativo fique visível.
+
+   GATE DE RESPONSABILIDADE v2.4 (pré-formalizado):
+   O uso de :hover/:focus-visible aqui é um ajuste estrutural de posicionamento
+   (z-index apenas, sem aparência visual nova). O container não captura estados
+   interativos dos filhos — apenas eleva o botão ativo para que sua borda
+   não fique atrás do botão adjacente.
+   Precedente: DssBtnGroup NC-01 Ciclo 2 → Gate Exception responsibilityGateV24.
+   Registrado em dss.meta.json → gateExceptions.responsibilityGateV24.
+   ========================================================================== */
+
+.dss-btn-toggle--outline {
+  > .q-btn-item:not(:first-child) {
+    /* Colapsa borda dupla entre botões adjacentes */
+    margin-left: calc(-1 * var(--dss-border-width-thin));
+
+    /* Garante visibilidade completa da borda quando em hover ou focus */
+    &:hover,
+    &:focus-visible {
+      position: relative;
+      z-index: 1;
+    }
+  }
+}

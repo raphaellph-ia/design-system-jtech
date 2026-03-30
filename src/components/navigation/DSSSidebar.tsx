@@ -39,6 +39,7 @@ import {
   ChevronDown,
   MessageSquare,
   SlidersHorizontal,
+  LayoutGrid,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -73,6 +74,7 @@ const navigation = {
       { title: "DssAvatar", url: "/componentes/dss-avatar", icon: User, status: "stable" },
       { title: "DssTooltip", url: "/componentes/dss-tooltip", icon: MessageSquare, status: "stable" },
       { title: "DssRange", url: "/componentes/dss-range", icon: SlidersHorizontal, status: "stable" },
+      { title: "DssBtnGroup", url: "/componentes/dss-btn-group", icon: LayoutGrid, status: "stable" },
     ],
   },
   padroes: {

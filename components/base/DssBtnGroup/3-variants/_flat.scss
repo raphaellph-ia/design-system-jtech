@@ -1,0 +1,17 @@
+/* ==========================================================================
+   DssBtnGroup - LAYER 3: VARIANTS - Flat
+
+   Adiciona separador visual sutil entre botões adjacentes no grupo flat.
+
+   ⚠️ PROP SYNC: Esta classe só produz resultado visual correto quando
+   os DssButton filhos também usam a prop `flat`.
+
+   Separador: borda direita nos todos os botões exceto o último.
+   Cor: var(--dss-gray-300) — subtil, adequada para fundo claro.
+   ========================================================================== */
+
+.dss-btn-group--flat {
+  > .dss-button:not(:last-child) {
+    border-right: var(--dss-border-width-thin) solid var(--dss-gray-300);
+  }
+}

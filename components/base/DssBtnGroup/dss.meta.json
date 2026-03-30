@@ -1,0 +1,104 @@
+{
+  "component": "DssBtnGroup",
+  "dssVersion": "2.2",
+  "status": "pre-audit",
+  "auditMode": "Aguardando Auditoria DSS v2.2",
+  "auditDate": null,
+  "goldenReference": "DssChip",
+  "goldenContext": "DssCard",
+  "goldenContextNote": "DssCard é o Golden Context por ser o componente composto de Fase 2 mais próximo semanticamente. Ambos são containers estruturais de composição.",
+  "category": "Container de Composição (Action Group)",
+  "phase": 2,
+  "phaseDescription": "Fase 2 — Componente Composto. O DssBtnGroup gerencia estado visual compartilhado entre múltiplos DssButton filhos (border-radius, separadores, layout). Isso caracteriza composição interna, critério da Fase 2.",
+  "hasReservations": false,
+  "classification": "Container de composição — Agrupa instâncias de DssButton com borda compartilhada e remoção de gap",
+  "subcomponents": [],
+  "compositionRequirements": ["DssButton"],
+  "compositionFuture": ["DssBtnDropdown"],
+  "compositionNote": "DssBtnGroup é container de layout e agrupamento visual. Props de estilo (flat, outline, push, unelevated, glossy) DEVEM ser declaradas tanto no grupo quanto em cada DssButton filho. O grupo NÃO propaga props automaticamente (comportamento intencional do Quasar — 'You must use same design props on both the parent QBtnGroup and the children QBtn').",
+  "propSyncRule": "CRÍTICO: Props de estilo devem ser declaradas no DssBtnGroup E em cada DssButton filho. Ver anti-pattern documentado em DssBtnGroup.md seção 9.",
+  "props": {
+    "DssBtnGroup": [
+      "flat",
+      "outline",
+      "push",
+      "unelevated",
+      "rounded",
+      "square",
+      "glossy",
+      "spread",
+      "stretch",
+      "brand",
+      "ariaLabel"
+    ]
+  },
+  "propsBlocked": ["dark", "color", "text-color", "size", "dense"],
+  "propsBlockedJustification": {
+    "dark": "O DSS gerencia dark mode via CSS global (body.body--dark / [data-theme=dark]), não via prop de componente.",
+    "color": "Pertence ao DssButton filho, não ao container do grupo.",
+    "text-color": "Pertence ao DssButton filho, não ao container do grupo.",
+    "size": "Pertence ao DssButton filho, não ao container do grupo.",
+    "dense": "Pertence ao DssButton filho, não ao container do grupo."
+  },
+  "statesApplicable": ["default"],
+  "statesNotApplicable": ["hover", "focus", "active", "disabled", "loading", "error", "indeterminate"],
+  "statesNotApplicableJustification": "DssBtnGroup é container estrutural. Todos os estados interativos (hover, focus, active, disabled, loading, error) pertencem exclusivamente aos DssButton filhos. O grupo em si não é focusável nem diretamente interativo. O estado 'indeterminate' não é aplicável a grupos de botões.",
+  "touchTarget": "Opção B — Não implementado. DssBtnGroup não é Compact Control. Touch target (::before WCAG 2.5.5) é responsabilidade exclusiva de cada DssButton filho.",
+  "ariaRole": "group",
+  "ariaLabel": "Opcional mas recomendado — descreve o propósito do grupo para leitores de tela",
+  "exceptions": [
+    {
+      "id": "EXC-01",
+      "value": "border-radius: 0",
+      "location": "2-composition/_base.scss (.dss-btn-group--square > .dss-button)",
+      "justification": "Square variant. Valor 0 é semanticamente 'sem radius', não hardcoded visual. Padrão idêntico ao DssCard EXC-03 e DssButton square variant."
+    },
+    {
+      "id": "EXC-02",
+      "value": "rgba(255, 255, 255, 0.12)",
+      "location": "4-output/_states.scss ([data-theme=dark] .dss-btn-group)",
+      "justification": "Dark mode divider entre botões. Nenhum token DSS fornece white com alpha parcial. Padrão Material Design: dividers em dark = white 12% opacity. Idêntico ao DssCard EXC-01."
+    },
+    {
+      "id": "EXC-03",
+      "value": "1px solid ButtonText",
+      "location": "4-output/_states.scss (@media forced-colors: active)",
+      "justification": "Forced-colors mode outline. System keywords são obrigatórios em forced-colors (tokens CSS são ignorados pelo navegador neste modo). Padrão DssCard EXC-04."
+    }
+  ],
+  "tokens": {
+    "border": [
+      "--dss-border-width-thin",
+      "--dss-border-width-thick",
+      "--dss-border-width-md"
+    ],
+    "colors": [
+      "--dss-gray-200",
+      "--dss-gray-300"
+    ],
+    "shape": [
+      "--dss-radius-full"
+    ],
+    "brand": [
+      "--dss-hub-600",
+      "--dss-hub-400",
+      "--dss-water-500",
+      "--dss-water-400",
+      "--dss-waste-600",
+      "--dss-waste-500"
+    ]
+  },
+  "cssArchitecture": {
+    "childStylingException": "O DssBtnGroup usa seletores CSS globais do tipo `.dss-btn-group > .dss-button` para gerenciar border-radius e separadores dos filhos. Esta é a única exceção documentada à regra 'componentes DSS não estilizam filhos internamente'. Justificativa: gerenciar visualmente os filhos É o propósito do componente group. Não usa ::v-deep (estilos globais, não scoped)."
+  },
+  "gateExceptions": {
+    "responsibilityGateV24": {
+      "location": "3-variants/_outline.scss",
+      "justification": "z-index/position em filhos para visibilidade de borda em grupo outline — não altera estado visual do botão, apenas contexto de empilhamento de grupo."
+    },
+    "compositionGateV24": {
+      "location": "2-composition/_base.scss e 3-variants/_flat.scss",
+      "justification": "Uso de seletores descendentes (> .dss-button) necessário para aplicar border-radius e margens contextuais de grupo, sem alterar a API interna do DssButton."
+    }
+  }
+}

@@ -1,0 +1,35 @@
+/* ==========================================================================
+   DssBtnToggle - MAIN MODULE (Orquestrador Final)
+
+   Filosofia DSS: Arquitetura em 4 Camadas
+
+   LAYER 1: Structure (Vue component — DssBtnToggle.ts.vue)
+   LAYER 2: Composition (Base styles — container, border-radius, layout)
+   LAYER 3: Variants (flat, outline, unelevated, push)
+   LAYER 4: Output (states, brands)
+
+   Este arquivo importa TODAS as camadas e gera o CSS final.
+   Ordem obrigatória: L2 → L3 → L4
+   ========================================================================== */
+
+/* Layer 2: Composition */
+@use './2-composition/base' as composition;
+
+/* Layer 3: Variants */
+@use './3-variants' as variants;
+
+/* Layer 4: Output */
+@use './4-output' as output;
+
+/* ==========================================================================
+   ACCESSIBILITY ENHANCEMENTS
+   ========================================================================== */
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .dss-btn-toggle {
+    outline: var(--dss-border-width-md) solid currentColor;
+  }
+}
+
+/* Reduced motion encapsulado pelo mixin dss-transition em 2-composition/_base.scss */

@@ -1,0 +1,103 @@
+/* ==========================================================================
+   DssBtnDropdown - LAYER 2: COMPOSITION (Base Styles)
+
+   Responsabilidade: Estilos fundamentais do container e do painel dropdown
+   usando APENAS tokens genéricos.
+
+   Filosofia DSS: Tokens = Provedores, Componentes = Consumidores
+
+   ARQUITETURA DE ESTILOS:
+   1. .dss-btn-dropdown — container wrapper do trigger (não scoped)
+   2. .dss-btn-dropdown__trigger — o QBtnDropdown em si
+   3. .dss-btn-dropdown__panel — painel teleportado (via popup-content-class)
+
+   Nota: Sem <style scoped> — necessário para que seletores globais do painel
+   funcionem. O painel é teleportado para o body e não recebe o atributo
+   de escopo do Vue. Precedente: DssBtnGroup NC-01 (Ciclo 1, Mar 2026).
+   ========================================================================== */
+
+@import '../../../../utils/index';
+
+/* ==========================================================================
+   CONTAINER DO TRIGGER
+   ========================================================================== */
+
+.dss-btn-dropdown {
+  /* Inline-flex para alinhar com outros elementos */
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+
+  /* Remove tap highlight em mobile */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ==========================================================================
+   TRIGGER (o QBtnDropdown em si)
+   O QBtnDropdown renderiza como .q-btn-dropdown internamente.
+   .dss-btn-dropdown__trigger é adicionado via class prop.
+   ========================================================================== */
+
+.dss-btn-dropdown__trigger {
+  /* Nenhum override aqui — QBtnDropdown gerencia seu layout interno */
+}
+
+/* ==========================================================================
+   MODO SPLIT — BORDER-RADIUS
+
+   EXC-01: border-radius: 0 na junção entre o botão de ação e a seta.
+   Justificativa: Valor 0 é semanticamente "sem radius na junção",
+   necessário para que os dois fragmentos (botão + seta) se unam
+   visualmente formando um único componente. Padrão DssCard EXC-03.
+
+   O QBtnDropdown em modo split renderiza dois elementos:
+   - .q-btn-dropdown__arrow-container (a seta)
+   - O botão principal
+   Ambos precisam ter border-radius ajustados na junção.
+   ========================================================================== */
+
+.dss-btn-dropdown--split {
+  .q-btn-dropdown__arrow-container {
+    border-top-left-radius: 0; /* EXC-01 */
+    border-bottom-left-radius: 0; /* EXC-01 */
+  }
+}
+
+/* ==========================================================================
+   VARIANTE SQUARE
+   Remove border-radius do trigger inteiro.
+
+   EXC-02: border-radius: 0 para cantos completamente retos.
+   Justificativa: idêntico ao EXC-01 — valor semântico, não hardcoded visual.
+   ========================================================================== */
+
+.dss-btn-dropdown--square {
+  .dss-btn-dropdown__trigger {
+    border-radius: 0; /* EXC-02 */
+  }
+}
+
+/* ==========================================================================
+   PAINEL DROPDOWN (teleportado — popup-content-class)
+
+   O painel é um QMenu teleportado para o body.
+   A classe .dss-btn-dropdown__panel é injetada via popup-content-class.
+   Precedente: DssSelect usa mesmo padrão (_panel.scss).
+   ========================================================================== */
+
+.dss-btn-dropdown__panel {
+  /* Background da superfície padrão */
+  background-color: var(--dss-surface-default);
+
+  /* Elevação do painel */
+  box-shadow: var(--dss-elevation-2);
+
+  /* Border-radius do painel */
+  border-radius: var(--dss-radius-md);
+
+  /* Largura mínima razoável */
+  min-width: 160px; /* EXC-05 */
+
+  /* Overflow para conteúdo com border-radius */
+  overflow: hidden;
+}

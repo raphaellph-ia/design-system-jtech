@@ -1,0 +1,78 @@
+/* ==========================================================================
+   DssBtnDropdown - LAYER 4: OUTPUT (States)
+
+   Responsabilidade: Dark mode, prefers-contrast, forced-colors, print.
+   Aplica-se ao container .dss-btn-dropdown e ao painel .dss-btn-dropdown__panel.
+   ========================================================================== */
+
+/* ==========================================================================
+   DARK MODE
+   ========================================================================== */
+
+[data-theme="dark"] {
+  /* Painel em dark mode */
+  .dss-btn-dropdown__panel {
+    /* Separador sutil entre itens de lista no painel (dark)
+       EXC-03: rgba(255,255,255,0.12) — sem token DSS equivalente para white alpha.
+       Padrão Material Design: dividers em dark = white 12% opacity.
+       Idêntico ao DssCard EXC-01 e DssBtnGroup EXC-02. */
+    --dss-dropdown-panel-divider-color: rgba(255, 255, 255, 0.12); /* EXC-03 */
+  }
+
+  /* Separadores de split em dark mode */
+  .dss-btn-dropdown--flat.dss-btn-dropdown--split {
+    .q-btn-dropdown__arrow-container {
+      border-left-color: rgba(255, 255, 255, 0.12); /* EXC-03 */
+    }
+  }
+
+  .dss-btn-dropdown--unelevated.dss-btn-dropdown--split {
+    .q-btn-dropdown__arrow-container {
+      border-left-color: rgba(255, 255, 255, 0.12); /* EXC-03 */
+    }
+  }
+}
+
+/* ==========================================================================
+   HIGH CONTRAST (prefers-contrast: more)
+   ========================================================================== */
+
+@media (prefers-contrast: more) {
+  .dss-btn-dropdown__panel {
+    border: var(--dss-border-width-md) solid currentColor;
+  }
+}
+
+/* ==========================================================================
+   FORCED COLORS (Windows High Contrast Mode)
+
+   EXC-04: 1px solid ButtonBorder / ButtonText
+   Justificativa: Forced-colors mode — system color keywords são obrigatórios.
+   Tokens CSS são ignorados pelo navegador neste modo.
+   Padrão DssCard EXC-04 e DssBtnGroup EXC-03.
+   ========================================================================== */
+
+@media (forced-colors: active) {
+  .dss-btn-dropdown__panel {
+    border: 1px solid ButtonBorder; /* EXC-04 */
+    background-color: Canvas;
+    color: ButtonText;
+  }
+
+  .dss-btn-dropdown--split {
+    .q-btn-dropdown__arrow-container {
+      border-left: 1px solid ButtonText; /* EXC-04 */
+    }
+  }
+}
+
+/* ==========================================================================
+   PRINT
+   ========================================================================== */
+
+@media print {
+  /* O painel dropdown não é relevante para impressão */
+  .dss-btn-dropdown__panel {
+    display: none;
+  }
+}

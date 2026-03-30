@@ -1,0 +1,9 @@
+/* ==========================================================================
+   DssBtnDropdown - LAYER 4: OUTPUT Orchestrator
+
+   Importa os arquivos de states e brands.
+   Ordem: states primeiro (dark/contrast/forced-colors), então brands.
+   ========================================================================== */
+
+@use './states' as states;
+@use './brands' as brands;

@@ -47,9 +47,11 @@ Todos os componentes abaixo possuem **Selo DSS v2.2 emitido** e são considerado
 
 ### Fase 2 — Em andamento
 
-| Componente | Categoria | Status |
-|---|---|---|
-| **DssCard** | Container / Superfície | `conformant` — Selado |
+| Componente | Categoria | Golden Reference | Status |
+|---|---|---|---|
+| **DssCard** | Container / Superfície | DssChip | `conformant` — Selado |
+| **DssBtnGroup** | Container de Composicao (Action Group) | DssChip | `conformant` — Selado (26 Mar 2026) |
+| **DssBtnDropdown** | Action Group Composto (Botao com Dropdown Integrado) | DssChip | `conformant` — Selado (27 Mar 2026) |
 
 > Componentes selados **NÃO DEVEM ser re-arquitetados**. Apenas correções pontuais mediante nova auditoria.
 

@@ -1,0 +1,63 @@
+/* ==========================================================================
+   DssBtnDropdown - LAYER 4: OUTPUT (Brands)
+
+   Responsabilidade: Variações de marca (Hub, Water, Waste).
+   Acento visual de marca na borda inferior do trigger.
+
+   Nota: Tokens de brand numéricos (--dss-hub-600, etc.) são usados
+   intencionalmente — tokens semânticos de brand ainda não existem no catálogo.
+   Padrão idêntico ao DssCard brands e DssBtnGroup brands.
+   ========================================================================== */
+
+/* ==========================================================================
+   HUB BRAND (Laranja)
+   ========================================================================== */
+
+[data-brand="hub"] .dss-btn-dropdown--brand-hub,
+.dss-btn-dropdown--brand-hub {
+  /* Acento de marca na borda inferior do container do trigger */
+  > .dss-btn-dropdown__trigger {
+    box-shadow: inset 0 calc(-1 * var(--dss-border-width-thick)) 0 var(--dss-hub-600);
+  }
+}
+
+/* ==========================================================================
+   WATER BRAND (Azul)
+   ========================================================================== */
+
+[data-brand="water"] .dss-btn-dropdown--brand-water,
+.dss-btn-dropdown--brand-water {
+  > .dss-btn-dropdown__trigger {
+    box-shadow: inset 0 calc(-1 * var(--dss-border-width-thick)) 0 var(--dss-water-500);
+  }
+}
+
+/* ==========================================================================
+   WASTE BRAND (Verde)
+   ========================================================================== */
+
+[data-brand="waste"] .dss-btn-dropdown--brand-waste,
+.dss-btn-dropdown--brand-waste {
+  > .dss-btn-dropdown__trigger {
+    box-shadow: inset 0 calc(-1 * var(--dss-border-width-thick)) 0 var(--dss-waste-600);
+  }
+}
+
+/* ==========================================================================
+   DARK MODE - BRAND ADJUSTMENTS
+   Clareia as cores de brand em dark mode para melhor contraste.
+   ========================================================================== */
+
+[data-theme="dark"] {
+  .dss-btn-dropdown--brand-hub > .dss-btn-dropdown__trigger {
+    box-shadow: inset 0 calc(-1 * var(--dss-border-width-thick)) 0 var(--dss-hub-400);
+  }
+
+  .dss-btn-dropdown--brand-water > .dss-btn-dropdown__trigger {
+    box-shadow: inset 0 calc(-1 * var(--dss-border-width-thick)) 0 var(--dss-water-400);
+  }
+
+  .dss-btn-dropdown--brand-waste > .dss-btn-dropdown__trigger {
+    box-shadow: inset 0 calc(-1 * var(--dss-border-width-thick)) 0 var(--dss-waste-500);
+  }
+}

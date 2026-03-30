@@ -1,0 +1,135 @@
+/* ==========================================================================
+   DssBtnToggle - LAYER 2: COMPOSITION (Base Styles)
+
+   Responsabilidade: Estilos fundamentais do container de alternância
+   usando APENAS tokens genéricos.
+
+   Filosofia DSS: Tokens = Provedores, Componentes = Consumidores
+
+   NOTA ARQUITETURAL (Gate de Composição v2.4 — pré-formalizado):
+   O DssBtnToggle usa seletores CSS globais do tipo `.dss-btn-toggle > .q-btn-item`
+   para gerenciar border-radius nas extremidades e separadores visuais.
+   `.q-btn-item` é um elemento DOM interno do QBtnToggle (Quasar),
+   NÃO um subcomponente DSS filho. O Gate de Composição v2.4 aplica-se
+   exclusivamente a componentes DSS filhos.
+   Precedente: DssBtnGroup registra exceção equivalente para seletores
+   em `.dss-button` internos (selado Mar 2026).
+   Registrado em dss.meta.json → gateExceptions.compositionGateV24.
+   ========================================================================== */
+
+@import '../../../../utils/index';
+
+/* ==========================================================================
+   CONTAINER BASE DO GRUPO DE ALTERNÂNCIA
+   ========================================================================== */
+
+.dss-btn-toggle {
+  /* Remove tap highlight em mobile (padrão Golden Reference DssChip) */
+  -webkit-tap-highlight-color: transparent;
+
+  /* Transição suave */
+  @include dss-transition(all, 'fast');
+}
+
+/* ==========================================================================
+   GERENCIAMENTO DE BORDER-RADIUS DOS BOTÕES INTERNOS
+
+   O QBtnToggle renderiza cada opção como um elemento com classe .q-btn-item.
+   O DssBtnToggle aplica border-radius apenas nas extremidades do grupo.
+   Botões internos têm border-radius: 0 nas faces adjacentes.
+
+   Gate de Composição v2.4 — uso de .q-btn-item (seletor Quasar interno).
+   Registrado em dss.meta.json → gateExceptions.compositionGateV24.
+   ========================================================================== */
+
+/* Primeiro botão: remove corners da direita (face interna) */
+.dss-btn-toggle > .q-btn-item:first-child:not(:only-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* Último botão: remove corners da esquerda (face interna) */
+.dss-btn-toggle > .q-btn-item:last-child:not(:only-child) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/* Botões intermediários: sem border-radius */
+.dss-btn-toggle > .q-btn-item:not(:first-child):not(:last-child) {
+  border-radius: 0;
+}
+
+/* ==========================================================================
+   VARIANTE ROUNDED
+   Aplica cantos completamente arredondados (pill) nas extremidades do grupo.
+   Botões intermediários continuam com border-radius: 0.
+   ========================================================================== */
+
+.dss-btn-toggle--rounded > .q-btn-item:first-child:not(:only-child) {
+  border-top-left-radius: var(--dss-radius-full);
+  border-bottom-left-radius: var(--dss-radius-full);
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.dss-btn-toggle--rounded > .q-btn-item:last-child:not(:only-child) {
+  border-top-right-radius: var(--dss-radius-full);
+  border-bottom-right-radius: var(--dss-radius-full);
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.dss-btn-toggle--rounded > .q-btn-item:only-child {
+  border-radius: var(--dss-radius-full);
+}
+
+/* ==========================================================================
+   VARIANTE SQUARE
+
+   EXC-01: border-radius: 0
+   Justificativa: Square variant. Valor 0 é semanticamente "sem radius",
+   não hardcoded visual. Padrão idêntico ao DssBtnGroup EXC-01 e DssCard EXC-03.
+   ========================================================================== */
+
+.dss-btn-toggle--square > .q-btn-item {
+  border-radius: 0; /* EXC-01 */
+}
+
+/* ==========================================================================
+   VARIANTE SPREAD
+   Botões distribuídos horizontalmente ocupando toda a largura disponível.
+   ========================================================================== */
+
+.dss-btn-toggle--spread {
+  display: flex;
+  width: 100%;
+
+  > .q-btn-item {
+    flex: 1;
+  }
+}
+
+/* ==========================================================================
+   VARIANTE STRETCH
+   Em contexto flexbox, o grupo e seus botões esticam até a altura do pai.
+   ========================================================================== */
+
+.dss-btn-toggle--stretch {
+  align-self: stretch;
+
+  > .q-btn-item {
+    align-self: stretch;
+    min-height: 0; /* Remove min-height do botão interno para esticar livremente */
+  }
+}
+
+/* ==========================================================================
+   ESTADO READONLY
+   Visualmente presente mas sem interação.
+   O cursor indica não-interatividade sem remover o foco (diferente de disabled).
+   ========================================================================== */
+
+.dss-btn-toggle--readonly {
+  cursor: default;
+  pointer-events: none;
+}

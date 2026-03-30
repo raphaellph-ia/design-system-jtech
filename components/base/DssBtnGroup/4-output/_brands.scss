@@ -1,0 +1,57 @@
+/* ==========================================================================
+   DssBtnGroup - LAYER 4: OUTPUT (Brands)
+
+   Responsabilidade: Variações de marca (Hub, Water, Waste).
+   Acento visual de marca na borda inferior do container do grupo.
+
+   Nota: Tokens de brand numéricos (--dss-hub-600, etc.) são usados
+   intencionalmente — tokens semânticos de brand ainda não existem no catálogo.
+   Padrão idêntico ao DssCard brands.
+   ========================================================================== */
+
+/* ==========================================================================
+   HUB BRAND (Laranja)
+   ========================================================================== */
+
+[data-brand="hub"] .dss-btn-group--brand-hub,
+.dss-btn-group--brand-hub {
+  /* Acento de marca na borda inferior do grupo */
+  box-shadow: inset 0 calc(-1 * var(--dss-border-width-thick)) 0 var(--dss-hub-600);
+}
+
+/* ==========================================================================
+   WATER BRAND (Azul)
+   ========================================================================== */
+
+[data-brand="water"] .dss-btn-group--brand-water,
+.dss-btn-group--brand-water {
+  box-shadow: inset 0 calc(-1 * var(--dss-border-width-thick)) 0 var(--dss-water-500);
+}
+
+/* ==========================================================================
+   WASTE BRAND (Verde)
+   ========================================================================== */
+
+[data-brand="waste"] .dss-btn-group--brand-waste,
+.dss-btn-group--brand-waste {
+  box-shadow: inset 0 calc(-1 * var(--dss-border-width-thick)) 0 var(--dss-waste-600);
+}
+
+/* ==========================================================================
+   DARK MODE - BRAND ADJUSTMENTS
+   Clareia as cores de brand em dark mode para melhor contraste.
+   ========================================================================== */
+
+[data-theme="dark"] {
+  .dss-btn-group--brand-hub {
+    box-shadow: inset 0 calc(-1 * var(--dss-border-width-thick)) 0 var(--dss-hub-400);
+  }
+
+  .dss-btn-group--brand-water {
+    box-shadow: inset 0 calc(-1 * var(--dss-border-width-thick)) 0 var(--dss-water-400);
+  }
+
+  .dss-btn-group--brand-waste {
+    box-shadow: inset 0 calc(-1 * var(--dss-border-width-thick)) 0 var(--dss-waste-500);
+  }
+}

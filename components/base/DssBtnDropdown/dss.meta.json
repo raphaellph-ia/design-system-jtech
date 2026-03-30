@@ -1,0 +1,143 @@
+{
+  "component": "DssBtnDropdown",
+  "dssVersion": "2.2",
+  "status": "conformant",
+  "auditMode": "Selo DSS v2.2 Concedido",
+  "auditDate": "2026-03-27",
+  "goldenReference": "DssChip",
+  "goldenContext": "DssCard",
+  "goldenContextNote": "DssCard é o Golden Context por ser o componente composto de Fase 2 mais próximo semanticamente. DssBtnGroup é referência adicional por ser o precedente direto de Action Group (Fase 2, selado Mar 2026).",
+  "category": "Action Group Composto (Botão com Dropdown Integrado)",
+  "phase": 2,
+  "phaseDescription": "Fase 2 — Componente Composto. O DssBtnDropdown gerencia estado visual compartilhado entre trigger (botão) e painel (dropdown), coordenando posicionamento, animações e acessibilidade entre os dois elementos.",
+  "hasReservations": true,
+  "classification": "Wrapper governado de QBtnDropdown — trigger + painel dropdown com estilos DSS",
+  "subcomponents": [],
+  "compositionRequirements": ["DssButton", "DssIcon"],
+  "compositionNote": "DssBtnDropdown envolve QBtnDropdown diretamente. Não usa DssButton como filho explícito — o trigger é renderizado internamente pelo QBtnDropdown. DssIcon pode ser usado via prop `icon` ou slot `label`.",
+  "wrapperApproach": "WRAP QBtnDropdown — não reconstrói trigger do zero. Justificativa: QBtnDropdown fornece posicionamento, acessibilidade WAI-ARIA, animações e keyboard navigation nativos. Rebuilding seria duplicação de esforço sem ganho arquitetural.",
+  "variantMapping": {
+    "elevated": "nenhuma prop booleana (padrão Quasar)",
+    "flat": "flat: true",
+    "outline": "outline: true",
+    "unelevated": "unelevated: true"
+  },
+  "panelStyleStrategy": "popup-content-class='dss-btn-dropdown__panel' — injetado no QMenu teleportado. Precedente: DssSelect (selado Mar 2026).",
+  "props": {
+    "DssBtnDropdown": [
+      "label",
+      "icon",
+      "iconRight",
+      "variant",
+      "color",
+      "textColor",
+      "size",
+      "square",
+      "rounded",
+      "dense",
+      "split",
+      "disable",
+      "loading",
+      "closeOnEsc",
+      "dropdownIcon",
+      "menuAnchor",
+      "menuSelf",
+      "menuOffset",
+      "stretch",
+      "persistent",
+      "brand",
+      "ariaLabel"
+    ]
+  },
+  "propsBlocked": ["dark", "glossy", "push", "no-caps", "no-wrap", "ripple"],
+  "propsBlockedJustification": {
+    "dark": "O DSS gerencia dark mode via CSS global (body.body--dark / [data-theme=dark]), não via prop de componente.",
+    "glossy": "Estilo glossy não é parte da linguagem visual DSS v2.2.",
+    "push": "Estilo push (3D) não é parte da linguagem visual DSS v2.2 para dropdowns.",
+    "no-caps": "Comportamento de casing é gerenciado por tokens de tipografia DSS, não por prop.",
+    "no-wrap": "Controle de wrapping via CSS contextual, não prop.",
+    "ripple": "Efeito ripple gerenciado globalmente pelo Quasar, não configurável por componente no DSS."
+  },
+  "statesApplicable": ["default", "disabled", "loading"],
+  "statesNotApplicable": ["hover", "focus", "active", "error", "indeterminate", "checked"],
+  "statesNotApplicableJustification": "DssBtnDropdown é container-trigger composto. Estados hover/focus/active pertencem ao QBtnDropdown interno (trigger) e aos itens do painel. Error, indeterminate e checked não são estados aplicáveis a botões de ação.",
+  "touchTarget": "Opção B — Delegado ao QBtnDropdown interno. O trigger do QBtnDropdown já implementa touch target adequado. DssBtnDropdown não é Compact Control standalone.",
+  "ariaRole": "delegado ao QBtnDropdown — role='button' com aria-haspopup='true' e aria-expanded gerenciados pelo Quasar",
+  "accessibility": {
+    "keyboardNavigation": "Totalmente gerenciado pelo QBtnDropdown: Enter/Space abre/fecha, Escape fecha, Arrow keys navegam no painel",
+    "screenReader": "aria-haspopup='true' e aria-expanded gerenciados pelo Quasar automaticamente",
+    "ariaLabel": "Prop ariaLabel disponível para contextos sem label visual suficientemente descritivo"
+  },
+  "exceptions": [
+    {
+      "id": "EXC-01",
+      "value": "border-radius: 0",
+      "location": "2-composition/_base.scss (.dss-btn-dropdown--split .q-btn-dropdown__arrow-container)",
+      "justification": "Modo split — junção entre botão e seta precisa de border-radius 0 para união visual. Valor semântico, não hardcoded visual. Padrão DssCard EXC-03."
+    },
+    {
+      "id": "EXC-02",
+      "value": "border-radius: 0",
+      "location": "2-composition/_base.scss (.dss-btn-dropdown--square .dss-btn-dropdown__trigger)",
+      "justification": "Square variant — border-radius 0 é semanticamente 'sem arredondamento', não hardcoded visual. Padrão DssBtnGroup EXC-01."
+    },
+    {
+      "id": "EXC-03",
+      "value": "rgba(255, 255, 255, 0.12)",
+      "location": "4-output/_states.scss ([data-theme=dark])",
+      "justification": "Dark mode dividers — sem token DSS equivalente para white com alpha parcial. Padrão Material Design. Idêntico ao DssCard EXC-01 e DssBtnGroup EXC-02."
+    },
+    {
+      "id": "EXC-04",
+      "value": "1px solid ButtonBorder",
+      "location": "4-output/_states.scss (@media forced-colors: active)",
+      "justification": "Forced-colors mode — system color keywords obrigatórios. Tokens CSS ignorados pelo navegador neste modo. Padrão DssCard EXC-04 e DssBtnGroup EXC-03."
+    },
+    {
+      "id": "EXC-05",
+      "value": "min-width: 160px",
+      "location": "2-composition/_base.scss (.dss-btn-dropdown__panel)",
+      "justification": "Valor de UX contextual para painéis dropdown. Não há token de sizing genérico no catálogo DSS v2.2 que cubra semanticamente a largura mínima de um painel flutuante. Amplamente aceito como convenção de UI (Material Design, Ant Design). Decisão arquitetural aprovada pelo Chat Estratégico (Mar 2026)."
+    }
+  ],
+  "gateExceptions": {
+    "compositionGateV24": {
+      "files": [
+        "2-composition/_base.scss",
+        "3-variants/_flat.scss",
+        "3-variants/_outline.scss",
+        "3-variants/_unelevated.scss"
+      ],
+      "selector": ".q-btn-dropdown__arrow-container",
+      "justification": "Uso de seletor interno do Quasar (.q-btn-dropdown__arrow-container) necessário para estilizar o separador e o border-radius do modo split. Não quebra o encapsulamento de componentes DSS filhos — .q-btn-dropdown__arrow-container é um elemento DOM interno do QBtnDropdown (Quasar), não um subcomponente DSS. Gate de Composição v2.4 aplica-se exclusivamente a componentes DSS filhos. Precedente: DssBtnGroup registra exceção equivalente para seletores em .q-btn internos (selado Mar 2026)."
+    }
+  },
+  "tokens": {
+    "surface": [
+      "--dss-surface-default"
+    ],
+    "elevation": [
+      "--dss-elevation-2"
+    ],
+    "shape": [
+      "--dss-radius-md"
+    ],
+    "border": [
+      "--dss-border-width-thin",
+      "--dss-border-width-thick",
+      "--dss-border-width-md"
+    ],
+    "colors": [
+      "--dss-gray-200",
+      "--dss-gray-300"
+    ],
+    "brand": [
+      "--dss-hub-600",
+      "--dss-hub-400",
+      "--dss-water-500",
+      "--dss-water-400",
+      "--dss-waste-600",
+      "--dss-waste-500"
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+/* ==========================================================================
+   DssBtnToggle - LAYER 3: VARIANTS - Push
+
+   Variante com efeito 3D (sombra inferior). O efeito visual de push
+   (sombra, profundidade) é gerenciado inteiramente pelo QBtnToggle/QBtn
+   via a prop `push: true`.
+
+   Este arquivo existe para completude da camada 3 e para documentar
+   a decisão arquitetural de não sobrescrever o efeito nativo do Quasar.
+
+   Não há CSS adicional — o Quasar gerencia o efeito push nativamente.
+   ========================================================================== */
+
+/* Placeholder intencional — variante push gerenciada pelo Quasar */

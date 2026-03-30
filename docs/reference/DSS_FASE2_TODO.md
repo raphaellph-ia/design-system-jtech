@@ -12,9 +12,8 @@
 
 ### Família: Botões e Controles de Grupo
 
-- [x] ~~`DssCard`~~ ✅ **SELADO**
-- [ ] `DssBtnGroup` — Agrupa DssButtons com borda compartilhada *(próximo a criar)*
-- [ ] `DssBtnDropdown` — Botão com menu dropdown integrado
+- [x] ~~`DssBtnGroup`~~ ✅ **SELADO**
+- [x] ~~`DssBtnDropdown`~~ ✅ **SELADO**
 - [ ] `DssBtnToggle` — Grupo de botões com seleção exclusiva (radio-like)
 - [ ] `DssOptionGroup` — Grupo de Radio, Checkbox ou Toggle com label
 
@@ -53,6 +52,10 @@
 ### Família: Estrutura de Página (Base)
 
 - [ ] `DssToolbar` — Barra de ações horizontal (base para Header/Footer)
+
+### Família: Superfícies e Layout
+
+- [x] ~~`DssCard`~~ ✅ **SELADO**
 
 ### Família: Mídia e Visualização
 
@@ -200,9 +203,9 @@
 | Nível | Total | Selados | % Concluído |
 |---|---|---|---|
 | Fase 1 | 19 | 19 | 100% |
-| Fase 2 — Nível 1 | 37 | 1 | 3% |
+| Fase 2 — Nível 1 | 36 | 3 | 8% |
 | Fase 2 — Nível 2 | 16 | 0 | 0% |
 | Fase 2 — Nível 3 | 7 | 0 | 0% |
 | Fase 2 — Nível 4 | 7 | 0 | 0% |
-| **Fase 2 Total** | **67** | **1** | **1%** |
+| **Fase 2 Total** | **66** | **3** | **5%** |
 | Fase 3 | 6 | N/A | — |
