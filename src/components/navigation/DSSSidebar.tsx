@@ -11,6 +11,7 @@ import {
   SidebarMenuItem,
   SidebarHeader,
   SidebarFooter,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import {
   Home,
@@ -106,6 +107,8 @@ const navigation = {
 
 export function DSSSidebar() {
   const location = useLocation();
+  const { state } = useSidebar();
+  const collapsed = state === "collapsed";
   const currentPath = location.pathname;
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
@@ -155,12 +158,12 @@ export function DSSSidebar() {
     >
       {/* Header com hover effect */}
       <SidebarHeader 
-        className="p-4 border-b transition-all duration-200" 
+        className={cn("border-b transition-all duration-200", collapsed ? "p-3" : "p-4")} 
         style={{ borderColor: 'hsl(var(--sidebar-border))' }}
       >
         <Link 
           to="/" 
-          className="flex items-center gap-3 group"
+          className={cn("flex items-center group", collapsed ? "justify-center" : "gap-3")}
         >
           <div 
             className="h-9 w-9 rounded-lg flex items-center justify-center shadow-sm 
@@ -175,20 +178,22 @@ export function DSSSidebar() {
               JT
             </span>
           </div>
-          <div className="flex flex-col">
-            <span 
-              className="font-semibold text-sm transition-colors duration-200 group-hover:text-white" 
-              style={{ color: 'hsl(var(--sidebar-foreground))' }}
-            >
-              DSS
-            </span>
-            <span 
-              className="text-xs transition-colors duration-200" 
-              style={{ color: 'hsl(var(--sidebar-muted))' }}
-            >
-              Design System Sansys
-            </span>
-          </div>
+          {!collapsed && (
+            <div className="flex flex-col overflow-hidden">
+              <span 
+                className="font-semibold text-sm transition-colors duration-200 group-hover:text-white" 
+                style={{ color: 'hsl(var(--sidebar-foreground))' }}
+              >
+                DSS
+              </span>
+              <span 
+                className="text-xs transition-colors duration-200" 
+                style={{ color: 'hsl(var(--sidebar-muted))' }}
+              >
+                Design System Sansys
+              </span>
+            </div>
+          )}
         </Link>
       </SidebarHeader>
 
@@ -204,9 +209,12 @@ export function DSSSidebar() {
             {/* Section Label com toggle */}
             <button
               onClick={() => toggleSection(key)}
-              className="w-full flex items-center justify-between text-[10px] uppercase tracking-wider 
-                         font-semibold px-3 py-2 rounded-md transition-all duration-200
-                         hover:bg-white/5 group cursor-pointer"
+              className={cn(
+                "w-full flex items-center justify-between text-[10px] uppercase tracking-wider",
+                "font-semibold px-3 py-2 rounded-md transition-all duration-200",
+                "hover:bg-white/5 group cursor-pointer",
+                collapsed && "hidden"
+              )}
               style={{ color: 'hsl(var(--sidebar-muted))' }}
             >
               <span className="transition-colors duration-200 group-hover:text-white/80">
@@ -240,7 +248,7 @@ export function DSSSidebar() {
                           animationDelay: `${(sectionIndex * 50) + (itemIndex * 30)}ms`,
                         }}
                       >
-                        <SidebarMenuButton asChild isActive={active}>
+                        <SidebarMenuButton asChild isActive={active} tooltip={item.title}>
                           <Link
                             to={item.url}
                             className={cn(
@@ -263,19 +271,20 @@ export function DSSSidebar() {
                             onMouseEnter={() => setHoveredItem(item.url)}
                             onMouseLeave={() => setHoveredItem(null)}
                           >
-                            {/* Active indicator bar */}
-                            <div 
-                              className={cn(
-                                "absolute left-0 top-1/2 -translate-y-1/2 w-[3px] rounded-full",
-                                "transition-all duration-300 ease-out"
-                              )}
-                              style={{
-                                height: active ? '60%' : '0%',
-                                backgroundColor: 'var(--dss-jtech-accent)',
-                                opacity: active ? 1 : 0,
-                                boxShadow: active ? '0 0 8px rgba(196, 30, 58, 0.5)' : 'none',
-                              }}
-                            />
+                            {!collapsed && (
+                              <div 
+                                className={cn(
+                                  "absolute left-0 top-1/2 -translate-y-1/2 w-[3px] rounded-full",
+                                  "transition-all duration-300 ease-out"
+                                )}
+                                style={{
+                                  height: active ? '60%' : '0%',
+                                  backgroundColor: 'var(--dss-jtech-accent)',
+                                  opacity: active ? 1 : 0,
+                                  boxShadow: active ? '0 0 8px rgba(196, 30, 58, 0.5)' : 'none',
+                                }}
+                              />
+                            )}
 
                             {/* Icon with animations */}
                             <div className="relative">
@@ -304,18 +313,19 @@ export function DSSSidebar() {
                               )}
                             </div>
 
-                            {/* Title */}
-                            <span 
-                              className={cn(
-                                "flex-1 transition-all duration-200",
-                                hovered && !active && "translate-x-0.5"
-                              )}
-                            >
-                              {item.title}
-                            </span>
+                            {!collapsed && (
+                              <span 
+                                className={cn(
+                                  "flex-1 transition-all duration-200",
+                                  hovered && !active && "translate-x-0.5"
+                                )}
+                              >
+                                {item.title}
+                              </span>
+                            )}
 
                             {/* Status indicator with tooltip */}
-                            {"status" in item && item.status && (
+                            {!collapsed && "status" in item && item.status && (
                               <div className="relative group/status">
                                 <span
                                   className={cn(
@@ -343,14 +353,15 @@ export function DSSSidebar() {
                               </div>
                             )}
 
-                            {/* Arrow indicator on active */}
-                            <ChevronRight 
-                              className={cn(
-                                "h-3 w-3 transition-all duration-300 ease-out",
-                                active ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"
-                              )}
-                              style={{ color: 'var(--dss-jtech-accent)' }}
-                            />
+                            {!collapsed && (
+                              <ChevronRight 
+                                className={cn(
+                                  "h-3 w-3 transition-all duration-300 ease-out",
+                                  active ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"
+                                )}
+                                style={{ color: 'var(--dss-jtech-accent)' }}
+                              />
+                            )}
                           </Link>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
@@ -365,28 +376,30 @@ export function DSSSidebar() {
 
       {/* Footer com hover effects */}
       <SidebarFooter 
-        className="p-4 border-t transition-colors duration-200" 
+        className={cn("border-t transition-colors duration-200", collapsed ? "p-3" : "p-4")} 
         style={{ borderColor: 'hsl(var(--sidebar-border))' }}
       >
         <div 
-          className="flex items-center justify-between text-xs"
+          className={cn("flex items-center text-xs", collapsed ? "justify-center" : "justify-between")}
           style={{ color: 'hsl(var(--sidebar-muted))' }}
         >
           <div className="flex items-center gap-2 group cursor-pointer transition-colors duration-200 hover:text-white/80">
             <Settings className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-90" />
-            <span>v2.0.0</span>
+            {!collapsed && <span>v2.0.0</span>}
           </div>
-          <span 
-            className="px-2 py-0.5 rounded text-[10px] font-medium
-                       transition-all duration-200 hover:scale-105 cursor-pointer"
-            style={{ 
-              backgroundColor: 'var(--dss-jtech-accent)', 
-              color: '#ffffff',
-              boxShadow: '0 2px 8px rgba(196, 30, 58, 0.3)',
-            }}
-          >
-            Jtech
-          </span>
+          {!collapsed && (
+            <span 
+              className="px-2 py-0.5 rounded text-[10px] font-medium
+                         transition-all duration-200 hover:scale-105 cursor-pointer"
+              style={{ 
+                backgroundColor: 'var(--dss-jtech-accent)', 
+                color: '#ffffff',
+                boxShadow: '0 2px 8px rgba(196, 30, 58, 0.3)',
+              }}
+            >
+              Jtech
+            </span>
+          )}
         </div>
       </SidebarFooter>
     </Sidebar>
