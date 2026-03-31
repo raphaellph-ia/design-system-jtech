@@ -189,6 +189,7 @@ const Sidebar = React.forwardRef<
             ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4)_+_2px)]"
             : "group-data-[collapsible=icon]:w-[var(--sidebar-width-icon)]",
         )}
+      >
         <div
           data-sidebar="sidebar"
           className={cn(
