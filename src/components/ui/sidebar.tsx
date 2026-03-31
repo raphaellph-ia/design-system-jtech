@@ -141,7 +141,7 @@ const Sidebar = React.forwardRef<
   if (collapsible === "none") {
     return (
       <div
-        className={cn("flex h-full w-[--sidebar-width] flex-col bg-sidebar text-sidebar-foreground", className)}
+        className={cn("flex h-full w-[var(--sidebar-width)] flex-col bg-sidebar text-sidebar-foreground", className)}
         ref={ref}
         {...props}
       >
@@ -156,7 +156,7 @@ const Sidebar = React.forwardRef<
         <SheetContent
           data-sidebar="sidebar"
           data-mobile="true"
-          className="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
+          className="w-[var(--sidebar-width)] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
           style={
             {
               "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
@@ -173,7 +173,7 @@ const Sidebar = React.forwardRef<
   return (
     <div
       ref={ref}
-      className="group peer hidden md:flex text-sidebar-foreground shrink-0"
+      className="group peer relative hidden shrink-0 text-sidebar-foreground md:flex"
       data-state={state}
       data-collapsible={state === "collapsed" ? collapsible : ""}
       data-variant={variant}
@@ -181,21 +181,25 @@ const Sidebar = React.forwardRef<
     >
       <div
         className={cn(
-          "duration-200 relative h-svh w-[--sidebar-width] overflow-hidden transition-[width] ease-linear",
+          "relative h-svh shrink-0 overflow-hidden transition-[width] duration-200 ease-linear",
+          "w-[var(--sidebar-width)]",
           "group-data-[collapsible=offcanvas]:w-0",
+          side === "right" && "order-last",
           variant === "floating" || variant === "inset"
-            ? "group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4))]"
-            : "group-data-[collapsible=icon]:w-[--sidebar-width-icon]",
-          variant === "sidebar"
-            ? "group-data-[side=left]:border-r group-data-[side=right]:border-l"
-            : "",
-          className,
+            ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4)_+_2px)]"
+            : "group-data-[collapsible=icon]:w-[var(--sidebar-width-icon)]",
         )}
-        {...props}
       >
         <div
           data-sidebar="sidebar"
-          className="flex h-full w-[--sidebar-width] flex-col bg-sidebar group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow"
+          className={cn(
+            "flex h-full w-[var(--sidebar-width)] min-w-0 flex-col bg-sidebar",
+            "group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow",
+            "group-data-[variant=inset]:rounded-lg",
+            variant === "sidebar" && "group-data-[side=left]:border-r group-data-[side=right]:border-l border-sidebar-border",
+            className,
+          )}
+          {...props}
         >
           {children}
         </div>
