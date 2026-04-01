@@ -233,7 +233,7 @@ export function DSSSidebar() {
             <div
               className={cn(
                 "overflow-hidden transition-all duration-300 ease-out",
-                expandedSections[key] ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                expandedSections[key] ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
               )}
             >
               <SidebarGroupContent>
