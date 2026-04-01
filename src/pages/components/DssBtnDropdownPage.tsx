@@ -65,6 +65,7 @@ const propsData = [
 const anatomyData = {
   structure: {
     files: ["DssBtnDropdown.ts.vue"],
+    description: "Template Vue com div wrapper, QBtnDropdown interno e composable de classes. Mapeia variant para props booleanas Quasar.",
     responsibilities: [
       "Template div wrapper com classes DSS computadas",
       "QBtnDropdown interno com props mapeadas via composable",
@@ -75,6 +76,7 @@ const anatomyData = {
   },
   composition: {
     files: ["2-composition/_base.scss"],
+    description: "Estilos fundamentais do container, modo split e painel teleportado usando tokens genéricos.",
     responsibilities: [
       "Container inline-flex com vertical-align middle",
       "Split mode: border-radius 0 na junção (EXC-01)",
@@ -84,6 +86,7 @@ const anatomyData = {
   },
   variants: {
     files: ["3-variants/_elevated.scss", "_flat.scss", "_outline.scss", "_unelevated.scss"],
+    description: "Ajustes visuais por variante: separadores entre botão e seta no modo split.",
     responsibilities: [
       "Flat: separador --dss-gray-300 entre botão e seta no split",
       "Outline: borda --dss-border-width-thin no separador split",
@@ -93,6 +96,7 @@ const anatomyData = {
   },
   output: {
     files: ["4-output/_states.scss", "_brands.scss"],
+    description: "Camada final: brandabilidade, dark mode, forced-colors, high contrast e print.",
     responsibilities: [
       "Brand Hub/Water/Waste via box-shadow inset na borda inferior",
       "Dark mode: cores de brand ajustadas (hub-400, water-400, waste-500)",
