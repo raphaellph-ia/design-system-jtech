@@ -21,7 +21,7 @@
 
 - [x] ~~`DssItem`~~ ✅ **SELADO** (Fase 1)
 - [ ] `DssList` — Container de lista com suporte a separadores e bordas
-- [ ] `DssItemSection` — Seção dentro de um DssItem (avatar, conteúdo, ação)
+- [x] ~~`DssItemSection`~~ ✅ **SELADO**
 - [ ] `DssItemLabel` — Label hierárquico dentro de DssItem (header, caption, overline)
 
 ### Família: Tabs
@@ -203,9 +203,9 @@
 | Nível | Total | Selados | % Concluído |
 |---|---|---|---|
 | Fase 1 | 19 | 19 | 100% |
-| Fase 2 — Nível 1 | 36 | 3 | 8% |
+| Fase 2 — Nível 1 | 36 | 4 | 11% |
 | Fase 2 — Nível 2 | 16 | 0 | 0% |
 | Fase 2 — Nível 3 | 7 | 0 | 0% |
 | Fase 2 — Nível 4 | 7 | 0 | 0% |
-| **Fase 2 Total** | **66** | **3** | **5%** |
+| **Fase 2 Total** | **66** | **4** | **6%** |
 | Fase 3 | 6 | N/A | — |
