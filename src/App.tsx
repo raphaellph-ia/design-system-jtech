@@ -22,6 +22,7 @@ import DssTogglePage from "./pages/components/DssTogglePage";
 import DssTooltipPage from "./pages/components/DssTooltipPage";
 import DssRangePage from "./pages/components/DssRangePage";
 import DssBtnGroupPage from "./pages/components/DssBtnGroupPage";
+import DssBtnDropdownPage from "./pages/components/DssBtnDropdownPage";
 import ComponentPlaceholder from "./pages/components/ComponentPlaceholder";
 import ArchitecturePage from "./pages/governance/ArchitecturePage";
 import ClassificationPage from "./pages/governance/ClassificationPage";
