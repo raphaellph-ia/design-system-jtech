@@ -76,6 +76,7 @@ const navigation = {
       { title: "DssTooltip", url: "/componentes/dss-tooltip", icon: MessageSquare, status: "stable" },
       { title: "DssRange", url: "/componentes/dss-range", icon: SlidersHorizontal, status: "stable" },
       { title: "DssBtnGroup", url: "/componentes/dss-btn-group", icon: LayoutGrid, status: "stable" },
+      { title: "DssBtnDropdown", url: "/componentes/dss-btn-dropdown", icon: ChevronDown, status: "stable" },
     ],
   },
   padroes: {
