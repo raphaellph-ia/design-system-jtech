@@ -29,6 +29,7 @@ import {
   ToggleGroup,
   DSS_BRAND_COLORS,
   DSS_SEMANTIC_COLORS,
+  DSS_FEEDBACK_COLORS,
 } from "@/components/ui/playground";
 import { PlaygroundButton } from "@/components/ui/PlaygroundButton";
 
