@@ -24,8 +24,11 @@ import {
   ControlSection,
   VariantSelector,
   BrandPicker,
+  ColorPicker,
+  FeedbackColorPicker,
   ToggleGroup,
   DSS_BRAND_COLORS,
+  DSS_SEMANTIC_COLORS,
 } from "@/components/ui/playground";
 import { PlaygroundButton } from "@/components/ui/PlaygroundButton";
 
@@ -173,6 +176,8 @@ interface DssRangePreviewProps {
   errorMessage: string;
   hint: string;
   brand: string | null;
+  color: string | null;
+  feedback: string | null;
   onValueChange: (min: number, max: number) => void;
 }
 
@@ -192,6 +197,8 @@ function DssRangePreview({
   errorMessage,
   hint,
   brand,
+  color,
+  feedback,
   onValueChange,
 }: DssRangePreviewProps) {
   const [isDragging, setIsDragging] = useState<"min" | "max" | null>(null);
@@ -202,10 +209,19 @@ function DssRangePreview({
   const minPercent = ((minVal - scaleMin) / range) * 100;
   const maxPercent = ((maxVal - scaleMin) / range) * 100;
 
+  const feedbackColors: Record<string, string> = {
+    positive: "#4dd228",
+    negative: "#d8182e",
+    warning: "#fabd14",
+    info: "#0cc4e9",
+  };
+
   const getTrackColor = () => {
     if (disabled) return "#6b7280";
     if (error) return "#d8182e";
     if (brand && DSS_BRAND_COLORS[brand]) return DSS_BRAND_COLORS[brand].principal;
+    if (feedback && feedbackColors[feedback]) return feedbackColors[feedback];
+    if (color && DSS_SEMANTIC_COLORS[color]) return DSS_SEMANTIC_COLORS[color].bg;
     return "#1f86de";
   };
 
@@ -412,6 +428,8 @@ function DssRangePreview({
 
 export default function DssRangePage() {
   // Playground state
+  const [selectedColor, setSelectedColor] = useState<string | null>("primary");
+  const [selectedFeedback, setSelectedFeedback] = useState<string | null>(null);
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [selectedStep, setSelectedStep] = useState("1");
@@ -432,8 +450,25 @@ export default function DssRangePage() {
 
   const currentScale = scalePresets.find(s => s.name === selectedScale) || scalePresets[0];
 
+  // Color Application Domain — mutual exclusivity (v3.2)
+  const handleColorChange = (color: string) => {
+    setSelectedColor(color);
+    setSelectedBrand(null);
+    setSelectedFeedback(null);
+  };
+
+  const handleFeedbackChange = (feedback: string) => {
+    setSelectedFeedback(feedback);
+    setSelectedColor(null);
+    setSelectedBrand(null);
+  };
+
   const handleBrandChange = (brand: string | null) => {
-    setSelectedBrand(brand);
+    if (brand) {
+      setSelectedBrand(brand);
+      setSelectedColor(null);
+      setSelectedFeedback(null);
+    }
   };
 
   const handleScaleChange = (scaleName: string) => {
@@ -461,7 +496,13 @@ export default function DssRangePage() {
     props.push(`v-model="rangeValue"`);
     if (currentScale.min !== 0) props.push(`:min="${currentScale.min}"`);
     if (currentScale.max !== 100) props.push(`:max="${currentScale.max}"`);
-    if (selectedBrand) props.push(`brand="${selectedBrand}"`);
+    if (selectedBrand) {
+      props.push(`brand="${selectedBrand}"`);
+    } else if (selectedFeedback) {
+      props.push(`color="${selectedFeedback}"`);
+    } else if (selectedColor && selectedColor !== "primary") {
+      props.push(`color="${selectedColor}"`);
+    }
     if (Number(selectedStep) !== 1) props.push(`:step="${selectedStep}"`);
     if (booleanStates.markers) props.push("markers");
     if (booleanStates.label) props.push("label");
@@ -603,12 +644,35 @@ export default function DssRangePage() {
             errorMessage={booleanStates.error ? errorMessageText : ""}
             hint={!booleanStates.error ? hintText : ""}
             brand={selectedBrand}
+            color={selectedColor}
+            feedback={selectedFeedback}
             onValueChange={handleValueChange}
           />
         }
         controls={
-          <ControlGrid columns={6}>
-            {/* 1. Escala (min/max) */}
+          <ControlGrid columns={8}>
+            {/* 1. Color (semântica) */}
+            <ColorPicker
+              colors={DSS_SEMANTIC_COLORS}
+              selectedColor={selectedColor}
+              onSelect={handleColorChange}
+            />
+
+            {/* 2. Feedback */}
+            <FeedbackColorPicker
+              colors={DSS_SEMANTIC_COLORS}
+              selectedFeedback={selectedFeedback}
+              onSelect={handleFeedbackChange}
+            />
+
+            {/* 3. Brand */}
+            <BrandPicker
+              brands={DSS_BRAND_COLORS}
+              selectedBrand={selectedBrand}
+              onSelect={handleBrandChange}
+            />
+
+            {/* 4. Escala (min/max) */}
             <ControlSection label="Escala (min / max)">
               {scalePresets.map((s) => (
                 <PlaygroundButton
@@ -623,7 +687,7 @@ export default function DssRangePage() {
               ))}
             </ControlSection>
 
-            {/* 2. Step */}
+            {/* 5. Step */}
             <ControlSection label="Step">
               {stepOptions.map((s) => (
                 <PlaygroundButton
@@ -638,14 +702,7 @@ export default function DssRangePage() {
               ))}
             </ControlSection>
 
-            {/* 3. Brand */}
-            <BrandPicker
-              brands={DSS_BRAND_COLORS}
-              selectedBrand={selectedBrand}
-              onSelect={handleBrandChange}
-            />
-
-            {/* 4. Visual */}
+            {/* 6. Visual */}
             <ToggleGroup
               label="Visual"
               options={visualToggles}
@@ -653,7 +710,7 @@ export default function DssRangePage() {
               onToggle={toggleBooleanState}
             />
 
-            {/* 5. Estados */}
+            {/* 7. Estados */}
             <ToggleGroup
               label="Estados"
               options={stateToggles}
@@ -661,7 +718,7 @@ export default function DssRangePage() {
               onToggle={toggleBooleanState}
             />
 
-            {/* 6. Comportamento */}
+            {/* 8. Comportamento */}
             <ControlSection label="Comportamento">
               <PlaygroundButton
                 onClick={() => toggleBooleanState("dragRange")}
