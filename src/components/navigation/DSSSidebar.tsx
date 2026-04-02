@@ -76,6 +76,7 @@ const navigation = {
       { title: "DssTooltip", url: "/componentes/dss-tooltip", icon: MessageSquare, status: "stable" },
       { title: "DssRange", url: "/componentes/dss-range", icon: SlidersHorizontal, status: "stable" },
       { title: "DssBtnGroup", url: "/componentes/dss-btn-group", icon: LayoutGrid, status: "stable" },
+      { title: "DssBtnDropdown", url: "/componentes/dss-btn-dropdown", icon: ChevronDown, status: "stable" },
     ],
   },
   padroes: {
@@ -232,7 +233,7 @@ export function DSSSidebar() {
             <div
               className={cn(
                 "overflow-hidden transition-all duration-300 ease-out",
-                expandedSections[key] ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                expandedSections[key] ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
               )}
             >
               <SidebarGroupContent>

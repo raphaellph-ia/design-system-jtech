@@ -54,10 +54,12 @@ A API deve espelhar a do `QItemLabel`, mantendo a simplicidade estrutural.
 A responsabilidade do `DssItemLabel` é garantir que a tipografia dentro do `DssItem` siga o sistema de design.
 
 ### 4.1 Tokens de Tipografia
-- **Padrão (sem props):** Deve usar a tipografia base do DSS (`var(--dss-text-body)` ou equivalente).
-- **`header`:** Deve usar uma tipografia de cabeçalho (`var(--dss-text-heading-*)`) e cor de texto principal.
-- **`caption`:** Deve usar uma tipografia secundária (`var(--dss-text-caption)`) e cor de texto mutada (`var(--dss-text-muted)`).
-- **`overline`:** Deve usar uma tipografia de sobreposição (`var(--dss-text-overline)`) e cor de texto mutada.
+- **Padrão (sem props):** Deve usar a tipografia base do DSS (`var(--dss-text-body)`).
+- **`header`:** Deve usar a cor de texto principal (`var(--dss-text-body)`) com font-size e font-weight adequados ao nível de cabeçalho.
+- **`caption`:** Deve usar a cor de texto secundária (`var(--dss-text-subtle)`) com `var(--dss-font-size-sm)` e `var(--dss-line-height-sm)` (pareamento semântico obrigatório — `line-height-sm` para `font-size-sm`).
+- **`overline`:** Deve usar a cor de texto secundária (`var(--dss-text-subtle)`) com tipografia reduzida.
+
+> **⚠️ Atenção:** Os tokens `--dss-text-heading-*`, `--dss-text-caption`, `--dss-text-muted` e `--dss-text-overline` **NÃO existem** no catálogo DSS. Use exclusivamente `--dss-text-body` e `--dss-text-subtle` para cor de texto.
 
 ### 4.2 Espaçamento (Herdado)
 - O `DssItemLabel` não deve forçar tokens de espaçamento globais, exceto quando usado como `header` (que pode requerer um padding superior para separar grupos de itens).

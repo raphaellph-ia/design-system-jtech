@@ -22,6 +22,7 @@ import DssTogglePage from "./pages/components/DssTogglePage";
 import DssTooltipPage from "./pages/components/DssTooltipPage";
 import DssRangePage from "./pages/components/DssRangePage";
 import DssBtnGroupPage from "./pages/components/DssBtnGroupPage";
+import DssBtnDropdownPage from "./pages/components/DssBtnDropdownPage";
 import ComponentPlaceholder from "./pages/components/ComponentPlaceholder";
 import ArchitecturePage from "./pages/governance/ArchitecturePage";
 import ClassificationPage from "./pages/governance/ClassificationPage";
@@ -68,6 +69,7 @@ const App = () => (
             <Route path="/componentes/dss-tooltip" element={<DssTooltipPage />} />
             <Route path="/componentes/dss-range" element={<DssRangePage />} />
             <Route path="/componentes/dss-btn-group" element={<DssBtnGroupPage />} />
+            <Route path="/componentes/dss-btn-dropdown" element={<DssBtnDropdownPage />} />
             <Route path="/componentes/:componentId" element={<ComponentPlaceholder />} />
             
             {/* Governança */}
