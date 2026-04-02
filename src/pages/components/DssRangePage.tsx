@@ -415,6 +415,8 @@ function DssRangePreview({
 
 export default function DssRangePage() {
   // Playground state
+  const [selectedColor, setSelectedColor] = useState<string | null>("primary");
+  const [selectedFeedback, setSelectedFeedback] = useState<string | null>(null);
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [selectedStep, setSelectedStep] = useState("1");
@@ -435,8 +437,25 @@ export default function DssRangePage() {
 
   const currentScale = scalePresets.find(s => s.name === selectedScale) || scalePresets[0];
 
+  // Color Application Domain — mutual exclusivity (v3.2)
+  const handleColorChange = (color: string) => {
+    setSelectedColor(color);
+    setSelectedBrand(null);
+    setSelectedFeedback(null);
+  };
+
+  const handleFeedbackChange = (feedback: string) => {
+    setSelectedFeedback(feedback);
+    setSelectedColor(null);
+    setSelectedBrand(null);
+  };
+
   const handleBrandChange = (brand: string | null) => {
-    setSelectedBrand(brand);
+    if (brand) {
+      setSelectedBrand(brand);
+      setSelectedColor(null);
+      setSelectedFeedback(null);
+    }
   };
 
   const handleScaleChange = (scaleName: string) => {
