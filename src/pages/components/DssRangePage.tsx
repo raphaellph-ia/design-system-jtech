@@ -654,15 +654,15 @@ export default function DssRangePage() {
           <ControlGrid columns={8}>
             {/* 1. Color (semântica) */}
             <ColorPicker
-              colors={DSS_SEMANTIC_COLORS}
+              colors={Object.values(DSS_SEMANTIC_COLORS)}
               selectedColor={selectedColor}
               onSelect={handleColorChange}
             />
 
             {/* 2. Feedback */}
             <FeedbackColorPicker
-              colors={DSS_SEMANTIC_COLORS}
-              selectedFeedback={selectedFeedback}
+              colors={DSS_FEEDBACK_COLORS}
+              selectedColor={selectedFeedback}
               onSelect={handleFeedbackChange}
             />
 
