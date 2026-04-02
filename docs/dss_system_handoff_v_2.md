@@ -54,6 +54,7 @@ Todos os componentes abaixo possuem **Selo DSS v2.2 emitido** e são considerado
 | **DssBtnDropdown** | Action Group Composto (Botao com Dropdown Integrado) | DssChip | `conformant` — Selado (27 Mar 2026) |
 | **DssList** | Container de Layout Nao-Interativo | DssBadge | `conformant` — Selado (31 Mar 2026) |
 | **DssItemSection** | Container de Layout Interno (coluna flex dentro do DssItem) | DssAvatar | `conformant` — Selado (01 Abr 2026) |
+| **DssTab** | Elemento interativo de navegacao por abas | DssButton | `conformant` — Selado (01 Abr 2026) |
 
 > Componentes selados **NÃO DEVEM ser re-arquitetados**. Apenas correções pontuais mediante nova auditoria.
 
