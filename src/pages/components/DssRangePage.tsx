@@ -582,7 +582,7 @@ export default function DssRangePage() {
 
       <DssPlayground
         title="Configure o Range"
-        description="Explore TODAS as props visuais e comportamentais do DssRange em tempo real."
+        description="Explore TODAS as props visuais e comportamentais do DssRange em tempo real. Cada prop da API possui um seletor correspondente."
         isDarkMode={isDarkMode}
         onDarkModeToggle={() => setIsDarkMode(!isDarkMode)}
         previewMinHeight="280px"
@@ -590,8 +590,8 @@ export default function DssRangePage() {
           <DssRangePreview
             minVal={rangeMin}
             maxVal={rangeMax}
-            scaleMin={0}
-            scaleMax={100}
+            scaleMin={currentScale.min}
+            scaleMax={currentScale.max}
             step={Number(selectedStep)}
             markers={booleanStates.markers}
             label={booleanStates.label}
@@ -600,15 +600,30 @@ export default function DssRangePage() {
             disabled={booleanStates.disabled}
             readonly={booleanStates.readonly}
             error={booleanStates.error}
-            errorMessage={booleanStates.error ? "Intervalo inválido" : ""}
-            hint={!booleanStates.error ? "Arraste os thumbs para ajustar o intervalo" : ""}
+            errorMessage={booleanStates.error ? errorMessageText : ""}
+            hint={!booleanStates.error ? hintText : ""}
             brand={selectedBrand}
             onValueChange={handleValueChange}
           />
         }
         controls={
-          <ControlGrid columns={5}>
-            {/* Step */}
+          <ControlGrid columns={6}>
+            {/* 1. Escala (min/max) */}
+            <ControlSection label="Escala (min / max)">
+              {scalePresets.map((s) => (
+                <PlaygroundButton
+                  key={s.name}
+                  onClick={() => handleScaleChange(s.name)}
+                  isSelected={selectedScale === s.name}
+                  selectedBg="var(--dss-jtech-accent)"
+                  selectedColor="#ffffff"
+                >
+                  {s.label}
+                </PlaygroundButton>
+              ))}
+            </ControlSection>
+
+            {/* 2. Step */}
             <ControlSection label="Step">
               {stepOptions.map((s) => (
                 <PlaygroundButton
@@ -623,14 +638,14 @@ export default function DssRangePage() {
               ))}
             </ControlSection>
 
-            {/* Brand */}
+            {/* 3. Brand */}
             <BrandPicker
               brands={DSS_BRAND_COLORS}
               selectedBrand={selectedBrand}
               onSelect={handleBrandChange}
             />
 
-            {/* Visual */}
+            {/* 4. Visual */}
             <ToggleGroup
               label="Visual"
               options={visualToggles}
@@ -638,17 +653,77 @@ export default function DssRangePage() {
               onToggle={toggleBooleanState}
             />
 
-            {/* Comportamento */}
+            {/* 5. Estados */}
             <ToggleGroup
-              label="Comportamento"
-              options={behaviorToggles}
+              label="Estados"
+              options={stateToggles}
               values={booleanStates}
               onToggle={toggleBooleanState}
             />
+
+            {/* 6. Comportamento */}
+            <ControlSection label="Comportamento">
+              <PlaygroundButton
+                onClick={() => toggleBooleanState("dragRange")}
+                isSelected={booleanStates.dragRange}
+                selectedBg="var(--dss-positive)"
+                selectedColor="#ffffff"
+                selectedBorder="var(--dss-positive)"
+              >
+                {booleanStates.dragRange && "✓ "}Drag Range
+              </PlaygroundButton>
+            </ControlSection>
           </ControlGrid>
         }
         codePreview={generateCode()}
       />
+
+      {/* Hint & Error Message inputs */}
+      <div
+        className="grid md:grid-cols-2 gap-4 p-4 rounded-lg border"
+        style={{ backgroundColor: "var(--jtech-card-bg)", borderColor: "var(--jtech-card-border)" }}
+      >
+        <div className="space-y-1">
+          <label className="text-sm font-semibold block" style={{ color: "var(--jtech-heading-tertiary)" }}>
+            Hint Text
+          </label>
+          <input
+            type="text"
+            value={hintText}
+            onChange={(e) => setHintText(e.target.value)}
+            className="w-full px-3 py-2 rounded-md text-sm border"
+            style={{
+              backgroundColor: "var(--jtech-card-bg)",
+              borderColor: "var(--jtech-card-border)",
+              color: "var(--jtech-text-body)",
+            }}
+            placeholder="Texto de ajuda abaixo do range"
+          />
+          <span className="text-xs" style={{ color: "var(--jtech-text-muted)" }}>
+            Visível quando error=false. Prop: <code className="font-mono" style={{ color: "var(--dss-jtech-accent)" }}>hint</code>
+          </span>
+        </div>
+        <div className="space-y-1">
+          <label className="text-sm font-semibold block" style={{ color: "var(--jtech-heading-tertiary)" }}>
+            Error Message
+          </label>
+          <input
+            type="text"
+            value={errorMessageText}
+            onChange={(e) => setErrorMessageText(e.target.value)}
+            className="w-full px-3 py-2 rounded-md text-sm border"
+            style={{
+              backgroundColor: "var(--jtech-card-bg)",
+              borderColor: "var(--jtech-card-border)",
+              color: "var(--jtech-text-body)",
+            }}
+            placeholder="Mensagem de erro"
+          />
+          <span className="text-xs" style={{ color: "var(--jtech-text-muted)" }}>
+            Visível quando error=true. Prop: <code className="font-mono" style={{ color: "var(--dss-jtech-accent)" }}>errorMessage</code>
+          </span>
+        </div>
+      </div>
 
       {/* ================================================================
        * SEÇÃO 4: ESTADOS INTERATIVOS
