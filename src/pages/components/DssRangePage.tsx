@@ -650,8 +650,29 @@ export default function DssRangePage() {
           />
         }
         controls={
-          <ControlGrid columns={6}>
-            {/* 1. Escala (min/max) */}
+          <ControlGrid columns={8}>
+            {/* 1. Color (semântica) */}
+            <ColorPicker
+              colors={DSS_SEMANTIC_COLORS}
+              selectedColor={selectedColor}
+              onSelect={handleColorChange}
+            />
+
+            {/* 2. Feedback */}
+            <FeedbackColorPicker
+              colors={DSS_SEMANTIC_COLORS}
+              selectedFeedback={selectedFeedback}
+              onSelect={handleFeedbackChange}
+            />
+
+            {/* 3. Brand */}
+            <BrandPicker
+              brands={DSS_BRAND_COLORS}
+              selectedBrand={selectedBrand}
+              onSelect={handleBrandChange}
+            />
+
+            {/* 4. Escala (min/max) */}
             <ControlSection label="Escala (min / max)">
               {scalePresets.map((s) => (
                 <PlaygroundButton
@@ -666,7 +687,7 @@ export default function DssRangePage() {
               ))}
             </ControlSection>
 
-            {/* 2. Step */}
+            {/* 5. Step */}
             <ControlSection label="Step">
               {stepOptions.map((s) => (
                 <PlaygroundButton
@@ -681,14 +702,7 @@ export default function DssRangePage() {
               ))}
             </ControlSection>
 
-            {/* 3. Brand */}
-            <BrandPicker
-              brands={DSS_BRAND_COLORS}
-              selectedBrand={selectedBrand}
-              onSelect={handleBrandChange}
-            />
-
-            {/* 4. Visual */}
+            {/* 6. Visual */}
             <ToggleGroup
               label="Visual"
               options={visualToggles}
@@ -696,7 +710,7 @@ export default function DssRangePage() {
               onToggle={toggleBooleanState}
             />
 
-            {/* 5. Estados */}
+            {/* 7. Estados */}
             <ToggleGroup
               label="Estados"
               options={stateToggles}
@@ -704,7 +718,7 @@ export default function DssRangePage() {
               onToggle={toggleBooleanState}
             />
 
-            {/* 6. Comportamento */}
+            {/* 8. Comportamento */}
             <ControlSection label="Comportamento">
               <PlaygroundButton
                 onClick={() => toggleBooleanState("dragRange")}
