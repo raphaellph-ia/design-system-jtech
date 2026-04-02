@@ -415,8 +415,11 @@ export default function DssRangePage() {
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [selectedStep, setSelectedStep] = useState("1");
+  const [selectedScale, setSelectedScale] = useState("0-100");
   const [rangeMin, setRangeMin] = useState(20);
   const [rangeMax, setRangeMax] = useState(80);
+  const [hintText, setHintText] = useState("Arraste os thumbs para ajustar");
+  const [errorMessageText, setErrorMessageText] = useState("Intervalo inválido");
   const [booleanStates, setBooleanStates] = useState({
     markers: false,
     label: false,
@@ -427,8 +430,21 @@ export default function DssRangePage() {
     error: false,
   });
 
+  const currentScale = scalePresets.find(s => s.name === selectedScale) || scalePresets[0];
+
   const handleBrandChange = (brand: string | null) => {
     setSelectedBrand(brand);
+  };
+
+  const handleScaleChange = (scaleName: string) => {
+    setSelectedScale(scaleName);
+    const scale = scalePresets.find(s => s.name === scaleName);
+    if (scale) {
+      // Reset range values proportionally within new scale
+      const range = scale.max - scale.min;
+      setRangeMin(Math.round(scale.min + range * 0.2));
+      setRangeMax(Math.round(scale.min + range * 0.8));
+    }
   };
 
   const toggleBooleanState = (name: string) => {
@@ -443,6 +459,8 @@ export default function DssRangePage() {
   const generateCode = () => {
     const props: string[] = [];
     props.push(`v-model="rangeValue"`);
+    if (currentScale.min !== 0) props.push(`:min="${currentScale.min}"`);
+    if (currentScale.max !== 100) props.push(`:max="${currentScale.max}"`);
     if (selectedBrand) props.push(`brand="${selectedBrand}"`);
     if (Number(selectedStep) !== 1) props.push(`:step="${selectedStep}"`);
     if (booleanStates.markers) props.push("markers");
@@ -453,8 +471,9 @@ export default function DssRangePage() {
     if (booleanStates.readonly) props.push("readonly");
     if (booleanStates.error) {
       props.push("error");
-      props.push('error-message="Intervalo inválido"');
+      if (errorMessageText) props.push(`error-message="${errorMessageText}"`);
     }
+    if (!booleanStates.error && hintText) props.push(`hint="${hintText}"`);
     props.push('aria-label="Selecione o intervalo"');
 
     return `<!-- rangeValue = { min: ${rangeMin}, max: ${rangeMax} } -->\n<DssRange\n  ${props.join("\n  ")}\n/>`;
@@ -466,8 +485,7 @@ export default function DssRangePage() {
     { name: "dense", label: "Dense" },
   ];
 
-  const behaviorToggles = [
-    { name: "dragRange", label: "Drag Range" },
+  const stateToggles = [
     { name: "disabled", label: "Disabled" },
     { name: "readonly", label: "Readonly" },
     { name: "error", label: "Error" },
