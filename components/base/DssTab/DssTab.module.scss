@@ -1,0 +1,10 @@
+// ==========================================================================
+// DssTab — Orchestrador Principal SCSS
+// ==========================================================================
+//
+// Importa as 4 camadas na ordem obrigatória: L2 → L3 → L4
+// ==========================================================================
+
+@use './2-composition/base' as base;
+@use './3-variants/index' as variants;
+@use './4-output/index' as output;

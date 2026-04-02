@@ -1,0 +1,17 @@
+/* ==========================================================================
+   DssItemLabel - LAYER 3: VARIANT — Caption
+
+   Responsabilidade: Estilo adicional do modificador --caption.
+
+   Caption é o texto secundário posicionado abaixo do label principal.
+   Tipografia menor e cor mutada indicam hierarquia secundária.
+
+   Nota: A sobrescrita da tipografia Quasar para --caption está na
+   Layer 2 (_base.scss — EXC-01). Esta camada complementa com
+   refinamentos de layout específicos da variante.
+   ========================================================================== */
+
+.dss-item-label--caption {
+  /* Separação sutil do label principal acima */
+  margin-top: var(--dss-spacing-0_5);
+}

@@ -1,0 +1,118 @@
+// ==========================================================================
+// DssTab — Layer 2: Composição Base
+// ==========================================================================
+//
+// Estilos base da aba. Tokens genéricos apenas.
+// Sem referências a variantes, brands ou estados adaptativos.
+//
+// EXC-01 — Gate de Composição v2.4 Regra 1 + Regra 2:
+//   O componente usa <q-tab> (primitivo Quasar) diretamente — wrapper Nível 1
+//   Independente. O QTab aplica tipografia e indicador hardcoded via suas
+//   classes internas. Os seletores compostos abaixo (.dss-tab .q-tab__*) são
+//   a única forma de substituir CSS de terceiros com tokens DSS.
+//   Precedente: DssItemSection (Golden Context de DssItemLabel).
+// ==========================================================================
+
+.dss-tab {
+  // ------------------------------------------------------------------
+  // Tipografia
+  // ------------------------------------------------------------------
+  font-family: var(--dss-font-family-sans);
+  font-size: var(--dss-font-size-sm);
+  font-weight: var(--dss-font-weight-normal);
+  line-height: var(--dss-line-height-tight);
+  color: var(--dss-text-subtle);
+
+  // ------------------------------------------------------------------
+  // Dimensões e layout
+  // ------------------------------------------------------------------
+  min-height: var(--dss-touch-target-md);
+  padding-inline: var(--dss-spacing-4);
+  padding-block: var(--dss-spacing-3);
+
+  // ------------------------------------------------------------------
+  // Cursor e interação
+  // ------------------------------------------------------------------
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  // ------------------------------------------------------------------
+  // Transição
+  // ------------------------------------------------------------------
+  transition:
+    color var(--dss-duration-150) var(--dss-easing-standard),
+    opacity var(--dss-duration-150) var(--dss-easing-standard);
+
+  // ------------------------------------------------------------------
+  // Overlay hover/active via ::after (::before reservado para touch target)
+  // ------------------------------------------------------------------
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: currentColor;
+    opacity: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    transition: opacity var(--dss-duration-150) var(--dss-easing-standard);
+  }
+
+  // ------------------------------------------------------------------
+  // Hover
+  // ------------------------------------------------------------------
+  @media (hover: hover) {
+    &:hover:not(.dss-tab--disable) {
+      &::after {
+        opacity: var(--dss-opacity-hover);
+      }
+    }
+  }
+
+  // ------------------------------------------------------------------
+  // Active (pressionado)
+  // ------------------------------------------------------------------
+  &:active:not(.dss-tab--disable) {
+    &::after {
+      opacity: var(--dss-opacity-active);
+    }
+  }
+
+  // ------------------------------------------------------------------
+  // Focus visible (teclado)
+  // ------------------------------------------------------------------
+  &:focus-visible {
+    outline: var(--dss-border-width-md) solid var(--dss-focus-ring);
+    outline-offset: calc(-1 * var(--dss-border-width-md));
+  }
+
+  // ------------------------------------------------------------------
+  // EXC-01 — Indicador nativo do QTab (Gate de Composição Regra 2)
+  // ------------------------------------------------------------------
+  /* EXC-01 — seletores Quasar (Gate de Composição v2.4 Regra 1 + Regra 2 exception) */
+  .q-tab__indicator {
+    height: var(--dss-border-width-thick);
+    background-color: currentColor;
+    transition: background-color var(--dss-duration-150) var(--dss-easing-standard);
+  }
+
+  // ------------------------------------------------------------------
+  // Estado ativo/selecionado (governado pelo DssTabs pai via Quasar)
+  // ------------------------------------------------------------------
+  &.q-tab--active,
+  &[aria-selected='true'] {
+    color: var(--dss-action-primary);
+    font-weight: var(--dss-font-weight-medium);
+  }
+
+  // ------------------------------------------------------------------
+  // Estado desabilitado
+  // ------------------------------------------------------------------
+  &.dss-tab--disable {
+    opacity: var(--dss-opacity-disabled);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}

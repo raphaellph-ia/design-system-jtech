@@ -1,0 +1,100 @@
+{
+  "component": "DssTab",
+  "dssVersion": "2.2",
+  "status": "approved",
+  "seal": "DSS v2.2",
+  "sealDate": "2026-04-01",
+  "auditMode": "Final",
+  "auditDate": "2026-04-01",
+  "goldenReference": "DssButton",
+  "goldenReferenceJustification": "DssButton e o Golden Reference canonico para componentes interativos no DSS. DssTab e interativo (hover, focus, active, disabled), tornando DssButton a referencia natural para decisoes de touch target, focus ring e estados visuais.",
+  "goldenContext": "DssItem",
+  "goldenContextJustification": "DssItem e o Golden Context mais proximo para DssTab: ambos sao elementos interativos selecionaveis dentro de um container de navegacao (DssTabs / DssList). DssItem ja recebeu Selo DSS v2.2 (Fev 2026) e serve como baseline de auditoria para estados interativos, touch target e cursor. DssTabs (contexto pai direto natural) ainda nao existe — registrado em compositionFuture.",
+  "category": "Elemento interativo de navegacao por abas",
+  "phase": 2,
+  "phaseDescription": "Fase 2 — Componente interativo de selecao dentro do contexto DssTabs. Aba individual que gerencia estados visuais (hover, focus, active, disabled) e delega o estado selecionado/ativo ao container pai via v-model Quasar.",
+  "classification": "Controle interativo de selecao — wrapper DSS sobre QTab",
+  "hasReservations": false,
+  "subcomponents": [],
+  "compositionRequirements": [],
+  "compositionFuture": ["DssTabs"],
+  "compositionRecommendations": [
+    "q-tabs",
+    "DssTabs"
+  ],
+  "compositionNote": "DssTab e filho direto de q-tabs (ou DssTabs quando existir). Uso idiomatico: q-tabs v-model + multiplos DssTab com prop name. DssTabs e listado em compositionFuture pois ainda nao existe no catalogo DSS — ate la, q-tabs serve como container de scaffolding (coberto pela isencao de .example.vue).",
+  "props": {
+    "DssTab": ["name", "label", "icon", "alert", "disable"],
+    "blocked": {
+      "ripple": "Desativado permanentemente (:ripple='false'). DSS governa feedback visual via ::after overlay.",
+      "no-caps": "Governado pelo CSS/tokens DSS, nao por prop. A transformacao de texto e definida pelos tokens de tipografia."
+    },
+    "blockedJustification": "ripple: O DSS nao usa o sistema de ripple do Material Design — o feedback visual de interacao e gerenciado via overlay ::after com opacity tokens (--dss-opacity-hover, --dss-opacity-active). no-caps: A transformacao de texto e responsabilidade do sistema de tokens DSS, nao uma opcao do consumidor."
+  },
+  "statesApplicable": ["default", "hover", "focus", "active", "selected", "disabled"],
+  "statesNotApplicable": ["loading", "error", "indeterminate"],
+  "statesNotApplicableJustification": "loading: DssTab nao carrega dados — e um controle de navegacao sincrono. error: estado de erro pertence ao formulario ou ao conteudo do painel, nao a aba de navegacao. indeterminate: nao aplicavel a elementos de navegacao binaria (selecionada/nao-selecionada).",
+  "accessibility": {
+    "role": "tab (herdado do QTab — elemento de navegacao por abas)",
+    "wcagLevel": "2.1 AA",
+    "touchTarget": "min-height: var(--dss-touch-target-md) — WCAG 2.5.5 via propriedade CSS (sem ::before necessario)",
+    "keyboardNavigation": "Setas esquerda/direita para navegar entre abas (gerenciado pelo QTab/QTabs nativo)",
+    "aria": "aria-selected gerenciado pelo QTabs pai. DssTab nao precisa de ARIA adicional."
+  },
+  "antiPatterns": [
+    "Usar DssTab fora de q-tabs ou DssTabs",
+    "Aplicar cor de selecao via prop — usar DssTabs ou [data-brand] no container",
+    "Forcar ripple=true — bloqueado por design",
+    "Usar DssTab como botao de acao — usar DssButton",
+    "Adicionar logica de navegacao dentro do DssTab — pertence ao router ou ao pai"
+  ],
+  "tokensUsed": [
+    "--dss-font-family-sans",
+    "--dss-font-size-sm",
+    "--dss-font-weight-normal",
+    "--dss-font-weight-medium",
+    "--dss-line-height-tight",
+    "--dss-text-subtle",
+    "--dss-text-body",
+    "--dss-text-inverse",
+    "--dss-action-primary",
+    "--dss-opacity-hover",
+    "--dss-opacity-active",
+    "--dss-opacity-disabled",
+    "--dss-focus-ring",
+    "--dss-border-width-md",
+    "--dss-border-width-thick",
+    "--dss-touch-target-md",
+    "--dss-spacing-3",
+    "--dss-spacing-4",
+    "--dss-duration-150",
+    "--dss-easing-standard",
+    "--dss-hub-600",
+    "--dss-water-600",
+    "--dss-waste-600"
+  ],
+  "exceptions": [
+    {
+      "id": "EXC-01",
+      "description": "Uso direto do primitivo Quasar e sobrescrita do indicador nativo QTab com tokens DSS",
+      "selectors": [
+        ".dss-tab .q-tab__indicator"
+      ],
+      "location": "2-composition/_base.scss + 4-output/_states.scss",
+      "gatesViolated": ["Gate de Composicao v2.4 — Regra 1", "Gate de Composicao v2.4 — Regra 2"],
+      "justification": "Regra 1 — O componente usa <q-tab> (primitivo Quasar) diretamente porque e um wrapper de Nivel 1 Independente. Nao existe componente DSS Fase 1 equivalente para compor. Precedente: DssItemSection (Golden Context de DssItemLabel) usa <q-item-section> pelo mesmo motivo. Regra 2 — O QTab renderiza .q-tab__indicator com altura e cor hardcoded. A sobrescrita via seletor composto (.dss-tab .q-tab__indicator) e a unica forma de aplicar tokens DSS sobre CSS de terceiros sem dependencias externas adicionais."
+    },
+    {
+      "id": "EXC-02",
+      "value": "ButtonText / GrayText / Highlight",
+      "location": "4-output/_states.scss",
+      "justification": "Forced-colors mode. System color keywords obrigatorios — tokens CSS sao ignorados pelo navegador em forced-colors. ButtonText para texto padrao, GrayText para desabilitado, Highlight para selecionado/ativo. Padrao canonico DSS."
+    },
+    {
+      "id": "EXC-03",
+      "value": "#000 !important",
+      "location": "4-output/_states.scss — bloco @media print",
+      "justification": "Impressao monocromatica. Tokens CSS podem nao ser resolvidos em contexto de impressao dependendo do browser. Valor hardcoded preto e aceitavel para garantir legibilidade em impressao."
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "component": "DssItemLabel",
+  "dssVersion": "2.2",
+  "status": "approved",
+  "seal": "DSS v2.2",
+  "sealDate": "2026-04-01",
+  "auditMode": "Final",
+  "auditDate": "2026-04-01",
+  "goldenReference": "DssBadge",
+  "goldenReferenceJustification": "DssBadge e o Golden Reference canônico para componentes nao-interativos no DSS. DssItemLabel e estritamente nao-interativo (sem hover, focus, active, touch target), tornando DssBadge a referencia natural para decisoes de acessibilidade e arquitetura.",
+  "goldenContext": "DssItemSection",
+  "goldenContextJustification": "DssItemSection e o container pai direto do DssItemLabel na hierarquia de lista DSS. A hierarquia semantica e: DssList > DssItem > DssItemSection > DssItemLabel. DssItemSection ja esta em auditoria (Fase 2) e define o contexto de composicao imediato.",
+  "category": "Container tipografico para itens de lista",
+  "phase": 2,
+  "phaseDescription": "Fase 2 — Componente estrutural tipografico que governa a hierarquia de texto dentro de um DssItemSection. Gerencia os niveis semanticos de label (padrao), caption (secundario), header (cabecalho de grupo) e overline (categoria/metadado), sobrescrevendo a tipografia nativa do Quasar com tokens DSS.",
+  "classification": "Container tipografico nao-interativo — wrapper DSS sobre QItemLabel",
+  "hasReservations": false,
+  "subcomponents": [],
+  "compositionRequirements": ["DssItemSection"],
+  "compositionFuture": [],
+  "compositionRecommendations": [
+    "DssItemSection",
+    "DssItem",
+    "DssList"
+  ],
+  "compositionNote": "DssItemLabel e filho direto natural de DssItemSection na zona principal (main) do DssItem. Uso idiomatico DSS: label principal (padrao) + label secundario (caption) ou label de categoria (overline) + label principal. Header e usado fora do DssItem, diretamente dentro de q-list.",
+  "props": {
+    "DssItemLabel": ["header", "caption", "overline", "lines"],
+    "blocked": {},
+    "blockedJustification": "A API do QItemLabel e minimalista e focada em tipografia — nenhuma prop precisa ser bloqueada."
+  },
+  "statesApplicable": ["default"],
+  "statesNotApplicable": ["hover", "focus", "active", "disabled", "loading", "error", "indeterminate"],
+  "statesNotApplicableJustification": "DssItemLabel e estritamente nao-interativo (Gate de Responsabilidade v2.4). hover/focus/active/disabled pertencem ao DssItem pai. loading/error pertencem ao consumidor. indeterminate nao e aplicavel a texto.",
+  "accessibility": {
+    "role": "Herdado do QItemLabel (div sem role explicito — elemento de apresentacao tipografica)",
+    "wcagLevel": "2.1 AA",
+    "touchTarget": "Nao aplicavel — componente nao-interativo (Option B, como DssBadge Golden Reference)",
+    "keyboardNavigation": "Nao aplicavel — navegacao pertence ao DssItem pai",
+    "aria": "Nenhum atributo ARIA obrigatorio. Elemento de apresentacao pura. Conteudo interativo colocado como filho gerencia sua propria acessibilidade."
+  },
+  "antiPatterns": [
+    "Usar DssItemLabel fora de DssItemSection (exceto DssItemLabel[header] direto em q-list)",
+    "Aplicar estilos interativos (hover, cursor: pointer) via DssItemLabel",
+    "Usar mais de um label principal (sem caption/overline) no mesmo DssItemSection",
+    "Usar header=true e caption=true simultaneamente no mesmo elemento",
+    "Combinar overline=true com header=true no mesmo elemento",
+    "Criar elementos de acao (botoes, links) dentro do DssItemLabel — usar DssButton separado"
+  ],
+  "tokensUsed": [
+    "--dss-font-family-sans",
+    "--dss-font-size-xs",
+    "--dss-font-size-sm",
+    "--dss-font-size-md",
+    "--dss-font-weight-normal",
+    "--dss-font-weight-medium",
+    "--dss-font-weight-semibold",
+    "--dss-line-height-tight",
+    "--dss-line-height-sm",
+    "--dss-line-height-normal",
+    "--dss-letter-spacing-widest",
+    "--dss-text-body",
+    "--dss-text-subtle",
+    "--dss-text-inverse",
+    "--dss-spacing-0_5",
+    "--dss-spacing-1",
+    "--dss-spacing-3"
+  ],
+  "exceptions": [
+    {
+      "id": "EXC-01",
+      "description": "Uso direto do primitivo Quasar e sobrescrita de tipografia nativa com tokens DSS",
+      "selectors": [
+        ".dss-item-label.q-item__label--header",
+        ".dss-item-label.q-item__label--caption",
+        ".dss-item-label.q-item__label--overline"
+      ],
+      "location": "1-structure/DssItemLabel.ts.vue + 2-composition/_base.scss",
+      "gatesViolated": ["Gate de Composicao v2.4 — Regra 1", "Gate de Composicao v2.4 — Regra 2"],
+      "justification": "Regra 1 — O componente usa <q-item-label> (primitivo Quasar) diretamente porque e um wrapper de Nivel 1 Independente. Nao existe componente DSS Fase 1 equivalente para compor. Precedente estabelecido pelo DssItemSection (Golden Context), que da mesma forma envolve <q-item-section>. Regra 2 — O QItemLabel aplica tipografia hardcoded (font-size: 0.75rem, color: rgba(0,0,0,0.54), text-transform: uppercase, letter-spacing: 0.1em) nas suas classes de modificador. A sobrescrita via seletores compostos (.dss-item-label.q-item__label--*) e a unica forma de garantir que os tokens DSS sejam aplicados sobre CSS de terceiros, sem criar dependencias externas adicionais. Formalizado no Pre-Prompt DssItemLabel (Fase 2) secao 9."
+    },
+    {
+      "id": "EXC-02",
+      "value": "ButtonText / GrayText",
+      "location": "4-output/_states.scss",
+      "justification": "Forced-colors mode. System color keywords obrigatorios — tokens CSS sao ignorados pelo navegador em forced-colors. ButtonText para texto principal, GrayText para texto secundario (caption, overline, header). Padrao canonico DSS."
+    }
+  ]
+}

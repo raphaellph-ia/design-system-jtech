@@ -1,0 +1,11 @@
+// ==========================================================================
+// DssTab — Layer 3: Variante ícone
+// ==========================================================================
+//
+// Ajustes para aba somente ícone (sem label).
+// Reduz padding lateral para manter proporção visual equilibrada.
+// ==========================================================================
+
+.dss-tab--icon {
+  padding-inline: var(--dss-spacing-3);
+}

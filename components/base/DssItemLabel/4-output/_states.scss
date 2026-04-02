@@ -1,0 +1,64 @@
+/* ==========================================================================
+   DssItemLabel - LAYER 4: STATES
+
+   Responsabilidade: Dark mode, high contrast, forced-colors, print.
+
+   DssItemLabel é estritamente não-interativo.
+   Estados de hover, focus, active e disabled NÃO se aplicam.
+   Os únicos estados aplicáveis são adaptativos de contexto visual global.
+   ========================================================================== */
+
+/* ==========================================================================
+   DARK MODE
+   ========================================================================== */
+
+[data-theme="dark"] {
+  .dss-item-label {
+    color: var(--dss-text-inverse);
+
+    /* EXC-01 — seletores Quasar (Gate de Composição v2.4 Regra 2 exception) */
+    &.q-item__label--header,
+    &.q-item__label--caption,
+    &.q-item__label--overline {
+      /* --dss-text-subtle adapta automaticamente ao contexto dark */
+      color: var(--dss-text-subtle);
+    }
+  }
+}
+
+/* ==========================================================================
+   FORCED COLORS (Windows High Contrast Mode)
+
+   EXC-02: System color keywords obrigatórios em forced-colors.
+   Tokens CSS são ignorados pelo navegador neste modo — system keywords
+   são a única forma de garantir visibilidade. Padrão canônico DSS.
+   ========================================================================== */
+
+@media (forced-colors: active) {
+  .dss-item-label {
+    color: ButtonText; /* EXC-02 */
+    forced-color-adjust: auto;
+
+    &.q-item__label--header,
+    &.q-item__label--caption,
+    &.q-item__label--overline {
+      color: GrayText; /* EXC-02 — texto secundário */
+    }
+  }
+}
+
+/* ==========================================================================
+   PRINT
+   ========================================================================== */
+
+@media print {
+  .dss-item-label {
+    color: currentColor;
+
+    &.q-item__label--header,
+    &.q-item__label--caption,
+    &.q-item__label--overline {
+      color: currentColor;
+    }
+  }
+}

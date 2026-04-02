@@ -1,0 +1,88 @@
+// ==========================================================================
+// DssTab — Layer 4: Estados Adaptativos
+// ==========================================================================
+//
+// Dark mode, prefers-contrast, forced-colors, print.
+// EXC-02 — forced-colors: system color keywords obrigatórios.
+// ==========================================================================
+
+// ------------------------------------------------------------------
+// Dark mode
+// ------------------------------------------------------------------
+[data-theme='dark'] {
+  .dss-tab {
+    color: var(--dss-text-inverse);
+
+    // Estado ativo em dark mode
+    &.q-tab--active,
+    &[aria-selected='true'] {
+      color: var(--dss-action-primary);
+    }
+
+    /* EXC-01 — seletores Quasar (Gate de Composição v2.4 Regra 1 + Regra 2 exception) */
+    .q-tab__indicator {
+      background-color: currentColor;
+    }
+  }
+}
+
+// ------------------------------------------------------------------
+// High contrast / prefers-contrast
+// ------------------------------------------------------------------
+@media (prefers-contrast: more) {
+  .dss-tab {
+    &:focus-visible {
+      outline-width: var(--dss-border-width-thick);
+    }
+  }
+}
+
+// ------------------------------------------------------------------
+// Forced colors (Windows High Contrast)
+// EXC-02 — system color keywords obrigatórios (tokens ignorados pelo navegador)
+// ------------------------------------------------------------------
+@media (forced-colors: active) {
+  .dss-tab {
+    color: ButtonText;
+    forced-color-adjust: auto;
+
+    &.q-tab--active,
+    &[aria-selected='true'] {
+      color: Highlight;
+    }
+
+    &.dss-tab--disable {
+      color: GrayText;
+      opacity: 1; // forced-colors gerencia opacidade via system colors
+    }
+
+    &:focus-visible {
+      outline-color: Highlight;
+    }
+
+    .q-tab__indicator {
+      background-color: Highlight;
+    }
+  }
+}
+
+// ------------------------------------------------------------------
+// Reduced motion
+// ------------------------------------------------------------------
+@media (prefers-reduced-motion: reduce) {
+  .dss-tab,
+  .dss-tab::after,
+  .dss-tab .q-tab__indicator {
+    transition: none;
+  }
+}
+
+// ------------------------------------------------------------------
+// Print
+// ------------------------------------------------------------------
+@media print {
+  .dss-tab {
+    color: #000 !important; // impressão monocromática
+    background: transparent !important;
+  }
+}

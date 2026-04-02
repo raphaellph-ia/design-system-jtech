@@ -1,0 +1,16 @@
+/* ==========================================================================
+   DssItemLabel - LAYER 3: VARIANTS (Orchestrator)
+
+   Responsabilidade: Importa e expõe todas as variantes visuais do componente.
+
+   Variantes disponíveis:
+   - _header.scss   → Cabeçalho de grupo de lista (tipografia compacta + uppercase)
+   - _caption.scss  → Texto secundário mutado (tipografia menor)
+   - _overline.scss → Texto de metadados acima do label (tipografia muito compacta)
+   - _lines.scss    → Truncamento com ellipsis (overflow hidden + word-break)
+   ========================================================================== */
+
+@forward './header';
+@forward './caption';
+@forward './overline';
+@forward './lines';

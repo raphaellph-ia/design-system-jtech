@@ -1,0 +1,20 @@
+/* ==========================================================================
+   DssItemLabel - LAYER 3: VARIANT — Header
+
+   Responsabilidade: Estilo adicional do modificador --header.
+
+   O cabeçalho de lista separa grupos de itens com uma linha de texto
+   compacta, em maiúsculas e com espaçamento entre letras.
+   O padding-top cria separação visual entre grupos distintos.
+
+   Nota: A sobrescrita da tipografia Quasar para --header está na
+   Layer 2 (_base.scss — EXC-01). Esta camada adiciona apenas
+   refinamentos de layout específicos da variante.
+   ========================================================================== */
+
+.dss-item-label--header {
+  /* Margem adicional para o primeiro header — separa seções de lista */
+  &:first-child {
+    padding-top: var(--dss-spacing-1);
+  }
+}

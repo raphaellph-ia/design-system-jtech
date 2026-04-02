@@ -1,0 +1,17 @@
+/* ==========================================================================
+   DssItemLabel - LAYER 3: VARIANT — Overline
+
+   Responsabilidade: Estilo adicional do modificador --overline.
+
+   Overline é texto de metadados posicionado acima do label principal.
+   Tipografia muito compacta em maiúsculas indica categoria ou tipo.
+
+   Nota: A sobrescrita da tipografia Quasar para --overline está na
+   Layer 2 (_base.scss — EXC-01). Esta camada complementa com
+   refinamentos de layout específicos da variante.
+   ========================================================================== */
+
+.dss-item-label--overline {
+  /* Separação do label principal abaixo */
+  margin-bottom: var(--dss-spacing-0_5);
+}

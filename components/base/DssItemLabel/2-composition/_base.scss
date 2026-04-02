@@ -1,0 +1,72 @@
+/* ==========================================================================
+   DssItemLabel - LAYER 2: COMPOSITION (Base)
+
+   Responsabilidade: Estilos tipográficos base do container de label de item.
+   Garante que a tipografia nativa do Quasar seja substituída pelos
+   tokens DSS (EXC-01 documentado abaixo).
+
+   Token First: Zero valores hardcoded. Toda dimensão via var(--dss-*).
+   ========================================================================== */
+
+.dss-item-label {
+  /* Tipografia base — padrão label principal */
+  font-family: var(--dss-font-family-sans);
+  font-size: var(--dss-font-size-md);
+  font-weight: var(--dss-font-weight-normal);
+  line-height: var(--dss-line-height-normal);
+  color: var(--dss-text-body);
+
+  /* Layout — garante que texto muito longo quebre corretamente */
+  display: block;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: normal;
+
+  /* ==========================================================================
+     EXC-01: Sobrescrita de tipografia nativa do Quasar
+
+     Contexto: O QItemLabel aplica tipografia hardcoded (font-size, color,
+     letter-spacing, text-transform) nas classes internas:
+       - .q-item__label--header:  font-size: 0.75rem, color: rgba(0,0,0,0.54),
+                                   text-transform: uppercase, letter-spacing: 0.1em
+       - .q-item__label--caption: font-size: 0.75rem, color: rgba(0,0,0,0.54)
+       - .q-item__label--overline: text-transform: uppercase, letter-spacing: 0.1em
+
+     Os seletores compostos abaixo (.dss-item-label.q-item__label--*)
+     são a única forma viável de sobrescrever CSS de terceiros (Quasar)
+     com tokens DSS, garantindo a consistência tipográfica do sistema.
+
+     Gate de Composição v2.4 — Regra 2 exception formalizada.
+     Referência: dss.meta.json#exceptions[EXC-01]
+     ========================================================================== */
+
+  /* Header — sobrescrita completa da tipografia nativa do Quasar */
+  &.q-item__label--header {
+    font-size: var(--dss-font-size-xs);
+    font-weight: var(--dss-font-weight-semibold);
+    line-height: var(--dss-line-height-normal);
+    color: var(--dss-text-subtle);
+    text-transform: uppercase;
+    letter-spacing: var(--dss-letter-spacing-widest);
+    padding-top: var(--dss-spacing-3);
+    padding-bottom: var(--dss-spacing-1);
+  }
+
+  /* Caption — sobrescrita completa da tipografia nativa do Quasar */
+  &.q-item__label--caption {
+    font-size: var(--dss-font-size-sm);
+    font-weight: var(--dss-font-weight-normal);
+    line-height: var(--dss-line-height-sm);
+    color: var(--dss-text-subtle);
+  }
+
+  /* Overline — sobrescrita completa da tipografia nativa do Quasar */
+  &.q-item__label--overline {
+    font-size: var(--dss-font-size-xs);
+    font-weight: var(--dss-font-weight-medium);
+    line-height: var(--dss-line-height-tight);
+    color: var(--dss-text-subtle);
+    text-transform: uppercase;
+    letter-spacing: var(--dss-letter-spacing-widest);
+  }
+}

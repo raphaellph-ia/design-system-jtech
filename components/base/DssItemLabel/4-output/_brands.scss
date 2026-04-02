@@ -1,0 +1,22 @@
+/* ==========================================================================
+   DssItemLabel - LAYER 4: BRANDS
+
+   Responsabilidade: Adaptações tipográficas por marca DSS.
+
+   DssItemLabel é um componente tipográfico não-interativo.
+   As cores de texto são herdadas dos tokens semânticos que já incorporam
+   a identidade de marca via cascade do [data-brand] ancestral.
+
+   Não há overrides de cor por marca neste componente — os tokens
+   --dss-text-body e --dss-text-subtle já respondem ao contexto de marca
+   definido pelo ancestral com [data-brand="hub|water|waste"].
+
+   Esta camada existe para manter a integridade da arquitetura de
+   4 camadas DSS. Justificativa de ausência de conteúdo ativo:
+   componente tipográfico que herda identidade de marca via tokens
+   semânticos, sem necessidade de sobrescrita direta por brand.
+   ========================================================================== */
+
+/* Hub — herança automática via --dss-text-body e --dss-text-subtle */
+/* Water — herança automática via --dss-text-body e --dss-text-subtle */
+/* Waste — herança automática via --dss-text-body e --dss-text-subtle */

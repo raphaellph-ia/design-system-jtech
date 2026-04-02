@@ -1,0 +1,59 @@
+// ==========================================================================
+// DssTab — Layer 4: Brands
+// ==========================================================================
+//
+// Sobrescreve a cor de ação primária para cada produto DSS.
+// A cor de seleção (active) herda automaticamente via --dss-action-primary.
+//
+// Nota: o indicador (.q-tab__indicator) usa currentColor — herda da cor
+// da aba ativa. Nenhuma sobrescrita adicional é necessária.
+//
+// Padrão dual de seletor (paridade com DssButton Golden Reference e DssItem
+// Golden Context): suporta herança contextual [data-brand] no pai E
+// modificador de classe direto .dss-tab--brand-* aplicado no DssTab.
+// ==========================================================================
+
+// ------------------------------------------------------------------
+// Hub (laranja)
+// ------------------------------------------------------------------
+[data-brand='hub'] .dss-tab,
+.dss-tab.dss-tab--brand-hub {
+  &.q-tab--active,
+  &[aria-selected='true'] {
+    color: var(--dss-hub-600);
+  }
+
+  &:focus-visible {
+    outline-color: var(--dss-hub-600);
+  }
+}
+
+// ------------------------------------------------------------------
+// Water (azul)
+// ------------------------------------------------------------------
+[data-brand='water'] .dss-tab,
+.dss-tab.dss-tab--brand-water {
+  &.q-tab--active,
+  &[aria-selected='true'] {
+    color: var(--dss-water-600);
+  }
+
+  &:focus-visible {
+    outline-color: var(--dss-water-600);
+  }
+}
+
+// ------------------------------------------------------------------
+// Waste (verde)
+// ------------------------------------------------------------------
+[data-brand='waste'] .dss-tab,
+.dss-tab.dss-tab--brand-waste {
+  &.q-tab--active,
+  &[aria-selected='true'] {
+    color: var(--dss-waste-600);
+  }
+
+  &:focus-visible {
+    outline-color: var(--dss-waste-600);
+  }
+}

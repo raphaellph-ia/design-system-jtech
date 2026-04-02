@@ -1,0 +1,21 @@
+/* ==========================================================================
+   DssItemLabel - LAYER 3: VARIANT — Lines (Truncamento)
+
+   Responsabilidade: Comportamento de truncamento multi-linha.
+
+   Quando a prop `lines` é fornecida, o QItemLabel nativo injeta
+   a variável CSS --q-item-label-lines e aplica -webkit-line-clamp.
+   Esta camada garante o overflow correto e a semântica visual DSS.
+
+   O corte de texto com ellipsis é gerado pelo Quasar.
+   O DSS complementa com overflow-hidden para garantia cross-browser.
+   ========================================================================== */
+
+.dss-item-label--lines {
+  /* Garante que o overflow seja corretamente ocultado */
+  overflow: hidden;
+
+  /* Quebra de palavra: preferência por quebra em espaços, não no meio da palavra */
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}

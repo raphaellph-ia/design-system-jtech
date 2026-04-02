@@ -1,0 +1,12 @@
+/* ==========================================================================
+   DssItemLabel - LAYER 4: OUTPUT (Orchestrator)
+
+   Responsabilidade: Importa e expõe todos os outputs adaptativos.
+
+   Ordem de importação:
+   1. _brands.scss — adaptações por marca (herança automática neste componente)
+   2. _states.scss — dark mode, forced-colors, print
+   ========================================================================== */
+
+@forward './brands';
+@forward './states';

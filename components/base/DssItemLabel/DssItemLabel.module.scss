@@ -1,0 +1,39 @@
+/* ==========================================================================
+   DssItemLabel - MAIN MODULE (Orquestrador Final)
+
+   Filosofia DSS: Arquitetura em 4 Camadas
+
+   LAYER 1: Structure  (Vue component — 1-structure/DssItemLabel.ts.vue)
+   LAYER 2: Composition (_base.scss — tipografia base + override Quasar EXC-01)
+   LAYER 3: Variants   (index.scss — header, caption, overline, lines)
+   LAYER 4: Output     (_brands.scss + _states.scss — dark mode, forced-colors, print)
+
+   Este arquivo importa TODAS as camadas em ordem e gera o CSS final.
+   ========================================================================== */
+
+/* Layer 2: Composition */
+@use './2-composition/base' as composition;
+
+/* Layer 3: Variants */
+@use './3-variants' as variants;
+
+/* Layer 4: Output */
+@use './4-output' as output;
+
+/* ==========================================================================
+   ACCESSIBILITY ENHANCEMENTS (nível de orquestrador)
+   ========================================================================== */
+
+/* High contrast — garante legibilidade em alto contraste */
+@media (prefers-contrast: high) {
+  .dss-item-label {
+    color: currentColor;
+  }
+}
+
+/* Reduced motion — DssItemLabel não possui transições próprias */
+@media (prefers-reduced-motion: reduce) {
+  .dss-item-label {
+    transition: none;
+  }
+}
