@@ -1,0 +1,83 @@
+// ==========================================================================
+// DssTabs — Layer 4: Estados Adaptativos
+// ==========================================================================
+//
+// Dark mode, prefers-contrast, forced-colors, reduced-motion, print.
+//
+// EXC-02 — forced-colors: system color keywords obrigatórios
+//   (tokens CSS são ignorados pelo navegador em forced-colors mode).
+//
+// EXC-03 — print: #000 !important para garantir legibilidade monocromática.
+// ==========================================================================
+
+// ------------------------------------------------------------------
+// Dark mode
+// ------------------------------------------------------------------
+[data-theme='dark'] {
+  /* EXC-01 — seletores Quasar (Gate de Composição v2.4 exception) */
+  .dss-tabs .q-tabs__arrow {
+    color: var(--dss-text-subtle);
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: var(--dss-surface-hover);
+      }
+    }
+
+    &:active {
+      background-color: var(--dss-surface-active);
+    }
+  }
+}
+
+// ------------------------------------------------------------------
+// High contrast / prefers-contrast
+// ------------------------------------------------------------------
+@media (prefers-contrast: more) {
+  /* EXC-01 — seletores Quasar (Gate de Composição v2.4 exception) */
+  .dss-tabs .q-tabs__arrow {
+    outline: var(--dss-border-width-md) solid currentColor;
+
+    &:focus-visible {
+      outline-width: var(--dss-border-width-thick);
+    }
+  }
+}
+
+// ------------------------------------------------------------------
+// Forced colors (Windows High Contrast)
+// EXC-02 — system color keywords obrigatórios (tokens ignorados pelo navegador)
+// ------------------------------------------------------------------
+@media (forced-colors: active) {
+  /* EXC-02 — forced-colors system color keywords (tokens CSS ignorados) */
+  .dss-tabs .q-tabs__arrow {
+    color: ButtonText;
+    forced-color-adjust: auto;
+
+    &:focus-visible {
+      outline-color: Highlight;
+    }
+  }
+}
+
+// ------------------------------------------------------------------
+// Reduced motion
+// ------------------------------------------------------------------
+@media (prefers-reduced-motion: reduce) {
+  .dss-tabs,
+  /* EXC-01 — seletores Quasar (Gate de Composição v2.4 exception) */
+  .dss-tabs .q-tabs__arrow {
+    transition: none;
+  }
+}
+
+// ------------------------------------------------------------------
+// Print
+// ------------------------------------------------------------------
+@media print {
+  /* EXC-03 — print: setas de scroll ocultadas em contexto de impressão (sem equivalente de token) */
+  /* EXC-01 — seletores Quasar (Gate de Composição v2.4 exception) */
+  .dss-tabs .q-tabs__arrow {
+    display: none;
+  }
+}

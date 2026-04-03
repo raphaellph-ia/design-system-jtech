@@ -1,0 +1,18 @@
+// ==========================================================================
+// DssTabs — Layer 3: Variante Vertical
+// ==========================================================================
+//
+// Ajustes de layout para o modo vertical.
+// O QTabs gerencia o layout flexbox internamente quando vertical=true.
+// Esta camada aplica apenas overrides de governança DSS necessários.
+//
+// Nota: Em modo vertical, o indicador ativo é exibido na lateral
+// (esquerda ou direita) em vez de abaixo. O QTabs gerencia isso
+// automaticamente via sua própria lógica interna.
+// ==========================================================================
+
+// Modo vertical: QTabs gerencia layout internamente.
+// Nenhum override de tokens DSS necessário para as setas neste eixo.
+// A cor das setas já é definida em 2-composition/_base.scss via
+// .dss-tabs .q-tabs__arrow { color: var(--dss-text-subtle) }
+// e se aplica igualmente ao modo vertical.

@@ -1,0 +1,15 @@
+// ==========================================================================
+// DssTabs — Layer 3: Variante Dense
+// ==========================================================================
+//
+// Reduz o padding das setas de navegação no modo compacto.
+// Aplicado via prop `dense` no DssTabs.
+//
+// Nota: A variante dense do DssTabs NÃO afeta o padding interno das
+// DssTab filhas. Cada DssTab governa seu próprio espaçamento interno.
+// ==========================================================================
+
+/* EXC-01 — seletor Quasar interno (exceção documentada em EXC-01) */
+.dss-tabs--dense .q-tabs__arrow {
+  padding-inline: var(--dss-spacing-1);
+}

@@ -1,0 +1,78 @@
+// ==========================================================================
+// DssTabs — Layer 2: Composição Base
+// ==========================================================================
+//
+// Estilos fundamentais do container de abas.
+// Usa APENAS tokens genéricos DSS.
+//
+// EXC-01 — Gate de Composição v2.4 Regra 1 + Regra 2:
+//   O DssTabs wraps diretamente o <q-tabs> (primitivo Quasar) porque é um
+//   wrapper de Nível 2 que orquestra DssTab (Nível 1). O QTabs renderiza
+//   setas de navegação via classes internas (.q-tabs__arrow). Os seletores
+//   compostos abaixo (.dss-tabs .q-tabs__arrow) são a única forma de
+//   governar as setas com tokens DSS sem dependências externas adicionais.
+//   Precedente: DssTab EXC-01 (seletor .dss-tab .q-tab__indicator).
+// ==========================================================================
+
+@import '../../../../utils/index';
+
+// ==========================================================================
+// CONTAINER BASE
+// ==========================================================================
+
+.dss-tabs {
+  // Remove tap highlight em mobile (padrão Golden Reference DssBtnGroup)
+  -webkit-tap-highlight-color: transparent;
+
+  // Transição suave de setas
+  @include dss-transition(all, 'fast');
+}
+
+// ==========================================================================
+// SETAS DE NAVEGAÇÃO (EXC-01 — Gate de Composição v2.4 Regra 1 + Regra 2)
+//
+// Sobrescreve estilo nativo das setas do QTabs com tokens DSS.
+// As setas aparecem quando o conteúdo de abas excede a largura do container.
+//
+// EXC-01 — seletores Quasar internos (Gate de Composição v2.4 exception)
+// ==========================================================================
+
+/* EXC-01 — seletores Quasar (Gate de Composição v2.4 Regra 1 + Regra 2 exception) */
+.dss-tabs .q-tabs__arrow {
+  // Cor padrão: texto secundário (sutil)
+  color: var(--dss-text-subtle);
+
+  // Remoção do highlight nativo
+  -webkit-tap-highlight-color: transparent;
+
+  // Transição de hover
+  @include dss-transition(background-color color, 'fast');
+
+  // Hover: feedback de superfície
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--dss-surface-hover);
+    }
+  }
+
+  // Active (pressionado)
+  &:active {
+    background-color: var(--dss-surface-active);
+  }
+
+  // Focus visible — navegação por teclado
+  &:focus-visible {
+    outline: var(--dss-border-width-md) solid var(--dss-focus-ring);
+    outline-offset: calc(-1 * var(--dss-border-width-md));
+  }
+}
+
+// ==========================================================================
+// VARIANTE VERTICAL
+//
+// Em modo vertical, as setas de navegação aparecem acima/abaixo do grupo.
+// O QTabs reutiliza as mesmas classes .q-tabs__arrow, mas inverte a direção.
+// Nenhum ajuste adicional é necessário — o QTabs gerencia o layout.
+// ==========================================================================
+
+// (Nenhuma sobrescrita necessária — layout gerenciado pelo QTabs vertical)

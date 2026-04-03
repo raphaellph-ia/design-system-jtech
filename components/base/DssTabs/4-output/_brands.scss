@@ -1,0 +1,75 @@
+// ==========================================================================
+// DssTabs — Layer 4: Brands
+// ==========================================================================
+//
+// Sobrescreve a cor das setas de navegação para cada produto DSS.
+// A coloração das abas ativas (DssTab) é gerenciada pelo próprio DssTab
+// via seletor [data-brand] .dss-tab — propagado pelo atributo data-brand
+// que o DssTabs aplica no elemento raiz quando a prop brand está ativa.
+//
+// Padrão dual de seletor (paridade com DssTab Golden Context):
+// - [data-brand="x"] .dss-tabs — herança contextual via pai
+// - .dss-tabs[data-brand="x"] — brand definido no próprio DssTabs
+//
+// EXC-01 — seletores Quasar internos (exceção documentada em base.scss)
+// ==========================================================================
+
+// ------------------------------------------------------------------
+// Hub (laranja)
+// ------------------------------------------------------------------
+
+/* EXC-01 — seletores Quasar (Gate de Composição v2.4 exception) */
+[data-brand='hub'] .dss-tabs .q-tabs__arrow,
+.dss-tabs[data-brand='hub'] .q-tabs__arrow {
+  color: var(--dss-hub-600);
+
+  @media (hover: hover) {
+    &:hover {
+      color: var(--dss-hub-600);
+    }
+  }
+
+  &:focus-visible {
+    outline-color: var(--dss-hub-600);
+  }
+}
+
+// ------------------------------------------------------------------
+// Water (azul)
+// ------------------------------------------------------------------
+
+/* EXC-01 — seletores Quasar (Gate de Composição v2.4 exception) */
+[data-brand='water'] .dss-tabs .q-tabs__arrow,
+.dss-tabs[data-brand='water'] .q-tabs__arrow {
+  color: var(--dss-water-600);
+
+  @media (hover: hover) {
+    &:hover {
+      color: var(--dss-water-600);
+    }
+  }
+
+  &:focus-visible {
+    outline-color: var(--dss-water-600);
+  }
+}
+
+// ------------------------------------------------------------------
+// Waste (verde)
+// ------------------------------------------------------------------
+
+/* EXC-01 — seletores Quasar (Gate de Composição v2.4 exception) */
+[data-brand='waste'] .dss-tabs .q-tabs__arrow,
+.dss-tabs[data-brand='waste'] .q-tabs__arrow {
+  color: var(--dss-waste-600);
+
+  @media (hover: hover) {
+    &:hover {
+      color: var(--dss-waste-600);
+    }
+  }
+
+  &:focus-visible {
+    outline-color: var(--dss-waste-600);
+  }
+}

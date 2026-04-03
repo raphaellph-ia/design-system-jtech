@@ -1,0 +1,107 @@
+{
+  "component": "DssTabs",
+  "dssVersion": "2.2",
+  "status": "sealed",
+  "auditMode": "Selo DSS v2.2 Concedido",
+  "auditDate": "2026-04-02",
+  "goldenReference": "DssBtnGroup",
+  "goldenReferenceJustification": "DssBtnGroup é o Golden Reference para DssTabs porque ambos são containers de composição (Fase 2) que agrupam controles interativos filhos, gerenciam layout compartilhado e delegam estados interativos (hover, focus, active) aos filhos. DssBtnGroup também usa seletores globais para governar filhos — padrão exatamente igual à necessidade do DssTabs para setas de navegação.",
+  "goldenContext": "DssCard",
+  "goldenContextNote": "DssCard é o Golden Context por ser o componente composto de Fase 2 mais próximo semanticamente. Ambos são containers estruturais de composição. DssBtnGroup (Golden Reference) também comparte o papel de container de composição, mas DssCard já recebeu Selo DSS v2.2 e serve como baseline de auditoria documentada.",
+  "category": "Container de Navegação (Tab Group)",
+  "phase": 2,
+  "phaseDescription": "Fase 2 — Componente Composto. O DssTabs gerencia estado global de seleção (v-model) entre múltiplos DssTab filhos, orquestra setas de navegação por rolagem e propaga contexto de marca ([data-brand]) para coloração automática dos filhos. Isso caracteriza composição orquestrada, critério da Fase 2.",
+  "hasReservations": false,
+  "classification": "Container de composição — Agrupa instâncias de DssTab com navegação por teclado e scroll automático",
+  "subcomponents": [],
+  "compositionRequirements": ["DssTab"],
+  "compositionFuture": ["DssRouteTab", "DssTabPanels"],
+  "compositionNote": "DssTabs é container de layout e gerenciamento de estado. Aceita apenas DssTab (ou DssRouteTab futuro) em seu slot. O uso de <q-tab> diretamente dentro de DssTabs é violação arquitetural (Gate de Composição v2.4). DssTabs propaga data-brand para que DssTab filhos respondam automaticamente via seletor CSS [data-brand] .dss-tab.",
+  "props": {
+    "DssTabs": [
+      "modelValue",
+      "align",
+      "breakpoint",
+      "vertical",
+      "dense",
+      "brand",
+      "ariaLabel"
+    ]
+  },
+  "propsBlocked": ["active-color", "active-bg-color", "indicator-color", "ripple", "no-caps"],
+  "propsBlockedJustification": {
+    "active-color": "DSS governa cor da aba ativa via tokens --dss-action-primary no DssTab, não via prop do container.",
+    "active-bg-color": "DSS governa cor de fundo via tokens no DssTab. Container não deve forçar cores nos filhos.",
+    "indicator-color": "DSS governa cor do indicador via tokens --dss-action-primary no DssTab (currentColor cascade).",
+    "ripple": "DSS não usa o sistema de ripple do Material Design. Feedback visual gerenciado via overlay ::after com opacity tokens no DssTab.",
+    "no-caps": "Transformação de texto é responsabilidade dos tokens de tipografia DSS no DssTab, não uma opção do consumidor."
+  },
+  "statesApplicable": ["default"],
+  "statesNotApplicable": ["hover", "focus", "active", "disabled", "loading", "error", "indeterminate"],
+  "statesNotApplicableJustification": "DssTabs é container estrutural de navegação. Todos os estados interativos (hover, focus, active, disabled) pertencem exclusivamente aos DssTab filhos. O container em si não é focusável nem diretamente interativo. loading: container não carrega dados. error: pertence ao conteúdo das abas, não ao container. indeterminate: não aplicável a seleção de abas.",
+  "touchTarget": "Opção B — Não implementado no container. Touch target (::before WCAG 2.5.5) é responsabilidade exclusiva de cada DssTab filho. As setas de navegação (.q-tabs__arrow) usam touch target nativo do QTabs.",
+  "ariaRole": "outer div: nenhum role explícito (generic). role='tablist' no <q-tabs> interno — aria-label forwarded via prop.",
+  "ariaLabel": "Opcional mas recomendado — descreve o propósito do grupo de abas para leitores de tela",
+  "accessibility": {
+    "role": "tablist (nativo QTabs)",
+    "wcagLevel": "2.1 AA",
+    "keyboardNavigation": "Setas esquerda/direita para navegar entre abas (comportamento nativo Quasar QTabs/QTab mantido). Setas de scroll acessíveis via teclado nativamente.",
+    "ariaManagement": "aria-selected nas abas gerenciado nativamente pelo QTabs. DssTabs não precisa de ARIA adicional além de aria-label opcional."
+  },
+  "exceptions": [
+    {
+      "id": "EXC-01",
+      "description": "Uso de seletores Quasar internos (.q-tabs__arrow) para governar setas de navegação com tokens DSS",
+      "selectors": [
+        ".dss-tabs .q-tabs__arrow",
+        ".dss-tabs[data-brand='x'] .q-tabs__arrow"
+      ],
+      "location": "2-composition/_base.scss, 4-output/_states.scss, 4-output/_brands.scss, 3-variants/_dense.scss",
+      "gatesViolated": ["Gate de Composição v2.4 — Regra 1", "Gate de Composição v2.4 — Regra 2"],
+      "justification": "Regra 1 — O componente usa <q-tabs> (primitivo Quasar) diretamente porque é um wrapper de Nível 2 Independente. Não existe componente DSS equivalente para compor. Precedente: DssTab EXC-01 (usa <q-tab>), DssInput/DssSelect/DssTextarea/DssSlider (usam QField/QInput/QSelect). Regra 2 — O QTabs renderiza .q-tabs__arrow com cor e padding nativos do Material Design. A sobrescrita via seletor composto é a única forma de aplicar tokens DSS sobre CSS de terceiros sem dependências externas adicionais. Precedente idêntico ao DssTab EXC-01 (.dss-tab .q-tab__indicator)."
+    },
+    {
+      "id": "EXC-02",
+      "value": "ButtonText / GrayText / Highlight",
+      "location": "4-output/_states.scss",
+      "justification": "Forced-colors mode. System color keywords obrigatórios — tokens CSS são ignorados pelo navegador em forced-colors. Padrão canônico DSS. Precedente: DssTab EXC-02, DssBtnGroup EXC-03, DssCard EXC-04."
+    },
+    {
+      "id": "EXC-03",
+      "description": "display: none nas setas de navegação em contexto de impressão",
+      "location": "4-output/_states.scss — bloco @media print",
+      "justification": "Setas de scroll não têm função em contexto de impressão estático. display: none é necessário para layout correto — não há token DSS para ocultar elementos em print."
+    }
+  ],
+  "cssArchitecture": {
+    "childStylingException": "O DssTabs usa seletores CSS compostos do tipo .dss-tabs .q-tabs__arrow para governar as setas de navegação do QTabs. Esta é uma exceção documentada (EXC-01) ao Gate de Composição v2.4. Justificativa: governar visualmente as setas É parte do propósito do container de abas. Não usa ::v-deep (estilos globais, não scoped). Precedente: DssBtnGroup usa .dss-btn-group > .dss-button pelo mesmo motivo."
+  },
+  "gateExceptions": {
+    "compositionGateV24": {
+      "cssSelectors": {
+        "location": "2-composition/_base.scss, 3-variants/_dense.scss, 4-output/_states.scss, 4-output/_brands.scss",
+        "justification": "Uso de seletores descendentes (.dss-tabs .q-tabs__arrow) necessário para aplicar tokens DSS sobre elementos DOM internos do QTabs, sem alterar a API interna do componente. Gate de Composição v2.4 Regra 2 aplica-se exclusivamente a subcomponentes DSS filhos — .q-tabs__arrow é elemento Quasar interno, não componente DSS. Precedente: DssBtnDropdown compositionGateV24 (seletor .q-btn-dropdown__arrow-container)."
+      },
+      "templateStructure": {
+        "location": "1-structure/DssTabs.ts.vue",
+        "justification": "DssTabs usa <q-tabs> internamente (dentro do root <div> DSS), seguindo o padrão DssBtnDropdown (conformant) que usa <q-btn-dropdown> dentro de <div>. O root é o <div :class='tabsClasses'> DSS — Gate de Composição v2.4 Regra 1 atendido. O <q-tabs> provê a infraestrutura de state management (v-model sync entre abas), keyboard navigation (setas ←/→) e scroll/arrow management — funcionalidades que não podem ser re-implementadas sem acoplamento ao Quasar de qualquer forma."
+      }
+    },
+    "responsibilityGateV24": {
+      "location": "2-composition/_base.scss, 4-output/_states.scss, 4-output/_brands.scss",
+      "justification": "DssTabs captura :hover, :active e :focus-visible em .dss-tabs .q-tabs__arrow via SCSS. As setas de scroll são elementos Quasar DOM internos do container DssTabs — não são subcomponentes DSS filhos (DssTab). Gate de Responsabilidade v2.4 Regra 1 aplica-se exclusivamente a estados de componentes DSS filhos. As setas fazem parte da UI navegacional do próprio DssTabs (não de DssTab), portanto sua governança de estados pertence corretamente ao container. Precedente: DssBtnDropdown responsibilityGateV24 (z-index em :hover/:focus-visible do .q-btn-dropdown__arrow-container)."
+    }
+  },
+  "tokensUsed": [
+    "--dss-text-subtle",
+    "--dss-surface-hover",
+    "--dss-surface-active",
+    "--dss-focus-ring",
+    "--dss-border-width-md",
+    "--dss-border-width-thick",
+    "--dss-spacing-1",
+    "--dss-hub-600",
+    "--dss-water-600",
+    "--dss-waste-600"
+  ]
+}

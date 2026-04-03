@@ -1,0 +1,20 @@
+// ==========================================================================
+// DssTabs — Orchestrador Principal SCSS
+// ==========================================================================
+//
+// Importa as 4 camadas na ordem obrigatória: L2 → L3 → L4
+//
+// LAYER 1: Structure (Vue component — DssTabs.ts.vue)
+// LAYER 2: Composition (Base styles — container e setas de navegação)
+// LAYER 3: Variants (dense, vertical)
+// LAYER 4: Output (states: dark, forced-colors, reduced-motion; brands)
+// ==========================================================================
+
+/* Layer 2: Composition */
+@use './2-composition/base' as composition;
+
+/* Layer 3: Variants */
+@use './3-variants/index' as variants;
+
+/* Layer 4: Output */
+@use './4-output/index' as output;
