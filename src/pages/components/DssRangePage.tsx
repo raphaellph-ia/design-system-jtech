@@ -525,6 +525,7 @@ export default function DssRangePage() {
     { name: "markers", label: "Markers" },
     { name: "label", label: "Label (Tooltip)" },
     { name: "dense", label: "Dense" },
+    { name: "dragRange", label: "Drag Range" },
   ];
 
   const stateToggles = [
