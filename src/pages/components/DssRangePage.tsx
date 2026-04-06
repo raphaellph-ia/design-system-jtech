@@ -525,6 +525,7 @@ export default function DssRangePage() {
     { name: "markers", label: "Markers" },
     { name: "label", label: "Label (Tooltip)" },
     { name: "dense", label: "Dense" },
+    { name: "dragRange", label: "Drag Range" },
   ];
 
   const stateToggles = [
@@ -651,29 +652,26 @@ export default function DssRangePage() {
           />
         }
         controls={
-          <ControlGrid columns={8}>
-            {/* 1. Color (semântica) */}
+          <ControlGrid columns={5}>
+            {/* Linha 1: Color Domain + Escala + Step */}
             <ColorPicker
               colors={Object.values(DSS_SEMANTIC_COLORS)}
               selectedColor={selectedColor}
               onSelect={handleColorChange}
             />
 
-            {/* 2. Feedback */}
             <FeedbackColorPicker
               colors={DSS_FEEDBACK_COLORS}
               selectedColor={selectedFeedback}
               onSelect={handleFeedbackChange}
             />
 
-            {/* 3. Brand */}
             <BrandPicker
               brands={DSS_BRAND_COLORS}
               selectedBrand={selectedBrand}
               onSelect={handleBrandChange}
             />
 
-            {/* 4. Escala (min/max) */}
             <ControlSection label="Escala (min / max)">
               {scalePresets.map((s) => (
                 <PlaygroundButton
@@ -688,7 +686,6 @@ export default function DssRangePage() {
               ))}
             </ControlSection>
 
-            {/* 5. Step */}
             <ControlSection label="Step">
               {stepOptions.map((s) => (
                 <PlaygroundButton
@@ -703,7 +700,7 @@ export default function DssRangePage() {
               ))}
             </ControlSection>
 
-            {/* 6. Visual */}
+            {/* Linha 2: Visual + Estados + Texto */}
             <ToggleGroup
               label="Visual"
               options={visualToggles}
@@ -711,7 +708,6 @@ export default function DssRangePage() {
               onToggle={toggleBooleanState}
             />
 
-            {/* 7. Estados */}
             <ToggleGroup
               label="Estados"
               options={stateToggles}
@@ -719,69 +715,39 @@ export default function DssRangePage() {
               onToggle={toggleBooleanState}
             />
 
-            {/* 8. Comportamento */}
-            <ControlSection label="Comportamento">
-              <PlaygroundButton
-                onClick={() => toggleBooleanState("dragRange")}
-                isSelected={booleanStates.dragRange}
-                selectedBg="var(--dss-positive)"
-                selectedColor="#ffffff"
-                selectedBorder="var(--dss-positive)"
-              >
-                {booleanStates.dragRange && "✓ "}Drag Range
-              </PlaygroundButton>
+            <ControlSection label="Hint Text">
+              <input
+                type="text"
+                value={hintText}
+                onChange={(e) => setHintText(e.target.value)}
+                className="w-full px-3 py-1.5 rounded-md text-xs border"
+                style={{
+                  backgroundColor: "var(--jtech-card-bg)",
+                  borderColor: "var(--jtech-card-border)",
+                  color: "var(--jtech-text-body)",
+                }}
+                placeholder="Texto de ajuda"
+              />
+            </ControlSection>
+
+            <ControlSection label="Error Message">
+              <input
+                type="text"
+                value={errorMessageText}
+                onChange={(e) => setErrorMessageText(e.target.value)}
+                className="w-full px-3 py-1.5 rounded-md text-xs border"
+                style={{
+                  backgroundColor: "var(--jtech-card-bg)",
+                  borderColor: "var(--jtech-card-border)",
+                  color: "var(--jtech-text-body)",
+                }}
+                placeholder="Mensagem de erro"
+              />
             </ControlSection>
           </ControlGrid>
         }
         codePreview={generateCode()}
       />
-
-      {/* Hint & Error Message inputs */}
-      <div
-        className="grid md:grid-cols-2 gap-4 p-4 rounded-lg border"
-        style={{ backgroundColor: "var(--jtech-card-bg)", borderColor: "var(--jtech-card-border)" }}
-      >
-        <div className="space-y-1">
-          <label className="text-sm font-semibold block" style={{ color: "var(--jtech-heading-tertiary)" }}>
-            Hint Text
-          </label>
-          <input
-            type="text"
-            value={hintText}
-            onChange={(e) => setHintText(e.target.value)}
-            className="w-full px-3 py-2 rounded-md text-sm border"
-            style={{
-              backgroundColor: "var(--jtech-card-bg)",
-              borderColor: "var(--jtech-card-border)",
-              color: "var(--jtech-text-body)",
-            }}
-            placeholder="Texto de ajuda abaixo do range"
-          />
-          <span className="text-xs" style={{ color: "var(--jtech-text-muted)" }}>
-            Visível quando error=false. Prop: <code className="font-mono" style={{ color: "var(--dss-jtech-accent)" }}>hint</code>
-          </span>
-        </div>
-        <div className="space-y-1">
-          <label className="text-sm font-semibold block" style={{ color: "var(--jtech-heading-tertiary)" }}>
-            Error Message
-          </label>
-          <input
-            type="text"
-            value={errorMessageText}
-            onChange={(e) => setErrorMessageText(e.target.value)}
-            className="w-full px-3 py-2 rounded-md text-sm border"
-            style={{
-              backgroundColor: "var(--jtech-card-bg)",
-              borderColor: "var(--jtech-card-border)",
-              color: "var(--jtech-text-body)",
-            }}
-            placeholder="Mensagem de erro"
-          />
-          <span className="text-xs" style={{ color: "var(--jtech-text-muted)" }}>
-            Visível quando error=true. Prop: <code className="font-mono" style={{ color: "var(--dss-jtech-accent)" }}>errorMessage</code>
-          </span>
-        </div>
-      </div>
 
       {/* ================================================================
        * SEÇÃO 4: ESTADOS INTERATIVOS
