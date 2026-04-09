@@ -299,7 +299,10 @@ function DssTabsPreview({
 export default function DssTabsPage() {
   // Playground state
   const [selectedAlign, setSelectedAlign] = useState("left");
+  const [selectedColor, setSelectedColor] = useState<string | null>("primary");
+  const [selectedFeedback, setSelectedFeedback] = useState<string | null>(null);
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
+  const [selectedSize, setSelectedSize] = useState("md");
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [selectedBreakpoint, setSelectedBreakpoint] = useState("600");
   const [selectedTabCount, setSelectedTabCount] = useState("5");
@@ -307,11 +310,28 @@ export default function DssTabsPage() {
   const [booleanStates, setBooleanStates] = useState({
     vertical: false,
     dense: false,
+    disabled: false,
   });
 
-  // Color Application Domain: Brand is the only color source for DssTabs
+  // Color Application Domain v3.2: exclusividade mútua implícita
+  const handleColorChange = (color: string) => {
+    setSelectedColor(color);
+    setSelectedBrand(null);
+    setSelectedFeedback(null);
+  };
+
+  const handleFeedbackChange = (feedback: string) => {
+    setSelectedFeedback(feedback);
+    setSelectedColor(null);
+    setSelectedBrand(null);
+  };
+
   const handleBrandChange = (brand: string | null) => {
-    setSelectedBrand(brand || null);
+    if (brand) {
+      setSelectedBrand(brand);
+      setSelectedColor(null);
+      setSelectedFeedback(null);
+    }
   };
 
   const toggleBooleanState = (name: string) => {
@@ -323,25 +343,36 @@ export default function DssTabsPage() {
 
   // Code generation (clean, production-ready)
   const generateCode = () => {
-    const props: string[] = [];
-    props.push('v-model="activeTab"');
-    if (selectedAlign !== "left") props.push(`align="${selectedAlign}"`);
-    if (selectedBreakpoint !== "600") props.push(`:breakpoint="${selectedBreakpoint}"`);
-    if (booleanStates.vertical) props.push("vertical");
-    if (booleanStates.dense) props.push("dense");
-    if (selectedBrand) props.push(`brand="${selectedBrand}"`);
+    const tabsProps: string[] = [];
+    tabsProps.push('v-model="activeTab"');
+    if (selectedAlign !== "left") tabsProps.push(`align="${selectedAlign}"`);
+    if (selectedBreakpoint !== "600") tabsProps.push(`:breakpoint="${selectedBreakpoint}"`);
+    if (booleanStates.vertical) tabsProps.push("vertical");
+    if (booleanStates.dense) tabsProps.push("dense");
+    if (selectedBrand) tabsProps.push(`brand="${selectedBrand}"`);
 
     const tabCount = parseInt(selectedTabCount);
+    // DssTab props reflect the color domain
+    const tabColorProp = selectedBrand ? "" :
+      selectedFeedback && selectedFeedback !== "primary" ? ` color="${selectedFeedback}"` :
+      selectedColor && selectedColor !== "primary" ? ` color="${selectedColor}"` : "";
+    const tabSizeProp = selectedSize !== "md" ? ` size="${selectedSize}"` : "";
+    const tabDisabledNote = booleanStates.disabled ? " disable" : "";
+
     const tabLines = TAB_LABELS.slice(0, tabCount)
-      .map((t) => `  <DssTab name="${t.toLowerCase().replace(/\s/g, "-")}" label="${t}" />`)
+      .map((t) => `  <DssTab name="${t.toLowerCase().replace(/\s/g, "-")}" label="${t}"${tabColorProp}${tabSizeProp}${tabDisabledNote} />`)
       .join("\n");
 
-    return `<DssTabs\n  ${props.join("\n  ")}\n>\n${tabLines}\n</DssTabs>`;
+    return `<DssTabs\n  ${tabsProps.join("\n  ")}\n>\n${tabLines}\n</DssTabs>`;
   };
 
   const layoutToggles = [
     { name: "vertical", label: "Vertical" },
     { name: "dense", label: "Dense" },
+  ];
+
+  const stateToggles = [
+    { name: "disabled", label: "Disabled" },
   ];
 
   return (
@@ -432,7 +463,7 @@ export default function DssTabsPage() {
 
       <DssPlayground
         title="Configure o DssTabs"
-        description="Explore TODAS as props visuais e comportamentais do DssTabs em tempo real."
+        description="Explore TODAS as props visuais e comportamentais do DssTabs + DssTab em tempo real."
         isDarkMode={isDarkMode}
         onDarkModeToggle={() => setIsDarkMode(!isDarkMode)}
         previewMinHeight="240px"
@@ -441,7 +472,11 @@ export default function DssTabsPage() {
             align={selectedAlign}
             vertical={booleanStates.vertical}
             dense={booleanStates.dense}
+            disabled={booleanStates.disabled}
             brand={selectedBrand}
+            colorKey={selectedColor}
+            feedbackKey={selectedFeedback}
+            size={selectedSize}
             tabCount={parseInt(selectedTabCount)}
             activeTab={activeTab}
             onTabChange={setActiveTab}
@@ -449,6 +484,36 @@ export default function DssTabsPage() {
         }
         controls={
           <ControlGrid columns={5}>
+            {/* Color Domain — Semantic */}
+            <ColorPicker
+              label="Color"
+              colors={Object.values(DSS_SEMANTIC_COLORS)}
+              selectedColor={selectedColor}
+              onSelect={handleColorChange}
+            />
+
+            {/* Color Domain — Feedback */}
+            <FeedbackColorPicker
+              label="Feedback"
+              colors={feedbackColors}
+              selectedColor={selectedFeedback}
+              onSelect={handleFeedbackChange}
+            />
+
+            {/* Color Domain — Brand */}
+            <BrandPicker
+              brands={DSS_BRAND_COLORS}
+              selectedBrand={selectedBrand}
+              onSelect={handleBrandChange}
+            />
+
+            {/* Size */}
+            <SizeSelector
+              sizes={sizes}
+              selectedSize={selectedSize}
+              onSelect={setSelectedSize}
+            />
+
             {/* Align */}
             <SizeSelector
               label="Align"
@@ -457,17 +522,18 @@ export default function DssTabsPage() {
               onSelect={setSelectedAlign}
             />
 
-            {/* Brand (Color Application Domain — única fonte de cor no DssTabs) */}
-            <BrandPicker
-              brands={DSS_BRAND_COLORS}
-              selectedBrand={selectedBrand}
-              onSelect={handleBrandChange}
-            />
-
             {/* Layout toggles */}
             <ToggleGroup
               label="Layout"
               options={layoutToggles}
+              values={booleanStates}
+              onToggle={toggleBooleanState}
+            />
+
+            {/* States */}
+            <ToggleGroup
+              label="Estados"
+              options={stateToggles}
               values={booleanStates}
               onToggle={toggleBooleanState}
             />
