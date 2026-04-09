@@ -155,7 +155,11 @@ interface DssTabsPreviewProps {
   align: string;
   vertical: boolean;
   dense: boolean;
+  disabled: boolean;
   brand: string | null;
+  colorKey: string | null;
+  feedbackKey: string | null;
+  size: string;
   tabCount: number;
   activeTab: string;
   onTabChange: (tab: string) => void;
@@ -171,20 +175,39 @@ function DssTabsPreview({
   align,
   vertical,
   dense,
+  disabled,
   brand,
+  colorKey,
+  feedbackKey,
+  size,
   tabCount,
   activeTab,
   onTabChange,
 }: DssTabsPreviewProps) {
   const tabs = TAB_LABELS.slice(0, tabCount);
 
-  const getBrandColor = () => {
-    if (!brand) return "var(--dss-jtech-accent)";
-    const b = DSS_BRAND_COLORS[brand];
-    return b?.principal || "var(--dss-jtech-accent)";
+  // Color Application Domain: Brand > Feedback > Color > default
+  const getActiveColor = () => {
+    if (brand && DSS_BRAND_COLORS[brand]) {
+      return DSS_BRAND_COLORS[brand].principal;
+    }
+    if (feedbackKey && feedbackColors[feedbackKey]) {
+      return feedbackColors[feedbackKey].bg;
+    }
+    if (colorKey && DSS_SEMANTIC_COLORS[colorKey]) {
+      return DSS_SEMANTIC_COLORS[colorKey].bg;
+    }
+    return "var(--dss-jtech-accent)";
   };
 
-  const indicatorColor = getBrandColor();
+  const indicatorColor = getActiveColor();
+
+  const sizeMap: Record<string, { padding: string; fontSize: string }> = {
+    sm: { padding: dense ? "4px 8px" : "6px 10px", fontSize: "12px" },
+    md: { padding: dense ? "6px 12px" : "10px 16px", fontSize: "13px" },
+    lg: { padding: dense ? "8px 14px" : "12px 20px", fontSize: "15px" },
+  };
+  const sizeStyle = sizeMap[size] || sizeMap.md;
 
   const containerStyle: React.CSSProperties = {
     display: "flex",
@@ -199,14 +222,16 @@ function DssTabsPreview({
     borderBottom: vertical ? "none" : "2px solid var(--jtech-card-border)",
     borderLeft: vertical ? "2px solid var(--jtech-card-border)" : "none",
     position: "relative",
+    opacity: disabled ? 0.4 : 1,
+    pointerEvents: disabled ? "none" : undefined,
   };
 
   const tabStyle = (isActive: boolean): React.CSSProperties => ({
-    padding: dense ? "6px 12px" : "10px 16px",
-    fontSize: "13px",
+    padding: sizeStyle.padding,
+    fontSize: sizeStyle.fontSize,
     fontWeight: isActive ? 600 : 400,
     color: isActive ? indicatorColor : "var(--jtech-text-body)",
-    cursor: "pointer",
+    cursor: disabled ? "not-allowed" : "pointer",
     position: "relative",
     whiteSpace: "nowrap",
     transition: "all 0.2s ease",
@@ -232,16 +257,17 @@ function DssTabsPreview({
               key={tabId}
               role="tab"
               aria-selected={isActive}
+              aria-disabled={disabled || undefined}
               style={tabStyle(isActive)}
-              onClick={() => onTabChange(tabId)}
+              onClick={() => !disabled && onTabChange(tabId)}
               onMouseEnter={(e) => {
-                if (!isActive) {
+                if (!isActive && !disabled) {
                   e.currentTarget.style.color = indicatorColor;
                   e.currentTarget.style.backgroundColor = "var(--jtech-card-bg)";
                 }
               }}
               onMouseLeave={(e) => {
-                if (!isActive) {
+                if (!isActive && !disabled) {
                   e.currentTarget.style.color = "var(--jtech-text-body)";
                   e.currentTarget.style.backgroundColor = "transparent";
                 }
@@ -252,14 +278,12 @@ function DssTabsPreview({
           );
         })}
       </div>
-      {/* Tab panel placeholder */}
       <div
         role="tabpanel"
         style={{
           padding: "16px",
           fontSize: "13px",
           color: "var(--jtech-text-muted)",
-          borderTop: vertical ? "none" : undefined,
         }}
       >
         Conteúdo da aba: <strong style={{ color: "var(--jtech-heading-tertiary)" }}>{activeTab}</strong>
@@ -267,7 +291,6 @@ function DssTabsPreview({
     </div>
   );
 }
-
 // ============================================================================
 // COMPONENTE PRINCIPAL
 // Baseline: DssButtonPage | Guia: COMPONENT_PAGE_STRUCTURE.md v2.3
