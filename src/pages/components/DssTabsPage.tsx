@@ -44,6 +44,21 @@ import { PlaygroundButton } from "@/components/ui/PlaygroundButton";
 // DADOS ESPECÍFICOS DO DSSTABS
 // ============================================================================
 
+// Feedback colors com ícones
+const feedbackColors: Record<string, FeedbackColor> = {
+  positive: { ...DSS_FEEDBACK_COLORS.positive, icon: CheckCircle },
+  negative: { ...DSS_FEEDBACK_COLORS.negative, icon: XCircle },
+  warning: { ...DSS_FEEDBACK_COLORS.warning, icon: AlertTriangle },
+  info: { ...DSS_FEEDBACK_COLORS.info, icon: Info },
+};
+
+// Tamanhos das abas (DssTab density)
+const sizes = [
+  { name: "sm", label: "SM", isDefault: false },
+  { name: "md", label: "MD", isDefault: true },
+  { name: "lg", label: "LG", isDefault: false },
+];
+
 // Alinhamentos do DssTabs
 const alignOptions = [
   { name: "left", label: "Left", isDefault: true },
