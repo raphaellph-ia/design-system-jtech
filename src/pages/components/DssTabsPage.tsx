@@ -87,6 +87,7 @@ const blockedProps = [
 const anatomyData = {
   structure: {
     files: ["DssTabs.ts.vue"],
+    description: "Camada responsável pelo template Vue, definição de props e encapsulamento do QTabs.",
     responsibilities: [
       "Wrap do <q-tabs> com props DSS filtradas",
       "v-model bidirecional via update:modelValue",
@@ -98,6 +99,7 @@ const anatomyData = {
   },
   composition: {
     files: ["2-composition/_base.scss"],
+    description: "Estilos fundamentais que definem o layout base e reset do container de abas.",
     responsibilities: [
       "Display e layout do container (flex)",
       "Tipografia herdada do sistema DSS",
@@ -106,6 +108,7 @@ const anatomyData = {
   },
   variants: {
     files: ["3-variants/index.scss"],
+    description: "Variações de layout e densidade do container de abas.",
     responsibilities: [
       "Alinhamento: left, center, right, justify",
       "Modo vertical com indicador lateral",
@@ -114,6 +117,7 @@ const anatomyData = {
   },
   output: {
     files: ["4-output/_brands.scss", "4-output/_states.scss", "4-output/index.scss"],
+    description: "Camada final que aplica cores de marca, estados de acessibilidade e adaptações de output.",
     responsibilities: [
       "Cor das setas por brand (hub, water, waste)",
       "Focus-visible nas setas de navegação",
