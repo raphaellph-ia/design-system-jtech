@@ -41,6 +41,7 @@ import {
   MessageSquare,
   SlidersHorizontal,
   LayoutGrid,
+  Navigation,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
