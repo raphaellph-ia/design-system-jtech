@@ -258,7 +258,7 @@ Idêntica ao `DssTab` — herdada via classe `.dss-tab`:
 | `--dss-font-weight-medium` | Tipografia | Peso selecionado (500) |
 | `--dss-line-height-tight` | Tipografia | Altura de linha (1.25) |
 | `--dss-text-subtle` | Cor | Texto padrão |
-| `--dss-text-inverse` | Cor | Texto em dark mode |
+| `--dss-text-inverse` | Cor | Texto em dark mode (herdado via `[data-theme='dark']`) |
 | `--dss-action-primary` | Cor | Texto/indicador selecionado |
 | `--dss-opacity-hover` | Interação | Intensidade overlay hover |
 | `--dss-opacity-active` | Interação | Intensidade overlay pressed |
@@ -275,7 +275,7 @@ Idêntica ao `DssTab` — herdada via classe `.dss-tab`:
 | `--dss-water-600` | Brand | Cor ativa Water |
 | `--dss-waste-600` | Brand | Cor ativa Waste |
 
-**Total: 23 tokens** — todos fornecidos pelo `DssTab.module.scss` importado. Nenhum token exclusivo do `DssRouteTab`.
+**Total: 22 tokens** — todos fornecidos pelo `DssTab.module.scss` importado. Nenhum token exclusivo do `DssRouteTab`.
 
 ---
 

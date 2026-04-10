@@ -1,11 +1,11 @@
 {
   "component": "DssRouteTab",
   "dssVersion": "2.2",
-  "status": "pre-audit",
-  "seal": null,
-  "sealDate": null,
-  "auditMode": "Aguardando Auditoria DSS v2.2",
-  "auditDate": null,
+  "status": "conforme",
+  "seal": "DSS/docs/Compliance/seals/DssRouteTab/DSSROUTETAB_SELO_v2.2.md",
+  "sealDate": "2026-04-10",
+  "auditMode": "Selo DSS v2.2 Concedido",
+  "auditDate": "2026-04-10",
   "goldenReference": "DssTab",
   "goldenReferenceJustification": "DssTab é o Golden Reference canônico para DssRouteTab por ser o irmão arquitetural direto — mesma família (Tabs), mesmo nível de composição (Nível 1 Independente), mesma infraestrutura visual (.dss-tab). DssRouteTab é visualmente idêntico ao DssTab; a diferença é exclusivamente funcional (roteamento Vue Router via QRouteTab vs QTab).",
   "goldenContext": "DssTabs",
@@ -19,7 +19,7 @@
   "subcomponents": [],
   "compositionRequirements": ["DssTabs"],
   "compositionFuture": [],
-  "compositionNote": "DssRouteTab é filho direto de DssTabs (ou q-tabs). Uso idiomático: DssTabs v-model + múltiplos DssRouteTab com props `name` e `to`. O DssTabs gerencia o estado de rota ativa via Vue Router.",
+  "compositionNote": "DssRouteTab é filho direto de DssTabs (ou q-tabs). Uso idiomático: DssTabs v-model + múltiplos DssRouteTab com props `name` e `to`. O DssTabs gerencia o estado de rota ativa via Vue Router. Estratégia de CSS compartilhado: DssRouteTab aplica a classe .dss-tab — todos os estilos visuais são fornecidos pelo DssTab.module.scss importado no orquestrador DssRouteTab.module.scss. Evita duplicação de tokens e garante paridade visual com DssTab. Em produção, bundlers (Vite/webpack) deduplicam CSS idêntico. Referência: pré-prompt §2.1 — Risco Principal: Duplicação de Lógica Visual.",
   "compositionRecommendations": ["DssTabs"],
   "props": {
     "DssRouteTab": ["name", "label", "icon", "alert", "disable", "to", "exact", "replace", "href", "target"],
@@ -74,11 +74,6 @@
       }
     }
   },
-  "sharedCssStrategy": {
-    "approach": "DssRouteTab aplica a classe .dss-tab — todos os estilos visuais são fornecidos pelo DssTab.module.scss importado no orquestrador DssRouteTab.module.scss.",
-    "rationale": "Evita duplicação de tokens e garante paridade visual com DssTab. Em produção, bundlers (Vite/webpack) deduplicam CSS idêntico.",
-    "reference": "Pré-prompt §2.1 — Risco Principal: Duplicação de Lógica Visual."
-  },
   "tokensUsed": [
     "--dss-font-family-sans",
     "--dss-font-size-sm",
@@ -86,7 +81,6 @@
     "--dss-font-weight-medium",
     "--dss-line-height-tight",
     "--dss-text-subtle",
-    "--dss-text-body",
     "--dss-text-inverse",
     "--dss-action-primary",
     "--dss-opacity-hover",
