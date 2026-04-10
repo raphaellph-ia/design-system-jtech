@@ -32,21 +32,32 @@ O componente deve ser um wrapper direto do `<q-route-tab>`. Como é um component
 - `replace` (Boolean) - Substituir histórico de navegação.
 - `href` (String) - Link externo (fallback).
 - `target` (String) - Target do link externo.
+- `alert` (Boolean | String) - Indicador visual de alerta na aba. Em paridade com `DssTab` (Golden Reference). Quando `true`, exibe um ponto de alerta; quando `String`, exibe o valor como label do alerta.
+
+> **Nota de Governança (GAP-02 — corrigido em 2026-04-10):** A prop `alert` foi implementada no componente em paridade com o `DssTab` (Golden Reference), mas estava ausente neste pré-prompt. A prop `alert-icon` permanece bloqueada.
 
 ### 3.2. Props Bloqueadas (Governança DSS)
 - `ripple` - Forçado para `false` (DSS usa transições CSS puras).
 - `no-caps` - Bloqueado (text-transform é governado por tokens tipográficos).
 - `color`, `text-color` - Bloqueados (cores governadas por tokens/brands).
-- `alert`, `alert-icon` - Bloqueados (se necessário, usar composição com `DssBadge` no slot).
+- `alert-icon` - Bloqueado (se necessário, usar composição com `DssBadge` no slot).
 
 ## 4. Governança de Tokens e CSS
 
-O `DssRouteTab` deve utilizar exatamente os mesmos tokens que o `DssTab`:
-- **Tipografia:** `--dss-text-body-strong` (padrão), `--dss-text-subtle` (desabilitado).
-- **Cores (Light):** `--dss-surface-transparent` (base), `--dss-surface-hover` (hover), `--dss-surface-active` (active/selected).
-- **Cores (Dark):** `--dss-surface-transparent` (base), `--dss-surface-hover-dark` (hover), `--dss-surface-active-dark` (active/selected).
-- **Foco:** `--dss-focus-ring` via `outline`.
-- **Transições:** `--dss-motion-duration-fast` e `--dss-motion-easing-standard`.
+O `DssRouteTab` deve utilizar exatamente os mesmos tokens que o `DssTab` (22 tokens confirmados na compilação SCSS):
+
+- **Tipografia:** `--dss-font-size-sm`, `--dss-font-weight-medium`, `--dss-line-height-md`, `--dss-letter-spacing-wide`.
+- **Texto:** `--dss-text-subtle` (estado padrão e desabilitado).
+- **Superfícies:** `--dss-surface-hover`, `--dss-surface-active`.
+- **Foco:** `--dss-focus-ring` via `outline`; `--dss-focus-ring-offset`.
+- **Transições:** `--dss-duration-150`, `--dss-easing-standard`.
+- **Espaçamento:** `--dss-spacing-2`, `--dss-spacing-3`, `--dss-spacing-4`, `--dss-spacing-6`.
+- **Borda:** `--dss-border-width-md`, `--dss-border-radius-sm`.
+- **Touch Target:** `--dss-touch-target-md`.
+- **Opacidade:** `--dss-opacity-disabled`.
+- **Indicação de Seleção:** `--dss-action-primary-default`, `--dss-action-secondary-default`, `--dss-action-tertiary-default`, `--dss-action-accent-default`, `--dss-action-dark-default`.
+
+> **Nota de Governança (GAP-01 — corrigido em 2026-04-10):** O pré-prompt original listava tokens inválidos: `--dss-text-body-strong` (não existe no DSS), `--dss-motion-duration-fast` (nomenclatura incorreta — usar `--dss-duration-*`), `--dss-motion-easing-standard` (nomenclatura incorreta — usar `--dss-easing-standard`). Todos foram substituídos pelos tokens reais confirmados na compilação do componente.
 
 ## 5. Acessibilidade e Estados
 
