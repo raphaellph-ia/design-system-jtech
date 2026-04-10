@@ -39,10 +39,10 @@ import {
 // ============================================================================
 
 const feedbackColors = [
-  { name: "positive", label: "Positive", bg: "#4dd228", hover: "#27910D", light: "#b9f2a4", tokens: { base: "--dss-feedback-success" } },
-  { name: "negative", label: "Negative", bg: "#d8182e", hover: "#a01424", light: "#ffa0ab", tokens: { base: "--dss-feedback-error" } },
-  { name: "warning", label: "Warning", bg: "#fabd14", hover: "#dd8e02", light: "#fff488", tokens: { base: "--dss-feedback-warning" } },
-  { name: "info", label: "Info", bg: "#0cc4e9", hover: "#0c8bae", light: "#a7effa", tokens: { base: "--dss-feedback-info" } },
+  { name: "positive", label: "Positive", icon: CheckCircle, bg: "#4dd228", hover: "#27910D", light: "#b9f2a4", tokens: { base: "--dss-feedback-success" } },
+  { name: "negative", label: "Negative", icon: XCircle, bg: "#d8182e", hover: "#a01424", light: "#ffa0ab", tokens: { base: "--dss-feedback-error" } },
+  { name: "warning", label: "Warning", icon: AlertTriangle, bg: "#fabd14", hover: "#dd8e02", light: "#fff488", tokens: { base: "--dss-feedback-warning" } },
+  { name: "info", label: "Info", icon: Info, bg: "#0cc4e9", hover: "#0c8bae", light: "#a7effa", tokens: { base: "--dss-feedback-info" } },
 ];
 
 const sizes = [
@@ -77,6 +77,7 @@ const propsBlockedData = [
 const anatomyData = {
   structure: {
     files: ["DssBreadcrumbsEl.ts.vue"],
+    description: "Camada responsável pelo template Vue, definição de props e composables de classes BEM.",
     responsibilities: [
       "Template Vue com <q-breadcrumbs-el> como raiz (GATE-EXC-01)",
       "Declaração de props com TypeScript (BreadcrumbsElProps)",
@@ -87,6 +88,7 @@ const anatomyData = {
   },
   composition: {
     files: ["2-composition/_base.scss"],
+    description: "Estilos fundamentais: layout, tipografia, transições e estados base do componente.",
     responsibilities: [
       "Display inline-flex com gap via --dss-spacing-1",
       "Dualidade clicável (--clickable) vs estático (--current)",
@@ -98,6 +100,7 @@ const anatomyData = {
   },
   variants: {
     files: ["3-variants/index.scss"],
+    description: "Camada reservada — DssBreadcrumbsEl v1.0.0 não possui variantes visuais próprias.",
     responsibilities: [
       "Camada reservada — DssBreadcrumbsEl v1.0.0 não possui variantes visuais",
       "Tamanho e densidade não são governados pelo item individual",
@@ -105,6 +108,7 @@ const anatomyData = {
   },
   output: {
     files: ["4-output/_states.scss", "4-output/_brands.scss", "4-output/index.scss"],
+    description: "Camada final: dark mode, media queries de acessibilidade, brands e print.",
     responsibilities: [
       "Dark mode: tokens semânticos já incluem valores dark",
       "prefers-reduced-motion: remove transições",
@@ -327,7 +331,7 @@ export default function DssBreadcrumbsElPage() {
         extraBadges={[
           { label: "v1.0.0", variant: "info" },
           { label: "DSS Selo v2.2", variant: "success" },
-          { label: "Fase 2", variant: "default" },
+          { label: "Fase 2", variant: "info" },
         ]}
       />
 
