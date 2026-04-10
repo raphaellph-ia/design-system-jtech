@@ -1,0 +1,23 @@
+// ==========================================================================
+// DssRouteTab — Layer 4: Estados Adaptativos
+// ==========================================================================
+//
+// Dark mode, prefers-contrast, forced-colors, print.
+//
+// DssRouteTab aplica a classe .dss-tab — todos os estados adaptativos são
+// fornecidos pelo DssTab.module.scss importado no orquestrador principal.
+// Nenhum override adicional é necessário: o comportamento visual de
+// DssRouteTab é idêntico ao DssTab em todos os contextos adaptativos.
+//
+// EXC-02 — System color keywords herdados do DssTab:
+//   ButtonText (padrão), GrayText (desabilitado), Highlight (ativo/selecionado)
+//   em @media (forced-colors: active) — tokens CSS ignorados pelo navegador.
+//   Os seletores .dss-tab no _states.scss do DssTab cobrem DssRouteTab
+//   automaticamente via classe compartilhada.
+//
+// EXC-03 — #000 !important em @media print herdado do DssTab.
+// ==========================================================================
+
+// Estados adaptativos fornecidos integralmente pelo DssTab.module.scss importado
+// no orquestrador principal (DssRouteTab.module.scss).
+// Este arquivo é mantido para conformidade com a arquitetura de 4 camadas.

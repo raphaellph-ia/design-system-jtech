@@ -1,0 +1,19 @@
+// ==========================================================================
+// DssRouteTab — Layer 4: Brands
+// ==========================================================================
+//
+// DssRouteTab aplica a classe .dss-tab — todos os estilos de brand são
+// fornecidos pelo DssTab.module.scss importado no orquestrador principal.
+//
+// Hub (--dss-hub-600), Water (--dss-water-600), Waste (--dss-waste-600):
+// os seletores [data-brand="hub"] .dss-tab e .dss-tab.dss-tab--brand-hub
+// no _brands.scss do DssTab cobrem DssRouteTab automaticamente via
+// classe compartilhada (.dss-tab).
+//
+// O indicador (.q-tab__indicator) herda a cor via currentColor — sem
+// sobrescrita adicional necessária. Precedente: DssTab _brands.scss.
+// ==========================================================================
+
+// Brands fornecidos integralmente pelo DssTab.module.scss importado
+// no orquestrador principal (DssRouteTab.module.scss).
+// Este arquivo é mantido para conformidade com a arquitetura de 4 camadas.

@@ -1,0 +1,32 @@
+// ==========================================================================
+// DssRouteTab — Orchestrador Principal SCSS
+// ==========================================================================
+//
+// DssRouteTab compartilha a infraestrutura visual do DssTab via classe .dss-tab.
+// Este orquestrador importa o módulo completo do DssTab para garantir que todos
+// os estilos estejam disponíveis quando DssRouteTab é usado de forma independente.
+//
+// Decisão arquitetural (pré-prompt §2.1):
+//   A abordagem preferida é que DssRouteTab aplique as mesmas classes CSS
+//   (.dss-tab) do DssTab. O DssTab.module.scss é importado aqui para evitar
+//   dependência implícita — em contextos onde apenas DssRouteTab é carregado,
+//   os estilos de .dss-tab estarão disponíveis.
+//
+// Deduplicação em produção:
+//   Em projetos onde DssTab e DssRouteTab coexistem, bundlers (Vite/webpack)
+//   deduplicam CSS idêntico na build de produção. Nenhuma ação adicional é
+//   necessária pelo consumidor.
+//
+// Camadas próprias (L2, L3, L4):
+//   Os arquivos de camada do DssRouteTab são mantidos para conformidade com
+//   a arquitetura de 4 camadas DSS. Como não há estilos específicos além
+//   dos herdados do DssTab, eles contêm apenas comentários normativos.
+// ==========================================================================
+
+// Importa a infraestrutura visual completa do DssTab (classes .dss-tab)
+@use '../DssTab/DssTab.module' as tab;
+
+// Camadas específicas do DssRouteTab (conformidade com arquitetura de 4 camadas)
+@use './2-composition/base' as base;
+@use './3-variants/index' as variants;
+@use './4-output/index' as output;

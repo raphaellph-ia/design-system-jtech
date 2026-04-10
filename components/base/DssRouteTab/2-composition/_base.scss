@@ -1,0 +1,23 @@
+// ==========================================================================
+// DssRouteTab — Layer 2: Composição Base
+// ==========================================================================
+//
+// DssRouteTab aplica a classe .dss-tab — todos os estilos base são
+// fornecidos pelo módulo SCSS do DssTab (importado via DssRouteTab.module.scss).
+//
+// Decisão arquitetural (pré-prompt §2.1 — Risco Principal: Duplicação de
+// Lógica Visual): DssRouteTab reutiliza explicitamente a infraestrutura CSS
+// do DssTab para garantir paridade visual com zero duplicação de tokens.
+// A classe .dss-tab é aplicada pelo useRouteTabClasses composable.
+//
+// EXC-01 — Gate de Composição v2.4 Regra 1 + Regra 2:
+//   O componente usa <q-route-tab> (primitivo Quasar) diretamente — wrapper
+//   Nível 1 Independente, análogo ao DssTab (Golden Reference). O QRouteTab
+//   herda a estrutura do QTab incluindo .q-tab__indicator — os mesmos seletores
+//   .dss-tab .q-tab__indicator do DssTab se aplicam via classe compartilhada.
+//   Precedente: DssTab EXC-01 (.dss-tab .q-tab__indicator).
+// ==========================================================================
+
+// Estilos base fornecidos integralmente pelo DssTab.module.scss importado
+// no orquestrador principal (DssRouteTab.module.scss).
+// Este arquivo é mantido para conformidade com a arquitetura de 4 camadas.

@@ -1,0 +1,68 @@
+@use '../../../../utils/mixins' as dss;
+
+// =============================================================================
+// Layer 2 — Composição Base: DssBreadcrumbsEl
+//
+// Arquitetura de seletores:
+//   - `.dss-breadcrumbs-el` é aplicado ao elemento raiz renderizado pelo
+//     QBreadcrumbsEl (Level 1 DOM pattern — sem wrapper div).
+//   - EXC-01: Seletor composto `.dss-breadcrumbs-el.q-breadcrumbs__el`
+//     garante especificidade suficiente para sobrescrever estilos nativos
+//     do Quasar sem seletores descendentes. Precedente: DssTabPanel EXC-01.
+//   - EXC-02: `text-decoration: underline` no hover/active — sem token DSS
+//     para text-decoration; padrão WCAG 2.1 SC 1.4.1 para links em contexto
+//     de navegação estrutural.
+// =============================================================================
+
+// EXC-01: Seletor composto — ambas as classes no mesmo elemento raiz
+// Sobrescreve o display e flex do Quasar com valores governados pelo DSS.
+.dss-breadcrumbs-el.q-breadcrumbs__el {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--dss-spacing-1);
+  -webkit-tap-highlight-color: transparent;
+  outline: none; // Reset: foco gerenciado via :focus-visible + dss-focus-ring abaixo
+}
+
+.dss-breadcrumbs-el {
+
+  // ─── Item Clicável (to ou href presente — renderiza como <a>) ──────────
+  &.dss-breadcrumbs-el--clickable {
+    color: var(--dss-text-subtle);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color var(--dss-duration-150) var(--dss-easing-standard);
+
+    &:hover {
+      color: var(--dss-text-body);
+      text-decoration: underline; // EXC-02
+    }
+
+    &:active {
+      color: var(--dss-text-body);
+      text-decoration: underline; // EXC-02
+    }
+
+    &:focus-visible {
+      @include dss.dss-focus-ring;
+      border-radius: var(--dss-radius-sm);
+    }
+  }
+
+  // ─── Item Atual / Estático (sem to ou href — página corrente) ──────────
+  &.dss-breadcrumbs-el--current {
+    color: var(--dss-text-body);
+    font-weight: var(--dss-font-weight-semibold);
+    cursor: default;
+    pointer-events: none;
+    text-decoration: none;
+  }
+
+  // ─── Desabilitado ─────────────────────────────────────────────────────
+  &.dss-breadcrumbs-el--disabled {
+    opacity: var(--dss-opacity-disabled);
+    pointer-events: none;
+    // cursor: not-allowed omitido — pointer-events: none faz o browser ignorar
+    // a regra de cursor (o cursor exibido é do elemento abaixo no z-order).
+  }
+}

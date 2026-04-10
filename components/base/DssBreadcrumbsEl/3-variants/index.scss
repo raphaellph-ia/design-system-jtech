@@ -1,0 +1,13 @@
+// =============================================================================
+// Layer 3 — Variantes: DssBreadcrumbsEl
+//
+// Sem variantes visuais em v1.0.0.
+//
+// A "variante" clicável vs. estático é uma variação de estado (governada
+// pelo Gate de Responsabilidade v2.4), não uma variante visual declarada —
+// portanto pertence ao Layer 2 (composição base) via modifier classes.
+//
+// Variantes futuras (Roadmap):
+//   - `size` prop para controle de tamanho de texto/ícone (v1.1.0)
+//   - Integração com variante de separador do DssBreadcrumbs pai (Fase 3)
+// =============================================================================

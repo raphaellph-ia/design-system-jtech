@@ -1,0 +1,79 @@
+// =============================================================================
+// Layer 4 — Brands: DssBreadcrumbsEl
+// Hub (laranja) | Water (azul) | Waste (verde)
+//
+// Brand tokens numéricos — semânticos não disponíveis ainda para links.
+// Precedente: DssTabPanel _brands.scss (mesmo padrão, família Tabs).
+//
+// Governança: a cor do item clicável é sobrescrita pela cor primária da
+// marca. O item atual (--current) mantém --dss-text-body para legibilidade.
+// =============================================================================
+
+// ─── Hub (laranja) ─────────────────────────────────────────────────────────
+[data-brand="hub"] {
+  .dss-breadcrumbs-el--clickable {
+    color: var(--dss-hub-600);
+
+    &:hover,
+    &:active {
+      color: var(--dss-hub-600);
+    }
+  }
+}
+
+[data-theme="dark"] [data-brand="hub"] {
+  .dss-breadcrumbs-el--clickable {
+    color: var(--dss-hub-400);
+
+    &:hover,
+    &:active {
+      color: var(--dss-hub-400);
+    }
+  }
+}
+
+// ─── Water (azul) ──────────────────────────────────────────────────────────
+[data-brand="water"] {
+  .dss-breadcrumbs-el--clickable {
+    color: var(--dss-water-500);
+
+    &:hover,
+    &:active {
+      color: var(--dss-water-500);
+    }
+  }
+}
+
+[data-theme="dark"] [data-brand="water"] {
+  .dss-breadcrumbs-el--clickable {
+    color: var(--dss-water-400);
+
+    &:hover,
+    &:active {
+      color: var(--dss-water-400);
+    }
+  }
+}
+
+// ─── Waste (verde) ─────────────────────────────────────────────────────────
+[data-brand="waste"] {
+  .dss-breadcrumbs-el--clickable {
+    color: var(--dss-waste-600);
+
+    &:hover,
+    &:active {
+      color: var(--dss-waste-600);
+    }
+  }
+}
+
+[data-theme="dark"] [data-brand="waste"] {
+  .dss-breadcrumbs-el--clickable {
+    color: var(--dss-waste-500);
+
+    &:hover,
+    &:active {
+      color: var(--dss-waste-500);
+    }
+  }
+}

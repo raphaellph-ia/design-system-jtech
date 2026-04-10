@@ -1,0 +1,115 @@
+{
+  "component": "DssBreadcrumbsEl",
+  "dssVersion": "2.2",
+  "status": "conforme",
+  "seal": "DSS/docs/Compliance/seals/DssBreadcrumbsEl/DSSBREADCRUMBSEL_SELO_v2.2.md",
+  "sealDate": "2026-04-10",
+  "auditMode": "Selo DSS v2.2 Concedido",
+  "auditDate": "2026-04-10",
+  "goldenReference": "DssButton",
+  "goldenReferenceJustification": "DssButton é o Golden Reference para DssBreadcrumbsEl porque ambos são elementos interativos que possuem estados de hover, focus-visible, active e disabled. DssButton implementa -webkit-tap-highlight-color, dss-focus-ring, dss-transition, opacity-disabled e paridade com DssChip — todos os padrões de interatividade aplicáveis ao DssBreadcrumbsEl quando clicável. Divergência documentada: DssBreadcrumbsEl é condicionalmente interativo (dualidade clicável/estático), enquanto DssButton é sempre interativo.",
+  "goldenContext": "DssBreadcrumbs",
+  "goldenContextNote": "DssBreadcrumbs é o Golden Context natural por ser o container pai da família Breadcrumbs — gerencia separadores, aria-label do nav e injeta aria-current='page' nos filhos. DssBreadcrumbs ainda não foi implementado (Fase 3 — Nível 2). Na ausência do Golden Context implementado, a auditoria usa DssTabs como referência de padrões arquiteturais de família de componentes de navegação.",
+  "category": "Elemento de Trilha de Navegação (Breadcrumb Item)",
+  "phase": 2,
+  "phaseDescription": "Fase 2 — Componente Estrutural/Interativo. O DssBreadcrumbsEl é condicionalmente interativo: quando `to` ou `href` está presente, comporta-se como link (com hover, focus, active, disabled); quando estático, é puramente informativo (item atual da trilha). Compõe DssIcon internamente e serve como bloco de construção fundamental para o DssBreadcrumbs (Nível 2, Fase 3).",
+  "hasReservations": true,
+  "reservations": [
+    {
+      "id": "RES-01",
+      "description": "DssBreadcrumbs (container pai com separadores e aria-label do nav) ainda não implementado. Os exemplos usam <nav> + flex manual para simular o contexto. Quando DssBreadcrumbs for implementado, os exemplos devem ser atualizados.",
+      "impact": "Baixo — DssBreadcrumbsEl funciona corretamente em qualquer container. A gestão de separadores e aria-label é responsabilidade do DssBreadcrumbs pai."
+    },
+    {
+      "id": "RES-02",
+      "description": "Uso exclusivo de ícone sem label (icon prop + sem slot text + sem label prop) — o aria-hidden='true' no DssIcon torna o elemento inacessível para leitores de tela. Consumidores que usam apenas ícone devem fornecer aria-label no DssBreadcrumbsEl via $attrs.",
+      "impact": "Baixo — caso de uso raro. Documentado como uso avançado. Workaround: aria-label no DssBreadcrumbsEl."
+    },
+    {
+      "id": "RES-03",
+      "description": "Sem unit tests em v1.0.0. Testes de integração com DssBreadcrumbs pai recomendados quando implementado.",
+      "impact": "Baixo — DssBreadcrumbsEl tem lógica mínima (composable de classes). Comportamento principal gerenciado pelo QBreadcrumbsEl nativo."
+    }
+  ],
+  "classification": "Elemento individual de trilha de navegação — condicionalmente interativo (clicável como link ou estático como item atual)",
+  "subcomponents": [],
+  "compositionRequirements": ["DssIcon"],
+  "compositionFuture": ["DssBreadcrumbs"],
+  "compositionNote": "DssBreadcrumbsEl compõe DssIcon internamente (prop `icon`). A composição de DssIcon é opcional — o DssBreadcrumbsEl funciona sem ícone. O DssBreadcrumbs (futuro) será o container pai que gerencia separadores, role='navigation' e aria-current.",
+  "compositionRecommendations": ["DssIcon"],
+  "props": {
+    "DssBreadcrumbsEl": ["label", "icon", "to", "href", "disable", "tag"]
+  },
+  "propsBlocked": ["ripple", "exact", "active-class", "exact-active-class"],
+  "propsBlockedJustification": {
+    "ripple": "DSS não usa ripple em elementos de navegação estrutural. Ripple é reservado para controles de ação (DssButton) — não para elementos de trilha de navegação.",
+    "exact": "Gerenciado pelo DssBreadcrumbs pai, não pelo elemento individual. Expor exact no DssBreadcrumbsEl violaria a governança do container pai.",
+    "active-class": "DSS governa classes de estado ativo via CSS/tokens. Classes Quasar de estado ativo não seguem nomenclatura BEM DSS.",
+    "exact-active-class": "Mesmo motivo de active-class. Estado ativo governado por tokens DSS, não por classes Quasar."
+  },
+  "statesApplicable": ["default", "hover", "focus", "active", "disabled"],
+  "statesNotApplicable": ["loading", "error", "indeterminate"],
+  "statesNotApplicableJustification": "DssBreadcrumbsEl é elemento de navegação estrutural. loading: o elemento não carrega dados — a página de destino carrega. error: pertence ao roteamento/network, não ao elemento de breadcrumb. indeterminate: não aplicável a itens de trilha de navegação.",
+  "statesDualNote": "A dualidade clicável/estático é uma exceção prevista ao Gate de Responsabilidade v2.4: item --clickable (com to/href) possui hover/focus/active; item --current (sem to/href) possui apenas default. Esta dualidade é documentada formalmente como característica central do componente.",
+  "touchTarget": "Opção A — Condicional. Quando clicável (--clickable), o QBreadcrumbsEl renderiza um <a> que herda os padrões de touch target do navegador. Touch target explícito via ::before WCAG 2.5.5 não implementado em v1.0.0 (RES-03 prioritário em v1.1.0). Quando estático (--current), touch target não aplicável (elemento não-interativo).",
+  "ariaRole": "link (nativo <a> quando clicável, gerenciado pelo QBreadcrumbsEl). Sem role no item estático — o elemento de texto inline herda contexto do <nav> pai gerenciado pelo DssBreadcrumbs.",
+  "accessibility": {
+    "role": "link nativo (QBreadcrumbsEl renderiza <a> quando to/href presente)",
+    "wcagLevel": "2.1 AA",
+    "keyboardNavigation": "Tab navega para o próximo item clicável. Enter ativa o link. Item estático não é focável (pointer-events: none).",
+    "ariaManagement": "aria-current='page' é injetado pelo DssBreadcrumbs pai via $attrs, forwarded pelo inheritAttrs: false do DssBreadcrumbsEl para o <q-breadcrumbs-el> raiz."
+  },
+  "exceptions": [
+    {
+      "id": "EXC-01",
+      "value": "Seletor composto .dss-breadcrumbs-el.q-breadcrumbs__el",
+      "location": "2-composition/_base.scss",
+      "justification": "Level 1 DOM pattern: .dss-breadcrumbs-el é aplicado ao mesmo elemento raiz que .q-breadcrumbs__el (renderizado pelo QBreadcrumbsEl). O seletor composto garante especificidade suficiente para sobrescrever display:flex e demais estilos nativos do Quasar sem seletores descendentes. Precedente: DssTabPanel EXC-01 (.dss-tab-panel.q-tab-panel)."
+    },
+    {
+      "id": "EXC-02",
+      "value": "text-decoration: underline",
+      "location": "2-composition/_base.scss — estado :hover e :active",
+      "justification": "Não existe token DSS para text-decoration. O underline em hover/active é padrão de UX amplamente aceito para links em contexto de navegação estrutural — conforme WCAG 2.1 Success Criterion 1.4.1 (Use of Color), que recomenda distinguir links do texto circundante por meio adicional além da cor."
+    },
+    {
+      "id": "EXC-03",
+      "value": "2px solid ButtonText; outline-offset: 2px",
+      "location": "4-output/_states.scss — bloco @media (forced-colors: active), estado :focus-visible",
+      "justification": "Forced-colors mode — system color keywords e valores absolutos obrigatórios. Tokens CSS são ignorados pelo browser em forced-colors. 2px é o mínimo para WCAG 2.4.11 (Focus Appearance). Padrão canônico DSS: DssButton, DssCheckbox, DssRadio, DssToggle, DssCard (todos selados com 2px)."
+    },
+    {
+      "id": "EXC-04",
+      "value": "opacity: 1",
+      "location": "4-output/_states.scss — bloco @media (forced-colors: active), estado disabled",
+      "justification": "Forced-colors mode — opacity é ignorado pelo browser (não é um system color). Reset para opacity: 1 necessário para que a cor GrayText seja aplicada visivelmente. Padrão canônico DSS. Precedente: DssTab _states.scss."
+    }
+  ],
+  "gateExceptions": {
+    "compositionGateV24": {
+      "templateStructure": {
+        "location": "1-structure/DssBreadcrumbsEl.ts.vue",
+        "justification": "DssBreadcrumbsEl usa <q-breadcrumbs-el> como elemento raiz (Level 1 DOM pattern). O QBreadcrumbsEl gerencia o roteamento Vue Router (prop `to` → <RouterLink>/<a>), a dualidade de renderização clicável/estático e os atributos de link (tabindex, role) — funcionalidade que não pode ser reimplementada sem o componente Quasar sem reimplementar o Vue Router link handling."
+      }
+    }
+  },
+  "tokensUsed": [
+    "--dss-text-subtle",
+    "--dss-text-body",
+    "--dss-font-weight-semibold",
+    "--dss-font-weight-bold",
+    "--dss-spacing-1",
+    "--dss-duration-150",
+    "--dss-easing-standard",
+    "--dss-opacity-disabled",
+    "--dss-radius-sm",
+    "--dss-border-width-thin",
+    "--dss-border-width-thick",
+    "--dss-hub-600",
+    "--dss-hub-400",
+    "--dss-water-500",
+    "--dss-water-400",
+    "--dss-waste-600",
+    "--dss-waste-500"
+  ]
+}
