@@ -164,12 +164,18 @@ export function DSSSidebar() {
     >
       {/* Header com trigger de expandir/retrair */}
       <SidebarHeader 
-        className={cn("border-b transition-all duration-200", collapsed ? "p-3" : "p-4")} 
-        style={{ borderColor: 'hsl(var(--sidebar-border))' }}
+        className={cn("border-b transition-all duration-200", collapsed ? "p-2" : "p-4")} 
+        style={{ 
+          borderColor: 'hsl(var(--sidebar-border))',
+          ...(collapsed ? { width: 'var(--sidebar-width-icon)', overflow: 'visible' } : {}),
+        }}
       >
-        <div className={cn("flex items-center", collapsed ? "justify-center" : "justify-between")}>
+        <div className={cn(
+          "flex items-center",
+          collapsed ? "justify-center w-full" : "justify-between"
+        )}>
           {!collapsed && (
-            <div className="flex flex-col overflow-hidden">
+            <div className="flex flex-col overflow-hidden min-w-0 flex-1">
               <span 
                 className="font-semibold text-sm" 
                 style={{ color: 'hsl(var(--sidebar-foreground))' }}
@@ -186,7 +192,8 @@ export function DSSSidebar() {
           )}
           <SidebarTrigger 
             className={cn(
-              "transition-all duration-200 ease-out rounded-md p-2",
+              "transition-all duration-200 ease-out rounded-md shrink-0",
+              collapsed ? "h-8 w-8" : "h-7 w-7",
               "hover:bg-white/10 hover:scale-105 active:scale-95"
             )}
             style={{ color: 'hsl(var(--sidebar-foreground))' }} 
