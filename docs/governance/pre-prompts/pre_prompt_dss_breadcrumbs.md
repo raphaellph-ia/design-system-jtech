@@ -36,9 +36,11 @@ O componente deve ser um wrapper direto do `<q-breadcrumbs>`. O slot `default` d
 ## 4. Governança de Tokens e CSS
 
 O `DssBreadcrumbs` deve utilizar os seguintes tokens:
-- **Tipografia (Separadores):** `--dss-font-size-sm`, `--dss-line-height-md`.
-- **Cores (Separadores):** `--dss-text-subtle` (padrão).
+- **Tipografia (Separadores):** `--dss-font-size-sm`, `--dss-line-height-sm` (— **não** `--dss-line-height-md`; confirmado em compilação real do componente).
+- **Cores (Separadores):** `--dss-text-subtle` (padrão); `--dss-text-disabled` quando o breadcrumb inteiro estiver desabilitado.
 - **Espaçamento (Gutter):** `--dss-spacing-2` (sm), `--dss-spacing-3` (md), `--dss-spacing-4` (lg).
+
+> **Nota:** `--dss-text-disabled` é um token de estado formalizado no catálogo DSS (seção 4.6 do `DSS_TOKEN_REFERENCE.md`). Valor light: `var(--dss-gray-400)` (#d4d4d4); valor dark: `var(--dss-gray-600)` (#737373). Distinto de `--dss-text-subtle` (texto ativo de menor ênfase) e `--dss-text-hint` (placeholder).
 
 ## 5. Acessibilidade e Estados
 

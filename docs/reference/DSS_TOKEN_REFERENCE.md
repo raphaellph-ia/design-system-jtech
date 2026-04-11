@@ -81,6 +81,7 @@ Os tokens DSS são **genéricos e reutilizáveis**. Componentes escolhem livreme
 - [4.3 Warning (5 tokens)](#43-warning)
 - [4.4 Info (5 tokens)](#44-info)
 - [4.5 Surfaces (4 tokens)](#45-surfaces)
+- [4.6 Superfícies e Textos de Componentes (8 tokens)](#46-superfícies-e-textos-de-componentes)
 
 ### 5. Motion e Animação
 - [5.1 Durações Base (10 tokens)](#51-durações-base)
@@ -742,17 +743,18 @@ Cores para estados e alertas (sucesso, erro, aviso, informação).
 
 Tokens de superfície e texto usados por componentes de formulário interativos e de navegação estrutural. Presentes em `DSS/src/index.css` (light mode: linhas 231–232; dark mode: linhas 603–604).
 
-**Total: 7 tokens**
+**Total: 8 tokens**
 
-| Token | Valor (light) | Uso |
-|-------|---------------|-----|
-| `--dss-surface-muted` | — | Fundo do track inativo (trilha não selecionada) |
-| `--dss-surface-disabled` | — | Fundo de superfícies no estado desabilitado |
-| `--dss-text-hint` | — | Cor do texto de hint / dica abaixo de controles |
-| `--dss-text-inverse` | — | Cor de texto sobre fundos escuros (ex.: label tooltip do slider) |
-| `--dss-text-secondary` | — | Cor de texto secundário (menor ênfase visual) |
-| `--dss-text-body` | `var(--dss-dark)` | Texto principal — corpo e itens atuais de navegação (ex.: breadcrumb ativo, item selecionado) |
-| `--dss-text-subtle` | `var(--dss-dark-light)` | Texto secundário — links de navegação, labels de menor ênfase visual. Suporta dark mode via cascata. |
+| Token | Valor (light) | Valor (dark) | Uso |
+|-------|---------------|--------------|-----|
+| `--dss-surface-muted` | — | — | Fundo do track inativo (trilha não selecionada) |
+| `--dss-surface-disabled` | — | — | Fundo de superfícies no estado desabilitado |
+| `--dss-text-hint` | — | — | Cor do texto de hint / dica abaixo de controles |
+| `--dss-text-inverse` | — | — | Cor de texto sobre fundos escuros (ex.: label tooltip do slider) |
+| `--dss-text-secondary` | — | — | Cor de texto secundário (menor ênfase visual) |
+| `--dss-text-body` | `var(--dss-dark)` | — | Texto principal — corpo e itens atuais de navegação (ex.: breadcrumb ativo, item selecionado) |
+| `--dss-text-subtle` | `var(--dss-dark-light)` | — | Texto secundário — links de navegação, labels de menor ênfase visual. Suporta dark mode via cascata. |
+| `--dss-text-disabled` | `var(--dss-gray-400)` (#d4d4d4) | `var(--dss-gray-600)` (#737373) | Cor de texto em estado desabilitado. Semântica precisa de estado — distinto de `--dss-text-subtle` (texto ativo de menor ênfase) e `--dss-text-hint` (placeholder). Definido em `tokens/semantic/_text.scss`; sobrescrito em dark mode em `tokens/themes/dark/_colors.scss`. Usado em: `DssInput`, `DssSelect`, `DssTextarea`, `DssBreadcrumbs`, `DssFile`, `_quasar-overrides.scss`, `_helpers.scss`, `_mixins.scss`. |
 
 ---
 
