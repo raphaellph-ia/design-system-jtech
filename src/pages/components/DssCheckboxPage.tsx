@@ -127,7 +127,7 @@ function DssCheckboxPreview({
     opacity: disabled ? 0.4 : 1,
     fontFamily: "var(--dss-font-family-sans)",
     fontSize: sizeStyles.fontSize,
-    color: isDarkMode ? "var(--dss-text-primary-dark)" : "var(--dss-text-primary)",
+    color: isDarkMode ? "#e0e0e0" : "#1a1a1a",
     userSelect: "none",
     position: "relative",
   });
@@ -149,7 +149,7 @@ function DssCheckboxPreview({
       width: sizeStyles.box,
       height: sizeStyles.box,
       borderRadius: "var(--dss-radius-sm)",
-      border: isActive_ ? "none" : `2px solid ${isHovered && !disabled ? resolvedColor : "var(--dss-border-default)"}`,
+      border: isActive_ ? "none" : `2px solid ${isHovered && !disabled ? resolvedColor : (isDarkMode ? "#666" : "#999")}`,
       backgroundColor: isActive_ ? resolvedColor : "transparent",
       transition: "all var(--dss-duration-200) var(--dss-easing-standard)",
       display: "flex",
