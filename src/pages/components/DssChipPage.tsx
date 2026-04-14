@@ -14,19 +14,20 @@
  import React, { useState } from "react";
  import {
    DssPlayground,
-   ControlSection,
    ControlGrid,
    VariantSelector,
    SizeSelector,
    ToggleGroup,
    ColorPicker,
+   FeedbackColorPicker,
    BrandPicker,
-   IconSelector,
    type SemanticColor,
    type BrandColor,
+   type FeedbackColor,
    type Variant,
    type Size,
    DSS_SEMANTIC_COLORS,
+   DSS_FEEDBACK_COLORS,
    DSS_BRAND_COLORS,
  } from "@/components/ui/playground/DssPlayground";
  import { AnatomySection } from "@/components/ui/AnatomySection";
@@ -68,8 +69,9 @@
    variant: Variant;
    size: Size;
    shape: ChipShape;
-   color: SemanticColor | null;
-   brand: BrandColor | null;
+   color: string | null;
+   feedbackColor: string | null;
+   brand: string | null;
    selected: boolean;
    clickable: boolean;
    removable: boolean;
@@ -93,8 +95,9 @@
  // COMPONENTE DE PREVIEW
  // ==========================================================================
  
- interface DssChipPreviewProps extends DssChipState {
+ interface DssChipPreviewProps extends Omit<DssChipState, 'feedbackColor'> {
    isDarkMode: boolean;
+   feedbackColor?: string | null;
  }
  
  function DssChipPreview({
@@ -121,11 +124,14 @@
      setIsSelected(selected);
    }, [selected]);
  
-   // Resolução de cor (brand tem prioridade)
+   // Color Application Domain: brand > feedbackColor > color
+   const resolvedColorName = brand || feedbackColor || color || "primary";
    const resolvedColor = brand
      ? `var(--dss-${brand}-primary)`
+     : feedbackColor
+     ? DSS_FEEDBACK_COLORS[feedbackColor]?.bg || `var(--dss-${feedbackColor})`
      : color
-     ? `var(--dss-${color})`
+     ? DSS_SEMANTIC_COLORS[color]?.bg || `var(--dss-${color})`
      : "var(--dss-primary)";
  
    // Estilos base por variante
@@ -268,6 +274,7 @@
    if (state.shape === "square") props.push("square");
    if (state.shape === "round") props.push("round");
    if (state.brand) props.push(`brand="${state.brand}"`);
+   else if (state.feedbackColor) props.push(`color="${state.feedbackColor}"`);
    else if (state.color && state.color !== "primary") props.push(`color="${state.color}"`);
    if (state.selected) props.push("selected");
    if (state.clickable) props.push("clickable");
@@ -303,6 +310,7 @@
      size: "md",
      shape: "round",
      color: "primary",
+     feedbackColor: null,
      brand: null,
      selected: false,
      clickable: true,
@@ -313,19 +321,28 @@
      hasIconRight: false,
      label: "Categoria",
    });
- 
-   const handleChange = <K extends keyof DssChipState>(key: K, value: DssChipState[K]) => {
-     setState((prev) => {
-       // Exclusividade mútua: brand limpa color e vice-versa
-       if (key === "brand" && value) {
-         return { ...prev, [key]: value, color: null };
-       }
-       if (key === "color" && value) {
-         return { ...prev, [key]: value, brand: null };
-       }
-       return { ...prev, [key]: value };
-     });
+
+   // Color Application Domain: substituição implícita e silenciosa
+   const handleColorChange = (color: string) => {
+     setState((prev) => ({ ...prev, color, feedbackColor: null, brand: null }));
    };
+   const handleFeedbackChange = (feedbackColor: string) => {
+     setState((prev) => ({ ...prev, feedbackColor, color: null, brand: null }));
+   };
+   const handleBrandChange = (brand: string | null) => {
+     setState((prev) => ({ ...prev, brand, color: null, feedbackColor: null }));
+   };
+
+   const handleChange = <K extends keyof DssChipState>(key: K, value: DssChipState[K]) => {
+     setState((prev) => ({ ...prev, [key]: value }));
+   };
+
+   const toggleBooleanState = (name: string) => {
+     setState((prev) => ({ ...prev, [name]: !prev[name as keyof DssChipState] }));
+   };
+
+   // Feedback colors array for FeedbackColorPicker
+   const feedbackColors = Object.values(DSS_FEEDBACK_COLORS) as FeedbackColor[];
  
    return (
      <div className="p-6 space-y-8 pb-12">
@@ -524,43 +541,63 @@
          isDarkMode={isDarkMode}
          onDarkModeToggle={() => setIsDarkMode(!isDarkMode)}
          codePreview={generateChipCode(state)}
-         previewContent={
+        previewContent={
            <div className="flex flex-wrap gap-4 items-center justify-center">
              <DssChipPreview {...state} isDarkMode={isDarkMode} />
-             {/* Variações para comparação */}
-             <DssChipPreview {...state} variant="outline" isDarkMode={isDarkMode} />
-             <DssChipPreview {...state} variant="flat" isDarkMode={isDarkMode} />
            </div>
          }
         controls={
-          <div className="space-y-5">
-            <ControlGrid columns={2}>
-              {/* Variante */}
-              <VariantSelector
-                label="Variante"
-                variants={[
-                  { name: "filled", label: "Filled" },
-                  { name: "outline", label: "Outline" },
-                  { name: "flat", label: "Flat" },
-                ]}
-                selectedVariant={state.variant}
-                onSelect={(v) => handleChange("variant", v as Variant)}
-              />
-              {/* Tamanho */}
-              <SizeSelector
-                label="Tamanho"
-                sizes={[
-                  { name: "xs", label: "XS" },
-                  { name: "sm", label: "SM" },
-                  { name: "md", label: "MD", isDefault: true },
-                  { name: "lg", label: "LG" },
-                ]}
-                selectedSize={state.size}
-                onSelect={(s) => handleChange("size", s as Size)}
-              />
-            </ControlGrid>
+          <ControlGrid columns={5}>
+            {/* Variant */}
+            <VariantSelector
+              label="Variante"
+              variants={[
+                { name: "filled", label: "Filled", desc: "Background sólido" },
+                { name: "outline", label: "Outline", desc: "Borda colorida" },
+                { name: "flat", label: "Flat", desc: "Sem background" },
+              ]}
+              selectedVariant={state.variant}
+              onSelect={(v) => handleChange("variant", v as Variant)}
+            />
 
-            {/* Forma */}
+            {/* Size */}
+            <SizeSelector
+              label="Tamanho"
+              sizes={[
+                { name: "xs", label: "XS" },
+                { name: "sm", label: "SM" },
+                { name: "md", label: "MD", isDefault: true },
+                { name: "lg", label: "LG" },
+              ]}
+              selectedSize={state.size}
+              onSelect={(s) => handleChange("size", s as Size)}
+            />
+
+            {/* Color Domain — Semantic */}
+            <ColorPicker
+              label="Color"
+              colors={Object.values(DSS_SEMANTIC_COLORS)}
+              selectedColor={state.color}
+              onSelect={handleColorChange}
+            />
+
+            {/* Color Domain — Brand */}
+            <BrandPicker
+              label="Brand"
+              brands={DSS_BRAND_COLORS}
+              selectedBrand={state.brand}
+              onSelect={handleBrandChange}
+            />
+
+            {/* Color Domain — Feedback */}
+            <FeedbackColorPicker
+              label="Feedback"
+              colors={feedbackColors}
+              selectedColor={state.feedbackColor}
+              onSelect={handleFeedbackChange}
+            />
+
+            {/* Shape */}
             <ToggleGroup
               label="Forma"
               options={[
@@ -569,22 +606,6 @@
               ]}
               values={{ round: state.shape === "round", square: state.shape === "square" }}
               onToggle={(v) => handleChange("shape", v as ChipShape)}
-            />
-
-            {/* Cores */}
-            <ColorPicker
-              label="Cor Semântica"
-              colors={Object.values(DSS_SEMANTIC_COLORS)}
-              selectedColor={state.color}
-              onSelect={(c) => handleChange("color", c as SemanticColor)}
-              disabled={!!state.brand}
-            />
-
-            <BrandPicker
-              label="Brand (sobrescreve cor)"
-              brands={DSS_BRAND_COLORS}
-              selectedBrand={state.brand}
-              onSelect={(b) => handleChange("brand", b as BrandColor | null)}
             />
 
             {/* Estados */}
@@ -604,7 +625,7 @@
                 disabled: state.disabled,
                 dense: state.dense,
               }}
-              onToggle={(name) => handleChange(name as keyof DssChipState, !state[name as keyof DssChipState])}
+              onToggle={toggleBooleanState}
             />
 
             {/* Ícones */}
@@ -618,9 +639,9 @@
                 hasIconLeft: state.hasIconLeft,
                 hasIconRight: state.hasIconRight,
               }}
-              onToggle={(name) => handleChange(name as keyof DssChipState, !state[name as keyof DssChipState])}
+              onToggle={toggleBooleanState}
             />
-          </div>
+          </ControlGrid>
         }
        />
  
