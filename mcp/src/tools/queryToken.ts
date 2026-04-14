@@ -43,7 +43,7 @@ export async function queryToken(
       found: false,
       sections: [],
       summary:
-        "Please provide either `tokenName` (e.g. `--dss-color-brand-primary`) or `category` (e.g. `color`, `spacing`, `radius`).",
+        "Please provide either `tokenName` (e.g. `--dss-spacing-4`) or `category` (e.g. `color`, `spacing`, `radius`).",
     };
   }
 
@@ -101,16 +101,34 @@ function splitIntoSections(content: string): string[] {
   return sections.filter((s) => s.length > 0);
 }
 
+/**
+ * Strip Markdown formatting (backticks, pipes, bold, italic) for plain-text matching.
+ * Tokens in the DSS_TOKEN_REFERENCE.md are wrapped in backticks inside table cells,
+ * e.g. `--dss-spacing-4`. Stripping backticks allows substring matching to work.
+ */
+function stripMarkdown(text: string): string {
+  return text
+    .replace(/`/g, "")
+    .replace(/\|/g, " ")
+    .replace(/\*\*/g, "")
+    .replace(/\*/g, "")
+    .replace(/_/g, " ");
+}
+
 function sectionMatchesToken(section: string, tokenName: string): boolean {
-  // Exact match or substring (case-insensitive)
-  return section.toLowerCase().includes(tokenName.toLowerCase());
+  // Match against both raw and stripped content (case-insensitive)
+  const stripped = stripMarkdown(section).toLowerCase();
+  const raw = section.toLowerCase();
+  const query = tokenName.toLowerCase();
+  return raw.includes(query) || stripped.includes(query);
 }
 
 function sectionMatchesCategory(section: string, category: string): boolean {
   const lower = category.toLowerCase();
+  const stripped = stripMarkdown(section).toLowerCase();
   const sectionLower = section.toLowerCase();
 
-  // Category appears in headings
+  // Match category in headings
   const headingMatch = /^#{1,3} .+$/m;
   const headings = section
     .split("\n")
@@ -118,5 +136,12 @@ function sectionMatchesCategory(section: string, category: string): boolean {
     .join(" ")
     .toLowerCase();
 
-  return headings.includes(lower) || sectionLower.includes(`--dss-${lower}`);
+  // Match --dss-{category} pattern in stripped content (removes backticks from table cells)
+  const tokenPattern = `--dss-${lower}`;
+
+  return (
+    headings.includes(lower) ||
+    sectionLower.includes(tokenPattern) ||
+    stripped.includes(tokenPattern)
+  );
 }

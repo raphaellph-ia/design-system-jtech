@@ -213,7 +213,7 @@ async function queryToken(dssRoot, tokenName, category) {
       query: { tokenName, category },
       found: false,
       sections: [],
-      summary: "Please provide either `tokenName` (e.g. `--dss-color-brand-primary`) or `category` (e.g. `color`, `spacing`, `radius`)."
+      summary: "Please provide either `tokenName` (e.g. `--dss-spacing-4`) or `category` (e.g. `color`, `spacing`, `radius`)."
     };
   }
   const matchedSections = [];
@@ -259,15 +259,23 @@ function splitIntoSections(content) {
   }
   return sections.filter((s) => s.length > 0);
 }
+function stripMarkdown(text) {
+  return text.replace(/`/g, "").replace(/\|/g, " ").replace(/\*\*/g, "").replace(/\*/g, "").replace(/_/g, " ");
+}
 function sectionMatchesToken(section, tokenName) {
-  return section.toLowerCase().includes(tokenName.toLowerCase());
+  const stripped = stripMarkdown(section).toLowerCase();
+  const raw = section.toLowerCase();
+  const query = tokenName.toLowerCase();
+  return raw.includes(query) || stripped.includes(query);
 }
 function sectionMatchesCategory(section, category) {
   const lower = category.toLowerCase();
+  const stripped = stripMarkdown(section).toLowerCase();
   const sectionLower = section.toLowerCase();
   const headingMatch = /^#{1,3} .+$/m;
   const headings = section.split("\n").filter((l) => headingMatch.test(l)).join(" ").toLowerCase();
-  return headings.includes(lower) || sectionLower.includes(`--dss-${lower}`);
+  const tokenPattern = `--dss-${lower}`;
+  return headings.includes(lower) || sectionLower.includes(tokenPattern) || stripped.includes(tokenPattern);
 }
 
 // src/tools/checkCompliance.ts
