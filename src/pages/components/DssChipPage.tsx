@@ -14,19 +14,20 @@
  import React, { useState } from "react";
  import {
    DssPlayground,
-   ControlSection,
    ControlGrid,
    VariantSelector,
    SizeSelector,
    ToggleGroup,
    ColorPicker,
+   FeedbackColorPicker,
    BrandPicker,
-   IconSelector,
    type SemanticColor,
    type BrandColor,
+   type FeedbackColor,
    type Variant,
    type Size,
    DSS_SEMANTIC_COLORS,
+   DSS_FEEDBACK_COLORS,
    DSS_BRAND_COLORS,
  } from "@/components/ui/playground/DssPlayground";
  import { AnatomySection } from "@/components/ui/AnatomySection";
