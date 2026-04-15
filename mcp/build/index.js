@@ -100,7 +100,7 @@ import {
   CallToolRequestSchema
 } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
-import { resolve as resolve5, dirname as dirname2 } from "path";
+import { resolve as resolve8, dirname as dirname2 } from "path";
 import { fileURLToPath as fileURLToPath2 } from "url";
 
 // src/tools/queryComponent.ts
@@ -374,11 +374,23 @@ function analyzeCompositionRules(context, sources, findings, references) {
     );
     references.push("CLAUDE.md \u2014 Arquitetura em 4 Camadas");
   }
-  if (lower.includes("::before") && lower.includes("visual")) {
+  if (/::before/.test(context) && /visual|hover|background|overlay|ripple|after-effect/i.test(context)) {
     findings.push(
       "\u26A0\uFE0F NON-COMPLIANT: ::before is reserved exclusively for touch target (WCAG 2.5.5). Visual effects must use ::after."
     );
     references.push("CLAUDE.md \u2014 Princ\xEDpio #7: Conven\xE7\xE3o de Pseudo-elementos");
+  }
+  if (/:deep\s*\(|::v-deep\b/.test(context)) {
+    findings.push(
+      "\u26A0\uFE0F NON-COMPLIANT: ':deep()' or '::v-deep' detected. Gate de Composi\xE7\xE3o v2.4 prohibits breaking child component encapsulation via CSS. Use child component props instead."
+    );
+    references.push("DSS_CRITERIOS_AVALIACAO_FASE2.md \u2014 Gate de Composi\xE7\xE3o v2.4, Regra 2");
+  }
+  if (/container|wrapper|group/i.test(context) && /:hover|:focus|:active/i.test(context) && /state|interati/i.test(context)) {
+    findings.push(
+      "\u26A0\uFE0F RISK: Container component capturing interactive states (:hover/:focus) that semantically belong to child components. Gate de Responsabilidade v2.4, Regra 1 may be violated."
+    );
+    references.push("DSS_CRITERIOS_AVALIACAO_FASE2.md \u2014 Gate de Responsabilidade v2.4, Regra 1");
   }
   if ((lower.includes("scss") || lower.includes("css")) && (lower.includes("background-color") || lower.includes("color:")) && !lower.includes("var(--dss-")) {
     findings.push(
@@ -423,9 +435,9 @@ function analyzeAccessibilityRules(context, sources, findings, references) {
       findings.push(`\u2705 Touch target of ${size}px meets the 48px minimum.`);
     }
   }
-  if (lower.includes("outline: none") || lower.includes("outline:none")) {
+  if (/outline\s*:\s*(none|0|transparent)\b/i.test(context)) {
     findings.push(
-      "\u26A0\uFE0F NON-COMPLIANT: outline: none removes visible focus indicator, violating WCAG 2.4.7 (Focus Visible). DSS requires a visible focus ring using --dss-focus-ring-* tokens."
+      "\u26A0\uFE0F NON-COMPLIANT: outline: none/0/transparent removes visible focus indicator, violating WCAG 2.4.7 (Focus Visible). DSS requires a visible focus ring using --dss-focus-ring-* tokens."
     );
     references.push("CLAUDE.md \u2014 Princ\xEDpio #4: Acessibilidade");
   }
@@ -456,9 +468,389 @@ The MCP server observes and explains \u2014 it does not correct, apply fixes, or
 All remediation must be performed by a human developer with explicit DSS governance approval.
 `.trim();
 
+// src/tools/getTodoListStatus.ts
+import { readFileSync as readFileSync5, existsSync as existsSync4 } from "fs";
+import { resolve as resolve5 } from "path";
+async function getTodoListStatus(dssRoot) {
+  const todoPath = resolve5(dssRoot, "docs/reference/DSS_FASE2_TODO.md");
+  if (!existsSync4(todoPath)) {
+    return {
+      found: false,
+      summary: { total: 0, sealed: 0, in_progress: 0, pending: 0, blocked: 0, progress_pct: 0 },
+      next_available: [],
+      all_items: [],
+      raw_note: "DSS_FASE2_TODO.md not found."
+    };
+  }
+  const content = readFileSync5(todoPath, "utf-8");
+  const lines = content.split("\n");
+  const allItems = [];
+  let currentFamily = "Unknown";
+  for (const line of lines) {
+    const familyMatch = line.match(/^###\s+Família:\s+(.+)$/);
+    if (familyMatch) {
+      currentFamily = familyMatch[1].trim();
+      continue;
+    }
+    const sealedMatch = line.match(/^\s*-\s+\[x\].*~~`(\w+)`~~.*✅.*SELADO/);
+    const inProgressMatch = line.match(/^\s*-\s+\[x\](?!.*SELADO).*`(\w+)`/);
+    const blockedMatch = line.match(/^\s*-\s+\[\s\].*🔒.*`(\w+)`/);
+    const pendingMatch = line.match(/^\s*-\s+\[\s\](?!.*🔒).*`(\w+)`/);
+    if (sealedMatch) {
+      allItems.push({ name: sealedMatch[1], status: "sealed", family: currentFamily });
+    } else if (blockedMatch) {
+      allItems.push({ name: blockedMatch[1], status: "blocked", family: currentFamily });
+    } else if (pendingMatch) {
+      allItems.push({ name: pendingMatch[1], status: "pending", family: currentFamily });
+    } else if (inProgressMatch) {
+      allItems.push({ name: inProgressMatch[1], status: "in_progress", family: currentFamily });
+    }
+  }
+  const sealed = allItems.filter((i) => i.status === "sealed").length;
+  const in_progress = allItems.filter((i) => i.status === "in_progress").length;
+  const pending = allItems.filter((i) => i.status === "pending").length;
+  const blocked = allItems.filter((i) => i.status === "blocked").length;
+  const total = allItems.length;
+  const progress_pct = total > 0 ? Math.round(sealed / total * 100) : 0;
+  const next_available = allItems.filter((i) => i.status === "pending").slice(0, 5);
+  const lastUpdatedMatch = content.match(/\*\*Última Atualização:\*\*\s*(.+)/);
+  const raw_note = lastUpdatedMatch ? `Last updated: ${lastUpdatedMatch[1].trim()}` : "No update date found.";
+  return {
+    found: true,
+    summary: { total, sealed, in_progress, pending, blocked, progress_pct },
+    next_available,
+    all_items: allItems,
+    raw_note
+  };
+}
+
+// src/tools/validatePrePrompt.ts
+import { readFileSync as readFileSync6, existsSync as existsSync5 } from "fs";
+import { resolve as resolve6 } from "path";
+var REQUIRED_AXES = [
+  {
+    axis: "1. Classifica\xE7\xE3o e Contexto",
+    patterns: [
+      /classifica[çc][aã]o/i,
+      /contexto/i,
+      /fase\s+(e\s+n[íi]vel|2)/i,
+      /golden\s+(reference|context)/i
+    ]
+  },
+  {
+    axis: "2. Risco Principal Arquitetural",
+    patterns: [
+      /risco/i,
+      /grande\s+risco/i,
+      /arquitetural/i,
+      /risco\s+arquitetural/i
+    ]
+  },
+  {
+    axis: "3. API Mapeada",
+    patterns: [
+      /api\s+mapeada/i,
+      /mapeamento.*api/i,
+      /api.*quasar/i,
+      /props.*mapeadas/i,
+      /contrato.*api/i,
+      /api\s+do\s+componente/i,
+      /##\s+api/i,
+      /###\s+props/i,
+      /props\s+(de\s+estilo|de\s+forma|de\s+layout|bloqueadas)/i
+    ]
+  },
+  {
+    axis: "4. Tokens",
+    patterns: [
+      /tokens?/i,
+      /--dss-/i,
+      /mapeamento.*tokens?/i,
+      /tokens?.*utilizados/i
+    ]
+  },
+  {
+    axis: "5. Acessibilidade e Estados",
+    patterns: [
+      /acessibilidade/i,
+      /accessibility/i,
+      /estados/i,
+      /wcag/i,
+      /aria/i,
+      /touch\s+target/i
+    ]
+  }
+];
+async function validatePrePrompt(componentName, dssRoot) {
+  const slug = componentName.replace(/^Dss/, "dss_").replace(/([A-Z])/g, "_$1").toLowerCase().replace(/^_/, "").replace(/dss__/, "dss_").replace(/__+/g, "_");
+  const prePromptPath = resolve6(
+    dssRoot,
+    "docs/governance/pre-prompts",
+    `pre_prompt_${slug}.md`
+  );
+  if (!existsSync5(prePromptPath)) {
+    return {
+      componentName,
+      filePath: prePromptPath,
+      found: false,
+      verdict: "not_found",
+      axes: [],
+      missing_axes: REQUIRED_AXES.map((a) => a.axis),
+      summary: `Pre-prompt file not found at: ${prePromptPath}`,
+      notice: READ_ONLY_NOTICE2
+    };
+  }
+  const content = readFileSync6(prePromptPath, "utf-8");
+  const headings = content.split("\n").filter((l) => /^#{1,4}\s/.test(l)).join("\n");
+  const axes = REQUIRED_AXES.map(({ axis, patterns }) => {
+    for (const pattern of patterns) {
+      if (pattern.test(headings)) {
+        return { axis, present: true, matched_by: `heading: ${pattern.source}` };
+      }
+      if (pattern.test(content)) {
+        return { axis, present: true, matched_by: `content: ${pattern.source}` };
+      }
+    }
+    return { axis, present: false, matched_by: null };
+  });
+  const missing_axes = axes.filter((a) => !a.present).map((a) => a.axis);
+  const verdict = missing_axes.length === 0 ? "compliant" : "non-compliant";
+  const summary = verdict === "compliant" ? `\u2705 Pre-prompt for ${componentName} covers all 5 mandatory axes.` : `\u26A0\uFE0F Pre-prompt for ${componentName} is missing ${missing_axes.length} axis(es): ${missing_axes.join(", ")}.`;
+  return {
+    componentName,
+    filePath: prePromptPath,
+    found: true,
+    verdict,
+    axes,
+    missing_axes,
+    summary,
+    notice: READ_ONLY_NOTICE2
+  };
+}
+var READ_ONLY_NOTICE2 = `
+This validation is strictly descriptive per MCP_READ_ONLY_CONTRACT.md.
+The MCP server observes and explains \u2014 it does not correct, apply fixes, or make autonomous decisions.
+`.trim();
+
+// src/tools/validateComponentCode.ts
+import { readFileSync as readFileSync7, existsSync as existsSync6, readdirSync, statSync } from "fs";
+import { resolve as resolve7, join, extname } from "path";
+var REQUIRED_LAYERS = [
+  "1-structure",
+  "2-composition",
+  "3-variants",
+  "4-output"
+];
+var HARDCODED_COLOR_PATTERNS = [
+  { pattern: /#[0-9a-fA-F]{3,8}\b/, label: "hex color" },
+  { pattern: /\brgb\s*\(/, label: "rgb() color" },
+  { pattern: /\brgba\s*\(/, label: "rgba() color" },
+  { pattern: /\bhsl\s*\(/, label: "hsl() color" },
+  { pattern: /\bhsla\s*\(/, label: "hsla() color" }
+];
+var RGBA_EXCEPTION_PATTERN = /rgba\(\s*(?:255\s*,\s*255\s*,\s*255|0\s*,\s*0\s*,\s*0)\s*,\s*0\.\d+\s*\)/;
+var DEEP_SELECTOR_PATTERN = /:deep\s*\(|::v-deep\b/;
+var HARDCODED_PX_PATTERN = /(?<!\/\/[^\n]*)\b(\d+)px\b/g;
+var ALLOWED_PX_VALUES = /* @__PURE__ */ new Set([0, 1, 2]);
+var COMPONENT_TOKEN_PATTERN = /--dss-(?:chip|badge|button|btn|input|select|checkbox|radio|toggle|card)-\w+-(?:height|size|width)/;
+function readFileSafe(path) {
+  try {
+    return readFileSync7(path, "utf-8");
+  } catch {
+    return null;
+  }
+}
+function collectFiles(dir, exts) {
+  if (!existsSync6(dir)) return [];
+  const results = [];
+  for (const entry of readdirSync(dir)) {
+    const fullPath = join(dir, entry);
+    const stat = statSync(fullPath);
+    if (stat.isDirectory()) {
+      results.push(...collectFiles(fullPath, exts));
+    } else if (exts.includes(extname(entry))) {
+      results.push(fullPath);
+    }
+  }
+  return results;
+}
+function extractStyleBlocks(vueContent) {
+  const blocks = [];
+  const styleRegex = /<style[^>]*>([\s\S]*?)<\/style>/g;
+  let match;
+  while ((match = styleRegex.exec(vueContent)) !== null) {
+    blocks.push(match[1]);
+  }
+  return blocks.join("\n");
+}
+function analyzeScss(content, filePath, findings) {
+  const lines = content.split("\n");
+  lines.forEach((line, idx) => {
+    const lineNum = idx + 1;
+    const trimmed = line.trim();
+    if (trimmed.startsWith("//") || trimmed.startsWith("*")) return;
+    if (DEEP_SELECTOR_PATTERN.test(line)) {
+      findings.push({
+        severity: "error",
+        rule: "GATE_COMPOSICAO_V2.4",
+        message: `':deep()' or '::v-deep' selector detected. Gate de Composi\xE7\xE3o v2.4 prohibits breaking child component encapsulation. Use child component props instead.`,
+        file: filePath,
+        line: lineNum
+      });
+    }
+    for (const { pattern, label } of HARDCODED_COLOR_PATTERNS) {
+      if (pattern.test(line)) {
+        if (label.startsWith("rgba") && RGBA_EXCEPTION_PATTERN.test(line)) {
+          findings.push({
+            severity: "warning",
+            rule: "TOKEN_FIRST",
+            message: `rgba() with pure white/black detected (may be a documented dark-mode exception). Confirm it is registered in dss.meta.json exceptions.`,
+            file: filePath,
+            line: lineNum
+          });
+          continue;
+        }
+        findings.push({
+          severity: "error",
+          rule: "TOKEN_FIRST",
+          message: `Hardcoded ${label} detected: "${trimmed}". DSS Principle #1 requires all colors to use var(--dss-*) tokens.`,
+          file: filePath,
+          line: lineNum
+        });
+        break;
+      }
+    }
+    let pxMatch;
+    const pxRegex = new RegExp(HARDCODED_PX_PATTERN.source, "g");
+    while ((pxMatch = pxRegex.exec(line)) !== null) {
+      const val = parseInt(pxMatch[1], 10);
+      if (!ALLOWED_PX_VALUES.has(val)) {
+        findings.push({
+          severity: "warning",
+          rule: "TOKEN_FIRST",
+          message: `Hardcoded pixel value '${val}px' detected. Consider using a var(--dss-spacing-*) or var(--dss-*) token instead.`,
+          file: filePath,
+          line: lineNum
+        });
+        break;
+      }
+    }
+    if (COMPONENT_TOKEN_PATTERN.test(line)) {
+      findings.push({
+        severity: "error",
+        rule: "PRINCIPLE_6_GENERIC_TOKENS",
+        message: `Component-specific height/size token detected. Use --dss-compact-control-height-{xs,sm,md,lg} instead.`,
+        file: filePath,
+        line: lineNum
+      });
+    }
+  });
+}
+async function validateComponentCode(componentName, dssRoot) {
+  const normalized = normalizeComponentName2(componentName);
+  let componentDir = null;
+  for (const subDir of ["components/base", "components/composed"]) {
+    const candidate = resolve7(dssRoot, subDir, normalized);
+    if (existsSync6(candidate)) {
+      componentDir = candidate;
+      break;
+    }
+  }
+  if (!componentDir) {
+    return {
+      componentName: normalized,
+      componentDir: resolve7(dssRoot, "components/base", normalized),
+      found: false,
+      verdict: "uncertain",
+      layers: [],
+      findings: [
+        {
+          severity: "error",
+          rule: "COMPONENT_NOT_FOUND",
+          message: `Component directory "${normalized}" not found in components/base or components/composed.`
+        }
+      ],
+      summary: `Component "${normalized}" not found. Verify the name or check DSS_FASEAMENTO_COMPONENTES.md.`,
+      notice: READ_ONLY_NOTICE3
+    };
+  }
+  const findings = [];
+  const layers = REQUIRED_LAYERS.map((layer) => ({
+    layer,
+    required: true,
+    present: existsSync6(join(componentDir, layer))
+  }));
+  for (const layer of layers) {
+    if (!layer.present) {
+      findings.push({
+        severity: "error",
+        rule: "FOUR_LAYER_ARCHITECTURE",
+        message: `Missing required layer: "${layer.layer}". All 4 layers must exist, even if sparse.`,
+        file: componentDir
+      });
+    }
+  }
+  const metaPath = join(componentDir, "dss.meta.json");
+  if (!existsSync6(metaPath)) {
+    findings.push({
+      severity: "error",
+      rule: "META_MISSING",
+      message: `dss.meta.json not found. This file is required for governance tracking.`,
+      file: componentDir
+    });
+  }
+  const scssFiles = collectFiles(componentDir, [".scss"]);
+  for (const scssPath of scssFiles) {
+    const content = readFileSafe(scssPath);
+    if (content) analyzeScss(content, scssPath, findings);
+  }
+  const vueFiles = collectFiles(componentDir, [".vue"]);
+  for (const vuePath of vueFiles) {
+    const content = readFileSafe(vuePath);
+    if (content) {
+      const styleContent = extractStyleBlocks(content);
+      if (styleContent) analyzeScss(styleContent, vuePath + " (<style>)", findings);
+    }
+  }
+  const hasErrors = findings.some((f) => f.severity === "error");
+  const hasWarnings = findings.some((f) => f.severity === "warning");
+  let verdict;
+  if (hasErrors) {
+    verdict = "non-compliant";
+  } else if (hasWarnings) {
+    verdict = "uncertain";
+  } else {
+    verdict = "compliant";
+  }
+  const errorCount = findings.filter((f) => f.severity === "error").length;
+  const warnCount = findings.filter((f) => f.severity === "warning").length;
+  const summary = verdict === "compliant" ? `\u2705 ${normalized}: No violations detected. All 4 layers present.` : verdict === "non-compliant" ? `\u26A0\uFE0F ${normalized}: ${errorCount} error(s), ${warnCount} warning(s) found.` : `\u2139\uFE0F ${normalized}: ${warnCount} warning(s) \u2014 review for potential exceptions.`;
+  return {
+    componentName: normalized,
+    componentDir,
+    found: true,
+    verdict,
+    layers,
+    findings,
+    summary,
+    notice: READ_ONLY_NOTICE3
+  };
+}
+function normalizeComponentName2(name) {
+  if (/^Dss[A-Z]/.test(name)) return name;
+  const clean = name.replace(/^[Dd]ss[-_]?/, "");
+  const pascal = clean.split(/[-_\s]/).map((p) => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join("");
+  return `Dss${pascal}`;
+}
+var READ_ONLY_NOTICE3 = `
+This validation is strictly descriptive per MCP_READ_ONLY_CONTRACT.md.
+The MCP server observes and explains \u2014 it does not correct, apply fixes, or make autonomous decisions.
+All remediation must be performed by a human developer with explicit DSS governance approval.
+`.trim();
+
 // src/tools/index.ts
 var __dirname2 = dirname2(fileURLToPath2(import.meta.url));
-var DSS_ROOT2 = resolve5(__dirname2, "../..");
+var DSS_ROOT2 = resolve8(__dirname2, "../..");
 var QueryComponentSchema = z.object({
   componentName: z.string().describe(
     'Name of the DSS component (e.g. "DssCard", "DssButton", "card"). Case-insensitive, Dss prefix optional.'
@@ -480,7 +872,23 @@ var CheckComplianceSchema = z.object({
     '"composition" \u2014 layer structure, pseudo-elements, SCSS patterns. "token" \u2014 token usage, hardcoded values. "accessibility" \u2014 WCAG rules, touch target, ARIA.'
   )
 });
+var GetTodoListStatusSchema = z.object({
+  filter: z.enum(["all", "pending", "sealed", "blocked"]).optional().default("all").describe(
+    'Filter results: "all" returns everything, "pending" returns only actionable items, "sealed" returns completed items, "blocked" returns blocked items.'
+  )
+});
+var ValidatePrePromptSchema = z.object({
+  componentName: z.string().describe(
+    'Name of the DSS component whose pre-prompt should be validated (e.g. "DssBtnGroup", "DssTab"). Case-sensitive, Dss prefix required.'
+  )
+});
+var ValidateComponentCodeSchema = z.object({
+  componentName: z.string().describe(
+    'Name of the DSS component to validate (e.g. "DssCard", "DssButton", "card"). Case-insensitive, Dss prefix optional.'
+  )
+});
 var TOOL_DEFINITIONS = [
+  // ── Phase 1 Tools ──────────────────────────────────────────────────────────
   {
     name: "query_component",
     description: "Returns detailed information about a specific DSS component: compliance status, phase, golden references, props, pre-prompt and documentation. Read-Only \u2014 no files are modified.",
@@ -530,6 +938,49 @@ var TOOL_DEFINITIONS = [
       },
       required: ["context", "ruleType"]
     }
+  },
+  // ── Phase 2 Tools ──────────────────────────────────────────────────────────
+  {
+    name: "get_todo_list_status",
+    description: "Returns the current progress of the DSS Phase 2 implementation by parsing DSS_FASE2_TODO.md. Shows sealed, pending, in-progress and blocked components. Read-Only \u2014 no files are modified.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        filter: {
+          type: "string",
+          enum: ["all", "pending", "sealed", "blocked"],
+          description: 'Filter results: "all" (default), "pending" (actionable), "sealed" (completed), "blocked".'
+        }
+      }
+    }
+  },
+  {
+    name: "validate_pre_prompt",
+    description: "Verifies whether a DSS component pre-prompt covers all 5 mandatory axes required by Phase 2 criteria: (1) Classification, (2) Main Architectural Risk, (3) Mapped API, (4) Tokens, (5) Accessibility & States. Read-Only \u2014 no files are modified.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        componentName: {
+          type: "string",
+          description: 'Name of the DSS component (e.g. "DssBtnGroup", "DssTab"). Dss prefix required.'
+        }
+      },
+      required: ["componentName"]
+    }
+  },
+  {
+    name: "validate_component_code",
+    description: "Analyzes the source code of a DSS component (Vue + SCSS) and checks for architectural violations: missing 4-layer structure, hardcoded colors (Token First), :deep() usage (Gate de Composi\xE7\xE3o v2.4), and component-specific tokens. Read-Only \u2014 no files are modified.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        componentName: {
+          type: "string",
+          description: 'Name of the DSS component to validate (e.g. "DssCard", "card"). Case-insensitive.'
+        }
+      },
+      required: ["componentName"]
+    }
   }
 ];
 function registerTools(server) {
@@ -539,32 +990,19 @@ function registerTools(server) {
   server.setRequestHandler(CallToolRequestSchema, async (request) => {
     const { name, arguments: args } = request.params;
     switch (name) {
+      // ── Phase 1 ────────────────────────────────────────────────────────────
       case "query_component": {
         const input = QueryComponentSchema.parse(args);
         const result = await queryComponent(input.componentName, DSS_ROOT2);
         return {
-          content: [
-            {
-              type: "text",
-              text: JSON.stringify(result, null, 2)
-            }
-          ]
+          content: [{ type: "text", text: JSON.stringify(result, null, 2) }]
         };
       }
       case "query_token": {
         const input = QueryTokenSchema.parse(args);
-        const result = await queryToken(
-          DSS_ROOT2,
-          input.tokenName,
-          input.category
-        );
+        const result = await queryToken(DSS_ROOT2, input.tokenName, input.category);
         return {
-          content: [
-            {
-              type: "text",
-              text: JSON.stringify(result, null, 2)
-            }
-          ]
+          content: [{ type: "text", text: JSON.stringify(result, null, 2) }]
         };
       }
       case "check_compliance": {
@@ -575,12 +1013,34 @@ function registerTools(server) {
           DSS_ROOT2
         );
         return {
-          content: [
-            {
-              type: "text",
-              text: JSON.stringify(result, null, 2)
-            }
-          ]
+          content: [{ type: "text", text: JSON.stringify(result, null, 2) }]
+        };
+      }
+      // ── Phase 2 ────────────────────────────────────────────────────────────
+      case "get_todo_list_status": {
+        const input = GetTodoListStatusSchema.parse(args ?? {});
+        const result = await getTodoListStatus(DSS_ROOT2);
+        if (input.filter && input.filter !== "all") {
+          result.all_items = result.all_items.filter(
+            (i) => i.status === input.filter
+          );
+        }
+        return {
+          content: [{ type: "text", text: JSON.stringify(result, null, 2) }]
+        };
+      }
+      case "validate_pre_prompt": {
+        const input = ValidatePrePromptSchema.parse(args);
+        const result = await validatePrePrompt(input.componentName, DSS_ROOT2);
+        return {
+          content: [{ type: "text", text: JSON.stringify(result, null, 2) }]
+        };
+      }
+      case "validate_component_code": {
+        const input = ValidateComponentCodeSchema.parse(args);
+        const result = await validateComponentCode(input.componentName, DSS_ROOT2);
+        return {
+          content: [{ type: "text", text: JSON.stringify(result, null, 2) }]
         };
       }
       default:

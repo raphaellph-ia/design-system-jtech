@@ -157,12 +157,35 @@ function analyzeCompositionRules(
     references.push("CLAUDE.md — Arquitetura em 4 Camadas");
   }
 
-  // Check for ::before misuse
-  if (lower.includes("::before") && lower.includes("visual")) {
+  // Check for ::before misuse (visual / hover / background / content keywords)
+  if (
+    /::before/.test(context) &&
+    /visual|hover|background|overlay|ripple|after-effect/i.test(context)
+  ) {
     findings.push(
       "⚠️ NON-COMPLIANT: ::before is reserved exclusively for touch target (WCAG 2.5.5). Visual effects must use ::after."
     );
     references.push("CLAUDE.md — Princípio #7: Convenção de Pseudo-elementos");
+  }
+
+  // Gate de Composição v2.4 — :deep() usage
+  if (/:deep\s*\(|::v-deep\b/.test(context)) {
+    findings.push(
+      "⚠️ NON-COMPLIANT: ':deep()' or '::v-deep' detected. Gate de Composição v2.4 prohibits breaking child component encapsulation via CSS. Use child component props instead."
+    );
+    references.push("DSS_CRITERIOS_AVALIACAO_FASE2.md — Gate de Composição v2.4, Regra 2");
+  }
+
+  // Gate de Responsabilidade v2.4 — hover/focus on container
+  if (
+    /container|wrapper|group/i.test(context) &&
+    /:hover|:focus|:active/i.test(context) &&
+    /state|interati/i.test(context)
+  ) {
+    findings.push(
+      "⚠️ RISK: Container component capturing interactive states (:hover/:focus) that semantically belong to child components. Gate de Responsabilidade v2.4, Regra 1 may be violated."
+    );
+    references.push("DSS_CRITERIOS_AVALIACAO_FASE2.md — Gate de Responsabilidade v2.4, Regra 1");
   }
 
   // Check for colors in SCSS
@@ -225,10 +248,10 @@ function analyzeAccessibilityRules(
     }
   }
 
-  // Focus visibility
-  if (lower.includes("outline: none") || lower.includes("outline:none")) {
+  // Focus visibility — improved: also catches outline:none, outline: 0, outline: transparent
+  if (/outline\s*:\s*(none|0|transparent)\b/i.test(context)) {
     findings.push(
-      "⚠️ NON-COMPLIANT: outline: none removes visible focus indicator, violating WCAG 2.4.7 (Focus Visible). DSS requires a visible focus ring using --dss-focus-ring-* tokens."
+      "⚠️ NON-COMPLIANT: outline: none/0/transparent removes visible focus indicator, violating WCAG 2.4.7 (Focus Visible). DSS requires a visible focus ring using --dss-focus-ring-* tokens."
     );
     references.push("CLAUDE.md — Princípio #4: Acessibilidade");
   }

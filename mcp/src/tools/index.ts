@@ -9,6 +9,9 @@ import { fileURLToPath } from "url";
 import { queryComponent } from "./queryComponent.js";
 import { queryToken } from "./queryToken.js";
 import { checkCompliance } from "./checkCompliance.js";
+import { getTodoListStatus } from "./getTodoListStatus.js";
+import { validatePrePrompt } from "./validatePrePrompt.js";
+import { validateComponentCode } from "./validateComponentCode.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 // After tsup bundle: __dirname = mcp/build/ → go up 2 levels to reach DSS root
@@ -52,9 +55,36 @@ const CheckComplianceSchema = z.object({
     ),
 });
 
+const GetTodoListStatusSchema = z.object({
+  filter: z
+    .enum(["all", "pending", "sealed", "blocked"])
+    .optional()
+    .default("all")
+    .describe(
+      'Filter results: "all" returns everything, "pending" returns only actionable items, "sealed" returns completed items, "blocked" returns blocked items.'
+    ),
+});
+
+const ValidatePrePromptSchema = z.object({
+  componentName: z
+    .string()
+    .describe(
+      'Name of the DSS component whose pre-prompt should be validated (e.g. "DssBtnGroup", "DssTab"). Case-sensitive, Dss prefix required.'
+    ),
+});
+
+const ValidateComponentCodeSchema = z.object({
+  componentName: z
+    .string()
+    .describe(
+      'Name of the DSS component to validate (e.g. "DssCard", "DssButton", "card"). Case-insensitive, Dss prefix optional.'
+    ),
+});
+
 // ─── Tool Definitions ─────────────────────────────────────────────────────────
 
 const TOOL_DEFINITIONS = [
+  // ── Phase 1 Tools ──────────────────────────────────────────────────────────
   {
     name: "query_component",
     description:
@@ -113,6 +143,55 @@ const TOOL_DEFINITIONS = [
       required: ["context", "ruleType"],
     },
   },
+  // ── Phase 2 Tools ──────────────────────────────────────────────────────────
+  {
+    name: "get_todo_list_status",
+    description:
+      "Returns the current progress of the DSS Phase 2 implementation by parsing DSS_FASE2_TODO.md. Shows sealed, pending, in-progress and blocked components. Read-Only — no files are modified.",
+    inputSchema: {
+      type: "object" as const,
+      properties: {
+        filter: {
+          type: "string",
+          enum: ["all", "pending", "sealed", "blocked"],
+          description:
+            'Filter results: "all" (default), "pending" (actionable), "sealed" (completed), "blocked".',
+        },
+      },
+    },
+  },
+  {
+    name: "validate_pre_prompt",
+    description:
+      "Verifies whether a DSS component pre-prompt covers all 5 mandatory axes required by Phase 2 criteria: (1) Classification, (2) Main Architectural Risk, (3) Mapped API, (4) Tokens, (5) Accessibility & States. Read-Only — no files are modified.",
+    inputSchema: {
+      type: "object" as const,
+      properties: {
+        componentName: {
+          type: "string",
+          description:
+            'Name of the DSS component (e.g. "DssBtnGroup", "DssTab"). Dss prefix required.',
+        },
+      },
+      required: ["componentName"],
+    },
+  },
+  {
+    name: "validate_component_code",
+    description:
+      "Analyzes the source code of a DSS component (Vue + SCSS) and checks for architectural violations: missing 4-layer structure, hardcoded colors (Token First), :deep() usage (Gate de Composição v2.4), and component-specific tokens. Read-Only — no files are modified.",
+    inputSchema: {
+      type: "object" as const,
+      properties: {
+        componentName: {
+          type: "string",
+          description:
+            'Name of the DSS component to validate (e.g. "DssCard", "card"). Case-insensitive.',
+        },
+      },
+      required: ["componentName"],
+    },
+  },
 ];
 
 // ─── Handler Registration ─────────────────────────────────────────────────────
@@ -128,33 +207,20 @@ export function registerTools(server: Server): void {
     const { name, arguments: args } = request.params;
 
     switch (name) {
+      // ── Phase 1 ────────────────────────────────────────────────────────────
       case "query_component": {
         const input = QueryComponentSchema.parse(args);
         const result = await queryComponent(input.componentName, DSS_ROOT);
         return {
-          content: [
-            {
-              type: "text",
-              text: JSON.stringify(result, null, 2),
-            },
-          ],
+          content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
         };
       }
 
       case "query_token": {
         const input = QueryTokenSchema.parse(args);
-        const result = await queryToken(
-          DSS_ROOT,
-          input.tokenName,
-          input.category
-        );
+        const result = await queryToken(DSS_ROOT, input.tokenName, input.category);
         return {
-          content: [
-            {
-              type: "text",
-              text: JSON.stringify(result, null, 2),
-            },
-          ],
+          content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
         };
       }
 
@@ -166,12 +232,40 @@ export function registerTools(server: Server): void {
           DSS_ROOT
         );
         return {
-          content: [
-            {
-              type: "text",
-              text: JSON.stringify(result, null, 2),
-            },
-          ],
+          content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+        };
+      }
+
+      // ── Phase 2 ────────────────────────────────────────────────────────────
+      case "get_todo_list_status": {
+        const input = GetTodoListStatusSchema.parse(args ?? {});
+        const result = await getTodoListStatus(DSS_ROOT);
+
+        // Apply filter if requested
+        if (input.filter && input.filter !== "all") {
+          result.all_items = result.all_items.filter(
+            (i) => i.status === input.filter
+          );
+        }
+
+        return {
+          content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+        };
+      }
+
+      case "validate_pre_prompt": {
+        const input = ValidatePrePromptSchema.parse(args);
+        const result = await validatePrePrompt(input.componentName, DSS_ROOT);
+        return {
+          content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+        };
+      }
+
+      case "validate_component_code": {
+        const input = ValidateComponentCodeSchema.parse(args);
+        const result = await validateComponentCode(input.componentName, DSS_ROOT);
+        return {
+          content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
         };
       }
 
