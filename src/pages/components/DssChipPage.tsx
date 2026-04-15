@@ -100,22 +100,23 @@
    feedbackColor?: string | null;
  }
  
- function DssChipPreview({
-   variant,
-   size,
-   shape,
-   color,
-   brand,
-   selected,
-   clickable,
-   removable,
-   disabled,
-   dense,
-   hasIconLeft,
-   hasIconRight,
-   label,
-   isDarkMode,
- }: DssChipPreviewProps) {
+function DssChipPreview({
+    variant,
+    size,
+    shape,
+    color,
+    feedbackColor,
+    brand,
+    selected,
+    clickable,
+    removable,
+    disabled,
+    dense,
+    hasIconLeft,
+    hasIconRight,
+    label,
+    isDarkMode,
+  }: DssChipPreviewProps) {
    const [isHovered, setIsHovered] = useState(false);
    const [isActive, setIsActive] = useState(false);
    const [isSelected, setIsSelected] = useState(selected);
