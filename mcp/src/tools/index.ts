@@ -12,6 +12,9 @@ import { checkCompliance } from "./checkCompliance.js";
 import { getTodoListStatus } from "./getTodoListStatus.js";
 import { validatePrePrompt } from "./validatePrePrompt.js";
 import { validateComponentCode } from "./validateComponentCode.js";
+import { suggestTokenReplacement } from "./suggestTokenReplacement.js";
+import { generateComponentScaffold } from "./generateComponentScaffold.js";
+import { generatePrePromptTemplate } from "./generatePrePromptTemplate.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 // After tsup bundle: __dirname = mcp/build/ → go up 2 levels to reach DSS root
@@ -78,6 +81,44 @@ const ValidateComponentCodeSchema = z.object({
     .string()
     .describe(
       'Name of the DSS component to validate (e.g. "DssCard", "DssButton", "card"). Case-insensitive, Dss prefix optional.'
+    ),
+});
+
+// ── Phase 3 schemas ────────────────────────────────────────────────────────
+
+const SuggestTokenReplacementSchema = z.object({
+  value: z
+    .string()
+    .describe(
+      'The hardcoded CSS value to find a token for (e.g. "#FF5722", "rgb(0,0,0)", "16px", "1rem").'
+    ),
+  property: z
+    .string()
+    .describe(
+      'The CSS property where this value is used (e.g. "color", "background-color", "padding", "border-radius"). Used to filter relevant token categories.'
+    ),
+});
+
+const GenerateComponentScaffoldSchema = z.object({
+  componentName: z
+    .string()
+    .describe(
+      'Name of the new DSS component (e.g. "DssCard", "card", "dss-card"). Case-insensitive, Dss prefix optional.'
+    ),
+  type: z
+    .enum(["base", "composed"])
+    .optional()
+    .default("base")
+    .describe(
+      '"base" for atomic/base components (components/base/). "composed" for composite components (components/composed/). Defaults to "base".'
+    ),
+});
+
+const GeneratePrePromptTemplateSchema = z.object({
+  componentName: z
+    .string()
+    .describe(
+      'Name of the DSS component to generate a pre-prompt for (e.g. "DssBtnGroup", "DssTab"). Case-insensitive, Dss prefix optional.'
     ),
 });
 
@@ -192,6 +233,66 @@ const TOOL_DEFINITIONS = [
       required: ["componentName"],
     },
   },
+  // ── Phase 3 Tools ──────────────────────────────────────────────────────────
+  {
+    name: "suggest_token_replacement",
+    description:
+      "Analyzes a hardcoded CSS value and suggests the closest DSS design token from DSS_TOKEN_REFERENCE.md. Supports hex colors (#rrggbb), rgb/rgba(), pixel values (px), and rem values. Returns the best match with confidence level (exact/close/approximate) and up to 3 alternatives. Read-Only — no files are modified.",
+    inputSchema: {
+      type: "object" as const,
+      properties: {
+        value: {
+          type: "string",
+          description:
+            'The hardcoded CSS value to find a token for (e.g. "#FF5722", "16px", "1rem", "rgb(0,0,0)").',
+        },
+        property: {
+          type: "string",
+          description:
+            'The CSS property where this value is used (e.g. "color", "padding", "border-radius"). Used to filter relevant token categories.',
+        },
+      },
+      required: ["value", "property"],
+    },
+  },
+  {
+    name: "generate_component_scaffold",
+    description:
+      "Generates the complete 4-layer boilerplate for a new DSS component (Vue + SCSS + types + composables + documentation). Returns a JSON with all file paths and their content. The developer must apply the files manually — the MCP never writes files. Follows DSS architectural constraints strictly.",
+    inputSchema: {
+      type: "object" as const,
+      properties: {
+        componentName: {
+          type: "string",
+          description:
+            'Name of the new DSS component (e.g. "DssCard", "card"). Case-insensitive, Dss prefix optional.',
+        },
+        type: {
+          type: "string",
+          enum: ["base", "composed"],
+          description:
+            '"base" for atomic/base components (components/base/). "composed" for composite components (components/composed/). Defaults to "base".',
+        },
+      },
+      required: ["componentName"],
+    },
+  },
+  {
+    name: "generate_pre_prompt_template",
+    description:
+      "Generates a pre-prompt markdown document for a new DSS component, covering all 5 mandatory governance axes: (1) Classification, (2) Main Architectural Risk, (3) Mapped API, (4) Required Tokens, (5) Accessibility & States. If the component directory exists, auto-populates known data from dss.meta.json. Read-Only — no files are modified.",
+    inputSchema: {
+      type: "object" as const,
+      properties: {
+        componentName: {
+          type: "string",
+          description:
+            'Name of the DSS component to generate a pre-prompt for (e.g. "DssBtnGroup", "DssTab"). Case-insensitive, Dss prefix optional.',
+        },
+      },
+      required: ["componentName"],
+    },
+  },
 ];
 
 // ─── Handler Registration ─────────────────────────────────────────────────────
@@ -264,6 +365,34 @@ export function registerTools(server: Server): void {
       case "validate_component_code": {
         const input = ValidateComponentCodeSchema.parse(args);
         const result = await validateComponentCode(input.componentName, DSS_ROOT);
+        return {
+          content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+        };
+      }
+
+      // ── Phase 3 ────────────────────────────────────────────────────────────
+      case "suggest_token_replacement": {
+        const input = SuggestTokenReplacementSchema.parse(args);
+        const result = await suggestTokenReplacement(input.value, input.property, DSS_ROOT);
+        return {
+          content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+        };
+      }
+
+      case "generate_component_scaffold": {
+        const input = GenerateComponentScaffoldSchema.parse(args ?? {});
+        const result = await generateComponentScaffold(
+          input.componentName,
+          input.type as "base" | "composed"
+        );
+        return {
+          content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+        };
+      }
+
+      case "generate_pre_prompt_template": {
+        const input = GeneratePrePromptTemplateSchema.parse(args);
+        const result = await generatePrePromptTemplate(input.componentName, DSS_ROOT);
         return {
           content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
         };

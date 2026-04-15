@@ -1,5 +1,6 @@
 import { readFileSync, existsSync, readdirSync, statSync } from "fs";
 import { resolve, join, extname } from "path";
+import { suggestTokenReplacement } from "./suggestTokenReplacement.js";
 
 interface Finding {
   severity: "error" | "warning" | "info";
@@ -7,6 +8,12 @@ interface Finding {
   message: string;
   file?: string;
   line?: number;
+  suggestedToken?: string;       // closest DSS token (if available)
+  tokenConfidence?: string;      // "exact" | "close" | "approximate"
+  tokenAlternatives?: string[];  // up to 3 alternative token names
+  // Internal enrichment fields — stripped before returning
+  _hardcodedValue?: string;
+  _cssProperty?: string;
 }
 
 interface LayerCheck {
@@ -97,23 +104,41 @@ function extractStyleBlocks(vueContent: string): string {
   return blocks.join("\n");
 }
 
+/**
+ * Remove block comments (/* ... *\/) from CSS/SCSS content.
+ * Replaces each comment with an equivalent number of newlines
+ * so that line numbers of surrounding code are preserved.
+ */
+function stripBlockComments(content: string): string {
+  return content.replace(/\/\*[\s\S]*?\*\//g, (match) => {
+    const newlineCount = (match.match(/\n/g) || []).length;
+    return "\n".repeat(newlineCount);
+  });
+}
+
 /** Check a SCSS/style string for violations */
 function analyzeScss(
   content: string,
   filePath: string,
   findings: Finding[]
 ): void {
-  const lines = content.split("\n");
+  // Strip block comments first — prevents false positives when
+  // documentation inside /* ... */ mentions :deep() or ::v-deep.
+  const contentWithoutBlockComments = stripBlockComments(content);
+  const lines = contentWithoutBlockComments.split("\n");
 
   lines.forEach((line, idx) => {
     const lineNum = idx + 1;
-    const trimmed = line.trim();
 
-    // Skip comment lines
-    if (trimmed.startsWith("//") || trimmed.startsWith("*")) return;
+    // Strip inline // comments to get only the code portion of the line
+    const codeOnly = line.replace(/\/\/.*$/, "");
+    const trimmed = codeOnly.trim();
+
+    // Skip lines that are empty after comment removal
+    if (!trimmed) return;
 
     // ── :deep() check ────────────────────────────────────────────────────
-    if (DEEP_SELECTOR_PATTERN.test(line)) {
+    if (DEEP_SELECTOR_PATTERN.test(codeOnly)) {
       findings.push({
         severity: "error",
         rule: "GATE_COMPOSICAO_V2.4",
@@ -125,9 +150,9 @@ function analyzeScss(
 
     // ── Hardcoded color check ─────────────────────────────────────────────
     for (const { pattern, label } of HARDCODED_COLOR_PATTERNS) {
-      if (pattern.test(line)) {
+      if (pattern.test(codeOnly)) {
         // Allow rgba(255,255,255,x) and rgba(0,0,0,x) — documented dark mode exceptions
-        if (label.startsWith("rgba") && RGBA_EXCEPTION_PATTERN.test(line)) {
+        if (label.startsWith("rgba") && RGBA_EXCEPTION_PATTERN.test(codeOnly)) {
           findings.push({
             severity: "warning",
             rule: "TOKEN_FIRST",
@@ -137,12 +162,26 @@ function analyzeScss(
           });
           continue;
         }
+
+        // Extract the raw color value for token suggestion enrichment
+        let rawColorValue: string | undefined;
+        const hexMatch = codeOnly.match(/#[0-9a-fA-F]{3,8}/);
+        const rgbMatch = codeOnly.match(/rgba?\([^)]+\)/);
+        if (hexMatch) rawColorValue = hexMatch[0];
+        else if (rgbMatch) rawColorValue = rgbMatch[0];
+
+        // Guess the CSS property from the line (e.g. "color:", "background-color:")
+        const propMatch = codeOnly.match(/([\w-]+)\s*:/);
+        const guessedProp = propMatch ? propMatch[1].trim() : "color";
+
         findings.push({
           severity: "error",
           rule: "TOKEN_FIRST",
           message: `Hardcoded ${label} detected: "${trimmed}". DSS Principle #1 requires all colors to use var(--dss-*) tokens.`,
           file: filePath,
           line: lineNum,
+          _hardcodedValue: rawColorValue,
+          _cssProperty: guessedProp,
         });
         break; // One finding per line is enough
       }
@@ -151,22 +190,28 @@ function analyzeScss(
     // ── Hardcoded px check (non-trivial values) ───────────────────────────
     let pxMatch: RegExpExecArray | null;
     const pxRegex = new RegExp(HARDCODED_PX_PATTERN.source, "g");
-    while ((pxMatch = pxRegex.exec(line)) !== null) {
+    while ((pxMatch = pxRegex.exec(codeOnly)) !== null) {
       const val = parseInt(pxMatch[1], 10);
       if (!ALLOWED_PX_VALUES.has(val)) {
+        // Guess the CSS property from the line
+        const propMatch = codeOnly.match(/([\w-]+)\s*:/);
+        const guessedProp = propMatch ? propMatch[1].trim() : "padding";
+
         findings.push({
           severity: "warning",
           rule: "TOKEN_FIRST",
           message: `Hardcoded pixel value '${val}px' detected. Consider using a var(--dss-spacing-*) or var(--dss-*) token instead.`,
           file: filePath,
           line: lineNum,
+          _hardcodedValue: `${val}px`,
+          _cssProperty: guessedProp,
         });
         break; // One per line
       }
     }
 
     // ── Component-specific token names ───────────────────────────────────
-    if (COMPONENT_TOKEN_PATTERN.test(line)) {
+    if (COMPONENT_TOKEN_PATTERN.test(codeOnly)) {
       findings.push({
         severity: "error",
         rule: "PRINCIPLE_6_GENERIC_TOKENS",
@@ -268,6 +313,36 @@ export async function validateComponentCode(
       const styleContent = extractStyleBlocks(content);
       if (styleContent) analyzeScss(styleContent, vuePath + " (<style>)", findings);
     }
+  }
+
+  // ── Token suggestion enrichment ───────────────────────────────────────────
+  // For each TOKEN_FIRST finding that has a raw value, attempt to suggest a token.
+  // Errors run in parallel for performance; failures are silently ignored.
+  await Promise.all(
+    findings
+      .filter((f) => f.rule === "TOKEN_FIRST" && f._hardcodedValue && f._cssProperty)
+      .map(async (f) => {
+        try {
+          const suggestion = await suggestTokenReplacement(
+            f._hardcodedValue!,
+            f._cssProperty!,
+            dssRoot
+          );
+          if (suggestion.found && suggestion.suggestion) {
+            f.suggestedToken = suggestion.suggestion.token;
+            f.tokenConfidence = suggestion.suggestion.confidence;
+            f.tokenAlternatives = suggestion.alternatives.map((a) => a.token);
+          }
+        } catch {
+          // Enrichment is best-effort; never fail validation because of it
+        }
+      })
+  );
+
+  // Strip internal fields before returning
+  for (const f of findings) {
+    delete f._hardcodedValue;
+    delete f._cssProperty;
   }
 
   // ── Verdict ───────────────────────────────────────────────────────────────
