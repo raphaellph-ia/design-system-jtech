@@ -205,24 +205,24 @@ function DssBtnDropdownPreview({
       case "flat":
         return {
           ...base,
-          backgroundColor: isHovered && !disable ? "rgba(31, 134, 222, 0.08)" : "transparent",
-          color: "#1f86de",
+          backgroundColor: isHovered && !disable ? `color-mix(in srgb, ${baseColor} 10%, transparent)` : "transparent",
+          color: baseColor,
           border: "none",
           boxShadow: brandColor ? `inset 0 -3px 0 ${brandColor}` : "none",
         };
       case "outline":
         return {
           ...base,
-          backgroundColor: isHovered && !disable ? "rgba(31, 134, 222, 0.08)" : "transparent",
-          color: "#1f86de",
-          border: "1px solid #1f86de",
+          backgroundColor: isHovered && !disable ? `color-mix(in srgb, ${baseColor} 10%, transparent)` : "transparent",
+          color: baseColor,
+          border: `1px solid ${baseColor}`,
           boxShadow: brandColor ? `inset 0 -3px 0 ${brandColor}` : "none",
           borderRight: split ? "none" : undefined,
         };
       case "unelevated":
         return {
           ...base,
-          backgroundColor: isHovered && !disable ? "#0f5295" : "#1f86de",
+          backgroundColor: isHovered && !disable ? baseColorHover : baseColor,
           color: "#ffffff",
           border: "none",
           boxShadow: brandColor ? `inset 0 -3px 0 ${brandColor}` : "none",
@@ -230,7 +230,7 @@ function DssBtnDropdownPreview({
       default: // elevated
         return {
           ...base,
-          backgroundColor: isHovered && !disable ? "#0f5295" : "#1f86de",
+          backgroundColor: isHovered && !disable ? baseColorHover : baseColor,
           color: "#ffffff",
           border: "none",
           boxShadow: brandColor
@@ -247,10 +247,13 @@ function DssBtnDropdownPreview({
       display: "inline-flex",
       alignItems: "center",
       justifyContent: "center",
-      padding: dense ? "4px 8px" : "8px 10px",
+      padding: sizeConfig.padding.replace(/\d+px \d+px/, (m) => {
+        const parts = m.split(" ");
+        return `${parts[0]} 10px`;
+      }),
       cursor: disable ? "not-allowed" : "pointer",
       transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
-      minHeight: dense ? "32px" : "44px",
+      minHeight: sizeConfig.height,
       borderRadius: `0 ${getBorderRadius()} ${getBorderRadius()} 0`,
       opacity: disable ? 0.5 : 1,
     };
@@ -258,7 +261,7 @@ function DssBtnDropdownPreview({
     const getSplitBorder = () => {
       switch (variant) {
         case "flat": return { borderLeft: "1px solid #d1d5db" };
-        case "outline": return { border: "1px solid #1f86de", borderLeft: "1px solid rgba(31,134,222,0.3)" };
+        case "outline": return { border: `1px solid ${baseColor}`, borderLeft: `1px solid color-mix(in srgb, ${baseColor} 30%, transparent)` };
         case "unelevated": return { borderLeft: "1px solid rgba(255,255,255,0.2)" };
         default: return { borderLeft: "1px solid rgba(255,255,255,0.2)" };
       }
@@ -266,13 +269,13 @@ function DssBtnDropdownPreview({
 
     switch (variant) {
       case "flat":
-        return { ...base, backgroundColor: "transparent", color: "#1f86de", border: "none", ...getSplitBorder() };
+        return { ...base, backgroundColor: "transparent", color: baseColor, border: "none", ...getSplitBorder() };
       case "outline":
-        return { ...base, backgroundColor: "transparent", color: "#1f86de", ...getSplitBorder() };
+        return { ...base, backgroundColor: "transparent", color: baseColor, ...getSplitBorder() };
       case "unelevated":
-        return { ...base, backgroundColor: "#1f86de", color: "#ffffff", border: "none", ...getSplitBorder() };
+        return { ...base, backgroundColor: baseColor, color: "#ffffff", border: "none", ...getSplitBorder() };
       default:
-        return { ...base, backgroundColor: "#1f86de", color: "#ffffff", border: "none", ...getSplitBorder() };
+        return { ...base, backgroundColor: baseColor, color: "#ffffff", border: "none", ...getSplitBorder() };
     }
   };
 
