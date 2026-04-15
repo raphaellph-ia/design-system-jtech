@@ -14,24 +14,24 @@
 
 - [x] ~~`DssBtnGroup`~~ ✅ **SELADO**
 - [x] ~~`DssBtnDropdown`~~ ✅ **SELADO**
-- [ ] `DssBtnToggle` — Grupo de botões com seleção exclusiva (radio-like)
-- [ ] `DssOptionGroup` — Grupo de Radio, Checkbox ou Toggle com label
+- [x] ~~`DssBtnToggle`~~ ✅ **SELADO**
+- [x] ~~`DssOptionGroup`~~ ✅ **SELADO**
 
 ### Família: Lista e Itens
 
 - [x] ~~`DssItem`~~ ✅ **SELADO** (Fase 1)
-- [ ] `DssList` — Container de lista com suporte a separadores e bordas
+- [x] ~~`DssList`~~ ✅ **SELADO**
 - [x] ~~`DssItemSection`~~ ✅ **SELADO**
 - [ ] `DssItemLabel` — Label hierárquico dentro de DssItem (header, caption, overline)
 
 ### Família: Tabs
 
-- [ ] `DssTab` — Aba individual (base para DssTabs)
-- [ ] `DssTabPanel` — Painel de conteúdo associado a uma aba
+- [x] ~~`DssTab`~~ ✅ **SELADO**
+- [x] ~~`DssTabPanel`~~ ✅ **SELADO**
 
 ### Família: Navegação Estrutural
 
-- [ ] `DssBreadcrumbsEl` — Elemento individual de breadcrumb
+- [x] ~~`DssBreadcrumbsEl`~~ ✅ **SELADO**
 - [ ] `DssStep` — Passo individual de stepper
 - [ ] `DssPagination` — Controle de paginação
 
@@ -104,9 +104,9 @@
 
 ### Família: Tabs (completa)
 
-- [ ] `DssTabs` 🔒 *(aguarda DssTab)*
-- [ ] `DssTabPanels` 🔒 *(aguarda DssTabPanel)*
-- [ ] `DssRouteTab` 🔒 *(aguarda DssTab)*
+- [x] ~~`DssTabs`~~ ✅ **SELADO**
+- [x] ~~`DssTabPanels`~~ ✅ **SELADO**
+- [x] ~~`DssRouteTab`~~ ✅ **SELADO**
 
 ### Família: Navegação
 
