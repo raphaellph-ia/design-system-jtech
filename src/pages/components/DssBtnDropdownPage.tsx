@@ -21,9 +21,15 @@ import {
   DssPlayground,
   ControlGrid,
   VariantSelector,
+  ColorPicker,
+  FeedbackColorPicker,
   BrandPicker,
+  SizeSelector,
   ToggleGroup,
+  DSS_SEMANTIC_COLORS,
+  DSS_FEEDBACK_COLORS,
   DSS_BRAND_COLORS,
+  type FeedbackColor,
 } from "@/components/ui/playground";
 
 // ============================================================================
@@ -36,6 +42,21 @@ const variants = [
   { name: "outline", label: "Outline", desc: "Com borda visível" },
   { name: "unelevated", label: "Unelevated", desc: "Sólido sem shadow" },
 ];
+
+const sizes = [
+  { name: "xs", label: "XS", height: "32px", padding: "4px 8px", fontSize: "12px", minWidth: "48px" },
+  { name: "sm", label: "SM", height: "36px", padding: "6px 12px", fontSize: "13px", minWidth: "56px" },
+  { name: "md", label: "MD", height: "44px", padding: "8px 16px", fontSize: "14px", minWidth: "64px", isDefault: true },
+  { name: "lg", label: "LG", height: "52px", padding: "12px 20px", fontSize: "16px", minWidth: "80px" },
+  { name: "xl", label: "XL", height: "64px", padding: "16px 24px", fontSize: "18px", minWidth: "96px" },
+];
+
+const feedbackColors: Record<string, FeedbackColor> = {
+  positive: { ...DSS_FEEDBACK_COLORS.positive, icon: CheckCircle },
+  negative: { ...DSS_FEEDBACK_COLORS.negative, icon: XCircle },
+  warning: { ...DSS_FEEDBACK_COLORS.warning, icon: AlertTriangle },
+  info: { ...DSS_FEEDBACK_COLORS.info, icon: Info },
+};
 
 const propsData = [
   { category: "Conteúdo", prop: "label", type: "String", default: "undefined", description: "Rótulo do botão trigger." },
@@ -114,7 +135,9 @@ const anatomyData = {
 
 interface DssBtnDropdownPreviewProps {
   variant: string;
+  color: string | null;
   brand: string | null;
+  size: string;
   split: boolean;
   rounded: boolean;
   square: boolean;
@@ -125,7 +148,9 @@ interface DssBtnDropdownPreviewProps {
 
 function DssBtnDropdownPreview({
   variant,
+  color,
   brand,
+  size,
   split,
   rounded,
   square,
@@ -146,6 +171,12 @@ function DssBtnDropdownPreview({
 
   const brandColor = getBrandColor();
 
+  // Resolve effective color from color prop or default primary
+  const baseColor = color || "#1f86de";
+  const baseColorHover = color ? `color-mix(in srgb, ${color} 80%, black)` : "#0f5295";
+
+  const sizeConfig = sizes.find((s) => s.name === size) || sizes[2];
+
   const getBorderRadius = () => {
     if (square) return "0";
     return rounded ? "9999px" : "4px";
@@ -157,15 +188,14 @@ function DssBtnDropdownPreview({
       alignItems: "center",
       justifyContent: "center",
       gap: "6px",
-      padding: dense ? "4px 12px" : "8px 16px",
-      fontSize: dense ? "12px" : "14px",
+      padding: sizeConfig.padding,
+      fontSize: sizeConfig.fontSize,
       fontWeight: 500,
       fontFamily: "system-ui, -apple-system, sans-serif",
       textTransform: "uppercase",
       letterSpacing: "0.089em",
       cursor: disable ? "not-allowed" : "pointer",
-      transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
-      minHeight: dense ? "32px" : "44px",
+      minHeight: sizeConfig.height,
       borderRadius: split ? `${getBorderRadius()} 0 0 ${getBorderRadius()}` : getBorderRadius(),
       opacity: disable ? 0.5 : loading ? 0.7 : 1,
       position: "relative",
@@ -175,24 +205,24 @@ function DssBtnDropdownPreview({
       case "flat":
         return {
           ...base,
-          backgroundColor: isHovered && !disable ? "rgba(31, 134, 222, 0.08)" : "transparent",
-          color: "#1f86de",
+          backgroundColor: isHovered && !disable ? `color-mix(in srgb, ${baseColor} 10%, transparent)` : "transparent",
+          color: baseColor,
           border: "none",
           boxShadow: brandColor ? `inset 0 -3px 0 ${brandColor}` : "none",
         };
       case "outline":
         return {
           ...base,
-          backgroundColor: isHovered && !disable ? "rgba(31, 134, 222, 0.08)" : "transparent",
-          color: "#1f86de",
-          border: "1px solid #1f86de",
+          backgroundColor: isHovered && !disable ? `color-mix(in srgb, ${baseColor} 10%, transparent)` : "transparent",
+          color: baseColor,
+          border: `1px solid ${baseColor}`,
           boxShadow: brandColor ? `inset 0 -3px 0 ${brandColor}` : "none",
           borderRight: split ? "none" : undefined,
         };
       case "unelevated":
         return {
           ...base,
-          backgroundColor: isHovered && !disable ? "#0f5295" : "#1f86de",
+          backgroundColor: isHovered && !disable ? baseColorHover : baseColor,
           color: "#ffffff",
           border: "none",
           boxShadow: brandColor ? `inset 0 -3px 0 ${brandColor}` : "none",
@@ -200,7 +230,7 @@ function DssBtnDropdownPreview({
       default: // elevated
         return {
           ...base,
-          backgroundColor: isHovered && !disable ? "#0f5295" : "#1f86de",
+          backgroundColor: isHovered && !disable ? baseColorHover : baseColor,
           color: "#ffffff",
           border: "none",
           boxShadow: brandColor
@@ -217,10 +247,13 @@ function DssBtnDropdownPreview({
       display: "inline-flex",
       alignItems: "center",
       justifyContent: "center",
-      padding: dense ? "4px 8px" : "8px 10px",
+      padding: sizeConfig.padding.replace(/\d+px \d+px/, (m) => {
+        const parts = m.split(" ");
+        return `${parts[0]} 10px`;
+      }),
       cursor: disable ? "not-allowed" : "pointer",
       transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
-      minHeight: dense ? "32px" : "44px",
+      minHeight: sizeConfig.height,
       borderRadius: `0 ${getBorderRadius()} ${getBorderRadius()} 0`,
       opacity: disable ? 0.5 : 1,
     };
@@ -228,7 +261,7 @@ function DssBtnDropdownPreview({
     const getSplitBorder = () => {
       switch (variant) {
         case "flat": return { borderLeft: "1px solid #d1d5db" };
-        case "outline": return { border: "1px solid #1f86de", borderLeft: "1px solid rgba(31,134,222,0.3)" };
+        case "outline": return { border: `1px solid ${baseColor}`, borderLeft: `1px solid color-mix(in srgb, ${baseColor} 30%, transparent)` };
         case "unelevated": return { borderLeft: "1px solid rgba(255,255,255,0.2)" };
         default: return { borderLeft: "1px solid rgba(255,255,255,0.2)" };
       }
@@ -236,13 +269,13 @@ function DssBtnDropdownPreview({
 
     switch (variant) {
       case "flat":
-        return { ...base, backgroundColor: "transparent", color: "#1f86de", border: "none", ...getSplitBorder() };
+        return { ...base, backgroundColor: "transparent", color: baseColor, border: "none", ...getSplitBorder() };
       case "outline":
-        return { ...base, backgroundColor: "transparent", color: "#1f86de", ...getSplitBorder() };
+        return { ...base, backgroundColor: "transparent", color: baseColor, ...getSplitBorder() };
       case "unelevated":
-        return { ...base, backgroundColor: "#1f86de", color: "#ffffff", border: "none", ...getSplitBorder() };
+        return { ...base, backgroundColor: baseColor, color: "#ffffff", border: "none", ...getSplitBorder() };
       default:
-        return { ...base, backgroundColor: "#1f86de", color: "#ffffff", border: "none", ...getSplitBorder() };
+        return { ...base, backgroundColor: baseColor, color: "#ffffff", border: "none", ...getSplitBorder() };
     }
   };
 
@@ -347,7 +380,9 @@ function DssBtnDropdownPreview({
 
 export default function DssBtnDropdownPage() {
   const [selectedVariant, setSelectedVariant] = useState("elevated");
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
+  const [selectedSize, setSelectedSize] = useState("md");
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [booleanStates, setBooleanStates] = useState({
     split: false,
@@ -358,9 +393,21 @@ export default function DssBtnDropdownPage() {
     loading: false,
   });
 
+  // Color Application Domain — mutual exclusivity
+  const handleColorChange = (color: string) => {
+    setSelectedColor(color);
+    setSelectedBrand(null);
+  };
+
   const handleBrandChange = (brand: string | null) => {
     setSelectedBrand(brand);
+    setSelectedColor(null);
   };
+
+  // Effective color: brand > feedback/color > default
+  const effectiveColor = selectedBrand
+    ? DSS_BRAND_COLORS[selectedBrand as keyof typeof DSS_BRAND_COLORS]?.principal || null
+    : selectedColor;
 
   const toggleBooleanState = (name: string) => {
     setBooleanStates((prev) => ({ ...prev, [name]: !prev[name as keyof typeof prev] }));
@@ -370,7 +417,9 @@ export default function DssBtnDropdownPage() {
     const props: string[] = [];
     props.push(`label="Exportar"`);
     if (selectedVariant !== "elevated") props.push(`variant="${selectedVariant}"`);
+    if (selectedColor) props.push(`color="${selectedColor}"`);
     if (selectedBrand) props.push(`brand="${selectedBrand}"`);
+    if (selectedSize !== "md") props.push(`size="${selectedSize}"`);
     if (booleanStates.split) props.push("split");
     if (booleanStates.rounded) props.push("rounded");
     if (booleanStates.square) props.push("square");
@@ -534,14 +583,16 @@ popup-content-class="dss-btn-dropdown__panel"
 
       <DssPlayground
         title="Configure o BtnDropdown"
-        description="Selecione variante, forma, comportamento e brand para visualizar o DssBtnDropdown em tempo real."
+        description="Explore TODAS as props visuais e comportamentais do DssBtnDropdown em tempo real."
         isDarkMode={isDarkMode}
         onDarkModeToggle={() => setIsDarkMode(!isDarkMode)}
         previewMinHeight="320px"
         previewContent={
           <DssBtnDropdownPreview
             variant={selectedVariant}
+            color={effectiveColor}
             brand={selectedBrand}
+            size={selectedSize}
             split={booleanStates.split}
             rounded={booleanStates.rounded}
             square={booleanStates.square}
@@ -551,19 +602,45 @@ popup-content-class="dss-btn-dropdown__panel"
           />
         }
         controls={
-          <ControlGrid columns={4}>
+          <ControlGrid columns={5}>
+            {/* Variant */}
             <VariantSelector
               variants={variants}
               selectedVariant={selectedVariant}
               onSelect={setSelectedVariant}
             />
 
+            {/* Size */}
+            <SizeSelector
+              sizes={sizes}
+              selectedSize={selectedSize}
+              onSelect={setSelectedSize}
+            />
+
+            {/* Color Domain — Semantic */}
+            <ColorPicker
+              label="Color"
+              colors={Object.values(DSS_SEMANTIC_COLORS)}
+              selectedColor={selectedColor}
+              onSelect={handleColorChange}
+            />
+
+            {/* Color Domain — Brand */}
             <BrandPicker
               brands={DSS_BRAND_COLORS}
               selectedBrand={selectedBrand}
               onSelect={handleBrandChange}
             />
 
+            {/* Color Domain — Feedback */}
+            <FeedbackColorPicker
+              label="Feedback"
+              colors={feedbackColors}
+              selectedColor={selectedColor}
+              onSelect={handleColorChange}
+            />
+
+            {/* Shape */}
             <ToggleGroup
               label="Forma"
               options={shapeToggles}
@@ -571,6 +648,7 @@ popup-content-class="dss-btn-dropdown__panel"
               onToggle={toggleBooleanState}
             />
 
+            {/* Behavior */}
             <ToggleGroup
               label="Comportamento"
               options={behaviorToggles}
