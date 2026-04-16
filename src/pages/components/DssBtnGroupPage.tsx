@@ -461,6 +461,19 @@ export default function DssBtnGroupPage() {
 
     const childPropsStr = childPropParts.length > 0 ? ` ${childPropParts.join(" ")}` : "";
 
+    if (booleanStates.split) {
+      return `<DssBtnGroup${groupPropsStr}>
+  <DssButton${childPropsStr} label="Primeiro" />
+  <DssButton${childPropsStr} label="Segundo" />
+  <DssBtnDropdown${childPropsStr} label="Mais">
+    <q-list>
+      <q-item clickable>Opção A</q-item>
+      <q-item clickable>Opção B</q-item>
+    </q-list>
+  </DssBtnDropdown>
+</DssBtnGroup>`;
+    }
+
     return `<DssBtnGroup${groupPropsStr}>
   <DssButton${childPropsStr} label="Primeiro" />
   <DssButton${childPropsStr} label="Segundo" />
