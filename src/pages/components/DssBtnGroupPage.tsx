@@ -476,6 +476,7 @@ export default function DssBtnGroupPage() {
   const layoutToggles = [
     { name: "spread", label: "Spread" },
     { name: "stretch", label: "Stretch" },
+    { name: "split", label: "Split" },
   ];
 
   return (
