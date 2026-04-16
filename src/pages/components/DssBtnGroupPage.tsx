@@ -203,6 +203,7 @@ function DssBtnGroupPreview({
   square,
   spread,
   stretch,
+  split,
 }: DssBtnGroupPreviewProps) {
   const [hoveredBtn, setHoveredBtn] = useState<number | null>(null);
 
