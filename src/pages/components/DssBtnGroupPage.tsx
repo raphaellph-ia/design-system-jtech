@@ -21,9 +21,14 @@ import {
   DssPlayground,
   ControlGrid,
   VariantSelector,
+  ColorPicker,
+  FeedbackColorPicker,
   BrandPicker,
   ToggleGroup,
+  DSS_SEMANTIC_COLORS,
+  DSS_FEEDBACK_COLORS,
   DSS_BRAND_COLORS,
+  type FeedbackColor,
 } from "@/components/ui/playground";
 
 // ============================================================================
@@ -38,6 +43,13 @@ const variants = [
   { name: "push", label: "Push", desc: "Efeito 3D com separador entre filhos" },
   { name: "glossy", label: "Glossy", desc: "Efeito brilhante/gradiente" },
 ];
+
+const feedbackColors: Record<string, FeedbackColor> = {
+  positive: { ...DSS_FEEDBACK_COLORS.positive, icon: CheckCircle },
+  negative: { ...DSS_FEEDBACK_COLORS.negative, icon: XCircle },
+  warning: { ...DSS_FEEDBACK_COLORS.warning, icon: AlertTriangle },
+  info: { ...DSS_FEEDBACK_COLORS.info, icon: Info },
+};
 
 const propsData = [
   { category: "Estilo Visual", prop: "flat", type: "Boolean", default: "false", description: "Estilo flat. ⚠️ Prop sync obrigatório com filhos." },
@@ -140,12 +152,41 @@ const anatomyData = {
 };
 
 // ============================================================================
+// RESOLUÇÃO DE COR ATIVA (Color Application Domain)
+// ============================================================================
+
+function resolveActiveColor(
+  selectedColor: string | null,
+  selectedFeedback: string | null,
+  selectedBrand: string | null
+): { bg: string; hover: string; textColor: string; light: string } {
+  // Priority: Brand > Feedback > Semantic (per v3.2)
+  if (selectedBrand && DSS_BRAND_COLORS[selectedBrand]) {
+    const b = DSS_BRAND_COLORS[selectedBrand];
+    return { bg: b.principal, hover: b.scale[700] || b.scale[600], textColor: "#ffffff", light: b.scale[100] };
+  }
+  if (selectedFeedback && feedbackColors[selectedFeedback]) {
+    const f = feedbackColors[selectedFeedback];
+    const textColor = selectedFeedback === "warning" ? "#1a1a1a" : "#ffffff";
+    return { bg: f.bg, hover: f.hover, textColor, light: f.light };
+  }
+  if (selectedColor && DSS_SEMANTIC_COLORS[selectedColor]) {
+    const s = DSS_SEMANTIC_COLORS[selectedColor];
+    return { bg: s.bg, hover: s.hover, textColor: "#ffffff", light: s.light };
+  }
+  // Default: primary
+  return { bg: "#1f86de", hover: "#0f5295", textColor: "#ffffff", light: "#86c0f3" };
+}
+
+// ============================================================================
 // PREVIEW DO BTNGROUP
 // ============================================================================
 
 interface DssBtnGroupPreviewProps {
   variant: string;
   brand: string | null;
+  selectedColor: string | null;
+  selectedFeedback: string | null;
   rounded: boolean;
   square: boolean;
   spread: boolean;
@@ -155,6 +196,8 @@ interface DssBtnGroupPreviewProps {
 function DssBtnGroupPreview({
   variant,
   brand,
+  selectedColor,
+  selectedFeedback,
   rounded,
   square,
   spread,
@@ -162,15 +205,12 @@ function DssBtnGroupPreview({
 }: DssBtnGroupPreviewProps) {
   const [hoveredBtn, setHoveredBtn] = useState<number | null>(null);
 
-  const getBrandColor = () => {
-    if (!brand) return null;
-    if (brand === "hub") return DSS_BRAND_COLORS.hub.principal;
-    if (brand === "water") return DSS_BRAND_COLORS.water.principal;
-    if (brand === "waste") return DSS_BRAND_COLORS.waste.principal;
-    return null;
-  };
+  const colors = resolveActiveColor(selectedColor, selectedFeedback, brand);
 
-  const brandColor = getBrandColor();
+  // Brand accent line only when brand is active
+  const brandAccentColor = brand && DSS_BRAND_COLORS[brand]
+    ? DSS_BRAND_COLORS[brand].principal
+    : null;
 
   const getButtonStyle = (index: number, total: number): React.CSSProperties => {
     const isHovered = hoveredBtn === index;
@@ -208,8 +248,8 @@ function DssBtnGroupPreview({
       case "flat":
         return {
           ...base,
-          backgroundColor: isHovered ? "rgba(31, 134, 222, 0.08)" : "transparent",
-          color: isHovered ? "#0f5295" : "#1f86de",
+          backgroundColor: isHovered ? `${colors.bg}14` : "transparent",
+          color: isHovered ? colors.hover : colors.bg,
           border: "none",
           boxShadow: "none",
           borderRight: index < total - 1 ? "1px solid #d1d5db" : "none",
@@ -217,17 +257,17 @@ function DssBtnGroupPreview({
       case "outline":
         return {
           ...base,
-          backgroundColor: isHovered ? "rgba(31, 134, 222, 0.08)" : "transparent",
-          color: isHovered ? "#0f5295" : "#1f86de",
-          border: "1px solid #1f86de",
+          backgroundColor: isHovered ? `${colors.bg}14` : "transparent",
+          color: isHovered ? colors.hover : colors.bg,
+          border: `1px solid ${colors.bg}`,
           boxShadow: "none",
           marginLeft: index > 0 ? "-1px" : undefined,
         };
       case "unelevated":
         return {
           ...base,
-          backgroundColor: isHovered ? "#0f5295" : "#1f86de",
-          color: "#ffffff",
+          backgroundColor: isHovered ? colors.hover : colors.bg,
+          color: colors.textColor,
           border: "none",
           boxShadow: "none",
           borderRight: index < total - 1 ? "1px solid rgba(255,255,255,0.2)" : "none",
@@ -235,18 +275,20 @@ function DssBtnGroupPreview({
       case "push":
         return {
           ...base,
-          backgroundColor: isHovered ? "#0f5295" : "#1f86de",
-          color: "#ffffff",
+          backgroundColor: isHovered ? colors.hover : colors.bg,
+          color: colors.textColor,
           border: "none",
-          boxShadow: isHovered ? "0 2px 0 #0a3a6a" : "0 4px 0 #0f5295",
+          boxShadow: isHovered
+            ? `0 2px 0 ${colors.hover}`
+            : `0 4px 0 ${colors.hover}`,
           transform: isHovered ? "translateY(0px)" : "translateY(-2px)",
           borderRight: index < total - 1 ? "1px solid rgba(255,255,255,0.15)" : "none",
         };
       case "glossy":
         return {
           ...base,
-          backgroundColor: isHovered ? "#0f5295" : "#1f86de",
-          color: "#ffffff",
+          backgroundColor: isHovered ? colors.hover : colors.bg,
+          color: colors.textColor,
           border: "none",
           boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
           backgroundImage: "linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, transparent 50%, rgba(0,0,0,0.12) 51%, transparent 100%)",
@@ -254,8 +296,8 @@ function DssBtnGroupPreview({
       default: // elevated
         return {
           ...base,
-          backgroundColor: isHovered ? "#0f5295" : "#1f86de",
-          color: "#ffffff",
+          backgroundColor: isHovered ? colors.hover : colors.bg,
+          color: colors.textColor,
           border: "none",
           boxShadow: isHovered
             ? "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.12)"
@@ -273,8 +315,8 @@ function DssBtnGroupPreview({
         position: "relative",
         width: spread ? "100%" : undefined,
         maxWidth: spread ? "400px" : undefined,
-        boxShadow: brandColor
-          ? `inset 0 -3px 0 ${brandColor}`
+        boxShadow: brandAccentColor
+          ? `inset 0 -3px 0 ${brandAccentColor}`
           : "none",
         borderRadius: square ? "0" : rounded ? "9999px" : "4px",
         overflow: "visible",
@@ -302,6 +344,8 @@ function DssBtnGroupPreview({
 
 export default function DssBtnGroupPage() {
   const [selectedVariant, setSelectedVariant] = useState("elevated");
+  const [selectedColor, setSelectedColor] = useState<string | null>("primary");
+  const [selectedFeedback, setSelectedFeedback] = useState<string | null>(null);
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [booleanStates, setBooleanStates] = useState({
@@ -311,8 +355,23 @@ export default function DssBtnGroupPage() {
     stretch: false,
   });
 
+  // Color Application Domain — mutual exclusivity
+  const handleColorChange = (color: string) => {
+    setSelectedColor(color);
+    setSelectedFeedback(null);
+    setSelectedBrand(null);
+  };
+
+  const handleFeedbackChange = (feedback: string) => {
+    setSelectedFeedback(feedback);
+    setSelectedColor(null);
+    setSelectedBrand(null);
+  };
+
   const handleBrandChange = (brand: string | null) => {
     setSelectedBrand(brand);
+    setSelectedColor(null);
+    setSelectedFeedback(null);
   };
 
   const toggleBooleanState = (name: string) => {
@@ -330,12 +389,22 @@ export default function DssBtnGroupPage() {
     if (booleanStates.stretch) groupProps.push("stretch");
 
     const groupPropsStr = groupProps.length > 0 ? ` ${groupProps.join(" ")}` : "";
-    const childProps = variantProp ? ` ${variantProp} label` : " label";
+
+    // Child button props
+    const childPropParts: string[] = [];
+    if (variantProp) childPropParts.push(variantProp);
+    // Color on children (not on group)
+    const effectiveColor = selectedBrand ? null : (selectedFeedback || selectedColor);
+    if (effectiveColor && effectiveColor !== "primary") {
+      childPropParts.push(`color="${effectiveColor}"`);
+    }
+
+    const childPropsStr = childPropParts.length > 0 ? ` ${childPropParts.join(" ")}` : "";
 
     return `<DssBtnGroup${groupPropsStr}>
-  <DssButton${childProps}="Primeiro" />
-  <DssButton${childProps}="Segundo" />
-  <DssButton${childProps}="Terceiro" />
+  <DssButton${childPropsStr} label="Primeiro" />
+  <DssButton${childPropsStr} label="Segundo" />
+  <DssButton${childPropsStr} label="Terceiro" />
 </DssBtnGroup>`;
   };
 
@@ -352,7 +421,7 @@ export default function DssBtnGroupPage() {
   return (
     <div className="p-6 space-y-8 pb-12">
       {/* ================================================================
-       * SEÇÃO 1: BADGES + TÍTULO (COMPONENT_PAGE_STRUCTURE §1, §2)
+       * SEÇÃO 1: BADGES + TÍTULO
        * ================================================================ */}
       <PageHeader
         icon={LayoutGrid}
@@ -370,7 +439,7 @@ export default function DssBtnGroupPage() {
       />
 
       {/* ================================================================
-       * SEÇÃO 2: QUANDO USAR / QUANDO NÃO USAR (§3)
+       * SEÇÃO 2: QUANDO USAR / QUANDO NÃO USAR
        * ================================================================ */}
       <div className="grid md:grid-cols-2 gap-6">
         <div
@@ -476,13 +545,13 @@ export default function DssBtnGroupPage() {
       </div>
 
       {/* ================================================================
-       * SEÇÃO 4: PLAYGROUND INTERATIVO (§4, PLAYGROUND_STANDARD v3.2)
+       * SEÇÃO 4: PLAYGROUND INTERATIVO (v3.2)
        * ================================================================ */}
       <SectionHeader title="Playground" titleAccent="Interativo" badge="Live Preview" />
 
       <DssPlayground
         title="Configure o BtnGroup"
-        description="Selecione variante, forma, layout e brand para visualizar o DssBtnGroup em tempo real."
+        description="Selecione variante, cor, brand, forma e layout para visualizar o DssBtnGroup em tempo real. Cores são aplicadas nos DssButton filhos."
         isDarkMode={isDarkMode}
         onDarkModeToggle={() => setIsDarkMode(!isDarkMode)}
         previewMinHeight="320px"
@@ -490,6 +559,8 @@ export default function DssBtnGroupPage() {
           <DssBtnGroupPreview
             variant={selectedVariant}
             brand={selectedBrand}
+            selectedColor={selectedColor}
+            selectedFeedback={selectedFeedback}
             rounded={booleanStates.rounded}
             square={booleanStates.square}
             spread={booleanStates.spread}
@@ -497,11 +568,25 @@ export default function DssBtnGroupPage() {
           />
         }
         controls={
-          <ControlGrid columns={4}>
+          <ControlGrid columns={5}>
             <VariantSelector
               variants={variants}
               selectedVariant={selectedVariant}
               onSelect={setSelectedVariant}
+            />
+
+            <ColorPicker
+              label="Color"
+              colors={Object.values(DSS_SEMANTIC_COLORS)}
+              selectedColor={selectedColor}
+              onSelect={handleColorChange}
+            />
+
+            <FeedbackColorPicker
+              label="Feedback"
+              colors={feedbackColors}
+              selectedColor={selectedFeedback}
+              onSelect={handleFeedbackChange}
             />
 
             <BrandPicker
@@ -510,19 +595,20 @@ export default function DssBtnGroupPage() {
               onSelect={handleBrandChange}
             />
 
-            <ToggleGroup
-              label="Forma"
-              options={shapeToggles}
-              values={booleanStates}
-              onToggle={toggleBooleanState}
-            />
-
-            <ToggleGroup
-              label="Layout"
-              options={layoutToggles}
-              values={booleanStates}
-              onToggle={toggleBooleanState}
-            />
+            <div className="space-y-4">
+              <ToggleGroup
+                label="Forma"
+                options={shapeToggles}
+                values={booleanStates}
+                onToggle={toggleBooleanState}
+              />
+              <ToggleGroup
+                label="Layout"
+                options={layoutToggles}
+                values={booleanStates}
+                onToggle={toggleBooleanState}
+              />
+            </div>
           </ControlGrid>
         }
         codePreview={generateCode()}
