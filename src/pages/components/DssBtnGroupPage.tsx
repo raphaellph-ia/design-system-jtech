@@ -308,15 +308,34 @@ function DssBtnGroupPreview({
     }
   };
 
-  const buttons = ["Primeiro", "Segundo", "Terceiro"];
+  const buttons = split
+    ? ["Primeiro", "Segundo"]
+    : ["Primeiro", "Segundo", "Terceiro"];
 
-  return (
+  // Total buttons + 1 if split (dropdown arrow counts as last element)
+  const totalElements = split ? buttons.length + 1 : buttons.length;
+
+  const getDropdownArrowStyle = (): React.CSSProperties => {
+    const baseStyle = getButtonStyle(totalElements - 1, totalElements);
+    return {
+      ...baseStyle,
+      padding: "8px 6px",
+      minWidth: "36px",
+      flex: spread ? 1 : undefined,
+      borderLeft: variant === "outline" ? "none" : undefined,
+      marginLeft: variant === "outline" ? "-1px" : undefined,
+    };
+  };
+
+  // Stretch needs a parent container with defined height
+  const groupContent = (
     <div
       style={{
         display: spread ? "flex" : "inline-flex",
         position: "relative",
         width: spread ? "100%" : undefined,
         maxWidth: spread ? "400px" : undefined,
+        height: stretch ? "100%" : undefined,
         boxShadow: brandAccentColor
           ? `inset 0 -3px 0 ${brandAccentColor}`
           : "none",
@@ -329,15 +348,53 @@ function DssBtnGroupPreview({
       {buttons.map((label, i) => (
         <button
           key={i}
-          style={getButtonStyle(i, buttons.length)}
+          style={{
+            ...getButtonStyle(i, totalElements),
+            height: stretch ? "100%" : undefined,
+          }}
           onMouseEnter={() => setHoveredBtn(i)}
           onMouseLeave={() => setHoveredBtn(null)}
         >
           {label}
         </button>
       ))}
+      {split && (
+        <button
+          style={{
+            ...getDropdownArrowStyle(),
+            height: stretch ? "100%" : undefined,
+          }}
+          onMouseEnter={() => setHoveredBtn(buttons.length)}
+          onMouseLeave={() => setHoveredBtn(null)}
+          aria-label="Abrir dropdown"
+        >
+          ▾
+        </button>
+      )}
     </div>
   );
+
+  // When stretch is active, wrap in a tall container to demonstrate the effect
+  if (stretch) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "stretch",
+          height: "120px",
+          border: "1px dashed rgba(255,255,255,0.2)",
+          borderRadius: "8px",
+          padding: "0",
+          width: spread ? "100%" : undefined,
+          maxWidth: spread ? "400px" : undefined,
+        }}
+      >
+        {groupContent}
+      </div>
+    );
+  }
+
+  return groupContent;
 }
 
 // ============================================================================
