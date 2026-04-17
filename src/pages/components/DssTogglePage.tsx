@@ -142,7 +142,7 @@ function DssTogglePreview({
     fontSize: sizeStyles.fontSize,
     color: error 
       ? "var(--dss-negative)" 
-      : isDarkMode ? "var(--dss-text-primary-dark)" : "var(--dss-text-primary)",
+      : isDarkMode ? "#fafafa" : "var(--dss-text-body)",
     userSelect: "none",
     position: "relative",
   });
