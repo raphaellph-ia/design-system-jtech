@@ -16,16 +16,20 @@ import React, { useState } from "react";
 import {
   DssPlayground,
   ControlSection,
+  ControlGrid,
   SizeSelector,
   ToggleGroup,
   ColorPicker,
+  FeedbackColorPicker,
   BrandPicker,
   type SemanticColor,
+  type FeedbackColor,
   type BrandColor,
   type Size,
   DSS_SEMANTIC_COLORS,
+  DSS_FEEDBACK_COLORS,
   DSS_BRAND_COLORS,
-} from "@/components/ui/playground/DssPlayground";
+} from "@/components/ui/playground";
 import { AnatomySection } from "@/components/ui/AnatomySection";
 import { Badge } from "@/components/ui/badge";
 import {
