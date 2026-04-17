@@ -16,16 +16,20 @@ import React, { useState } from "react";
 import {
   DssPlayground,
   ControlSection,
+  ControlGrid,
   SizeSelector,
   ToggleGroup,
   ColorPicker,
+  FeedbackColorPicker,
   BrandPicker,
   type SemanticColor,
+  type FeedbackColor,
   type BrandColor,
   type Size,
   DSS_SEMANTIC_COLORS,
+  DSS_FEEDBACK_COLORS,
   DSS_BRAND_COLORS,
-} from "@/components/ui/playground/DssPlayground";
+} from "@/components/ui/playground";
 import { AnatomySection } from "@/components/ui/AnatomySection";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -57,6 +61,7 @@ import {
 interface DssToggleState {
   size: Size;
   color: SemanticColor | null;
+  feedback: FeedbackColor | null;
   brand: BrandColor | null;
   checked: boolean;
   disabled: boolean;
@@ -78,6 +83,7 @@ interface DssTogglePreviewProps extends DssToggleState {
 function DssTogglePreview({
   size,
   color,
+  feedback,
   brand,
   checked,
   disabled,
@@ -96,11 +102,13 @@ function DssTogglePreview({
     setIsChecked(checked);
   }, [checked]);
 
-  // Resolução de cor (brand tem prioridade, error sobrescreve)
+  // Resolução de cor — Domínio único (Brand > Feedback > Color), erro sobrescreve tudo
   const resolvedColor = error
     ? "var(--dss-negative)"
     : brand
     ? `var(--dss-${brand}-primary)`
+    : feedback
+    ? `var(--dss-${feedback})`
     : color
     ? `var(--dss-${color})`
     : "var(--dss-primary)";
@@ -113,7 +121,15 @@ function DssTogglePreview({
     lg: { trackW: 52, trackH: 28, thumbSize: 24, gap: "12px", fontSize: "var(--dss-font-size-md)" },
   };
 
-  const sizeStyles = sizeMap[size];
+  const baseStyles = sizeMap[size];
+  const sizeStyles = dense
+    ? {
+        ...baseStyles,
+        trackW: Math.round(baseStyles.trackW * 0.85),
+        trackH: Math.round(baseStyles.trackH * 0.85),
+        thumbSize: Math.round(baseStyles.thumbSize * 0.85),
+      }
+    : baseStyles;
 
   const getContainerStyles = (): React.CSSProperties => ({
     display: "inline-flex",
@@ -278,14 +294,15 @@ function generateToggleCode(state: DssToggleState): string {
 
   if (state.size !== "md") props.push(`size="${state.size}"`);
   if (state.brand) props.push(`brand="${state.brand}"`);
+  else if (state.feedback) props.push(`color="${state.feedback}"`);
   else if (state.color && state.color !== "primary") props.push(`color="${state.color}"`);
-  if (state.checked) props.push("v-model=\"enabled\"");
+  props.push('v-model="enabled"');
   if (state.disabled) props.push("disable");
   if (state.dense) props.push("dense");
   if (state.leftLabel) props.push("left-label");
   if (state.label) props.push(`label="${state.label}"`);
   if (state.error) props.push("error");
-  if (state.errorMessage) props.push(`error-message="${state.errorMessage}"`);
+  if (state.error && state.errorMessage) props.push(`error-message="${state.errorMessage}"`);
 
   if (props.length <= 3) {
     return `<DssToggle ${props.join(" ")} />`;
@@ -303,8 +320,9 @@ export default function DssTogglePage() {
   const [state, setState] = useState<DssToggleState>({
     size: "md",
     color: "primary",
+    feedback: null,
     brand: null,
-    checked: false,
+    checked: true,
     disabled: false,
     dense: false,
     leftLabel: false,
@@ -315,12 +333,15 @@ export default function DssTogglePage() {
 
   const handleChange = <K extends keyof DssToggleState>(key: K, value: DssToggleState[K]) => {
     setState((prev) => {
-      // Exclusividade mútua: brand limpa color e vice-versa
+      // Color Application Domain — última seleção substitui as anteriores (Brand/Feedback/Color)
       if (key === "brand" && value) {
-        return { ...prev, [key]: value, color: null };
+        return { ...prev, brand: value as BrandColor, color: null, feedback: null };
+      }
+      if (key === "feedback" && value) {
+        return { ...prev, feedback: value as FeedbackColor, color: null, brand: null };
       }
       if (key === "color" && value) {
-        return { ...prev, [key]: value, brand: null };
+        return { ...prev, color: value as SemanticColor, feedback: null, brand: null };
       }
       // Error toggle: adiciona mensagem padrão
       if (key === "error" && value) {
@@ -533,7 +554,7 @@ export default function DssTogglePage() {
         previewContent={<DssTogglePreview {...state} isDarkMode={isDarkMode} />}
         codePreview={generateToggleCode(state)}
         controls={
-          <div className="space-y-5">
+          <ControlGrid columns={5}>
             <SizeSelector
               label="Tamanho"
               sizes={[
@@ -551,11 +572,17 @@ export default function DssTogglePage() {
               colors={Object.values(DSS_SEMANTIC_COLORS)}
               selectedColor={state.color}
               onSelect={(color) => handleChange("color", color)}
-              disabled={!!state.brand}
+            />
+
+            <FeedbackColorPicker
+              label="Feedback"
+              colors={Object.values(DSS_FEEDBACK_COLORS)}
+              selectedColor={state.feedback}
+              onSelect={(feedback) => handleChange("feedback", feedback)}
             />
 
             <BrandPicker
-              label="Brand (Sansys)"
+              label="Brand"
               brands={DSS_BRAND_COLORS}
               selectedBrand={state.brand}
               onSelect={(brand) => handleChange("brand", brand)}
@@ -601,7 +628,7 @@ export default function DssTogglePage() {
                 />
               </div>
             </ControlSection>
-          </div>
+          </ControlGrid>
         }
       />
 
