@@ -312,8 +312,9 @@ export default function DssTogglePage() {
   const [state, setState] = useState<DssToggleState>({
     size: "md",
     color: "primary",
+    feedback: null,
     brand: null,
-    checked: false,
+    checked: true,
     disabled: false,
     dense: false,
     leftLabel: false,
@@ -324,12 +325,15 @@ export default function DssTogglePage() {
 
   const handleChange = <K extends keyof DssToggleState>(key: K, value: DssToggleState[K]) => {
     setState((prev) => {
-      // Exclusividade mútua: brand limpa color e vice-versa
+      // Color Application Domain — última seleção substitui as anteriores (Brand/Feedback/Color)
       if (key === "brand" && value) {
-        return { ...prev, [key]: value, color: null };
+        return { ...prev, brand: value as BrandColor, color: null, feedback: null };
+      }
+      if (key === "feedback" && value) {
+        return { ...prev, feedback: value as FeedbackColor, color: null, brand: null };
       }
       if (key === "color" && value) {
-        return { ...prev, [key]: value, brand: null };
+        return { ...prev, color: value as SemanticColor, feedback: null, brand: null };
       }
       // Error toggle: adiciona mensagem padrão
       if (key === "error" && value) {
