@@ -83,6 +83,7 @@ interface DssTogglePreviewProps extends DssToggleState {
 function DssTogglePreview({
   size,
   color,
+  feedback,
   brand,
   checked,
   disabled,
@@ -101,11 +102,13 @@ function DssTogglePreview({
     setIsChecked(checked);
   }, [checked]);
 
-  // Resolução de cor (brand tem prioridade, error sobrescreve)
+  // Resolução de cor — Domínio único (Brand > Feedback > Color), erro sobrescreve tudo
   const resolvedColor = error
     ? "var(--dss-negative)"
     : brand
     ? `var(--dss-${brand}-primary)`
+    : feedback
+    ? `var(--dss-${feedback})`
     : color
     ? `var(--dss-${color})`
     : "var(--dss-primary)";
