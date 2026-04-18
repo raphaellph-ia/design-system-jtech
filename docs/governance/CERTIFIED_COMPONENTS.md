@@ -16,6 +16,7 @@ Indice oficial de componentes com Selo de Conformidade DSS.
 | DssAvatar | Basico (Visual/Identity) | v2.2 | 02/02/2026 | Aprovado | — | DssChip | 2 ressalvas nao-bloqueantes (R-01, R-02); 6 excecoes documentadas |
 | DssHeader | Superficie e Layout — container estrutural Nivel 3 | v2.2 | 17/04/2026 | Aprovado | — | DssCard (ref) + DssToolbar (ctx) | 2 NCs resolvidas, 3 GAPs resolvidos/escalados; 4 excecoes documentadas; GAP-03 escalado para Chat Estrategico |
 | DssFooter | Superficie e Layout — container estrutural Nivel 3 | v2.2 | 18/04/2026 | Aprovado | — | DssCard (ref) + DssHeader (ctx) | 0 NCs, 5 GAPs resolvidos; 5 excecoes documentadas (EXC-05: sombra upward hardcoded, pendente token --dss-elevation-up-*) |
+| DssMenu | Navegacao / Overlays — overlay Nivel 2 (Composicao de Primeiro Grau) | v2.2 | 18/04/2026 | Aprovado | — | DssTooltip (ref) + DssList (ctx) | 0 NCs, 3 GAPs resolvidos; 3 excecoes documentadas; CSS global (nao scoped) por teleport QMenu |
 
 ---
 

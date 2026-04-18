@@ -30,7 +30,6 @@
         <DssMenu v-model="menu2">
           <DssList>
             <DssItem
-              label="Editar"
               clickable
               v-close-popup
               @click="handleAction('Editar')"
@@ -41,7 +40,6 @@
               <DssItemSection>Editar</DssItemSection>
             </DssItem>
             <DssItem
-              label="Compartilhar"
               clickable
               v-close-popup
               @click="handleAction('Compartilhar')"
@@ -52,7 +50,6 @@
               <DssItemSection>Compartilhar</DssItemSection>
             </DssItem>
             <DssItem
-              label="Excluir"
               clickable
               v-close-popup
               @click="handleAction('Excluir')"

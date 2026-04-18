@@ -1,10 +1,10 @@
 {
   "component": "DssMenu",
   "dssVersion": "2.2",
-  "status": "pending-audit",
-  "auditMode": null,
-  "auditDate": null,
-  "seal": null,
+  "status": "sealed",
+  "auditMode": "Auditoria DSS v2.2 — Aprovado",
+  "auditDate": "2026-04-18",
+  "seal": "DSS/docs/Compliance/seals/DssMenu/DSSMENU_SELO_v2.2.md",
 
   "goldenReference": "DssTooltip",
   "goldenReferenceJustification": "DssTooltip é o Golden Reference para DssMenu: ambos são overlays informativos/de navegação não-interativos como container, que aparecem sobre o conteúdo da página. DssTooltip recebeu Selo DSS v2.2 (Fev 2026) e estabelece o padrão para overlays de conteúdo contextual.",

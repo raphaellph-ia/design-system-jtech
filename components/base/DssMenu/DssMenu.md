@@ -1,6 +1,6 @@
 # DssMenu — Documentação Normativa DSS v2.2
 
-> **Status:** ⏳ PENDENTE AUDITORIA
+> **Status:** ✅ CONFORME — Selo DSS v2.2 emitido em 2026-04-18
 > **Versão DSS:** 2.2
 > **Fase:** 2 — Overlay de Navegação / Composição de Primeiro Grau
 > **Golden Reference:** DssTooltip
