@@ -106,7 +106,7 @@ function DssTogglePreview({
   const resolvedColor = error
     ? "var(--dss-negative)"
     : brand
-    ? `var(--dss-${brand}-primary)`
+    ? `var(--dss-${brand}-600)`
     : feedback
     ? `var(--dss-${feedback})`
     : color
