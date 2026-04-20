@@ -1,0 +1,98 @@
+// ==========================================================================
+// DssDrawer — Layer 4: Estados Adaptativos
+// ==========================================================================
+//
+// Dark mode, high contrast (prefers-contrast: more),
+// forced-colors (Windows High Contrast), print.
+//
+// DssDrawer não possui estados de interação próprios (hover/focus/active).
+// Todos os estados interativos pertencem aos componentes filhos internos.
+// ==========================================================================
+
+// ---------------------------------------------------------------------------
+// Dark mode
+// ---------------------------------------------------------------------------
+[data-theme='dark'] .dss-drawer,
+.dss-drawer.body--dark {
+  background-color: var(--dss-surface-default) !important;
+  color: var(--dss-text-body) !important;
+
+  &.dss-drawer--bordered.dss-drawer--left {
+    border-right-color: var(--dss-gray-200);
+  }
+
+  &.dss-drawer--bordered.dss-drawer--right {
+    border-left-color: var(--dss-gray-200);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// High Contrast (prefers-contrast: more)
+// ---------------------------------------------------------------------------
+@media (prefers-contrast: more) {
+  .dss-drawer--bordered.dss-drawer--left {
+    border-right-width: var(--dss-border-width-md);
+  }
+
+  .dss-drawer--bordered.dss-drawer--right {
+    border-left-width: var(--dss-border-width-md);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Forced Colors (Windows High Contrast Mode)
+// EXC-05 — System color keywords obrigatórios neste contexto.
+// Tokens CSS são ignorados pelo navegador em forced-colors mode.
+// Precedente: DssHeader (EXC-03), DssTabs (EXC-02), DssCard.
+// ---------------------------------------------------------------------------
+@media (forced-colors: active) {
+  .dss-drawer {
+    background-color: Canvas !important;
+    color: CanvasText !important;
+  }
+
+  .dss-drawer--bordered.dss-drawer--left {
+    border-right: 1px solid ButtonFace;
+  }
+
+  .dss-drawer--bordered.dss-drawer--right {
+    border-left: 1px solid ButtonFace;
+  }
+
+  .dss-drawer--elevated {
+    box-shadow: none;
+    border: 1px solid ButtonFace;
+  }
+
+  .dss-drawer .q-drawer__backdrop {
+    background: rgba(0, 0, 0, 0.75);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Print
+// EXC-06 — Valores hardcoded para impressão monocromática.
+// Tokens CSS podem não ser resolvidos em contexto de impressão.
+// position: static cancela o position: fixed do QDrawer.
+// Precedente: DssHeader (EXC-04), DssTabs (EXC-03).
+// ---------------------------------------------------------------------------
+@media print {
+  .dss-drawer {
+    background-color: #fff !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    position: static !important;
+  }
+
+  .dss-drawer--bordered.dss-drawer--left {
+    border-right: 1px solid #000;
+  }
+
+  .dss-drawer--bordered.dss-drawer--right {
+    border-left: 1px solid #000;
+  }
+
+  .dss-drawer .q-drawer__backdrop {
+    display: none;
+  }
+}

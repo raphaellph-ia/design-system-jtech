@@ -1,0 +1,23 @@
+// ==========================================================================
+// DssDrawer — Layer 4: Brands
+// ==========================================================================
+//
+// DssDrawer NÃO gerencia brand diretamente.
+//
+// Responsabilidade de brand é delegada aos componentes filhos internos:
+//   <DssDrawer>
+//     <DssList>           ← brand gerenciada aqui (via tokens contextuais)
+//       <DssItem>...</DssItem>
+//     </DssList>
+//   </DssDrawer>
+//
+// O DssDrawer é um container estrutural transparente em termos de brand.
+// Qualquer contexto [data-brand] propagado por um ancestral (ex: DssHeader
+// com DssToolbar brand="hub") será automaticamente herdado pelos
+// componentes filhos via cascade CSS sem intervenção do DssDrawer.
+//
+// Decisão arquitetural: alinhado com DssHeader (Golden Context), que também
+// delega brand ao DssToolbar interno. DssDrawer segue o mesmo padrão de
+// transparência de marca para manter separação de responsabilidades
+// conforme Gate de Responsabilidade v2.4.
+// ==========================================================================

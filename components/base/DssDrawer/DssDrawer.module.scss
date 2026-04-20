@@ -1,0 +1,21 @@
+// ==========================================================================
+// DssDrawer — Orchestrador Principal SCSS
+// ==========================================================================
+//
+// Importa as 4 camadas na ordem obrigatória: L2 → L3 → L4.
+//
+// ATENÇÃO: Este arquivo é referenciado pelo componente via <style> NÃO-SCOPED.
+// O motivo é que .dss-drawer .q-drawer__backdrop precisa alcançar o elemento
+// de backdrop renderizado internamente pelo QDrawer — scoped impediria isso.
+// Os seletores .dss-drawer são específicos o suficiente para não poluir outros
+// componentes. Precedente: DssTabs (também usa estilos globais para .q-tabs__arrow).
+// ==========================================================================
+
+/* Layer 2: Composição Base */
+@use './2-composition/base' as composition;
+
+/* Layer 3: Variantes */
+@use './3-variants' as variants;
+
+/* Layer 4: Output (brands, states) */
+@use './4-output' as output;

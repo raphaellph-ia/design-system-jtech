@@ -1,0 +1,19 @@
+// ==========================================================================
+// DssDrawer — Layer 3: Variante Bordered
+// ==========================================================================
+//
+// Aplica borda lateral sutil como alternativa flat à sombra de elevação.
+// A direção da borda depende do lado do drawer para separar o drawer
+// do conteúdo da página corretamente.
+//
+// side="left" → border-right (separa drawer do conteúdo à direita)
+// side="right" → border-left (separa drawer do conteúdo à esquerda)
+// ==========================================================================
+
+.dss-drawer--bordered.dss-drawer--left {
+  border-right: var(--dss-border-width-thin) solid var(--dss-gray-200);
+}
+
+.dss-drawer--bordered.dss-drawer--right {
+  border-left: var(--dss-border-width-thin) solid var(--dss-gray-200);
+}

@@ -1,0 +1,15 @@
+// ==========================================================================
+// DssDrawer — Layer 3: Variante Mini
+// ==========================================================================
+//
+// Modo minimizado: o QDrawer reduz a largura automaticamente (padrão 57px)
+// exibindo apenas ícones dos itens de navegação internos.
+//
+// O DssDrawer não define estilos de conteúdo em modo mini — a governança
+// visual dos itens em modo mini é responsabilidade dos DssList/DssItem
+// internos. O container apenas garante overflow correto.
+// ==========================================================================
+
+.dss-drawer--mini {
+  overflow: hidden;
+}

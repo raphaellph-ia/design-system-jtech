@@ -1,0 +1,12 @@
+// ==========================================================================
+// DssDrawer — Layer 3: Variante Elevated
+// ==========================================================================
+//
+// Aplica sombra de elevação para destacar o drawer do conteúdo da página.
+// --dss-elevation-2 é o nível adequado para painéis laterais.
+// Precedente: DssHeader usa --dss-elevation-2 (mesma família, mesma semântica).
+// ==========================================================================
+
+.dss-drawer--elevated {
+  box-shadow: var(--dss-elevation-2);
+}

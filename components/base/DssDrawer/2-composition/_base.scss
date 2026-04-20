@@ -1,0 +1,38 @@
+// ==========================================================================
+// DssDrawer — Layer 2: Composição Base
+// ==========================================================================
+//
+// Estilos base do drawer. Tokens genéricos apenas.
+// Sem referências a variantes, brands ou estados adaptativos.
+//
+// EXC-02 — Sobrescrita de background-color via !important:
+//   O QDrawer aplica fundo nativo do tema Quasar (geralmente branco).
+//   Para garantir que --dss-surface-default governe o fundo e suporte
+//   dark mode via [data-theme="dark"], é necessário !important.
+//   Precedente: DssHeader (EXC-02), DssToolbar.
+//
+// EXC-04 — Seletor interno .q-drawer__backdrop:
+//   O backdrop é um elemento filho renderizado pelo QDrawer internamente
+//   em modo overlay (mobile ou prop overlay=true). O seletor descendente
+//   .dss-drawer .q-drawer__backdrop é a única forma de aplicar
+//   --dss-opacity-backdrop sem alterar a API interna do QDrawer.
+//   Este arquivo usa <style> não-scoped no componente para que o seletor
+//   alcance elementos Quasar internos. Precedente: DssTabs EXC-01.
+// ==========================================================================
+
+.dss-drawer {
+  // -------------------------------------------------------------------------
+  // Cor de fundo — sobrescreve fundo nativo do QDrawer com token DSS
+  // EXC-02
+  // -------------------------------------------------------------------------
+  background-color: var(--dss-surface-default) !important;
+  color: var(--dss-text-body);
+}
+
+// ---------------------------------------------------------------------------
+// Backdrop — fundo semi-transparente em modo overlay/mobile
+// EXC-04 — Seletor descendente de elemento interno do QDrawer
+// ---------------------------------------------------------------------------
+.dss-drawer .q-drawer__backdrop {
+  background: rgba(0, 0, 0, var(--dss-opacity-backdrop, 0.75));
+}
