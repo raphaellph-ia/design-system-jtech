@@ -25,6 +25,7 @@ import DssBtnGroupPage from "./pages/components/DssBtnGroupPage";
 import DssBtnDropdownPage from "./pages/components/DssBtnDropdownPage";
 import DssTabsPage from "./pages/components/DssTabsPage";
 import DssBreadcrumbsElPage from "./pages/components/DssBreadcrumbsElPage";
+import DssHeaderPage from "./pages/components/DssHeaderPage";
 import ComponentPlaceholder from "./pages/components/ComponentPlaceholder";
 import ArchitecturePage from "./pages/governance/ArchitecturePage";
 import ClassificationPage from "./pages/governance/ClassificationPage";
@@ -74,6 +75,7 @@ const App = () => (
             <Route path="/componentes/dss-btn-dropdown" element={<DssBtnDropdownPage />} />
             <Route path="/componentes/dss-tabs" element={<DssTabsPage />} />
             <Route path="/componentes/dss-breadcrumbs-el" element={<DssBreadcrumbsElPage />} />
+            <Route path="/componentes/dss-header" element={<DssHeaderPage />} />
             <Route path="/componentes/:componentId" element={<ComponentPlaceholder />} />
             
             {/* Governança */}

@@ -76,6 +76,7 @@ const navigation = {
       { title: "DssCard", url: "/componentes/dss-card", icon: CreditCard, status: "stable" },
       { title: "DssCheckbox", url: "/componentes/dss-checkbox", icon: CheckSquareIcon, status: "stable" },
       { title: "DssChip", url: "/componentes/dss-chip", icon: Tag, status: "golden" },
+      { title: "DssHeader", url: "/componentes/dss-header", icon: PanelTop, status: "stable" },
       { title: "DssInput", url: "/componentes/dss-input", icon: Square, status: "stable" },
       { title: "DssRange", url: "/componentes/dss-range", icon: SlidersHorizontal, status: "stable" },
       { title: "DssTabs", url: "/componentes/dss-tabs", icon: Layers, status: "stable" },
