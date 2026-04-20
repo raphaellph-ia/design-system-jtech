@@ -67,7 +67,7 @@ O `DssStepper` deve utilizar os seguintes tokens para a estrutura do container e
 
 - **Borda do container (se bordered):** `--dss-border-width-thin` solid `--dss-gray-200`.
 - **Linha conectora (horizontal/vertical):** `--dss-gray-300` (cor) e `--dss-border-width-thin` (espessura).
-- **Background do container:** `--dss-surface-base`.
+- **Background do container:** `--dss-surface-default`.
 - **Raio da borda:** `--dss-radius-md`.
 
 *Nota: As cores dos ícones e textos dos passos já estão resolvidas no `DssStep`.*
@@ -94,3 +94,36 @@ O arquivo `DssStepper.example.vue` deve cobrir:
 
 - **Regra Violada:** Gate de Composição v2.4 — Regra 1 (Proibição de seletores CSS que referenciam classes internas do Quasar).
 - **Justificativa:** O Quasar renderiza a linha conectora entre os passos usando classes internas (`.q-stepper__dot:before`, `.q-stepper__dot:after`, `.q-stepper__line:before`). Como esses elementos não são componentes Vue expostos, a única forma de aplicar as cores do DSS (`--dss-gray-300`) à linha conectora é sobrescrevendo essas classes internas a partir do `DssStepper`. Esta é uma exceção formal e documentada.
+
+## 8. Superfície de Playground (independente da API)
+
+> **Propósito**: Definir explicitamente o que o playground interativo deve demonstrar, separado da especificação técnica da API. O playground é um artefato de primeira classe que permite stakeholders entender e testar o componente.
+
+### 8.1 Controles Obrigatórios
+
+- **Layout**: [horizontal, vertical] — permite testar a orientação do fluxo (prop `vertical`)
+- **Navegação**: [linear, livre] — permite testar a navegação restrita vs. livre (prop `header-nav`)
+- **Aparência**: [padrão, flat, bordered] — permite testar a integração visual do container (props `flat`, `bordered`)
+- **Animação**: [true, false] — permite testar transições entre painéis (prop `animated`)
+- **Passo Ativo**: [1, 2, 3] — controle externo para forçar a mudança de passo (v-model)
+
+### 8.2 Composite Logic
+
+- O `DssStepper` atua como orquestrador de estado para os `DssStep` filhos.
+- A prop `vertical` do `DssStepper` altera o layout interno e a renderização da linha conectora entre os `DssStep`.
+- A prop `header-nav` do `DssStepper` propaga a interatividade para os cabeçalhos dos `DssStep` filhos.
+- O estado ativo (v-model) do `DssStepper` determina qual `DssStep` terá seu conteúdo renderizado no painel principal.
+- Os estados individuais de cada passo (`done`, `error`, `disable`) são configurados diretamente nos `DssStep` filhos, não no `DssStepper`.
+
+### 8.3 Estados a Expor
+
+| Estado | Descrição | Tipo | Trigger |
+|--------|-----------|------|---------|
+| **Repouso** | Stepper horizontal padrão com o primeiro passo ativo | Visual | Padrão |
+| **Navegação** | Transição entre passos (com ou sem animação) | Interativo | Clique em "Próximo" ou no cabeçalho (se header-nav) |
+| **Passo Concluído** | Passo anterior marcado como concluído (dot verde) | Visual | Configurar `done=true` no DssStep filho |
+| **Passo com Erro** | Passo marcado com erro (dot vermelho) | Visual | Configurar `error=true` no DssStep filho |
+| **Passo Desabilitado** | Passo inativo e não clicável | Visual | Configurar `disable=true` no DssStep filho |
+| **Modo Escuro** | Cores ajustadas via tokens --dss-surface-dark-* | Visual | Toggle de tema |
+| **Alto Contraste** | Bordas mais visíveis, cores mais saturadas | Visual | Ativar prefers-contrast |
+| **Modo de Impressão** | Cores hardcoded para legibilidade monocromática | Visual | Simular impressão |
