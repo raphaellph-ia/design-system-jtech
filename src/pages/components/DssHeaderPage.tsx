@@ -27,11 +27,17 @@ import {
   ControlGrid,
   ControlSection,
   VariantSelector,
+  ColorPicker,
+  FeedbackColorPicker,
   BrandPicker,
+  SizeSelector,
   ToggleGroup,
+  DSS_SEMANTIC_COLORS,
+  DSS_FEEDBACK_COLORS,
   DSS_BRAND_COLORS,
 } from "@/components/ui/playground";
 import { PlaygroundButton } from "@/components/ui/PlaygroundButton";
+import { Loader2 } from "lucide-react";
 
 // ============================================================================
 // DADOS — Derivados de DssHeader.ts.vue + DSSHEADER_API.md + pre_prompt
@@ -149,16 +155,30 @@ const anatomyData = {
 
 interface DssHeaderPreviewProps {
   variant?: string;
-  brand?: string | null;
+  toolbarColor?: string | null;
+  toolbarBrand?: string | null;
+  toolbarFeedback?: string | null;
+  toolbarSize?: string;
+  toolbarDense?: boolean;
+  toolbarDisabled?: boolean;
+  toolbarLoading?: boolean;
   reveal?: boolean;
+  revealOffset?: number;
   template?: string;
   isDarkMode?: boolean;
 }
 
 function DssHeaderPreview({
   variant = "default",
-  brand = null,
+  toolbarColor = null,
+  toolbarBrand = null,
+  toolbarFeedback = null,
+  toolbarSize = "md",
+  toolbarDense = false,
+  toolbarDisabled = false,
+  toolbarLoading = false,
   reveal = false,
+  revealOffset = 250,
   template = "single",
   isDarkMode = false,
 }: DssHeaderPreviewProps) {
@@ -168,8 +188,18 @@ function DssHeaderPreview({
   const dividerColor = isDarkMode ? "hsl(0 0% 22%)" : "hsl(0 0% 90%)";
   const pageBg = isDarkMode ? "hsl(0 0% 9%)" : "hsl(0 0% 96%)";
 
-  // Brand é aplicado ao DssToolbar interno (DssHeader não tem brand)
-  const brandColor = brand && DSS_BRAND_COLORS[brand] ? DSS_BRAND_COLORS[brand].principal : null;
+  // ===== COLOR APPLICATION DOMAIN v3.2 =====
+  // Apenas uma fonte de cor pode estar ativa por vez.
+  // Resolução determinística no preview (último render). A UI já garante
+  // mutual exclusion no estado (ver handleColorSourceChange).
+  let resolvedToolbarBg: string | null = null;
+  if (toolbarBrand && DSS_BRAND_COLORS[toolbarBrand]) {
+    resolvedToolbarBg = DSS_BRAND_COLORS[toolbarBrand].principal;
+  } else if (toolbarFeedback && DSS_FEEDBACK_COLORS[toolbarFeedback]) {
+    resolvedToolbarBg = DSS_FEEDBACK_COLORS[toolbarFeedback].bg;
+  } else if (toolbarColor && DSS_SEMANTIC_COLORS[toolbarColor]) {
+    resolvedToolbarBg = DSS_SEMANTIC_COLORS[toolbarColor].bg;
+  }
 
   // Computa estilos de elevação/borda
   const headerStyle: React.CSSProperties = {
@@ -188,27 +218,62 @@ function DssHeaderPreview({
     headerStyle.borderBottom = `1px solid ${dividerColor}`;
   }
 
-  // Toolbar interna — quando há brand, toolbar adota brand (delegação)
-  const toolbarBg = brandColor || "transparent";
-  const toolbarTextColor = brandColor ? "#ffffff" : textColor;
-  const toolbarSubtleColor = brandColor ? "rgba(255,255,255,0.75)" : subtleColor;
-  const iconHoverBg = brandColor ? "rgba(255,255,255,0.15)" : (isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)");
+  // Toolbar size → minHeight
+  const toolbarMinHeight =
+    toolbarDense ? 40 :
+    toolbarSize === "sm" ? 48 :
+    toolbarSize === "lg" ? 64 : 56;
+
+  const toolbarBg = resolvedToolbarBg || "transparent";
+  const toolbarTextColor = resolvedToolbarBg ? "#ffffff" : textColor;
+  const toolbarSubtleColor = resolvedToolbarBg ? "rgba(255,255,255,0.75)" : subtleColor;
+  const iconHoverBg = resolvedToolbarBg
+    ? "rgba(255,255,255,0.15)"
+    : isDarkMode
+    ? "rgba(255,255,255,0.08)"
+    : "rgba(0,0,0,0.06)";
+
+  const toolbarOpacity = toolbarDisabled ? 0.5 : 1;
+  const toolbarPointerEvents: React.CSSProperties["pointerEvents"] = toolbarDisabled ? "none" : "auto";
 
   const Toolbar = ({ children }: { children: React.ReactNode }) => (
     <div
       style={{
         display: "flex",
         alignItems: "center",
-        gap: "12px",
-        padding: "0 16px",
-        minHeight: "56px",
+        gap: toolbarDense ? 8 : 12,
+        padding: toolbarDense ? "0 12px" : "0 16px",
+        minHeight: toolbarMinHeight,
         backgroundColor: toolbarBg,
         color: toolbarTextColor,
+        opacity: toolbarOpacity,
+        pointerEvents: toolbarPointerEvents,
+        position: "relative",
       }}
+      aria-disabled={toolbarDisabled || undefined}
+      aria-busy={toolbarLoading || undefined}
     >
       {children}
+      {toolbarLoading && (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: resolvedToolbarBg ? "rgba(0,0,0,0.18)" : (isDarkMode ? "rgba(0,0,0,0.35)" : "rgba(255,255,255,0.55)"),
+            backdropFilter: "blur(1px)",
+          }}
+        >
+          <Loader2 size={18} className="animate-spin" style={{ color: toolbarTextColor }} />
+        </div>
+      )}
     </div>
   );
+
+  const iconSize = toolbarDense ? 16 : 18;
+  const iconBtnSize = toolbarDense ? 30 : 36;
 
   const IconBtn = ({ icon: Icon, label }: { icon: typeof Menu; label: string }) => (
     <button
@@ -216,29 +281,31 @@ function DssHeaderPreview({
       aria-label={label}
       className="rounded-full transition-colors flex items-center justify-center"
       style={{
-        width: 36,
-        height: 36,
+        width: iconBtnSize,
+        height: iconBtnSize,
         backgroundColor: "transparent",
         color: "inherit",
       }}
       onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = iconHoverBg)}
       onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
     >
-      <Icon size={18} />
+      <Icon size={iconSize} />
     </button>
   );
+
+  const titleSize = toolbarDense ? 13 : 14;
 
   const renderSingle = () => (
     <Toolbar>
       <IconBtn icon={Menu} label="Menu" />
-      <span style={{ fontWeight: 600, fontSize: 14 }}>Sansys Application</span>
+      <span style={{ fontWeight: 600, fontSize: titleSize }}>Sansys Application</span>
     </Toolbar>
   );
 
   const renderWithSearch = () => (
     <Toolbar>
       <IconBtn icon={Menu} label="Menu" />
-      <span style={{ fontWeight: 600, fontSize: 14 }}>Dashboard</span>
+      <span style={{ fontWeight: 600, fontSize: titleSize }}>Dashboard</span>
       <div style={{ flex: 1 }} />
       <div
         style={{
@@ -246,10 +313,10 @@ function DssHeaderPreview({
           alignItems: "center",
           gap: 6,
           padding: "0 10px",
-          height: 32,
+          height: toolbarDense ? 28 : 32,
           width: 220,
           borderRadius: 6,
-          backgroundColor: brandColor ? "rgba(255,255,255,0.15)" : (isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.05)"),
+          backgroundColor: resolvedToolbarBg ? "rgba(255,255,255,0.15)" : (isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.05)"),
           color: toolbarSubtleColor,
           fontSize: 12,
         }}
@@ -263,7 +330,7 @@ function DssHeaderPreview({
   const renderActions = () => (
     <Toolbar>
       <IconBtn icon={Menu} label="Menu" />
-      <span style={{ fontWeight: 600, fontSize: 14 }}>Sansys Hub</span>
+      <span style={{ fontWeight: 600, fontSize: titleSize }}>Sansys Hub</span>
       <div style={{ flex: 1 }} />
       <IconBtn icon={Bell} label="Notificações" />
       <IconBtn icon={User} label="Perfil" />
@@ -274,7 +341,7 @@ function DssHeaderPreview({
     <>
       <Toolbar>
         <IconBtn icon={Menu} label="Menu" />
-        <span style={{ fontWeight: 600, fontSize: 14 }}>Sansys Application</span>
+        <span style={{ fontWeight: 600, fontSize: titleSize }}>Sansys Application</span>
         <div style={{ flex: 1 }} />
         <IconBtn icon={Bell} label="Notificações" />
         <IconBtn icon={User} label="Perfil" />
@@ -285,11 +352,13 @@ function DssHeaderPreview({
           alignItems: "center",
           gap: 16,
           padding: "0 16px",
-          minHeight: "44px",
-          backgroundColor: brandColor ? "rgba(0,0,0,0.10)" : (isDarkMode ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.03)"),
+          minHeight: toolbarDense ? 36 : 44,
+          backgroundColor: resolvedToolbarBg ? "rgba(0,0,0,0.10)" : (isDarkMode ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.03)"),
           color: toolbarTextColor,
           fontSize: 12,
-          borderTop: `1px solid ${brandColor ? "rgba(255,255,255,0.18)" : dividerColor}`,
+          borderTop: `1px solid ${resolvedToolbarBg ? "rgba(255,255,255,0.18)" : dividerColor}`,
+          opacity: toolbarOpacity,
+          pointerEvents: toolbarPointerEvents,
         }}
       >
         {["Visão Geral", "Relatórios", "Configurações"].map((tab, i) => (
@@ -297,10 +366,10 @@ function DssHeaderPreview({
             key={tab}
             style={{
               padding: "0 4px",
-              height: 44,
+              height: toolbarDense ? 36 : 44,
               display: "flex",
               alignItems: "center",
-              borderBottom: i === 0 ? `2px solid ${brandColor ? "#ffffff" : "var(--dss-action-primary, #1f86de)"}` : "2px solid transparent",
+              borderBottom: i === 0 ? `2px solid ${resolvedToolbarBg ? "#ffffff" : "var(--dss-action-primary, #1f86de)"}` : "2px solid transparent",
               fontWeight: i === 0 ? 600 : 400,
               opacity: i === 0 ? 1 : 0.7,
               cursor: "pointer",
@@ -320,6 +389,12 @@ function DssHeaderPreview({
     stacked: renderStacked,
   };
 
+  // Resumo legível para a área de conteúdo
+  const activeColorLabel =
+    toolbarBrand ? `brand="${toolbarBrand}"` :
+    toolbarFeedback ? `feedback="${toolbarFeedback}"` :
+    toolbarColor ? `color="${toolbarColor}"` : "neutro";
+
   return (
     <div
       style={{
@@ -338,15 +413,21 @@ function DssHeaderPreview({
         {(templateMap[template] || renderSingle)()}
       </header>
 
-      {/* Conteúdo simulado da página (para demonstrar contexto de layout) */}
+      {/* Conteúdo simulado da página */}
       <div style={{ padding: 20, minHeight: 160, color: subtleColor, fontSize: 12 }}>
         <p style={{ marginBottom: 8, color: textColor, fontWeight: 600, fontSize: 13 }}>
           Conteúdo da página
         </p>
-        <p>Área scrollável simulada. {reveal && "Reveal ativo: header se oculta ao rolar para baixo."}</p>
+        <p>
+          Área scrollável simulada.
+          {reveal && ` Reveal ativo (offset ${revealOffset}px): header se oculta ao rolar > ${revealOffset}px.`}
+        </p>
         <p style={{ marginTop: 8, opacity: 0.7 }}>
-          Variant: <code>{variant}</code>
-          {brand && <> · Brand do toolbar: <code>{brand}</code></>}
+          Header: <code>{variant}</code> · Toolbar: <code>{activeColorLabel}</code>
+          {toolbarDense && <> · <code>dense</code></>}
+          {!toolbarDense && toolbarSize !== "md" && <> · <code>size={toolbarSize}</code></>}
+          {toolbarDisabled && <> · <code>disabled</code></>}
+          {toolbarLoading && <> · <code>loading</code></>}
         </p>
       </div>
     </div>
@@ -358,62 +439,100 @@ function DssHeaderPreview({
 // ============================================================================
 
 export default function DssHeaderPage() {
+  // Header (componente pai)
   const [selectedVariant, setSelectedVariant] = useState("elevated");
-  const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [selectedTemplate, setSelectedTemplate] = useState("actions");
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [booleanStates, setBooleanStates] = useState({
+  const [headerBooleans, setHeaderBooleans] = useState({
     reveal: false,
   });
+  const [revealOffset, setRevealOffset] = useState<number>(250);
 
-  const handleBrandChange = (brand: string | null) => {
-    // Color Application Domain v3.2: brand pode ser limpo clicando novamente
-    setSelectedBrand((prev) => (prev === brand ? null : brand));
+  // ===== Composite Logic: estado do DssToolbar interno =====
+  // Color Application Domain v3.2: Color, Brand e Feedback são mutuamente exclusivos.
+  const [toolbarColor, setToolbarColor] = useState<string | null>(null);
+  const [toolbarBrand, setToolbarBrand] = useState<string | null>(null);
+  const [toolbarFeedback, setToolbarFeedback] = useState<string | null>(null);
+  const [toolbarSize, setToolbarSize] = useState<string>("md");
+  const [toolbarBooleans, setToolbarBooleans] = useState({
+    dense: false,
+    disabled: false,
+    loading: false,
+  });
+
+  // === Color Application Domain handlers (mutual exclusion silenciosa) ===
+  const handleColorSelect = (color: string) => {
+    setToolbarColor((prev) => (prev === color ? null : color));
+    setToolbarBrand(null);
+    setToolbarFeedback(null);
+  };
+  const handleBrandSelect = (brand: string | null) => {
+    setToolbarBrand((prev) => (prev === brand ? null : brand));
+    setToolbarColor(null);
+    setToolbarFeedback(null);
+  };
+  const handleFeedbackSelect = (feedback: string) => {
+    setToolbarFeedback((prev) => (prev === feedback ? null : feedback));
+    setToolbarColor(null);
+    setToolbarBrand(null);
   };
 
-  const toggleBooleanState = (name: string) => {
-    setBooleanStates((prev) => ({
-      ...prev,
-      [name]: !prev[name as keyof typeof prev],
-    }));
+  const toggleHeaderBoolean = (name: string) => {
+    setHeaderBooleans((prev) => ({ ...prev, [name]: !prev[name as keyof typeof prev] }));
+  };
+  const toggleToolbarBoolean = (name: string) => {
+    setToolbarBooleans((prev) => ({ ...prev, [name]: !prev[name as keyof typeof prev] }));
   };
 
-  // Geração de código (PLAYGROUND_STANDARD v3.2 — sem comentários, sem labels)
+  // ===== Geração de código (PLAYGROUND_STANDARD v3.2) =====
   const generateCode = () => {
+    // Header props
     const headerProps: string[] = [];
     if (selectedVariant === "elevated") headerProps.push("elevated");
     if (selectedVariant === "bordered") headerProps.push("bordered");
-    if (booleanStates.reveal) headerProps.push(":reveal=\"true\"");
-
+    if (headerBooleans.reveal) {
+      headerProps.push(":reveal=\"true\"");
+      if (revealOffset !== 250) headerProps.push(`:reveal-offset="${revealOffset}"`);
+    }
     const headerPropsStr = headerProps.length > 0 ? ` ${headerProps.join(" ")}` : "";
-    const toolbarBrandStr = selectedBrand ? ` brand="${selectedBrand}"` : "";
+
+    // Toolbar props (composite logic — props delegadas ao filho)
+    const tProps: string[] = [];
+    if (toolbarBrand) tProps.push(`brand="${toolbarBrand}"`);
+    else if (toolbarFeedback) tProps.push(`feedback="${toolbarFeedback}"`);
+    else if (toolbarColor) tProps.push(`color="${toolbarColor}"`);
+    if (toolbarBooleans.dense) tProps.push("dense");
+    else if (toolbarSize !== "md") tProps.push(`size="${toolbarSize}"`);
+    if (toolbarBooleans.disabled) tProps.push("disabled");
+    if (toolbarBooleans.loading) tProps.push(":loading=\"true\"");
+    const tPropsStr = tProps.length > 0 ? ` ${tProps.join(" ")}` : "";
 
     const toolbars: Record<string, string> = {
-      single: `  <DssToolbar${toolbarBrandStr}>
+      single: `  <DssToolbar${tPropsStr}>
     <DssButton flat round icon="menu" aria-label="Menu" />
     <DssToolbarTitle>Sansys Application</DssToolbarTitle>
   </DssToolbar>`,
-      withSearch: `  <DssToolbar${toolbarBrandStr}>
+      withSearch: `  <DssToolbar${tPropsStr}>
     <DssButton flat round icon="menu" aria-label="Menu" />
     <DssToolbarTitle>Dashboard</DssToolbarTitle>
     <DssSpace />
     <DssInput dense outlined placeholder="Buscar..." />
   </DssToolbar>`,
-      actions: `  <DssToolbar${toolbarBrandStr}>
+      actions: `  <DssToolbar${tPropsStr}>
     <DssButton flat round icon="menu" aria-label="Menu" />
     <DssToolbarTitle>Sansys Hub</DssToolbarTitle>
     <DssSpace />
     <DssButton flat round icon="notifications" aria-label="Notificações" />
     <DssButton flat round icon="account_circle" aria-label="Perfil" />
   </DssToolbar>`,
-      stacked: `  <DssToolbar${toolbarBrandStr}>
+      stacked: `  <DssToolbar${tPropsStr}>
     <DssButton flat round icon="menu" aria-label="Menu" />
     <DssToolbarTitle>Sansys Application</DssToolbarTitle>
     <DssSpace />
     <DssButton flat round icon="notifications" aria-label="Notificações" />
     <DssButton flat round icon="account_circle" aria-label="Perfil" />
   </DssToolbar>
-  <DssToolbar${toolbarBrandStr}>
+  <DssToolbar${tPropsStr}>
     <DssTabs v-model="tab">
       <DssTab name="overview" label="Visão Geral" />
       <DssTab name="reports" label="Relatórios" />
@@ -427,8 +546,16 @@ ${toolbars[selectedTemplate] || toolbars.single}
 </DssHeader>`;
   };
 
-  const headerToggles = [
-    { name: "reveal", label: "Reveal on scroll" },
+  const headerToggles = [{ name: "reveal", label: "Reveal on scroll" }];
+  const toolbarToggles = [
+    { name: "dense", label: "Dense" },
+    { name: "disabled", label: "Disabled" },
+    { name: "loading", label: "Loading" },
+  ];
+  const toolbarSizes = [
+    { name: "sm", label: "SM" },
+    { name: "md", label: "MD", isDefault: true },
+    { name: "lg", label: "LG" },
   ];
 
   return (
@@ -522,29 +649,37 @@ ${toolbars[selectedTemplate] || toolbars.single}
 
       <DssPlayground
         title="Configure o Header"
-        description="Explore variantes, brand do toolbar interno, comportamento reveal e cenários de composição em tempo real."
+        description="Variantes e comportamento do Header (pai) + delegação para o DssToolbar interno (composite logic). Cores são mutuamente exclusivas (Color Application Domain v3.2)."
         isDarkMode={isDarkMode}
         onDarkModeToggle={() => setIsDarkMode(!isDarkMode)}
         previewMinHeight="320px"
         previewContent={
           <DssHeaderPreview
             variant={selectedVariant}
-            brand={selectedBrand}
-            reveal={booleanStates.reveal}
+            toolbarColor={toolbarColor}
+            toolbarBrand={toolbarBrand}
+            toolbarFeedback={toolbarFeedback}
+            toolbarSize={toolbarSize}
+            toolbarDense={toolbarBooleans.dense}
+            toolbarDisabled={toolbarBooleans.disabled}
+            toolbarLoading={toolbarBooleans.loading}
+            reveal={headerBooleans.reveal}
+            revealOffset={revealOffset}
             template={selectedTemplate}
             isDarkMode={isDarkMode}
           />
         }
         controls={
           <ControlGrid columns={4}>
-            {/* Variant */}
+            {/* HEADER — Variant */}
             <VariantSelector
+              label="Header · Variant"
               variants={variants}
               selectedVariant={selectedVariant}
               onSelect={setSelectedVariant}
             />
 
-            {/* Composition Template */}
+            {/* HEADER — Composição (template do conteúdo interno) */}
             <ControlSection label="Composição">
               {compositionTemplates.map((t) => (
                 <PlaygroundButton
@@ -559,19 +694,73 @@ ${toolbars[selectedTemplate] || toolbars.single}
               ))}
             </ControlSection>
 
-            {/* Brand (aplicado ao DssToolbar interno) */}
-            <BrandPicker
-              brands={DSS_BRAND_COLORS}
-              selectedBrand={selectedBrand}
-              onSelect={handleBrandChange}
+            {/* HEADER — Comportamento */}
+            <ToggleGroup
+              label="Header · Comportamento"
+              options={headerToggles}
+              values={headerBooleans}
+              onToggle={toggleHeaderBoolean}
             />
 
-            {/* Header Behavior */}
+            {/* HEADER — Reveal Offset (numérico) */}
+            <ControlSection label="Reveal Offset (px)">
+              <input
+                type="number"
+                min={0}
+                max={2000}
+                step={10}
+                value={revealOffset}
+                onChange={(e) => setRevealOffset(Math.max(0, Number(e.target.value) || 0))}
+                disabled={!headerBooleans.reveal}
+                className="w-full rounded-md px-3 py-1.5 text-sm font-mono"
+                style={{
+                  backgroundColor: "var(--jtech-card-bg)",
+                  border: "1px solid var(--jtech-card-border)",
+                  color: "var(--jtech-text-body)",
+                  opacity: headerBooleans.reveal ? 1 : 0.5,
+                }}
+                aria-label="Reveal offset em pixels"
+              />
+            </ControlSection>
+
+            {/* TOOLBAR (composite) — Color */}
+            <ColorPicker
+              label="Toolbar · Color"
+              colors={Object.values(DSS_SEMANTIC_COLORS)}
+              selectedColor={toolbarColor}
+              onSelect={handleColorSelect}
+            />
+
+            {/* TOOLBAR (composite) — Brand */}
+            <BrandPicker
+              label="Toolbar · Brand"
+              brands={DSS_BRAND_COLORS}
+              selectedBrand={toolbarBrand}
+              onSelect={handleBrandSelect}
+            />
+
+            {/* TOOLBAR (composite) — Feedback */}
+            <FeedbackColorPicker
+              label="Toolbar · Feedback"
+              colors={DSS_FEEDBACK_COLORS as any}
+              selectedColor={toolbarFeedback}
+              onSelect={handleFeedbackSelect}
+            />
+
+            {/* TOOLBAR (composite) — Size */}
+            <SizeSelector
+              label="Toolbar · Size"
+              sizes={toolbarSizes}
+              selectedSize={toolbarSize}
+              onSelect={setToolbarSize}
+            />
+
+            {/* TOOLBAR (composite) — Estados */}
             <ToggleGroup
-              label="Comportamento"
-              options={headerToggles}
-              values={booleanStates}
-              onToggle={toggleBooleanState}
+              label="Toolbar · Estados"
+              options={toolbarToggles}
+              values={toolbarBooleans}
+              onToggle={toggleToolbarBoolean}
             />
           </ControlGrid>
         }
