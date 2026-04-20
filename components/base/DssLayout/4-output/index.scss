@@ -1,0 +1,10 @@
+/* ==========================================================================
+   DssLayout - LAYER 4: OUTPUT (Orchestrator)
+
+   Ordem de importação:
+   1. _brands.scss — adaptações por marca (canvas neutro neste componente)
+   2. _states.scss — dark mode, forced-colors, prefers-contrast, print
+   ========================================================================== */
+
+@forward './brands';
+@forward './states';

@@ -1,0 +1,92 @@
+{
+  "component": "DssLayout",
+  "dssVersion": "2.2",
+  "status": "sealed",
+  "sealVersion": "v2.2",
+  "sealDate": "2026-04-20",
+  "auditMode": "Auditoria DSS v2.5 — Aprovado",
+  "auditDate": "2026-04-20",
+  "goldenReference": "DssCard",
+  "goldenReferenceJustification": "DssCard e o container estrutural base selado mais próximo do DssLayout em termos de responsabilidade (superfície, fundo, sem interatividade direta). DssCard estabelece o padrão de como containers não-interativos aplicam tokens de superfície e gerenciam filhos via slots.",
+  "goldenContext": "DssHeader",
+  "goldenContextJustification": "DssHeader e o componente de layout de Nivel 3 mais próximo e diretamente relacionado ao DssLayout. DssHeader usa <q-header> como raiz (mesmo padrão de EXC-01 do DssLayout) e establece o precedente de containers estruturais de página selados DSS v2.2.",
+  "category": "Layout Global",
+  "phase": 2,
+  "phaseDescription": "Fase 2 — Nível 4 (Composição de Terceiro Grau). Container raiz da aplicação. Orquestra DssHeader (Nível 3), DssFooter (Nível 3) e DssDrawer (Nível 3) via slots. Gerencia a matemática de layout do Quasar (offsets de header/footer/drawer via provide/inject interno do QLayout).",
+  "classification": "Container estrutural raiz nao-interativo — wrapper DSS governado sobre QLayout",
+  "hasReservations": false,
+  "subcomponents": [],
+  "compositionRequirements": [],
+  "compositionFuture": ["DssPageContainer", "DssPage"],
+  "compositionRecommendations": [
+    "DssHeader",
+    "DssFooter",
+    "DssDrawer",
+    "DssPageContainer (futuro)",
+    "DssPage (futuro)"
+  ],
+  "compositionNote": "DssLayout e o container raiz — aceita exclusivamente componentes estruturais de layout no slot default. HTML nativo ou texto solto diretamente no DssLayout viola a governança de Nivel 4. DssPageContainer e DssPage sao compositionFuture e devem ser criados como dependencias da Fase 2.",
+  "props": {
+    "DssLayout": ["view", "container"],
+    "blocked": {
+      "dark": "dark mode governado por [data-theme='dark'] via tokens CSS — prop nativa do QLayout bloqueada no DSS"
+    }
+  },
+  "statesApplicable": ["dark-mode"],
+  "statesNotApplicable": ["hover", "focus", "active", "disabled", "loading", "error", "indeterminate"],
+  "statesNotApplicableJustification": "DssLayout e container estrutural raiz 100% nao-interativo (Gate de Responsabilidade v2.4). hover/focus/active/disabled pertencem aos componentes filhos. loading/error sao responsabilidade do DssPage ou componentes de conteudo. indeterminate nao se aplica a containers.",
+  "accessibility": {
+    "role": "Nao aplicado — DssLayout nao forca role semantico. Semântica e fornecida pelos filhos: DssHeader (banner), DssDrawer (navigation), DssPage (main), DssFooter (contentinfo).",
+    "wcagLevel": "2.1 AA",
+    "touchTarget": "Nao aplicavel — componente nao-interativo (Option B)",
+    "keyboardNavigation": "Nao aplicavel — navegacao pertence aos componentes filhos",
+    "aria": "Nenhum atributo ARIA obrigatorio. Consumidor pode passar aria-label via $attrs se necessario para contextos de container mode."
+  },
+  "antiPatterns": [
+    "Colocar HTML nativo ou texto solto diretamente no slot default do DssLayout",
+    "Aplicar estilos interativos (hover, cursor: pointer) via DssLayout",
+    "Usar DssLayout para layouts que nao sejam de pagina inteira (preferir DssCard com container=true para secoes)",
+    "Declarar data-brand no DssLayout — brand deve ser declarado no elemento raiz da aplicacao (app.vue)",
+    "Sobrescrever variaveis CSS do QLayout (--q-header-offset etc.) — essas sao calculadas automaticamente",
+    "Aninhar DssLayout dentro de outro DssLayout sem necessidade real (prefer container=true)"
+  ],
+  "tokensUsed": [
+    "--dss-surface-muted",
+    "--dss-text-body"
+  ],
+  "exceptions": [
+    {
+      "id": "EXC-01",
+      "description": "QLayout como elemento raiz — Gate de Composicao v2.4 Regra 1",
+      "location": "1-structure/DssLayout.ts.vue",
+      "gatesViolated": ["Gate de Composicao v2.4 — Regra 1"],
+      "justification": "DssLayout usa <q-layout> diretamente como raiz do template. QLayout depende de provide/inject interno para comunicar offsets de header/footer/drawer aos componentes filhos via variaveis CSS. Envolver em <div> quebraria a matematica de layout do Quasar. Precedente canonico: DssHeader (<q-header> como raiz), DssDrawer (<q-drawer> como raiz)."
+    },
+    {
+      "id": "EXC-02",
+      "value": "!important em background-color",
+      "location": "2-composition/_base.scss, 4-output/_states.scss",
+      "gatesViolated": [],
+      "justification": "Override com !important para garantir que --dss-surface-muted prevaleça sobre estilos globais Quasar. Precedente: DssHeader (--dss-surface-default !important), DssDrawer, DssFooter."
+    },
+    {
+      "id": "EXC-03",
+      "value": "Canvas, CanvasText",
+      "location": "4-output/_states.scss",
+      "justification": "System color keywords obrigatorios em @media (forced-colors: active). Tokens CSS sao ignorados pelo navegador neste modo. Padrao canonico DSS."
+    },
+    {
+      "id": "EXC-04",
+      "value": "#fff !important / #000 !important em print",
+      "location": "4-output/_states.scss",
+      "justification": "Valores hardcoded aceitaveis para garantir legibilidade em impressao monocromatica. Precedente: DssHeader, DssTab, DssStep (EXC-04 em todos)."
+    },
+    {
+      "id": "EXC-05",
+      "value": "q-page-container e q-page nativos no exemplo",
+      "location": "DssLayout.example.vue",
+      "gatesViolated": ["Gate de Composicao v2.4 — Regra 1 (somente no exemplo)"],
+      "justification": "DssPageContainer e DssPage ainda nao existem na Fase 2 do DSS. Uso de componentes Quasar nativos exclusivamente no arquivo de exemplo para demonstrar o calculo de offsets de layout. O codigo fonte do componente (DssLayout.ts.vue) permanece 100% aderente. Isencao formal conforme DSS_IMPLEMENTATION_GUIDE.md — politica de isenção de exemplos."
+    }
+  ]
+}

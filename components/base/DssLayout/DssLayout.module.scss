@@ -1,0 +1,22 @@
+/* ==========================================================================
+   DssLayout - MAIN MODULE (Orquestrador Final)
+
+   Filosofia DSS: Arquitetura em 4 Camadas
+
+   LAYER 1: Structure  (Vue component — 1-structure/DssLayout.ts.vue)
+   LAYER 2: Composition (_base.scss — fundo base da aplicação)
+   LAYER 3: Variants   (index.scss — sem variantes; camada existe por compliance)
+   LAYER 4: Output     (_brands.scss + _states.scss — dark mode, forced-colors, print)
+
+   Este arquivo importa TODAS as camadas em ordem e gera o CSS final.
+   Nenhum CSS deve ser escrito diretamente neste orquestrador.
+   ========================================================================== */
+
+/* Layer 2: Composition */
+@use './2-composition' as composition;
+
+/* Layer 3: Variants */
+@use './3-variants' as variants;
+
+/* Layer 4: Output */
+@use './4-output' as output;

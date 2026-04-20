@@ -1,0 +1,62 @@
+// ==========================================================================
+// DssLayout — Layer 4: Estados Adaptativos
+// ==========================================================================
+//
+// Dark mode, prefers-contrast, forced-colors, reduced-motion, print.
+// DssLayout não possui estados de interação (hover/focus/active).
+// ==========================================================================
+
+// ------------------------------------------------------------------
+// Dark mode
+// ------------------------------------------------------------------
+[data-theme='dark'] .dss-layout,
+.dss-layout.body--dark {
+  // --dss-surface-muted resolve para superfície escura em dark mode.
+  // Token adapta automaticamente via sistema de temas DSS.
+  background-color: var(--dss-surface-muted) !important;
+  color: var(--dss-text-body);
+}
+
+// ------------------------------------------------------------------
+// High Contrast (prefers-contrast: more)
+// Valor correto da especificação CSS — "more", não "high".
+//
+// DssLayout não possui bordas, sombras ou elementos visuais próprios
+// que necessitem ajuste em alto contraste. O cascade automático dos
+// filhos (DssHeader--bordered, DssDrawer--bordered, etc.) é suficiente.
+// Nenhuma regra CSS é emitida intencionalmente.
+// ------------------------------------------------------------------
+
+// ------------------------------------------------------------------
+// Reduced Motion
+// DssLayout não aplica transições próprias. Bloco preventivo.
+// ------------------------------------------------------------------
+@media (prefers-reduced-motion: reduce) {
+  .dss-layout {
+    transition: none;
+  }
+}
+
+// ------------------------------------------------------------------
+// Forced Colors (Windows High Contrast Mode)
+// EXC-03 — System color keywords obrigatórios neste contexto.
+// Tokens CSS são ignorados pelo navegador em forced-colors mode.
+// ------------------------------------------------------------------
+@media (forced-colors: active) {
+  .dss-layout {
+    background-color: Canvas !important;
+    color: CanvasText;
+  }
+}
+
+// ------------------------------------------------------------------
+// Print
+// EXC-04 — Valores hardcoded aceitáveis para legibilidade monocromática.
+// Precedente: DssHeader, DssTab, DssStep (EXC-04 em todos).
+// ------------------------------------------------------------------
+@media print {
+  .dss-layout {
+    background-color: #fff !important;
+    color: #000 !important;
+  }
+}

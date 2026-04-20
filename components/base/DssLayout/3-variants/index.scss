@@ -1,0 +1,10 @@
+/* ==========================================================================
+   DssLayout - LAYER 3: VARIANTS (Orchestrator)
+
+   DssLayout não possui variantes visuais.
+
+   Justificativa: O layout raiz é estruturalmente único — sua configuração
+   visual (container mode, view string) é controlada via props repassadas
+   ao QLayout nativo. Não há variantes de aparência (dense, outlined, etc.)
+   pois DssLayout é um container de infraestrutura, não um componente visual.
+   ========================================================================== */

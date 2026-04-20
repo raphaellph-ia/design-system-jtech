@@ -10,7 +10,8 @@ Este documento define as diretrizes arquiteturais e de governança para a criaç
 - **Família:** Layout Global
 - **Nível de Composição:** Nível 4 (Composição de Terceiro Grau)
 - **Golden Reference:** `DssCard` (como container estrutural base)
-- **Golden Context:** `DssHeader` / `DssDrawer` (componentes de layout que interagem diretamente com ele)
+- **Golden Context:** `DssHeader` (componente de layout Nível 3 mais próximo; mesmo padrão de elemento raiz Quasar como raiz, dark mode, forced-colors e print idênticos — Selo v2.2)
+- **Referência Secundária:** `DssDrawer` (relevante para o padrão EXC-01 de elemento raiz Quasar, mas não usado como baseline de auditoria)
 - **Componente Quasar Base:** `QLayout`
 - **Dependência Direta:** `DssHeader`, `DssFooter`, `DssDrawer` (Nível 3)
 
@@ -42,6 +43,7 @@ O componente deve ser um wrapper direto do `<q-layout>`. O slot `default` é des
 
 O `DssLayout` deve utilizar os seguintes tokens:
 - **Cor de Fundo (Background):** O `QLayout` nativo não aplica cor de fundo. O `DssLayout` deve aplicar `--dss-surface-muted` (fundo rebaixado, `#f5f5f5` no light mode) como padrão, para que os `DssCard`s (que usam `--dss-surface-default`, `#ffffff`) tenham contraste visual. Em dark mode, o sistema de temas ajustará as variáveis automaticamente.
+- **Cor de Texto (Text):** `--dss-text-body` — cor de texto padrão herdada pelos filhos que não declaram cor própria. Aplicar em `2-composition/_base.scss` e repetir no bloco de dark mode de `4-output/_states.scss`.
 
 ## 5. Acessibilidade e Estados
 
@@ -59,10 +61,22 @@ O arquivo `DssLayout.example.vue` deve cobrir:
 
 ## 7. Exceções aos Gates v2.4
 
-### EXC-01: Uso de QPageContainer e QPage no Arquivo de Exemplo
-- **Regra Violada:** Gate de Composição v2.4 — Regra 1 (Proibição de componentes Quasar no template).
-- **Justificativa:** O `DssLayout` requer um container de página para demonstrar o cálculo de margens. Como `DssPageContainer` e `DssPage` ainda não foram construídos, é estritamente necessário usar os componentes nativos **apenas no arquivo `DssLayout.example.vue`** para fins de demonstração. O código fonte do componente (`DssLayout.ts.vue`) permanece 100% aderente aos gates. Isenção formal conforme DSS_IMPLEMENTATION_GUIDE.md.
+### EXC-01: QLayout como elemento raiz (Gate de Composição v2.4 — Regra 1)
+- **Regra Violada:** Gate de Composição v2.4 — Regra 1 (uso de primitivo Quasar como raiz).
+- **Justificativa:** `DssLayout` usa `<q-layout>` diretamente como raiz do template. O QLayout depende de `provide/inject` interno para comunicar offsets de header/footer/drawer aos componentes filhos via variáveis CSS. Envolver em `<div>` quebraria toda a matemática de layout. Precedente canônico: `DssHeader` (`<q-header>`), `DssDrawer` (`<q-drawer>`).
 
-### EXC-02: Uso de !important para sobrescrever background-color
+### EXC-02: Uso de `!important` para sobrescrever `background-color`
 - **Regra Violada:** Nenhuma (mas documentada para clareza).
 - **Justificativa:** Para garantir que `--dss-surface-muted` governe o fundo global da aplicação e suporte dark mode corretamente, é necessário `!important` no escopo do `.dss-layout`. Precedente: `DssHeader`, `DssFooter`, `DssDrawer`.
+
+### EXC-03: System color keywords em `forced-colors`
+- **Regra Violada:** Nenhuma (padrão canônico DSS).
+- **Justificativa:** `Canvas` e `CanvasText` são obrigatórios em `@media (forced-colors: active)`. Tokens CSS são ignorados pelo navegador neste modo. Padrão estabelecido em DssHeader, DssTab, DssStep.
+
+### EXC-04: Valores `#fff` / `#000` hardcoded em `print`
+- **Regra Violada:** Token First (valores hardcoded).
+- **Justificativa:** Valores aceitáveis para garantir legibilidade em impressão monocromática. Precedente canônico: DssHeader EXC-04, DssTab, DssStep.
+
+### EXC-05: Uso de `q-page-container` e `q-page` nativos no arquivo de exemplo
+- **Regra Violada:** Gate de Composição v2.4 — Regra 1 (somente no arquivo de exemplo).
+- **Justificativa:** `DssPageContainer` e `DssPage` são `compositionFuture`. O `DssLayout` requer um container de página para demonstrar o cálculo de offsets. Os nativos Quasar são usados **exclusivamente em `DssLayout.example.vue`** para fins de demonstração. O código fonte (`DssLayout.ts.vue`) permanece 100% aderente. Isenção formal conforme `DSS_IMPLEMENTATION_GUIDE.md`.

@@ -1,0 +1,16 @@
+// ==========================================================================
+// DssLayout — Layer 4: Brands
+// ==========================================================================
+//
+// DssLayout não possui tokens de brand próprios.
+//
+// Justificativa: O layout raiz é o canvas neutro sobre o qual os componentes
+// com identidade de marca flutuam. A brandabilidade é responsabilidade dos
+// componentes filhos (DssHeader, DssDrawer, DssToolbar) que reagem a
+// [data-brand="hub|water|waste"]. O DssLayout propositalmente não se colore
+// para não criar conflito com a camada de brand dos filhos.
+//
+// Para aplicar brand ao layout inteiro da aplicação, o consumidor deve
+// declarar data-brand no elemento raiz da aplicação (app.vue ou index.html),
+// não diretamente no DssLayout.
+// ==========================================================================

@@ -1,0 +1,32 @@
+// ==========================================================================
+// DssLayout — Layer 2: Composição Base
+// ==========================================================================
+//
+// Estilo base do container raiz de aplicação. Token único: cor de fundo.
+// Sem referências a variantes, brands ou estados adaptativos.
+//
+// EXC-01 — QLayout como elemento raiz (Gate de Composição v2.4 Regra 1):
+//   DssLayout usa <q-layout> diretamente como raiz. QLayout depende de
+//   provide/inject interno para comunicar offsets a filhos (QHeader, QDrawer,
+//   QPageContainer). Envolver em <div> quebraria essa comunicação.
+//   Precedente canônico: DssHeader (<q-header>) e DssDrawer (<q-drawer>).
+//
+// EXC-02 — Override de background-color com !important:
+//   O Quasar Framework pode aplicar estilos de background em .q-layout via
+//   suas folhas de estilo globais. Para garantir que --dss-surface-muted
+//   governe o fundo base da aplicação independentemente da configuração
+//   Quasar (incluindo dark mode via [data-theme="dark"]), usa-se !important.
+//   Precedente: DssHeader (--dss-surface-default !important), DssDrawer.
+// ==========================================================================
+
+/* EXC-02 — Override de background-color (garantia de governança DSS) */
+
+.dss-layout {
+  // ------------------------------------------------------------------
+  // Fundo base da aplicação
+  // --dss-surface-muted é o canvas sobre o qual os DssCards flutuam.
+  // No light mode: ~#f5f5f5. No dark mode: resolve automaticamente via tema.
+  // ------------------------------------------------------------------
+  background-color: var(--dss-surface-muted) !important;
+  color: var(--dss-text-body);
+}
