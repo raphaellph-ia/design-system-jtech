@@ -3,7 +3,7 @@
   "dssVersion": "2.2",
   "status": "sealed",
   "auditMode": "Auditoria DSS v2.2 — Aprovado",
-  "auditDate": "2026-04-16",
+  "auditDate": "2026-04-20",
 
   "goldenReference": "DssTab",
   "goldenReferenceJustification": "DssTab é o Golden Reference canônico para DssStep: ambos são elementos interativos de navegação selecionáveis dentro de um container pai (DssTabs / DssStepper). DssTab já recebeu Selo DSS v2.2 (Abr 2026) e compartilha o mesmo padrão arquitetural — wrapper sobre primitivo Quasar (QTab / QStep), com estados visuais (hover, focus, active, disabled), overlay ::after e dot/indicador nativo governado por tokens via EXC-01.",

@@ -12,28 +12,10 @@
    ========================================================================== */
 
 /* Layer 2: Composition */
-@use './2-composition/base' as composition;
+@use './2-composition' as composition;
 
 /* Layer 3: Variants */
 @use './3-variants' as variants;
 
 /* Layer 4: Output */
 @use './4-output' as output;
-
-/* ==========================================================================
-   ACCESSIBILITY ENHANCEMENTS (nível de orquestrador)
-   ========================================================================== */
-
-/* High contrast — garante legibilidade em alto contraste */
-@media (prefers-contrast: high) {
-  .dss-item-label {
-    color: currentColor;
-  }
-}
-
-/* Reduced motion — DssItemLabel não possui transições próprias */
-@media (prefers-reduced-motion: reduce) {
-  .dss-item-label {
-    transition: none;
-  }
-}

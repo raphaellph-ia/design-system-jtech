@@ -76,6 +76,14 @@ O `DssItemLabel` é um elemento de apresentação (`role="presentation"` ou `<di
 
 O componente não possui estados visuais próprios. Ele apenas reage à hierarquia tipográfica (ex: `header`, `caption`).
 
+### 6.1 Media Queries Adaptativas (Layer 4 — `4-output/_states.scss`)
+
+Todos os estados adaptativos pertencem **exclusivamente** a `4-output/_states.scss`. O orquestrador (`DssItemLabel.module.scss`) **nunca** deve conter CSS diretamente.
+
+- **`@media (prefers-contrast: more)`** — valor correto da especificação CSS. O valor `high` **não existe** e nunca dispara em nenhum navegador. Precedente: `DssStep/4-output/_states.scss`.
+- **`@media (prefers-reduced-motion: reduce)`** — bloco preventivo em `_states.scss`, não no orquestrador.
+- **`@media (forced-colors: active)`** — system color keywords obrigatórios (EXC-02).
+
 ---
 
 ## 7. SUBCOMPONENTES E COMPOSIÇÃO

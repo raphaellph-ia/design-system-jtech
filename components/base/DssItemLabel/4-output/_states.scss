@@ -48,6 +48,32 @@
 }
 
 /* ==========================================================================
+   HIGH CONTRAST (prefers-contrast: more)
+
+   Garante legibilidade em modo de alto contraste do sistema operacional.
+   Valor correto da especificação CSS: "more" (não "high").
+   ========================================================================== */
+
+@media (prefers-contrast: more) {
+  .dss-item-label {
+    color: currentColor;
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION (prefers-reduced-motion: reduce)
+
+   DssItemLabel não possui transições próprias na camada base.
+   Bloco preventivo para overrides futuros de variantes.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .dss-item-label {
+    transition: none;
+  }
+}
+
+/* ==========================================================================
    PRINT
    ========================================================================== */
 

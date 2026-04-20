@@ -1,6 +1,6 @@
 # DssStep — Documentação Normativa
 
-> **DSS v2.2 — Status: Pendente de auditoria**
+> **DSS v2.2 — Status: CONFORME — Selo DSS v2.2 concedido em 20 Abr 2026**
 >
 > Golden Reference: DssTab | Golden Context: DssTabs
 

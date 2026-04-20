@@ -200,7 +200,7 @@
     }
 
     @media (hover: hover) {
-      &:hover:not(.dss-step--disable .q-stepper__tab) {
+      &:hover {
         &::after {
           opacity: var(--dss-opacity-hover);
         }

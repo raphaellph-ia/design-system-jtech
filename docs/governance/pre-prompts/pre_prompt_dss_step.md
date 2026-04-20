@@ -5,7 +5,7 @@
 - **Família:** Navegação (Stepper)
 - **Nível de Composição:** Nível 1 (Independente)
 - **Golden Reference:** `DssTab` (para estados de seleção e interatividade)
-- **Golden Context:** `DssStepper` (container pai futuro, Nível 2)
+- **Golden Context:** `DssTabs` (selado v2.2, Abr 2026 — container de navegação mais próximo disponível; DssStepper é compositionFuture)
 - **Componente Quasar Base:** `QStep`
 - **Dependências Diretas:** `DssIcon` (interno ao Quasar)
 
@@ -47,11 +47,11 @@ O `DssStep` deve utilizar os seguintes tokens:
 - **Tipografia (Título):** `--dss-text-body`, `--dss-font-weight-medium`.
 - **Tipografia (Caption):** `--dss-text-subtle`, `--dss-font-size-sm`.
 - **Cores de Estado (Dot/Ícone):**
-  - Ativo: `--dss-brand-primary-500` (ou a brand ativa via `data-brand`).
-  - Concluído (`done`): `--dss-success-500`.
-  - Erro (`error`): `--dss-error-500`.
-  - Inativo: `--dss-surface-muted` ou `--dss-gray-300`.
-- **Conectores (Linhas):** `--dss-border-color-light`.
+  - Ativo: `--dss-action-primary` (ou a brand ativa via `[data-brand]`).
+  - Concluído (`done`): `--dss-feedback-success`.
+  - Erro (`error`): `--dss-feedback-error`.
+  - Inativo: `--dss-surface-muted` (dot) ou `--dss-text-subtle` (texto).
+- **Conectores (Linhas):** `--dss-gray-300` (light mode) / `--dss-gray-600` (dark mode).
 
 ## 5. Acessibilidade e Estados
 
