@@ -52,7 +52,7 @@ O `DssDrawer` deve utilizar os seguintes tokens:
 - **Elevação (Elevated):** `--dss-elevation-2` (sombra padrão para painéis laterais).
 - **Borda (Bordered):** `--dss-border-width-thin` solid `--dss-gray-200`. Se `side="left"`, aplica `border-right`. Se `side="right"`, aplica `border-left`.
 - **Cor de Fundo:** O `QDrawer` nativo aplica fundo branco. O `DssDrawer` deve garantir o uso de `--dss-surface-default` para suportar dark mode corretamente.
-- **Backdrop:** `--dss-opacity-backdrop` (0.75) para o fundo escuro quando em modo overlay/mobile.
+- **Backdrop:** `--dss-opacity-backdrop` (0.75) para o fundo escuro quando em modo overlay/mobile. **Token confirmado** no catálogo DSS_TOKEN_REFERENCE.md linha 569, documentado explicitamente para uso em "modal/dialog/drawer". Nenhuma reserva necessária.
 
 ## 5. Acessibilidade e Estados
 
@@ -70,6 +70,8 @@ O arquivo `DssDrawer.example.vue` deve cobrir:
 5. **Right Side:** Drawer posicionado à direita (`side="right"`).
 
 > **Nota para o Exemplo:** Como o `DssLayout` (Nível 4) ainda não existe, os exemplos do `DssDrawer` devem ser encapsulados em um `<q-layout view="hHh lpR fFf" style="min-height: 400px">` nativo temporariamente, para que o drawer renderize corretamente no Storybook/Playground.
+>
+> **Atenção:** O Exemplo 5 (`side="right"`) deve usar obrigatoriamente `view="hHh lpR fFf"` (uppercase `R`) — **não** `view="hHh lpr fFf"` (lowercase `r`). O `R` maiúsculo indica que o drawer direito ocupa a altura total entre header e footer. O `r` minúsculo posiciona o drawer abaixo do header, quebrando o layout visual esperado. (NC-01 da auditoria — corrigido neste pré-prompt.)
 
 ## 7. Exceções aos Gates v2.4
 
@@ -80,3 +82,22 @@ O arquivo `DssDrawer.example.vue` deve cobrir:
 ### EXC-02: Uso de !important para sobrescrever background-color
 - **Regra Violada:** Nenhuma (mas documentada para clareza).
 - **Justificativa:** Para garantir que `--dss-surface-default` governe o fundo e suporte dark mode corretamente, é necessário `!important` no escopo do `.dss-drawer`. Precedente: `DssHeader`, `DssFooter`.
+
+---
+
+## 8. Nota de Curadoria de Catálogo (GAP-02 da Auditoria)
+
+O token `--dss-surface-default` é usado por `DssDrawer`, `DssHeader`, `DssFooter` e `DssMenu` (todos selados), porém **não aparece no DSS_TOKEN_REFERENCE.md** (catálogo oficial de 903 tokens). Está documentado apenas no `DSS_IMPLEMENTATION_GUIDE.md` (linha 298: `#ffffff` light / `#262626` dark).
+
+**Decisão do Chat Estratégico:** O token é de facto estabelecido por múltiplos componentes selados. O uso em `DssDrawer` é correto e segue o precedente do Golden Context (`DssHeader`). A correção do catálogo é responsabilidade do mantenedor do `DSS_TOKEN_REFERENCE.md` — não é uma NC do componente. O Claude executor deve abrir um ticket/nota no `DSS_TOKEN_REFERENCE.md` ao selar o componente para rastrear este gap de curadoria.
+
+---
+
+## 9. Histórico
+
+| Data | Evento |
+|------|--------|
+| 2026-04-19 | Pré-prompt criado pelo Chat Estratégico (Manus) |
+| 2026-04-19 | Componente implementado pelo Claude |
+| 2026-04-19 | Auditoria DSS v2.5 executada — 1 NC não-bloqueante, 5 GAPs identificados |
+| 2026-04-19 | NC-01 corrigida no pré-prompt (view string do Exemplo 5); GAP-01 e GAP-02 documentados |
