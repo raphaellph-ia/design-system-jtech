@@ -44,4 +44,11 @@
   --dss-action-dark-hover: var(--dss-dark-hover);
   --dss-action-dark-deep: var(--dss-dark-deep);
   --dss-action-dark-focus: var(--dss-dark-focus);
+
+  /* Action Surfaces — fundo tintado a 8% por cor de ação */
+  --dss-action-primary-surface:   rgba(31, 134, 222, 0.08);   /* #1f86de 8% */
+  --dss-action-secondary-surface: rgba(38, 166, 154, 0.08);   /* #26a69a 8% */
+  --dss-action-tertiary-surface:  rgba(255, 102,   7, 0.08);  /* #ff6607 8% */
+  --dss-action-accent-surface:    rgba(180,  84, 196, 0.08);  /* #b454c4 8% */
+  --dss-action-dark-surface:      rgba( 69,  69,  69, 0.08);  /* #454545 8% */
 }

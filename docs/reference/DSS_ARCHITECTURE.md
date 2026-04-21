@@ -514,9 +514,9 @@ O DSS segue uma arquitetura clara de **separação de responsabilidades** para t
    └── Cada um com 9 níveis (50-900)
 
 3. SEMANTIC (tokens/semantic/)
-   ├── Actions (primary, secondary, accent + estados)
+   ├── Actions (primary, secondary, tertiary, accent, dark + estados + surfaces)
    ├── Text (body, subtle, muted, inverse, disabled)
-   ├── Surfaces (backgrounds)
+   ├── Surfaces (backgrounds) — 3 subfamílias: hierarquia (default/subtle/muted/overlay), estados (hover/active/selected/disabled), brand (brand-subtle/brand-light)
    ├── Borders
    ├── Feedback (success, error, warning, info)
    ├── Spacing (0-16)
@@ -624,6 +624,13 @@ Define ações com sistema de prioridade:
 --dss-action-primary-hover: #1976D2;
 --dss-action-primary-deep: #0D47A1;
 --dss-action-primary-disable: #90CAF9;
+
+/* Surfaces — fundo tintado a 8% (mesmo padrão para todas as 5 cores) */
+--dss-action-primary-surface:   rgba(31, 134, 222, 0.08);
+--dss-action-secondary-surface: rgba(38, 166, 154, 0.08);
+--dss-action-tertiary-surface:  rgba(255, 102,   7, 0.08);
+--dss-action-accent-surface:    rgba(180,  84, 196, 0.08);
+--dss-action-dark-surface:      rgba( 69,  69,  69, 0.08);
 ```
 
 #### 4. `tokens/semantic/accessibility/*.scss`
@@ -875,9 +882,15 @@ Remapeia tokens semânticos para dark mode usando exclusivamente tokens DSS:
 
 ```scss
 [data-theme="dark"] {
-  /* Surfaces - inversão */
-  --dss-surface-default: var(--dss-gray-800);      /* #262626 */
-  --dss-surface-subtle: var(--dss-gray-700);       /* #525252 */
+  /* Surfaces - inversão (8 tokens com override; brand-subtle/brand-light sem override) */
+  --dss-surface-default:  var(--dss-gray-800);              /* #262626 */
+  --dss-surface-subtle:   var(--dss-gray-700);              /* #525252 */
+  --dss-surface-muted:    var(--dss-gray-600);              /* #737373 */
+  --dss-surface-disabled: var(--dss-gray-700);              /* #525252 */
+  --dss-surface-overlay:  rgba(255, 255, 255, 0.05);
+  --dss-surface-hover:    rgba(255, 255, 255, 0.08);
+  --dss-surface-active:   rgba(255, 255, 255, 0.12);
+  --dss-surface-selected: rgba(31, 134, 222, 0.24);         /* primary 24% */
 
   /* Text - inversão */
   --dss-text-body: var(--dss-gray-200);            /* #f5f5f5 */

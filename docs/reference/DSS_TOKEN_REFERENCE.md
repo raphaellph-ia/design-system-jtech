@@ -74,14 +74,16 @@ Os tokens DSS são **genéricos e reutilizáveis**. Componentes escolhem livreme
 - [3.3 Tertiary Actions (6 tokens)](#33-tertiary-actions)
 - [3.4 Accent Actions (6 tokens)](#34-accent-actions)
 - [3.5 Dark Actions (6 tokens)](#35-dark-actions)
+- [3.6 Action Surfaces (5 tokens)](#36-action-surfaces)
 
 ### 4. Feedback
 - [4.1 Success (5 tokens)](#41-success)
 - [4.2 Error (5 tokens)](#42-error)
 - [4.3 Warning (5 tokens)](#43-warning)
 - [4.4 Info (5 tokens)](#44-info)
-- [4.5 Surfaces (4 tokens)](#45-surfaces)
-- [4.6 Superfícies e Textos de Componentes (8 tokens)](#46-superfícies-e-textos-de-componentes)
+- [4.5 Feedback Surfaces (4 tokens)](#45-feedback-surfaces)
+- [4.6 Textos de Componentes (6 tokens)](#46-textos-de-componentes)
+- [4.7 Surface Hierarchy (12 tokens)](#47-surface-hierarchy)
 
 ### 5. Motion e Animação
 - [5.1 Durações Base (10 tokens)](#51-durações-base)
@@ -674,6 +676,22 @@ Cores para ações primárias, secundárias, terciárias e de destaque.
 | `--dss-action-dark-deep` | `var(--dss-dark-deep)` | Ação escura profunda |
 | `--dss-action-dark-focus` | `var(--dss-dark-focus)` | Ação escura foco |
 
+## 3.6 Action Surfaces
+
+Fundos tintados a 8% de opacidade por cor de ação. Definidos em `tokens/semantic/_actions.scss`. Sem override de dark mode — a opacidade baixa garante legibilidade em ambos os modos.
+
+Classe utilitária correspondente: `.dss-bg-primary`, `.dss-bg-secondary`, `.dss-bg-tertiary`, `.dss-bg-accent`, `.dss-bg-dark` (via `utils/_helpers.scss`).
+
+**Total: 5 tokens**
+
+| Token | Valor | Uso típico |
+|-------|-------|------------|
+| `--dss-action-primary-surface` | `rgba(31, 134, 222, 0.08)` | Fundo de card, seção ou badge com contexto primary |
+| `--dss-action-secondary-surface` | `rgba(38, 166, 154, 0.08)` | Fundo com contexto secondary |
+| `--dss-action-tertiary-surface` | `rgba(255, 102, 7, 0.08)` | Fundo com contexto tertiary |
+| `--dss-action-accent-surface` | `rgba(180, 84, 196, 0.08)` | Fundo com contexto accent |
+| `--dss-action-dark-surface` | `rgba(69, 69, 69, 0.08)` | Fundo com contexto dark/neutro |
+
 ---
 
 # 4. Feedback
@@ -728,7 +746,7 @@ Cores para estados e alertas (sucesso, erro, aviso, informação).
 | `--dss-feedback-info-hover` | `var(--dss-info-hover)` | Feedback de informação hover |
 | `--dss-feedback-info-deep` | `var(--dss-info-deep)` | Feedback de informação profundo |
 
-## 4.5 Surfaces
+## 4.5 Feedback Surfaces
 
 **Total: 4 tokens**
 
@@ -739,22 +757,65 @@ Cores para estados e alertas (sucesso, erro, aviso, informação).
 | `--dss-feedback-warning-surface` | rgba(250, 189, 20, 0.1) | Fundo para alertas de aviso |
 | `--dss-feedback-info-surface` | rgba(12, 196, 233, 0.1) | Fundo para alertas de informação |
 
-## 4.6 Superfícies e Textos de Componentes
+## 4.6 Textos de Componentes
 
-Tokens de superfície e texto usados por componentes de formulário interativos e de navegação estrutural. Presentes em `DSS/src/index.css` (light mode: linhas 231–232; dark mode: linhas 603–604).
+Tokens de cor de texto usados por componentes de formulário interativos e de navegação estrutural. Definidos em `tokens/semantic/_text.scss`; sobrescritos em dark mode em `tokens/themes/dark/_colors.scss`.
 
-**Total: 8 tokens**
+**Total: 6 tokens**
+
+> **Nota:** `--dss-surface-muted` e `--dss-surface-disabled` foram movidos para a seção [4.7 Surface Hierarchy](#47-surface-hierarchy).
 
 | Token | Valor (light) | Valor (dark) | Uso |
 |-------|---------------|--------------|-----|
-| `--dss-surface-muted` | — | — | Fundo do track inativo (trilha não selecionada) |
-| `--dss-surface-disabled` | — | — | Fundo de superfícies no estado desabilitado |
 | `--dss-text-hint` | — | — | Cor do texto de hint / dica abaixo de controles |
 | `--dss-text-inverse` | — | — | Cor de texto sobre fundos escuros (ex.: label tooltip do slider) |
 | `--dss-text-secondary` | — | — | Cor de texto secundário (menor ênfase visual) |
 | `--dss-text-body` | `var(--dss-dark)` | — | Texto principal — corpo e itens atuais de navegação (ex.: breadcrumb ativo, item selecionado) |
 | `--dss-text-subtle` | `var(--dss-dark-light)` | — | Texto secundário — links de navegação, labels de menor ênfase visual. Suporta dark mode via cascata. |
-| `--dss-text-disabled` | `var(--dss-gray-400)` (#d4d4d4) | `var(--dss-gray-600)` (#737373) | Cor de texto em estado desabilitado. Semântica precisa de estado — distinto de `--dss-text-subtle` (texto ativo de menor ênfase) e `--dss-text-hint` (placeholder). Definido em `tokens/semantic/_text.scss`; sobrescrito em dark mode em `tokens/themes/dark/_colors.scss`. Usado em: `DssInput`, `DssSelect`, `DssTextarea`, `DssBreadcrumbs`, `DssFile`, `_quasar-overrides.scss`, `_helpers.scss`, `_mixins.scss`. |
+| `--dss-text-disabled` | `var(--dss-gray-400)` (#d4d4d4) | `var(--dss-gray-600)` (#737373) | Cor de texto em estado desabilitado. Semântica precisa de estado — distinto de `--dss-text-subtle` (texto ativo de menor ênfase) e `--dss-text-hint` (placeholder). Usado em: `DssInput`, `DssSelect`, `DssTextarea`, `DssBreadcrumbs`, `DssFile`, `_quasar-overrides.scss`, `_helpers.scss`, `_mixins.scss`. |
+
+## 4.7 Surface Hierarchy
+
+Tokens de fundo e container que formam a hierarquia visual de superfícies do DSS. Definidos em `tokens/semantic/_surfaces.scss`; sobrescritos em dark mode em `tokens/themes/dark/_colors.scss`.
+
+**Total: 10 tokens**
+
+> **Nota:** O token `--dss-surface-raised` **não existe** no catálogo DSS. O token correto para elevação suave é `--dss-surface-subtle`.
+
+### Hierarquia de Superfície (4 tokens)
+
+Definem os níveis de elevação visual de fundos e containers.
+
+| Token | Valor (light) | Valor (dark) | Uso |
+|-------|---------------|--------------|-----|
+| `--dss-surface-default` | `var(--dss-gray-50)` — #ffffff | `var(--dss-gray-800)` — #262626 | Fundo principal de containers (DssCard, DssHeader, DssDrawer, DssStepper, DssLayout, DssMenu, DssFooter e outros) |
+| `--dss-surface-subtle` | `var(--dss-gray-100)` — #fafafa | `var(--dss-gray-700)` — #525252 | Elevação suave — superfícies levemente elevadas sobre o default |
+| `--dss-surface-muted` | `var(--dss-gray-200)` — #f5f5f5 | `var(--dss-gray-600)` — #737373 | Áreas rebaixadas, tracks inativos, fundos de menor destaque |
+| `--dss-surface-overlay` | `rgba(0, 0, 0, 0.5)` | `rgba(255, 255, 255, 0.05)` | Overlay semitransparente para modais, drawers e backdrops |
+
+### Estados de Superfície (4 tokens)
+
+Modificadores de interação sobrepostos à superfície base via composição de cor.
+
+| Token | Valor (light) | Valor (dark) | Uso |
+|-------|---------------|--------------|-----|
+| `--dss-surface-hover` | `rgba(0, 0, 0, 0.04)` | `rgba(255, 255, 255, 0.08)` | Overlay de hover sobre itens interativos |
+| `--dss-surface-active` | `rgba(0, 0, 0, 0.08)` | `rgba(255, 255, 255, 0.12)` | Overlay de pressionado / active |
+| `--dss-surface-selected` | `rgba(31, 134, 222, 0.12)` | `rgba(31, 134, 222, 0.24)` | Fundo de item selecionado (usa primary com opacidade) |
+| `--dss-surface-disabled` | `var(--dss-gray-200)` — #f5f5f5 | `var(--dss-gray-700)` — #525252 | Fundo de superfícies em estado desabilitado |
+
+### Surface Brand (4 tokens)
+
+Superfícies com tint de marca — sem override de dark mode (a marca não inverte). O fallback em `:root` é `transparent`; os valores cromáticos só existem dentro de `[data-brand]`, definidos por `tokens/brand/_hub.scss`, `_water.scss` e `_waste.scss`.
+
+> ⚠️ **Estes tokens só produzem cor dentro de um contexto `[data-brand]`.** Fora desse contexto, o resultado é `transparent` (sem tint). Não use `--dss-surface-brand-*` em componentes que possam ser renderizados sem ancestral `[data-brand]`.
+
+| Token | Valor `:root` | Com `[data-brand="hub"]` | Com `[data-brand="water"]` | Com `[data-brand="waste"]` |
+|-------|---------------|--------------------------|----------------------------|----------------------------|
+| `--dss-surface-brand-subtle` | `transparent` | `rgba(239,122,17,0.08)` | `rgba(14,136,228,0.08)` | `rgba(11,129,84,0.08)` |
+| `--dss-surface-brand-light` | `transparent` | `rgba(239,122,17,0.12)` | `rgba(14,136,228,0.12)` | `rgba(11,129,84,0.12)` |
+| `--dss-surface-brand-medium` | `transparent` | `rgba(239,122,17,0.16)` | `rgba(14,136,228,0.16)` | `rgba(11,129,84,0.16)` |
+| `--dss-surface-brand-strong` | `transparent` | `rgba(239,122,17,0.24)` | `rgba(14,136,228,0.24)` | `rgba(11,129,84,0.24)` |
 
 ---
 

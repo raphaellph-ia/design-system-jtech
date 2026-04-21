@@ -1,0 +1,117 @@
+{
+  "component": "DssStepper",
+  "dssVersion": "2.2",
+  "status": "sealed",
+  "sealVersion": "v2.2",
+  "sealDate": "2026-04-20",
+  "auditMode": "Auditoria DSS v2.5 — Aprovado",
+  "auditDate": "2026-04-20",
+
+  "goldenReference": "DssTabs",
+  "goldenReferenceJustification": "DssTabs é o Golden Reference canônico para DssStepper: ambos são containers de navegação sequencial que orquestram componentes filhos (DssTab / DssStep) via v-model e propalam [data-brand] para coloração automática dos filhos. DssTabs recebeu Selo DSS v2.2 (Abr 2026) e usa o mesmo padrão arquitetural de <div> wrapper sobre primitivo Quasar com data-brand e inheritAttrs:false.",
+
+  "goldenContext": "DssStep",
+  "goldenContextJustification": "DssStep é o Golden Context mais direto para DssStepper: é o componente filho obrigatório do DssStepper, possui Selo DSS v2.2 (Abr 2026) e estabelece o padrão de seletores Quasar internos (.q-stepper__*) como EXC-01. O DssStepper deve parear com DssStep em tokens de superfície, border-radius e connector line.",
+
+  "category": "Container de Navegação — Stepper/Wizard",
+  "phase": 2,
+  "phaseDescription": "Fase 2 — Nível 2 (Composição de Primeiro Grau). Container que orquestra múltiplos DssStep filhos. Gerencia o estado de navegação (v-model), fornece layout horizontal/vertical e delega renderização de cada passo ao DssStep.",
+  "classification": "Container de navegação não-interativo — wrapper DSS governado sobre QStepper",
+
+  "hasReservations": false,
+
+  "subcomponents": [],
+  "compositionRequirements": ["DssStep"],
+  "compositionFuture": [],
+  "compositionRecommendations": [
+    "DssStep (obrigatório como filho)",
+    "q-stepper-navigation (nativo Quasar para botões de navegação no painel)"
+  ],
+  "compositionNote": "DssStepper aceita exclusivamente DssStep em seu slot default. O uso de <q-step> diretamente é violação arquitetural. O q-stepper-navigation é componente auxiliar Quasar para navegação entre passos — aceito no slot default do DssStep.",
+
+  "props": {
+    "DssStepper": ["modelValue", "vertical", "headerNav", "animated", "flat", "bordered", "brand", "ariaLabel"],
+    "blocked": {
+      "dark": "Modo escuro governado por [data-theme='dark'] via tokens CSS.",
+      "color": "Cores dos passos governadas por tokens DSS via --dss-action-primary no DssStep.",
+      "active-color": "Cor ativa governada pelo DssStep via --dss-action-primary.",
+      "done-color": "Cor de conclusão governada pelo DssStep via --dss-feedback-success.",
+      "error-color": "Cor de erro governada pelo DssStep via --dss-feedback-error.",
+      "inactive-color": "Cor inativa governada pelo DssStep via --dss-text-subtle."
+    }
+  },
+
+  "statesApplicable": ["dark-mode"],
+  "statesNotApplicable": ["hover", "focus", "active", "disabled", "loading", "error", "indeterminate"],
+  "statesNotApplicableJustification": "DssStepper é container estrutural não-interativo. hover/focus/active/disabled pertencem aos DssStep filhos. loading/error são responsabilidade do consumidor via props done/error no DssStep. indeterminate não se aplica a fluxos sequenciais de passos.",
+
+  "accessibility": {
+    "role": "Nao aplicado diretamente — QStepper nativo gerencia roles (tablist para header, tabpanel para conteúdo). DssStepper propaga aria-label ao q-stepper.",
+    "wcagLevel": "2.1 AA",
+    "touchTarget": "Nao aplicavel — DssStepper é container não-interativo. Touch targets são responsabilidade dos DssStep filhos.",
+    "keyboardNavigation": "Gerenciado nativamente pelo QStepper (setas entre passos quando header-nav=true). Nenhum handler Vue adicional.",
+    "aria": "aria-label propagado ao q-stepper via prop. [data-brand] no root para cascade CSS semântico."
+  },
+
+  "gateExceptions": {
+    "compositionGateV24": {
+      "rule1": "Uso de <q-stepper> diretamente no template — wrapper sobre primitivo Quasar sem equivalente DSS nativo para QStepper. O QStepper gerencia state management e provide/inject de estado ativo para os DssStep filhos. Precedente canônico: DssTabs (<q-tabs>), DssStep (<q-step>), DssHeader (<q-header>).",
+      "cssSelectors": "Uso de .dss-stepper .q-stepper, .dss-stepper .q-stepper__header, etc. — única forma de governar CSS de terceiros com tokens DSS na estrutura do container"
+    }
+  },
+
+  "antiPatterns": [
+    "Usar <q-step> diretamente dentro do DssStepper — usar DssStep",
+    "Aplicar cor de estado via props color/active-color — usar [data-brand] no DssStepper",
+    "Aninhar DssStepper dentro de outro DssStepper",
+    "Usar DssStepper como lista de itens estáticos sem navegação — usar DssList ou DssCard",
+    "Sobrescrever estilos internos do DssStep via CSS do DssStepper — cada componente gerencia seu próprio escopo"
+  ],
+
+  "exceptions": [
+    {
+      "id": "EXC-01a",
+      "description": "Uso de <q-stepper> diretamente no template",
+      "location": "1-structure/DssStepper.ts.vue",
+      "gatesViolated": ["Gate de Composição v2.4 — Regra 1 (template)"],
+      "justification": "DssStepper usa <q-stepper> diretamente como wrapper interno porque o QStepper é o primitivo Quasar que gerencia state management, keyboard navigation e provide/inject de estado ativo para os DssStep filhos. Não existe equivalente DSS nativo para QStepper. Precedente canônico: DssTabs (Golden Reference) usa <q-tabs> da mesma forma."
+    },
+    {
+      "id": "EXC-01b",
+      "description": "Seletores CSS que referenciam classes internas do QStepper",
+      "selectors": [
+        ".dss-stepper .q-stepper",
+        ".dss-stepper .q-stepper__header",
+        ".dss-stepper .q-stepper__panel",
+        ".dss-stepper .q-stepper--vertical .q-stepper__step-inner::before",
+        ".dss-stepper--bordered .q-stepper",
+        ".dss-stepper .q-stepper--bordered"
+      ],
+      "location": "2-composition/_base.scss + 3-variants/_variants.scss + 4-output/_states.scss",
+      "gatesViolated": ["Gate de Composição v2.4 — Regra 1 (seletores CSS)"],
+      "justification": "O QStepper renderiza estrutura DOM interna complexa com classes hardcoded. Seletores compostos (.dss-stepper .q-stepper__*) são a única forma de aplicar tokens DSS sobre CSS de terceiros. Precedente canônico: DssStep (_base.scss) com .dss-step .q-stepper__* — mesma estratégia, um nível acima."
+    },
+    {
+      "id": "EXC-02",
+      "value": "Canvas, CanvasText, ButtonText",
+      "location": "4-output/_states.scss — bloco @media (forced-colors: active)",
+      "justification": "System color keywords obrigatórios em forced-colors mode. Tokens CSS são ignorados pelo navegador neste modo. Padrão canônico DSS estabelecido em DssHeader, DssDrawer, DssLayout."
+    },
+    {
+      "id": "EXC-03",
+      "value": "#fff !important / #000 !important em print",
+      "location": "4-output/_states.scss — bloco @media print",
+      "justification": "Valores hardcoded aceitáveis para garantir legibilidade em impressão monocromática. Precedente canônico: DssStep (Golden Context) EXC-04, DssHeader, DssTab."
+    }
+  ],
+
+  "tokensUsed": [
+    "--dss-surface-default",
+    "--dss-text-body",
+    "--dss-radius-md",
+    "--dss-gray-200",
+    "--dss-gray-300",
+    "--dss-gray-600",
+    "--dss-border-width-thin"
+  ]
+}

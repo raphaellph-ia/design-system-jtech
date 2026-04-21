@@ -1,0 +1,22 @@
+// ==========================================================================
+// DssStepper — ORCHESTRADOR PRINCIPAL
+// ==========================================================================
+//
+// Importa as 4 camadas na ordem obrigatória: L2 → L3 → L4
+// Esta ordem garante a cascata CSS correta (base → variantes → output).
+//
+// Tokens utilizados:
+//   Layer 2 (base):    --dss-surface-default, --dss-text-body,
+//                      --dss-radius-md, --dss-gray-300
+//
+//   Layer 3 (variants): --dss-border-width-thin, --dss-gray-200
+//
+//   Layer 4 (states):   --dss-gray-600,
+//                       #fff !important, #000 !important (EXC-03 print)
+//
+//   Layer 4 (brands):   Sem tokens de container — cascade via DssStep
+// ==========================================================================
+
+@use './2-composition/index' as composition;
+@use './3-variants/index' as variants;
+@use './4-output/index' as output;

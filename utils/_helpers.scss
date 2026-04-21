@@ -141,6 +141,13 @@
     &-error { background-color: var(--dss-feedback-error-surface); }
     &-warning { background-color: var(--dss-feedback-warning-surface); }
     &-info { background-color: var(--dss-feedback-info-surface); }
+
+    /* Action surfaces */
+    &-primary   { background-color: var(--dss-action-primary-surface); }
+    &-secondary { background-color: var(--dss-action-secondary-surface); }
+    &-tertiary  { background-color: var(--dss-action-tertiary-surface); }
+    &-accent    { background-color: var(--dss-action-accent-surface); }
+    &-dark      { background-color: var(--dss-action-dark-surface); }
   }
 }
 

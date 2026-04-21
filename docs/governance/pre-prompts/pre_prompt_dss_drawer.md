@@ -85,11 +85,11 @@ O arquivo `DssDrawer.example.vue` deve cobrir:
 
 ---
 
-## 8. Nota de Curadoria de Catálogo (GAP-02 da Auditoria)
+## 8. Nota de Curadoria de Catálogo (GAP-02 da Auditoria — ✅ RESOLVIDO)
 
-O token `--dss-surface-default` é usado por `DssDrawer`, `DssHeader`, `DssFooter` e `DssMenu` (todos selados), porém **não aparece no DSS_TOKEN_REFERENCE.md** (catálogo oficial de 903 tokens). Está documentado apenas no `DSS_IMPLEMENTATION_GUIDE.md` (linha 298: `#ffffff` light / `#262626` dark).
+O token `--dss-surface-default` e toda a família `--dss-surface-*` foram adicionados ao `DSS_TOKEN_REFERENCE.md` na **Seção 4.7 — Surface Hierarchy** (Abr 2026), cobrindo 12 tokens em 3 subfamílias (Hierarchy, States, Brand).
 
-**Decisão do Chat Estratégico:** O token é de facto estabelecido por múltiplos componentes selados. O uso em `DssDrawer` é correto e segue o precedente do Golden Context (`DssHeader`). A correção do catálogo é responsabilidade do mantenedor do `DSS_TOKEN_REFERENCE.md` — não é uma NC do componente. O Claude executor deve abrir um ticket/nota no `DSS_TOKEN_REFERENCE.md` ao selar o componente para rastrear este gap de curadoria.
+**Status:** ✅ Gap resolvido. O catálogo oficial agora documenta `--dss-surface-default`, `--dss-surface-subtle`, `--dss-surface-muted`, `--dss-surface-overlay`, os 4 tokens de estado (`hover`, `active`, `selected`, `disabled`) e os 4 tokens de brand (`brand-subtle`, `brand-light`, `brand-medium`, `brand-strong`). Nenhuma ação adicional necessária para novos componentes que usem esses tokens.
 
 ---
 

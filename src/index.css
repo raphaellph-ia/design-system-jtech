@@ -180,6 +180,13 @@
     --dss-action-dark-deep: var(--dss-dark-deep);
     --dss-action-dark-focus: var(--dss-dark-focus);
 
+    /* Action Surfaces */
+    --dss-action-primary-surface:   rgba(31, 134, 222, 0.08);
+    --dss-action-secondary-surface: rgba(38, 166, 154, 0.08);
+    --dss-action-tertiary-surface:  rgba(255, 102,   7, 0.08);
+    --dss-action-accent-surface:    rgba(180,  84, 196, 0.08);
+    --dss-action-dark-surface:      rgba( 69,  69,  69, 0.08);
+
     /* ===========================================
        5. TOKENS DE FEEDBACK
        =========================================== */
@@ -222,8 +229,10 @@
     --dss-surface-active: rgba(0, 0, 0, 0.08);
     --dss-surface-selected: rgba(31, 134, 222, 0.12);
     --dss-surface-disabled: var(--dss-gray-200);
-    --dss-surface-brand-subtle: rgba(245, 145, 26, 0.08);
-    --dss-surface-brand-light: rgba(245, 145, 26, 0.12);
+    --dss-surface-brand-subtle: transparent;
+    --dss-surface-brand-light: transparent;
+    --dss-surface-brand-medium: transparent;
+    --dss-surface-brand-strong: transparent;
 
     /* ===========================================
        7. TOKENS DE TEXTO

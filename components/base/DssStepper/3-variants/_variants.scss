@@ -1,0 +1,31 @@
+// ==========================================================================
+// DssStepper — Layer 3: Variantes Visuais
+// ==========================================================================
+//
+// Variantes de apresentação do container.
+//
+// Nota: O DssStepper não possui variantes de densidade (dense).
+// Compactação dos passos individuais é responsabilidade do DssStep.
+//
+// EXC-01 — seletores Quasar (Gate de Composição v2.4 exception):
+//   Sobrescrita das classes Quasar de variante com tokens DSS.
+// ==========================================================================
+
+/* EXC-01 — sobrescrita seletores Quasar com tokens DSS */
+
+// ------------------------------------------------------------------
+// Variante bordered
+// Quasar aplica .q-stepper--bordered com border: 1px solid rgba(0,0,0,.12).
+// DSS substitui com tokens semânticos para suporte correto a dark mode.
+// ------------------------------------------------------------------
+.dss-stepper--bordered .q-stepper,
+.dss-stepper .q-stepper--bordered {
+  border: var(--dss-border-width-thin) solid var(--dss-gray-200) !important;
+}
+
+// ------------------------------------------------------------------
+// Variante flat
+// QStepper com flat=true remove box-shadow nativamente via Quasar.
+// Nenhum override adicional necessário — Quasar gerencia corretamente.
+// ------------------------------------------------------------------
+// (sem regras CSS adicionais — Quasar .q-stepper--flat é suficiente)

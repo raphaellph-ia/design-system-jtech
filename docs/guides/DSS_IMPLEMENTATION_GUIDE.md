@@ -295,10 +295,19 @@ window.matchMedia('(prefers-color-scheme: dark)')
 
 | Token | Light | Dark |
 |-------|-------|------|
-| `--dss-surface-default` | #ffffff (branco) | #262626 (gray-800) |
+| `--dss-surface-default` | #ffffff (gray-50) | #262626 (gray-800) |
+| `--dss-surface-subtle` | #fafafa (gray-100) | #525252 (gray-700) |
+| `--dss-surface-muted` | #f5f5f5 (gray-200) | #737373 (gray-600) |
+| `--dss-surface-disabled` | #f5f5f5 (gray-200) | #525252 (gray-700) |
+| `--dss-surface-overlay` | rgba(0,0,0,0.5) | rgba(255,255,255,0.05) |
+| `--dss-surface-hover` | rgba(0,0,0,0.04) | rgba(255,255,255,0.08) |
+| `--dss-surface-active` | rgba(0,0,0,0.08) | rgba(255,255,255,0.12) |
+| `--dss-surface-selected` | rgba(31,134,222,0.12) | rgba(31,134,222,0.24) |
 | `--dss-text-body` | #454545 (dark) | #f5f5f5 (gray-200) |
 | `--dss-action-primary` | #1f86de (primary) | #86c0f3 (primary-light) |
 | `--dss-border-default` | #e5e5e5 (gray-300) | #737373 (gray-600) |
+
+> `--dss-surface-brand-subtle` e `--dss-surface-brand-light` não têm override de dark mode — a marca não inverte.
 
 **Todos os tokens semânticos** foram remapeados para dark mode.
 
@@ -477,6 +486,14 @@ export default {
     cursor: not-allowed;
   }
 }
+
+// Surface: fundo tintado a 8% — disponível para todas as cores de ação
+.card--primary   { background-color: var(--dss-action-primary-surface); }
+.card--secondary { background-color: var(--dss-action-secondary-surface); }
+.card--tertiary  { background-color: var(--dss-action-tertiary-surface); }
+.card--accent    { background-color: var(--dss-action-accent-surface); }
+// Ou via classe utilitária: .dss-bg-primary / .dss-bg-secondary / .dss-bg-tertiary / .dss-bg-accent / .dss-bg-dark
+}
 ```
 
 #### Tokens de Feedback
@@ -514,18 +531,35 @@ export default {
 ```
 
 #### Tokens de Superfície
+
+A família `--dss-surface-*` tem 10 tokens organizados em 3 subfamílias. Definidos em `tokens/semantic/_surfaces.scss`; sobrescritos em dark mode via `[data-theme="dark"]`.
+
+> ⚠️ `--dss-surface-raised` **não existe**. Use `--dss-surface-subtle` para elevação suave.
+
+**Hierarquia de superfície** — níveis de elevação visual:
 ```scss
-.card {
-  background-color: var(--dss-surface-default);  // Fundo padrão
+background-color: var(--dss-surface-default);  // Fundo principal — branco / gray-800
+background-color: var(--dss-surface-subtle);   // Elevação suave — gray-100 / gray-700
+background-color: var(--dss-surface-muted);    // Área rebaixada — gray-200 / gray-600
+background-color: var(--dss-surface-overlay);  // Backdrop de modais e drawers
+```
 
-  &:hover {
-    background-color: var(--dss-surface-hover);  // Fundo hover
-  }
+**Estados de superfície** — overlays compostos sobre a superfície base:
+```scss
+.item {
+  background-color: var(--dss-surface-default);
 
-  &.selected {
-    background-color: var(--dss-surface-selected); // Fundo selecionado
-  }
+  &:hover    { background-color: var(--dss-surface-hover);    } // rgba(0,0,0,0.04)
+  &:active   { background-color: var(--dss-surface-active);   } // rgba(0,0,0,0.08)
+  &.selected { background-color: var(--dss-surface-selected); } // primary 12%
+  &:disabled { background-color: var(--dss-surface-disabled); } // gray-200 / gray-700
 }
+```
+
+**Surface Brand** — fundos com tint de marca (sem override em dark mode):
+```scss
+background-color: var(--dss-surface-brand-subtle); // Hub 8% opacidade
+background-color: var(--dss-surface-brand-light);  // Hub 12% opacidade
 ```
 
 ### Espaçamento

@@ -1,0 +1,74 @@
+// ==========================================================================
+// DssStepper — Layer 4: Estados Adaptativos
+// ==========================================================================
+//
+// Dark mode, prefers-contrast, forced-colors, reduced-motion, print.
+// DssStepper é container não-interativo — sem estados de interação próprios.
+//
+// EXC-02 — forced-colors: system color keywords obrigatórios
+//   (tokens CSS são ignorados pelo navegador em forced-colors mode).
+// EXC-03 — print: valores hardcoded para impressão monocromática.
+// ==========================================================================
+
+// ------------------------------------------------------------------
+// Dark mode
+// ------------------------------------------------------------------
+[data-theme='dark'] .dss-stepper .q-stepper {
+  /* EXC-01 — seletores Quasar (Gate de Composição v2.4 exception) */
+
+  // Tokens adaptam-se automaticamente ao sistema de temas DSS.
+  // --dss-surface-default resolve para superfície escura em dark mode.
+  background-color: var(--dss-surface-default);
+  color: var(--dss-text-body);
+}
+
+// Borda em dark mode com tone muted
+[data-theme='dark'] .dss-stepper--bordered .q-stepper,
+[data-theme='dark'] .dss-stepper .q-stepper--bordered {
+  border-color: var(--dss-gray-600) !important;
+}
+
+// ------------------------------------------------------------------
+// High Contrast (prefers-contrast: more)
+// DssStepper não possui bordas ou sombras próprias que necessitem
+// ajuste explícito — os filhos DssStep gerenciam alto contraste via
+// seus próprios seletores em 4-output/_states.scss.
+//
+// Nenhuma regra CSS é emitida intencionalmente para o container.
+// ------------------------------------------------------------------
+
+// ------------------------------------------------------------------
+// Reduced Motion
+// DssStepper não aplica transições próprias. Bloco preventivo.
+// ------------------------------------------------------------------
+@media (prefers-reduced-motion: reduce) {
+  .dss-stepper .q-stepper {
+    transition: none;
+  }
+}
+
+// ------------------------------------------------------------------
+// Forced Colors (Windows High Contrast Mode)
+// EXC-02 — System color keywords obrigatórios neste contexto.
+// Tokens CSS são ignorados pelo navegador em forced-colors mode.
+// ------------------------------------------------------------------
+@media (forced-colors: active) {
+  .dss-stepper .q-stepper {
+    background-color: Canvas !important;
+    color: CanvasText;
+    border-color: ButtonText;
+  }
+}
+
+// ------------------------------------------------------------------
+// Print
+// EXC-03 — Valores hardcoded aceitáveis para legibilidade monocromática.
+// Precedente: DssStep (Golden Context), DssTab, DssHeader.
+// ------------------------------------------------------------------
+@media print {
+  .dss-stepper .q-stepper {
+    background-color: #fff !important;
+    color: #000 !important;
+    border-color: #000 !important;
+  }
+}

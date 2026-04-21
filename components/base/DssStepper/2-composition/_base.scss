@@ -1,0 +1,59 @@
+// ==========================================================================
+// DssStepper — Layer 2: Composição Base
+// ==========================================================================
+//
+// Estilos base do container de stepper. Tokens genéricos apenas.
+// Sem referências a variantes, brands ou estados adaptativos.
+//
+// EXC-01 — Gate de Composição v2.4 Regra 1:
+//   O componente usa seletores que referenciam classes internas do QStepper
+//   (.dss-stepper .q-stepper, .dss-stepper .q-stepper__header, etc.).
+//   Esses seletores são necessários para substituir CSS nativo do Quasar
+//   com tokens DSS na estrutura do container. Precedente: DssStep (_base.scss)
+//   com .dss-step .q-stepper__* — mesma estratégia de nível acima.
+// ==========================================================================
+
+/* EXC-01 — seletores Quasar (Gate de Composição v2.4 Regra 1 exception) */
+
+// ------------------------------------------------------------------
+// Wrapper raiz do DssStepper
+// O elemento DOM raiz que contém o q-stepper.
+// ------------------------------------------------------------------
+.dss-stepper {
+  display: block;
+}
+
+// ------------------------------------------------------------------
+// Container QStepper interno
+// Aplica tokens de superfície e tipografia base.
+// ------------------------------------------------------------------
+.dss-stepper .q-stepper {
+  background-color: var(--dss-surface-default);
+  border-radius: var(--dss-radius-md);
+  color: var(--dss-text-body);
+}
+
+// ------------------------------------------------------------------
+// Header do stepper (contém os cabeçalhos dos DssStep)
+// Garante que o header herde o background do container.
+// ------------------------------------------------------------------
+.dss-stepper .q-stepper__header {
+  background-color: inherit;
+  border-radius: var(--dss-radius-md) var(--dss-radius-md) 0 0;
+}
+
+// ------------------------------------------------------------------
+// Painel de conteúdo ativo
+// Área expandida que exibe o conteúdo do DssStep ativo.
+// ------------------------------------------------------------------
+.dss-stepper .q-stepper__panel {
+  background-color: inherit;
+}
+
+// ------------------------------------------------------------------
+// Linha conectora no modo vertical (gerada pelo QStepper no nível do
+// container quando o passo ainda não possui classe .dss-step — fallback)
+// ------------------------------------------------------------------
+.dss-stepper .q-stepper--vertical .q-stepper__step-inner::before {
+  border-color: var(--dss-gray-300);
+}

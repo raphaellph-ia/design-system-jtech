@@ -231,6 +231,7 @@ O DSS segue uma arquitetura rigorosa de **separação de responsabilidades**:
 --dss-action-primary-deep         /* Active de ação principal */
 --dss-action-primary-light        /* Versão clara */
 --dss-action-primary-disable      /* Estado desabilitado */
+--dss-action-primary-surface      /* Fundo tintado 8% — mesma escala para secondary/tertiary/accent/dark */
 
 /* Feedback */
 --dss-feedback-success            /* Sucesso (#4CAF50) */
@@ -400,7 +401,18 @@ Sistema padronizado de transparências com **escala 0-100** e tokens semânticos
 /* ✅ BOM */
 --dss-text-body: var(--dss-gray-900);
 --dss-text-subtle: var(--dss-gray-600);
---dss-surface-default: var(--dss-white);
+
+/* Surface Hierarchy — 3 subfamílias */
+--dss-surface-default:      var(--dss-gray-50);       /* fundo principal */
+--dss-surface-subtle:       var(--dss-gray-100);      /* elevação suave  */
+--dss-surface-muted:        var(--dss-gray-200);      /* área rebaixada  */
+--dss-surface-overlay:      rgba(0, 0, 0, 0.5);       /* backdrop        */
+--dss-surface-hover:        rgba(0, 0, 0, 0.04);      /* estado hover    */
+--dss-surface-active:       rgba(0, 0, 0, 0.08);      /* estado active   */
+--dss-surface-selected:     rgba(31, 134, 222, 0.12); /* item selecionado */
+--dss-surface-disabled:     var(--dss-gray-200);      /* estado disabled  */
+--dss-surface-brand-subtle: rgba(245, 145, 26, 0.08); /* tint Hub 8%     */
+--dss-surface-brand-light:  rgba(245, 145, 26, 0.12); /* tint Hub 12%    */
 ```
 
 ✅ **Escalas consistentes**

@@ -1,0 +1,44 @@
+// ==========================================================================
+// DssStepper — Layer 4: Brands
+// ==========================================================================
+//
+// Nota arquitetural:
+// O DssStepper define [data-brand] no seu elemento raiz (<div class="dss-stepper">).
+// Os DssStep filhos reagem automaticamente via cascade CSS dos seletores
+// [data-brand='hub'] .dss-step em DssStep/4-output/_brands.scss.
+//
+// Não há propriedades visuais exclusivas do container DssStepper que precisem
+// de override por brand — a cor primária (active dot, focus ring) é
+// responsabilidade do DssStep filho.
+//
+// Padrão dual de seletor documentado para paridade com Golden Reference (DssTabs):
+// - [data-brand='x'] .dss-stepper — herança contextual via ancestor
+// - .dss-stepper.dss-stepper--brand-x — modificador de classe direto
+//
+// Ambos os padrões estão presentes abaixo mesmo sem regras CSS ativas,
+// garantindo que extensões futuras sigam a estrutura canônica.
+// ==========================================================================
+
+// ------------------------------------------------------------------
+// Hub (laranja) — cascade para DssStep via [data-brand='hub'] .dss-step
+// ------------------------------------------------------------------
+// [data-brand='hub'] .dss-stepper,
+// .dss-stepper.dss-stepper--brand-hub {
+//   Sem overrides de container — DssStep gerencia via _brands.scss
+// }
+
+// ------------------------------------------------------------------
+// Water (azul) — cascade para DssStep via [data-brand='water'] .dss-step
+// ------------------------------------------------------------------
+// [data-brand='water'] .dss-stepper,
+// .dss-stepper.dss-stepper--brand-water {
+//   Sem overrides de container — DssStep gerencia via _brands.scss
+// }
+
+// ------------------------------------------------------------------
+// Waste (verde) — cascade para DssStep via [data-brand='waste'] .dss-step
+// ------------------------------------------------------------------
+// [data-brand='waste'] .dss-stepper,
+// .dss-stepper.dss-stepper--brand-waste {
+//   Sem overrides de container — DssStep gerencia via _brands.scss
+// }
