@@ -6,12 +6,12 @@ import { Outlet } from "react-router-dom";
 export function DSSLayout() {
   return (
     <SidebarProvider>
-      <div className="flex w-full">
+      <div className="flex w-full h-screen overflow-hidden">
         <DSSSidebar />
-        <div className="flex min-w-0 flex-1 flex-col">
+        <div className="flex min-w-0 flex-1 flex-col h-screen overflow-hidden">
           <DSSHeader />
-          <main 
-            className="flex-1 overflow-x-hidden"
+          <main
+            className="flex-1 overflow-y-auto overflow-x-hidden"
             style={{ backgroundColor: 'var(--dss-page-bg)' }}
           >
             <Outlet />
