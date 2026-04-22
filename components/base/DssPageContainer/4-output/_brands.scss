@@ -1,0 +1,9 @@
+// ==========================================================================
+// DssPageContainer — Layer 4: Brands
+// ==========================================================================
+//
+// DssPageContainer é brand-neutro.
+// Não possui cor de fundo própria — herda a cor do DssLayout pai.
+// O DssLayout aplica --dss-surface-muted no elemento raiz e
+// gerencia os tokens de brand via [data-brand].
+// Nenhum override de brand é necessário nesta camada.

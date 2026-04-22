@@ -1,0 +1,18 @@
+// ==========================================================================
+// DssPageContainer — Layer 2: Base Composition
+// ==========================================================================
+//
+// DssPageContainer é um componente estrutural "invisível".
+// Ele não aplica tokens de cor, tipografia ou espaçamento próprios.
+//
+// Cor de fundo: transparente — herdada do DssLayout pai (--dss-surface-muted).
+// Padding:      gerenciado pelo Quasar via variáveis CSS injetadas pelo QLayout
+//               (--q-header-offset, --q-footer-offset, --q-left-offset,
+//               --q-right-offset). O DSS não sobrescreve esse mecanismo.
+//
+// A classe .dss-page-container serve exclusivamente como identificador de escopo
+// e âncora para overrides pontuais futuros sem criação de tokens específicos.
+
+.dss-page-container {
+  // Sem estilos visuais próprios. O layout dinâmico é gerenciado pelo Quasar.
+}

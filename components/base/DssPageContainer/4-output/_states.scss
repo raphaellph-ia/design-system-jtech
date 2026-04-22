@@ -1,0 +1,47 @@
+// ==========================================================================
+// DssPageContainer — Layer 4: States
+// ==========================================================================
+//
+// Estados adaptativos passivos. DssPageContainer não possui estados
+// interativos (hover, focus, active, disabled). Reage passivamente
+// às condições de ambiente herdando estilos do DssLayout pai.
+//
+// Como DssPageContainer não define cor de fundo própria, a maioria
+// dos estados adaptativos é gerenciada pelo DssLayout pai. Esta
+// camada documenta os estados ambientais e declara o comportamento
+// explícito onde necessário para garantir conformidade WCAG 2.1 AA.
+
+// Dark mode — gerenciado pelo DssLayout pai via [data-theme="dark"].
+// DssPageContainer herda passivamente sem override necessário.
+
+// Alto contraste
+@media (prefers-contrast: more) {
+  .dss-page-container {
+    // Herda contraste do DssLayout pai.
+    // Nenhum override necessário — DssPageContainer não define cores próprias.
+  }
+}
+
+// Forced Colors (Windows High Contrast Mode)
+@media (forced-colors: active) {
+  .dss-page-container {
+    // Canvas: cor de fundo do sistema para áreas de conteúdo.
+    // Declarado explicitamente para garantir comportamento previsível
+    // em browsers que não herdam forced-colors automaticamente.
+    background-color: Canvas;
+    color: CanvasText;
+  }
+}
+
+// Reduced motion — DssPageContainer não possui animações.
+// Sem override necessário.
+
+// Print
+@media print {
+  .dss-page-container {
+    // Remove padding dinâmico (header/footer não são impressos).
+    padding: 0 !important;
+    background-color: #fff; // EXC-03: cor canônica para impressão
+    color: #000; // EXC-03: cor canônica para impressão
+  }
+}
