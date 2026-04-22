@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "dss": {
+      "command": "node",
+      "args": ["/home/ubuntu/design-system-sansys/mcp/build/index.js"]
+    }
+  }
+}
