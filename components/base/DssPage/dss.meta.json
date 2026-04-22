@@ -90,12 +90,6 @@
     "recomendacaoPriorizacao": "DssScrollArea pode ser priorizado se o produto exigir customização de scrollbars ou scroll virtual."
   },
 
-  "accessibility": {
-    "role": "main",
-    "roleJustification": "role='main' aplicado por padrão — landmark de navegação principal (WCAG 2.4.1). Permite que usuários de tecnologias assistivas saltem diretamente para o conteúdo principal. Sobrescritível via $attrs.",
-    "roleOverridable": true
-  },
-
   "exceptions": [
     {
       "id": "EXC-01",
@@ -141,8 +135,9 @@
   "compositionRecommendations": [
     "Sempre filho direto e único de DssPageContainer",
     "Usar padding=true para espaçamento interno — nunca hardcoded",
-    "Usar role='main' padrão na página principal; sobrescrever via $attrs em contextos especiais",
-    "Deixar o layout interno do conteúdo para a responsabilidade do consumidor"
+    "Manter role='main' padrão na página principal (landmark WCAG 2.4.1); sobrescrever via $attrs apenas quando o contexto exigir outro landmark (ex: role='region' em iframes ou painéis parciais)",
+    "Deixar o layout interno do conteúdo para a responsabilidade do desenvolvedor consumidor",
+    "Não usar mais de um DssPage por DssPageContainer — role='main' deve ser único por documento"
   ],
 
   "compositionFuture": [],

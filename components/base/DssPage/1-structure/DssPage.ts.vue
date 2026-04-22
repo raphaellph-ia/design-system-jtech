@@ -68,11 +68,14 @@ defineOptions({
 })
 
 const props = withDefaults(defineProps<PageProps>(), {
-  padding: false,
-  styleFn: undefined
+  padding: false
 })
 
 defineSlots<PageSlots>()
 
 const { pageClasses } = usePageClasses(props)
 </script>
+
+<style lang="scss" scoped>
+@import '../DssPage.module.scss';
+</style>
