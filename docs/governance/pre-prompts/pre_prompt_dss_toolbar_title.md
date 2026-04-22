@@ -7,8 +7,9 @@
 - **Nome do Componente:** `DssToolbarTitle`
 - **Família:** Estrutura de Página (Composição de Primeiro Grau)
 - **Nível de Composição:** Nível 2
-- **Golden Reference:** `DssItemLabel` (como elemento de texto governado dentro de um container)
-- **Golden Context:** `DssToolbar` (como container estrutural pai)
+- **Golden Reference:** `DssBadge` (Golden Reference oficial para componentes não-interativos)
+- **Golden Context:** `DssItemLabel` (baseline de auditoria — tipográfico, não-interativo, EXC-01 precedente)
+- **Contexto Estrutural:** `DssToolbar` (container pai semântico — não é Golden Context arquitetural)
 - **Componente Quasar Base:** `QToolbarTitle`
 - **Dependências Diretas:** Nenhuma (depende apenas de tipografia)
 
@@ -61,7 +62,7 @@ O `DssToolbarTitle` deve utilizar os seguintes tokens tipográficos para sobresc
 - **Font Family:** `--dss-font-family-sans`
 - **Font Size:** `--dss-heading-4-size` (20px) — substitui os 21px nativos
 - **Font Weight:** `--dss-heading-4-weight` (Medium/500) — substitui o normal/400 nativo
-- **Line Height:** `--dss-heading-4-line-height` (1.3)
+- **Line Height:** `--dss-heading-4-line-height` (1.2)
 - **Letter Spacing:** `normal` (remove o 0.01em nativo)
 
 *Nota: A cor do texto (`color`) não deve ser definida no componente, permitindo que ele herde `--dss-text-body` ou `--dss-text-inverse` do `DssToolbar` pai.*
