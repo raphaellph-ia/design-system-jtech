@@ -1,0 +1,36 @@
+// ==========================================================================
+// DssPage — Layer 4: Estados Adaptativos
+// ==========================================================================
+//
+// DssPage não possui estados de interação (hover, focus, active, disabled).
+// Esta camada cobre apenas estados ambientais passivos.
+//
+// Dark mode: herdado do DssLayout pai via [data-theme="dark"].
+// DssPage não define cor de fundo própria — transparente.
+// Nenhum override necessário para dark mode.
+//
+// prefers-contrast: more — DssPage não define cores próprias.
+// Alto contraste herdado do DssLayout pai. Nenhum override necessário.
+
+// Forced Colors (Windows High Contrast Mode)
+@media (forced-colors: active) {
+  .dss-page {
+    // Canvas: cor de fundo do sistema para áreas de conteúdo principal.
+    // Declarado explicitamente para comportamento previsível em browsers
+    // que não propagam forced-colors automaticamente para todos os filhos.
+    background-color: Canvas;
+    color: CanvasText;
+  }
+}
+
+// Reduced Motion — DssPage não possui animações. Sem override necessário.
+
+// Print
+@media print {
+  .dss-page {
+    // Remove padding dinâmico na impressão (header/footer não são impressos).
+    padding: 0 !important; // EXC-02: sobrescreve dss-page--padding em print
+    background-color: #fff; // EXC-03: cor canônica para impressão
+    color: #000; // EXC-03: cor canônica para impressão
+  }
+}

@@ -1,0 +1,8 @@
+// ==========================================================================
+// DssPage — Layer 4: Brands
+// ==========================================================================
+//
+// DssPage é brand-neutro.
+// Não define cor de fundo ou tipografia próprias — herda do DssLayout pai.
+// O DssLayout gerencia os tokens de brand via [data-brand].
+// Nenhum override de brand é necessário nesta camada.

@@ -1,0 +1,155 @@
+{
+  "component": "DssPage",
+  "dssVersion": "2.2",
+  "status": "pre-audit",
+  "sealVersion": null,
+  "sealDate": null,
+  "auditMode": null,
+  "auditDate": null,
+
+  "goldenReference": "DssBadge",
+  "goldenReferenceJustification": "Golden Reference oficial para componentes não-interativos (DSS_GOLDEN_COMPONENTS.md §1.1). DssPage não possui touch target, estados interativos ou role ativo próprio (role='main' é semântico, não interativo).",
+
+  "goldenContext": "DssLayout",
+  "goldenContextJustification": "Baseline de auditoria: componente estrutural raiz com provide/inject, mesmo padrão de wrapper direto sobre primitivo Quasar de layout (EXC-01). Selado anteriormente. Ancestral obrigatório do DssPage.",
+
+  "goldenContextStructural": "DssPageContainer",
+  "goldenContextStructuralJustification": "Container pai semântico direto do DssPage. Gerencia os offsets externos (--q-header-offset etc.) que permitem o cálculo de min-height do DssPage.",
+
+  "category": "Layout Global — Container de conteúdo principal com min-height dinâmica",
+  "phase": 2,
+  "classification": "Container de conteúdo estrutural não-interativo de Nível 4 — terminal da hierarquia de layout",
+  "compositionLevel": "Nível 4",
+  "family": "Layout Global",
+
+  "quasarBase": "QPage",
+
+  "props": {
+    "DssPage": [
+      {
+        "name": "padding",
+        "type": "Boolean",
+        "default": false,
+        "description": "Aplica --dss-container-padding (= --dss-spacing-4 / 16px) em todos os lados do conteúdo.",
+        "cssClass": "dss-page--padding"
+      },
+      {
+        "name": "styleFn",
+        "quasarName": "style-fn",
+        "type": "Function",
+        "default": "undefined",
+        "description": "Sobrescreve a função de cálculo de min-height do Quasar. Uso avançado — raramente necessário.",
+        "passthrough": true
+      }
+    ],
+    "blocked": {}
+  },
+  "propsNote": "QPage expõe style-fn como única prop relevante além de padding. O DSS opta por repassá-la sem modificação (EXC-01). Nenhuma prop nativa do QPage é bloqueada.",
+
+  "slots": ["default"],
+
+  "statesApplicable": ["default"],
+  "statesNotApplicable": ["hover", "focus", "active", "disabled", "loading", "error", "indeterminate"],
+  "statesNotApplicableJustification": {
+    "hover": "Componente não-interativo — sem resposta visual a interação do usuário.",
+    "focus": "Componente não-interativo — sem estado de foco próprio.",
+    "active": "Sem estado ativo.",
+    "disabled": "Não possui comportamento de desabilitação.",
+    "loading": "Container — estado assíncrono pertence ao conteúdo filho.",
+    "error": "Container estrutural — sem validação própria.",
+    "indeterminate": "Não aplicável para container linear."
+  },
+
+  "touchTarget": "NOT_APPLICABLE",
+  "touchTargetJustification": "Componente estritamente não-interativo (Option B). Sem interação do usuário esperada.",
+
+  "tokensUsed": [
+    "--dss-container-padding"
+  ],
+  "tokensUsedJustification": "--dss-container-padding (= --dss-spacing-4 / 16px) aplicado via classe .dss-page--padding quando prop padding=true.",
+
+  "tokensInherited": [
+    "--dss-surface-muted",
+    "--dss-text-body"
+  ],
+  "tokensInheritedJustification": "Cor de fundo e cor de texto herdadas via cascata CSS do DssLayout pai.",
+
+  "compositionSurface": {
+    "existentes": [
+      "DssLayout (ancestral raiz obrigatório)",
+      "DssPageContainer (pai direto obrigatório)",
+      "DssHeader (irmão do DssPageContainer — gera --q-header-offset)",
+      "DssFooter (irmão do DssPageContainer — gera --q-footer-offset)",
+      "DssDrawer (irmão do DssPageContainer — gera --q-left/right-offset)"
+    ],
+    "planejados": [
+      "DssScrollArea (opcional — scroll customizado dentro da página)"
+    ],
+    "inexistentes": [],
+    "impacto": "DssScrollArea é opcional — scroll nativo do navegador é suficiente para a grande maioria dos casos. Risco: nenhum para o DssPage em si.",
+    "recomendacaoPriorizacao": "DssScrollArea pode ser priorizado se o produto exigir customização de scrollbars ou scroll virtual."
+  },
+
+  "accessibility": {
+    "role": "main",
+    "roleJustification": "role='main' aplicado por padrão — landmark de navegação principal (WCAG 2.4.1). Permite que usuários de tecnologias assistivas saltem diretamente para o conteúdo principal. Sobrescritível via $attrs.",
+    "roleOverridable": true
+  },
+
+  "exceptions": [
+    {
+      "id": "EXC-01",
+      "description": "Uso direto de <q-page> como raiz do template",
+      "selectors": [".dss-page"],
+      "location": "1-structure/DssPage.ts.vue",
+      "gatesViolated": [
+        "Gate de Composição v2.4 — Regra 1 (Uso direto de componente Quasar no template)"
+      ],
+      "justification": "QPage recebe estilos inline dinâmicos (min-height) calculados via JavaScript pelo QLayout pai (provide/inject). Envolver em <div> aplicaria o min-height ao wrapper, sem expandir o <q-page> interno — quebrando o comportamento de sticky footer. Precedente canônico: DssLayout, DssPageContainer.",
+      "approvedBy": "Precedente DssLayout EXC-01 + DssPageContainer EXC-01 — mesmo padrão de wrapper direto sobre primitivo Quasar de layout",
+      "approvedDate": "2026-04-22"
+    },
+    {
+      "id": "EXC-02",
+      "description": "padding: 0 !important em @media print",
+      "location": "4-output/_states.scss",
+      "gatesViolated": [],
+      "justification": "Necessário para garantir que o print override sobrescreva a especificidade do seletor .dss-page--padding em contexto de impressão. Padrão canônico DSS v2.2.",
+      "approvedBy": "Padrão canônico DSS v2.2 para @media print",
+      "approvedDate": "2026-04-22"
+    },
+    {
+      "id": "EXC-03",
+      "description": "Valores hardcoded #fff e #000 em @media print",
+      "value": "background-color: #fff, color: #000",
+      "location": "4-output/_states.scss",
+      "gatesViolated": [],
+      "justification": "Em modo print, tokens CSS baseados em variáveis de marca não são adequados. #fff e #000 garantem legibilidade monocromática universal. Padrão canônico DSS — precedente em DssLayout, DssPageContainer e outros componentes selados.",
+      "approvedBy": "Padrão canônico DSS v2.2 para @media print",
+      "approvedDate": "2026-04-22"
+    }
+  ],
+
+  "antiPatterns": [
+    "Usar DssPage fora de um DssPageContainer pai",
+    "Usar mais de um DssPage dentro de um DssPageContainer",
+    "Aplicar padding, margin ou min-height que interfiram com o motor de layout do Quasar",
+    "Usar como container de seção, card ou região genérica dentro da página",
+    "Sobrescrever .q-page via SCSS em vez de usar a prop padding"
+  ],
+
+  "compositionRecommendations": [
+    "Sempre filho direto e único de DssPageContainer",
+    "Usar padding=true para espaçamento interno — nunca hardcoded",
+    "Usar role='main' padrão na página principal; sobrescrever via $attrs em contextos especiais",
+    "Deixar o layout interno do conteúdo para a responsabilidade do consumidor"
+  ],
+
+  "compositionFuture": [],
+
+  "phaseDescription": "Fase 2 — Terminal da hierarquia de Layout Global (Nível 4). Wrapper transparente que conecta o motor de layout do Quasar (QLayout via DssPageContainer) ao conteúdo da aplicação. Completa a cadeia: DssLayout → DssPageContainer → DssPage → [conteúdo].",
+
+  "files": 19,
+  "createdAt": "2026-04-22",
+  "createdBy": "Claude Code — DSS v2.5 Protocol"
+}

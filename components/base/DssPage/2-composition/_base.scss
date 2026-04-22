@@ -1,0 +1,32 @@
+// ==========================================================================
+// DssPage — Layer 2: Composição Base
+// ==========================================================================
+//
+// DssPage é um componente estrutural de conteúdo.
+// Fundo e cor de texto são herdados do DssLayout pai via cascata CSS.
+// O min-height é calculado dinamicamente pelo Quasar (JS) — não SCSS.
+//
+// A variante --padding aplica --dss-container-padding (= --dss-spacing-4)
+// como alternativa governada à classe .q-layout-padding do Quasar,
+// que usa valores hardcoded.
+//
+// EXC-01 — QPage como elemento raiz (Gate de Composição v2.4 — Regra 1):
+//   DssPage usa <q-page> diretamente como raiz. O QPage recebe estilos
+//   inline (min-height) calculados via provide/inject do QLayout pai.
+//   Envolver em <div> quebraria o comportamento de sticky footer.
+//   Precedente canônico: DssLayout, DssPageContainer.
+// ==========================================================================
+
+.dss-page {
+  // Sem estilos de cor ou fundo — herdados do DssLayout pai.
+  // Sem min-height no SCSS — calculado pelo Quasar via JavaScript.
+
+  // ------------------------------------------------------------------
+  // Variante: padding interno governado por token
+  // ------------------------------------------------------------------
+  &--padding {
+    // --dss-container-padding = var(--dss-spacing-4) = 16px
+    // Substitui .q-layout-padding do Quasar (que usa 16px hardcoded).
+    padding: var(--dss-container-padding);
+  }
+}

@@ -1,0 +1,1 @@
+export { usePageClasses } from './usePageClasses'
